@@ -63,7 +63,7 @@
 		<maven-jaxb2-plugin-jvnet.version>0.14.0</maven-jaxb2-plugin-jvnet.version>
 		<maven-cucumber-reporting.version>3.14.0</maven-cucumber-reporting.version>
 		<krasa-jaxb-tools.version>1.5</krasa-jaxb-tools.version>
-		<jaxb2-basics-annotate.version>1.0.2</jaxb2-basics-annotate.version>
+		<jaxb2-basics-annotate.version>1.1.0</jaxb2-basics-annotate.version>
 		<!-- build pipeline plugins -->
 		<sonar-maven-plugin.version>3.3.0.603</sonar-maven-plugin.version>
 		<fortify-build-utils.version>1.2</fortify-build-utils.version>
@@ -88,13 +88,13 @@
 		<jjwt.version>0.9.0</jjwt.version>
 		<el-impl.version>2.2</el-impl.version>
 		<axiom-impl.version>1.2.20</axiom-impl.version>
-		<spring-cloud-dependencies.version>Greenwich.RC1</spring-cloud-dependencies.version>
+		<spring-cloud-dependencies.version>Greenwich.RELEASE</spring-cloud-dependencies.version>
 		<swagger-annotations.version>1.5.20</swagger-annotations.version>
 		<springfox.version>2.9.2</springfox.version>
 		<fest-assert.version>2.0M10</fest-assert.version>
 		<guava.version>20.0</guava.version>
-		<commons-io.version>2.5</commons-io.version>
-		<commons-lang3.version>3.5</commons-lang3.version>
+		<commons-io.version>2.6</commons-io.version>
+		<commons-lang3.version>3.8.1</commons-lang3.version>
 		<jcl-over-slf4j.version>1.7.25</jcl-over-slf4j.version>
 		<jackson-databind.version>2.9.8</jackson-databind.version>
 		<slf4j-api.version>1.7.25</slf4j-api.version>
@@ -235,7 +235,7 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
 					<failOnError>false</failOnError>
-					<additionalparam>-Xdoclint:none</additionalparam>
+					 <doclint>none</doclint>
 				</configuration>
 				<executions>
 					<execution>
