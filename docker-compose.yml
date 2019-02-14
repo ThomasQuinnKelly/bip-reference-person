@@ -1,0 +1,46 @@
+version: "3.3"
+
+services:
+  
+  # Fill this out once the dev team has their app code into the repo
+  os-reference-spring-boot-service:
+    image: bip/os-reference-spring-boot-service
+#    build:
+#      context: ./bip/os-reference-spring-boot-service
+    environment:
+      - spring.profiles.active=local-int
+      - spring.cloud.consul.host=consul
+      - spring.cloud.vault.host=vault
+    ports:
+      - "8080:8080"
+    networks:
+       - bip
+    depends_on:
+      - consul
+      - redis
+      - vault
+
+  consul:
+    image: consul
+    ports:
+      - "8500:8500"
+    networks:
+      - bip
+
+  vault:
+    image: vault
+    ports:
+      - "8200:8200"
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=${VAULT_TOKEN:-vaultroot}
+    networks:
+      - bip
+
+  redis:
+    image: redis
+    networks:
+      - bip
+
+networks:
+  bip:
+    driver: bridge

@@ -1,0 +1,59 @@
+spring: 
+  application: 
+    name: "@project.name@"
+  config: 
+    name: "@project.name@"
+spring.cloud.consul: 
+  config:
+    enabled: true
+    prefix: config
+    defaultContext: application
+    data-key: data
+    profileSeparator: ','
+    format: yaml
+    failFast: false #Set value as 'true' to throw exceptions during consul config lookup
+    watch:
+      wait-time: 30 #defaults to 55 seconds
+  host: localhost
+  port: 8500
+  #tls:
+    #key-store-path: #Configuration for TLS in higher environments
+  discovery: 
+    enabled: false #Set Value as 'true' to enable consul discovery
+    register: false #Set Value as 'true' to Register as a service in consul
+    health-check-interval: 10s
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    #health-check-url: ${service.context}${server.servlet.context-path}/actuator/health # Enable if actuator end point changes
+    health-check-tls-skip-verify: true
+    scheme: http
+spring.cloud.vault:
+  failFast: false #Set value as 'true' to throw exceptions if data cannot be obtained from Vault.
+  host: localhost
+  port: 8200
+  scheme: http
+  #authentication: TOKEN
+  token: ${VAULT_TOKEN:vaultroot}
+  generic:
+    enabled: true
+    backend: secret
+    profile-separator: '/'
+    default-context: application
+    application-name: "@project.name@"
+  consul: 
+    enabled: true  
+    role: readonly
+    backend: consul
+    token-property: spring.cloud.consul.token
+# Bean overriding has been disabled by default to prevent a bean being accidentally overridden. 
+# If you are relying on overriding, you will need to set spring.main.allow-bean-definition-overriding to true.
+# https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.1-Release-Notes
+spring.main:
+     allow-bean-definition-overriding: true 
+---
+spring.profiles: local-int
+spring.cloud.consul:
+ config:
+  failFast: true
+ discovery: 
+    enabled: true 
+    register: true

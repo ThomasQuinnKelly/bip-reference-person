@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false" debug="false">
+	<!-- Resource is available in shared auto-configure included via pom.xml dependency-->
+    <include resource="gov/va/os/reference/starter/logger/os-reference-logback-starter.xml" />
+    
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        
+        <springProfile name="docker-demo,aws-ci,aws-dev,aws-stage,aws-prod">
+            <appender-ref ref="ASCENT_ASYNC_CONSOLE_APPENDER" />
+        </springProfile>
+    </root>
+    
+
+</configuration>
