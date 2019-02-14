@@ -16,20 +16,19 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<name>${project.artifactId}</name>
-	<description>Parent POM for OpenShift Spring Boot Reference Service</description>
+	<description>Parent POM for Spring Boot Reference Project</description>
 
 	<properties>
 		<!-- Configuration properties -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<!-- nexus properties -->
-		<!-- Docker properties to add min and max memory for spring boot jar start 
-			up -->
+		
 		<!-- Testing library versions -->
 		<jacoco.outputRootDir>${project.basedir}/target/jacoco</jacoco.outputRootDir>
 		<jacoco.dataFile>${jacoco.outputRootDir}/jacoco.exec</jacoco.dataFile>
 		<jacoco.reportDir>${jacoco.outputRootDir}/jacoco</jacoco.reportDir>
+		
 		<!-- sonar properties -->
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -40,6 +39,7 @@
 		<sonar.test.exclusions>**/test/*</sonar.test.exclusions>
 		<include.int.tests.pattern>**/*IT.java,**/*Runner.java</include.int.tests.pattern>
 		<jgitflow.keepBranch>false</jgitflow.keepBranch>
+		
 		<!-- fortify properties for easy override -->
 		<!-- fortify scan properties -->
 		<fortify.scanEnabled>true</fortify.scanEnabled>
@@ -54,7 +54,6 @@
 		<fortify.upload>false</fortify.upload> <!-- pass as -D from build server where upload is desired -->
 		<fortify.token>REPLACE WITH REAL VALUE IN SETTINGS.XML OR -D PARAM</fortify.token>
 		<fortify.url>REPLACE WITH REAL VALUE IN SETTINGS.XML OR -D PARAM</fortify.url>
-
 		<!-- 3rd party maven plugin versions -->
 		<!-- build plugins -->
 		<lifecycle.mapping.version>1.0.0</lifecycle.mapping.version>
@@ -85,21 +84,18 @@
 		<selenium-htmlunit-driver.version>2.52.0</selenium-htmlunit-driver.version>
 
 		<!-- application plugins -->
-		<jjwt.version>0.9.0</jjwt.version>
-		<el-impl.version>2.2</el-impl.version>
-		<axiom-impl.version>1.2.20</axiom-impl.version>
 		<spring-cloud-dependencies.version>Greenwich.RELEASE</spring-cloud-dependencies.version>
+		<jjwt.version>0.9.1</jjwt.version>
+		<el-impl.version>2.2</el-impl.version>
+		<axiom-impl.version>1.2.22</axiom-impl.version>
 		<swagger-annotations.version>1.5.20</swagger-annotations.version>
 		<springfox.version>2.9.2</springfox.version>
 		<fest-assert.version>2.0M10</fest-assert.version>
-		<guava.version>20.0</guava.version>
 		<commons-io.version>2.6</commons-io.version>
 		<commons-lang3.version>3.8.1</commons-lang3.version>
-		<jcl-over-slf4j.version>1.7.25</jcl-over-slf4j.version>
 		<jackson-databind.version>2.9.8</jackson-databind.version>
-		<slf4j-api.version>1.7.25</slf4j-api.version>
-		<commons-logging.version>1.1.1</commons-logging.version>
-		<logstash-logback-encoder.version>4.9</logstash-logback-encoder.version>
+		<commons-logging.version>1.2</commons-logging.version>
+		<logstash-logback-encoder.version>5.3</logstash-logback-encoder.version>
 		<logback-classic.version>1.2.3</logback-classic.version>
 		<embedded-redis.version>0.6</embedded-redis.version>
 		<jfiglet.version>0.0.8</jfiglet.version>
@@ -164,6 +160,12 @@
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
 				<version>${commons-io.version}</version>
+			</dependency>
+			<!-- Apache Commons Logging -->
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>${commons-logging.version}</version>
 			</dependency>
 			<!-- 3rd party for ascii art enhanced logging -->
 			<dependency>
