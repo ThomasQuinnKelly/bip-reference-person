@@ -12,7 +12,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 	<artifactId>os-reference-spring-boot-reactor</artifactId>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
-    <description>Reactor POM for Ascent Sample projects</description>
+    <description>Reactor POM for Spring Boot Reference Project</description>
 
 	<modules>
 		<module>os-reference-spring-boot-parentpom</module>

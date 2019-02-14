@@ -15,7 +15,7 @@
     <packaging>jar</packaging>
 
     <name>os-reference-spring-boot-partner</name>
-    <description>Partner library for OpenShift Spring Boot Reference Service</description>
+    <description>Partner library for Spring Boot Reference Project</description>
 
     <dependencies>
 
