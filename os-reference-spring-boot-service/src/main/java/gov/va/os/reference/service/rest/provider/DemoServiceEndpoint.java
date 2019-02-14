@@ -118,11 +118,11 @@ public class DemoServiceEndpoint implements HealthIndicator, SwaggerResponseMess
 	/**
 	 * CODING PRACTICE FOR RETURN TYPES - Ascent Platform auditing aspects support two return types.
 	 * 1) An object derived from ServiceResponse. For ex: PersonInfoResponse as returned below.
-	 * 2) An object derived from ServiceResponse wrapped inside ResponseEntity. For ex: ResponseEntity<PersonInfoResponse>
+	 * 2) An object derived from ServiceResponse wrapped inside ResponseEntity.
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
-	 * @param personInfoRequest
-	 * @return ResponseEntity<PersonInfoResponse>
+	 * @param personInfoRequest the person info request
+	 * @return the response entity
 	 */
 	@RequestMapping(value = URL_PREFIX + "/person/ssn",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
@@ -146,11 +146,11 @@ public class DemoServiceEndpoint implements HealthIndicator, SwaggerResponseMess
 	/**
 	 * CODING PRACTICE FOR RETURN TYPES - Ascent Platform auditing aspects support two return types.
 	 * 1) An object derived from ServiceResponse. For ex: PersonInfoResponse as returned below.
-	 * 2) An object derived from ServiceResponse wrapped inside ResponseEntity. For ex: ResponseEntity<PersonInfoResponse>
+	 * 2) An object derived from ServiceResponse wrapped inside ResponseEntity.
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
-	 * @param personInfoRequest
-	 * @return PersonInfoResponse
+	 * @param personInfoRequest the person info request
+	 * @return the person info response
 	 */
 	@RequestMapping(value = URL_PREFIX + "/person/pid",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)

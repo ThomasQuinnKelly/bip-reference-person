@@ -50,9 +50,9 @@ public class DemoServiceRestClientTests implements SwaggerResponseMessages {
 	public static final String URL_PREFIX = DemoServiceEndpoint.URL_PREFIX + "/clientTests";
 
 	/**
-	 * This method demonstrates the use of DiscoveryClient to iterate through each of service instance endpoint to make REST calls
+	 * This method demonstrates the use of DiscoveryClient to iterate through each of service instance endpoint to make REST calls.
 	 *
-	 * @param request
+	 * @param request the request
 	 * @return a ResponseEntity
 	 */
 	@ApiOperation(value = "An endpoint demo's using the DiscoveryClient to interrogate services.")
@@ -64,9 +64,9 @@ public class DemoServiceRestClientTests implements SwaggerResponseMessages {
 	}
 
 	/**
-	 * This method demonstrates the use of RestTemplate to make REST calls on the service endpoints
+	 * This method demonstrates the use of RestTemplate to make REST calls on the service endpoints.
 	 *
-	 * @param request
+	 * @param request the request
 	 * @return a ResponseEntity
 	 */
 
@@ -84,9 +84,9 @@ public class DemoServiceRestClientTests implements SwaggerResponseMessages {
 	}
 
 	/**
-	 * This method demonstrates the use of Feign Client to make REST calls
+	 * This method demonstrates the use of Feign Client to make REST calls.
 	 *
-	 * @param request
+	 * @param request the request
 	 * @return a ResponseEntity
 	 */
 	@ApiOperation(value = "An endpoint which uses a REST client using Feign to call the remote echo operation.")

@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
     
     <name>${project.artifactId}</name>
-    <description>Reference project for Spring Boot Service Provider on BIP</description>
+    <description>Service Implementation for Spring Boot Reference Project</description>
     
     <dependencies>
     	<dependency>

@@ -178,9 +178,10 @@ public class DemoPersonServiceImpl implements DemoPersonService {
 
 	/**
 	 * Hystrix Fallback Method Which is Triggered When there Is An Unexpected Exception
-	 * in getPersonInfo
+	 * in getPersonInfo.
 	 *
 	 * @param personInfoRequest The request from the Java Service.
+	 * @param throwable the throwable
 	 * @return A JAXB element for the WS request
 	 */
 	@HystrixCommand(commandKey = "GetPersonInfoFallBackCommand")
@@ -196,9 +197,10 @@ public class DemoPersonServiceImpl implements DemoPersonService {
 
 	/**
 	 * Hystrix Fallback Method Which is Triggered When there Is An Unexpected Exception
-	 * in findPersonByParticipantID method
+	 * in findPersonByParticipantID method.
 	 *
 	 * @param personInfoRequest The request from the Java Service.
+	 * @param throwable the throwable
 	 * @return A JAXB element for the WS request
 	 */
 	@HystrixCommand(commandKey = "FindPersonByParticipantIDFallBackCommand")
