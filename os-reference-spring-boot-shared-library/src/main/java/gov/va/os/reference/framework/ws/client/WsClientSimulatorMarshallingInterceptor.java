@@ -1,6 +1,7 @@
 package gov.va.os.reference.framework.ws.client;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -14,7 +15,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.event.Level;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
@@ -239,7 +239,14 @@ public class WsClientSimulatorMarshallingInterceptor implements
 			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
 					ex.getMessage(), ex);
 		} finally {
-			IOUtils.closeQuietly(outputStream);
+			if (outputStream != null) {
+				try {
+					outputStream.close();
+				} catch (IOException ioe) {
+					LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+							ioe.getMessage(), ioe);
+				}
+			}
 		}
 		return ret;
 	}

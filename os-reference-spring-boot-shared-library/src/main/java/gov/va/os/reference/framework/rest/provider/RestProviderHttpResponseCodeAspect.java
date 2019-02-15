@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import org.apache.commons.io.IOUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -382,7 +381,9 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 					// NOSONAR inputstream = partTooBigMessage;
 					// NOSONAR }
 					attachmentTextList.add(partHeaders.toString() + ", " + convertBytesToString(inputstream));
-					IOUtils.closeQuietly(inputstream);
+					if (inputstream != null) {
+						inputstream.close();
+					}
 					// NOSONAR IOUtils.closeQuietly(partTooBigMessage);
 				}
 			} catch (final Exception ex) {
@@ -390,7 +391,14 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 						"Error occurred while reading the upload file. {}", ex);
 
 			} finally {
-				IOUtils.closeQuietly(inputstream);
+				if (inputstream != null) {
+					try {
+						inputstream.close();
+					} catch (IOException e) {
+						LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+								"Error occurred while closing the upload file. {}", e);
+					}
+				}
 			}
 			requestAuditData.setAttachmentTextList(attachmentTextList);
 			requestAuditData.setRequest(null);

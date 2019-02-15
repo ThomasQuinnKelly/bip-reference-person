@@ -101,7 +101,6 @@ public class BaseWsClientConfigTest {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testAddSslContext() {
 		BaseWsClientConfig test = new BaseWsClientConfig();

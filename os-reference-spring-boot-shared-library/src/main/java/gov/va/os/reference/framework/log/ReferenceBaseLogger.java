@@ -10,7 +10,7 @@ import org.slf4j.MDC;
 import org.slf4j.Marker;
 import org.slf4j.event.Level;
 
-import com.fasterxml.jackson.core.io.JsonStringEncoder;
+import com.fasterxml.jackson.core.util.BufferRecyclers;
 
 /**
  * Base logger class that:
@@ -255,7 +255,7 @@ public class ReferenceBaseLogger {
 	 * @return String the escaped message, or {@code null}
 	 */
 	private String safeMessage(final String message) {
-		return message == null ? null : String.valueOf(JsonStringEncoder.getInstance().quoteAsString(message));
+		return message == null ? null : String.valueOf(BufferRecyclers.getJsonStringEncoder().quoteAsString(message));
 	}
 
 	/**
