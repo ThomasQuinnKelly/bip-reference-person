@@ -36,12 +36,6 @@ public class VAServiceSignatureWss4jSecurityInterceptorTest {
 	/** The property name whose value would be time-stamp of the TTL (time to live) */
 	private static final String TIMESTAMP_TTL = "vetservices-partner-efolder.ws.client.security.timestamp.ttl";
 
-	/** The key time stamp alias. */
-	private String keyTimeStampAlias = "ebn_vbms_cert";
-
-	/** The key time stamp password. */
-	private String keyTimeStampPassword = "changeit";
-
 	/** The security.crypto.merlin.keystore.alias */
 	private String securityCryptoMerlinKeystoreAlias;
 

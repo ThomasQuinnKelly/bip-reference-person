@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
 
 import gov.va.os.reference.framework.log.ReferenceLogger;
@@ -44,7 +43,9 @@ public class BaseWsClientSimulator {
 		} catch (final IOException ioe) {
 			throw new IOException("Failed to read from simulator response file at resource.", ioe);
 		} finally {
-			IOUtils.closeQuietly(inputStream);
+			if (inputStream != null) {
+				inputStream.close();
+			}
 		}
 	}
 

@@ -44,7 +44,7 @@ public class RequestResponseLogSerializer {
 	 */
 	@Async
 	public void asyncLogRequestResponseAspectAuditData(final AuditEventData auditEventData, final AuditableData auditData,
-			final Class auditDataClass, final MessageSeverity messageSeverity, final Throwable t) {
+			final Class<?> auditDataClass, final MessageSeverity messageSeverity, final Throwable t) {
 
 		String auditDetails;
 		try {

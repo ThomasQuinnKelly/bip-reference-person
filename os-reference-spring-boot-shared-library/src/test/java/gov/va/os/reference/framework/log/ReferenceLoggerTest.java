@@ -27,7 +27,7 @@ import org.springframework.boot.test.rule.OutputCapture;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import com.fasterxml.jackson.core.io.JsonStringEncoder;
+import com.fasterxml.jackson.core.util.BufferRecyclers;
 import com.github.lalyos.jfiglet.FigletFont;
 
 import gov.va.os.reference.framework.AbstractBaseLogTester;
@@ -73,7 +73,6 @@ public class ReferenceLoggerTest extends AbstractBaseLogTester {
 	 * @param message the message
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	@SuppressWarnings("unchecked")
 	private void assertConsoleBanner(final Level level, final ReferenceBanner banner, final String message, final Exception e)
 			throws IOException {
 		// output capture
@@ -97,7 +96,7 @@ public class ReferenceLoggerTest extends AbstractBaseLogTester {
 		final String outString = outputCapture.toString();
 
 		if (banner != null) {
-			String expected = String.valueOf(JsonStringEncoder.getInstance()
+			String expected = String.valueOf(BufferRecyclers.getJsonStringEncoder()
 					.quoteAsString(FigletFont.convertOneLine(ReferenceBanner.FONT_FILE, level.name() + ": " + banner.getBannerText())));
 			Assert.assertTrue(StringUtils.contains(StringUtils.normalizeSpace(outString), StringUtils.normalizeSpace(expected)));
 		}

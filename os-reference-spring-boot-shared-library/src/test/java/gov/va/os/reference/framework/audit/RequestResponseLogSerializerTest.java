@@ -31,7 +31,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.io.JsonStringEncoder;
+import com.fasterxml.jackson.core.util.BufferRecyclers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.va.os.reference.framework.audit.AuditEventData;
@@ -100,9 +100,9 @@ public class RequestResponseLogSerializerTest {
 				MessageSeverity.INFO, null);
 		verify(mockAppender, times(2)).doAppend(captorLoggingEvent.capture());
 		final List<ch.qos.logback.classic.spi.LoggingEvent> loggingEvents = captorLoggingEvent.getAllValues();
-		final String expectedRequest = String.valueOf(JsonStringEncoder.getInstance().quoteAsString(
+		final String expectedRequest = String.valueOf(BufferRecyclers.getJsonStringEncoder().quoteAsString(
 				"{\"headers\":{\"Header1\":\"Header1Value\"},\"uri\":\"/\",\"method\":\"GET\",\"request\":[\"Request\"],\"attachmentTextList\":[\"attachment1\",\"attachment2\"]}"));
-		final String expectedResponse = String.valueOf(JsonStringEncoder.getInstance().quoteAsString("{\"response\":\"Response\"}"));
+		final String expectedResponse = String.valueOf(BufferRecyclers.getJsonStringEncoder().quoteAsString("{\"response\":\"Response\"}"));
 		assertEquals(expectedRequest, loggingEvents.get(0).getMessage());
 		assertThat(loggingEvents.get(0).getLevel(), is(ch.qos.logback.classic.Level.INFO));
 		assertEquals(expectedResponse, loggingEvents.get(1).getMessage());

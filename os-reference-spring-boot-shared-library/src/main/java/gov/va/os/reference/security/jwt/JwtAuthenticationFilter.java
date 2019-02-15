@@ -57,7 +57,6 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	}
 
 	@Override
-	@SuppressWarnings("squid:S1166")
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		String token = request.getHeader(jwtAuthenticationProperties.getHeader());

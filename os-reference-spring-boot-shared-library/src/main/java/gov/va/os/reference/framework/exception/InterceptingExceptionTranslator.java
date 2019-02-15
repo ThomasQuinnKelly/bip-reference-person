@@ -54,7 +54,6 @@ public class InterceptingExceptionTranslator implements ThrowsAdvice {
 	 * @param target the args
 	 * @param throwable the throwable
 	 */
-	@SuppressWarnings("squid:S1172")
 	public final void afterThrowing(final Method method, final Object[] args, final Object target, final Throwable throwable) {
 
 		try {
