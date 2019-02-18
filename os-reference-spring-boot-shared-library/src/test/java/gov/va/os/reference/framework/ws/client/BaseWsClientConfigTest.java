@@ -199,7 +199,7 @@ public class BaseWsClientConfigTest {
 		}
 	}
 
-	// pkg-gov.va.ascent.demo.partner.person.ws.transfer
+	// pkg-gov.va.os.reference.partner.person.ws.transfer
 	// resource-xsd/PersonService/PersonWebService.xsd
 	@Test
 	public void testGetPerformanceLogMethodInterceptor() {
