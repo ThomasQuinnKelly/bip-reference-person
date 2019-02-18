@@ -73,7 +73,7 @@
 		<prometheus.version>0.5.0</prometheus.version>
 
 		<!-- testing - unit / integratino / performance -->
-		<surefire-junit47.version>2.20.1</surefire-junit47.version>
+		<surefire-junit47.version>2.22.0</surefire-junit47.version>
 		<maven-cucumber-reporting.version>2.8.0</maven-cucumber-reporting.version>
 		<jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
 		<jmeter-maven-plugin.version>2.7.0</jmeter-maven-plugin.version>
@@ -273,6 +273,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M1</version>
 				<configuration>
 					<skipTests>${skipTests}</skipTests>
 				</configuration>
