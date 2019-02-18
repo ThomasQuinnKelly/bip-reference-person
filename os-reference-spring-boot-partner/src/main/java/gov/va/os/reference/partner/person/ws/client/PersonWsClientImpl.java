@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonByPtcpntId;
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonBySSN;
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonBySSNResponse;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonBySSN;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonBySSNResponse;
 import gov.va.os.reference.framework.audit.AuditEvents;
 import gov.va.os.reference.framework.audit.Auditable;
 import gov.va.os.reference.framework.config.ReferenceCommonSpringProfiles;

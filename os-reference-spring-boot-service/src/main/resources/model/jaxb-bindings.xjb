@@ -6,7 +6,8 @@
 	xs:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd">
 
 	<jaxb:globalBindings fixedAttributeAsConstantProperty="true" >
-		<xjc:superClass	name="gov.va.os.reference.framework.transfer.AbstractTransferObject" />
+		<xjc:superInterface name="gov.va.os.reference.framework.transfer.ServiceTransferObjectMarker" />
+		<xjc:simple/>
 		<jaxb:javaType name="java.util.Date" xmlType="xs:dateTime"
 		      parseMethod="gov.va.os.reference.framework.transfer.jaxb.adapters.DateAdapter.parseDateTime"
 		      printMethod="gov.va.os.reference.framework.transfer.jaxb.adapters.DateAdapter.printDateTime"

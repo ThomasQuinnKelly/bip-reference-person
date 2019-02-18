@@ -59,7 +59,7 @@ public class LogHttpCallInterceptorTest {
 	@Test
 	public void afterCompletionTest() {
 		try {
-			doAnswer((Answer) invocation -> {
+			doAnswer((Answer<?>) invocation -> {
 				ByteArrayTransportOutputStream arg0 =
 						invocation.getArgument(0);
 				arg0.write(TEST_SAMPLE_SOAP_MESSAGE.getBytes("UTF-8"));

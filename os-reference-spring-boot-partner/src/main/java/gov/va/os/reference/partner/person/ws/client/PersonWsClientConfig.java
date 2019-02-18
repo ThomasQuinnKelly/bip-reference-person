@@ -42,7 +42,7 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	/**
 	 * The Constant TRANSFER_PACKAGE.
 	 */
-	private static final String TRANSFER_PACKAGE = "gov.va.ascent.demo.partner.person.ws.transfer";
+	private static final String TRANSFER_PACKAGE = "gov.va.os.reference.partner.person.ws.transfer";
 
 	/**
 	 * The username.

@@ -115,7 +115,7 @@ public class ReferenceFeignAutoConfigurationTest {
 			final Field setterFactoryField = result.getClass().getDeclaredField("setterFactory");
 			setterFactoryField.setAccessible(true);
 			final SetterFactory factory = (SetterFactory) setterFactoryField.get(result);
-			final Target target = new TestTarget(this.getClass(), "testFeignBuilder");
+			final Target<?> target = new TestTarget(this.getClass(), "testFeignBuilder");
 			final HystrixCommand.Setter setter = factory.create(target, this.getClass().getMethod("testFeignBuilder"));
 			assertNotNull(setter);
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException

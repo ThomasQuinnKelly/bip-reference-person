@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
  */
 public class PartnerMockFrameworkUnitTestConfig extends AbstractPartnerMockFrameworkSpringIntegratedTest {
 
+	@SuppressWarnings("unused")
 	@Autowired
     private ApplicationContext applicationContext;
 	

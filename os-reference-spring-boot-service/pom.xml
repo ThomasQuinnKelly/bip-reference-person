@@ -166,7 +166,7 @@
                       </schemaIncludes>
 					<bindingDirectory>${project.basedir}/src/main/resources/model/</bindingDirectory>
 					<bindingIncludes>
-						<include>JAXB-bindings.xjb</include>
+						<include>jaxb-bindings.xjb</include>
 					</bindingIncludes>
 					<strict>false</strict>
 					<extension>true</extension>

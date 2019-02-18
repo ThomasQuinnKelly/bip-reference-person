@@ -14,11 +14,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonByPtcpntId;
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonBySSN;
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonBySSNResponse;
-import gov.va.ascent.demo.partner.person.ws.transfer.ObjectFactory;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonBySSN;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonBySSNResponse;
+import gov.va.os.reference.partner.person.ws.transfer.ObjectFactory;
 import gov.va.os.reference.framework.config.ReferenceCommonSpringProfiles;
 import gov.va.os.reference.partner.mock.framework.PartnerMockFrameworkTestConfig;
 import gov.va.os.reference.partner.person.ws.client.PersonWsClient;

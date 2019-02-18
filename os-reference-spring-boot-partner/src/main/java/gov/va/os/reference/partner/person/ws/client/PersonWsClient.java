@@ -2,10 +2,10 @@ package gov.va.os.reference.partner.person.ws.client;
 
 import javax.xml.bind.JAXBElement;
 
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonByPtcpntId;
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonBySSN;
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonBySSNResponse;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonBySSN;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonBySSNResponse;
 
 /**
  * The interface for the PersonWsClient Web Service Client.
