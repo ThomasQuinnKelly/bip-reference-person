@@ -21,7 +21,7 @@
 
         <dependency>
             <groupId>gov.va.os.reference.spring.boot</groupId>
-            <artifactId>os-reference-spring-boot-shared-library</artifactId>
+            <artifactId>os-reference-spring-boot-libraries</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     
