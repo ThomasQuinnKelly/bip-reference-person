@@ -37,3 +37,5 @@ Secrets can be obtained from other contexts within the generic backend by adding
 * /secret/usefulapp
 * /secret/mysql1
 * /secret/projectx/aws
+
+Secret values are loaded as Properties by the key name in Vault. For example if your secret was `database.username=bob` then you would access that secrets value in your application by refering to the property matching the secret key name `${database.username}`
