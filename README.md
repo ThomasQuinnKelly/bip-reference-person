@@ -21,6 +21,11 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 1. os-reference-spring-boot-service-2: Second reference service to show FEIGN REST service to service call implementation
 
+## Core Concepts
+* Service Discovery
+* [Secrets Management](docs/secrets.md)
+* [Configuration Management](docs/config-management.md)
+
 ## Contribution guidelines ## 
 * If you or your team wants to contribute to this repository, then fork the repository and follow the steps to create a PR for our upstream repo to review and commit the changes
 * [Creating a pull request from a fork](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)
