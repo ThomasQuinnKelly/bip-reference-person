@@ -9,7 +9,7 @@
 	<springProperty scope="context" name="app_profile" source="spring.profiles.active" />
 	<springProperty scope="context" name="app_version" source="info.build.version" />
 
-	<appender name="ASCENT_CONSOLE_LOG_ENCODER" class="ch.qos.logback.core.ConsoleAppender">
+	<appender name="OS_REFERENCE_CONSOLE_LOG_ENCODER" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
 			<providers>
 
@@ -45,10 +45,10 @@
 		</encoder>
 	</appender>
 
-	<appender name="ASCENT_ASYNC_CONSOLE_APPENDER" class="ch.qos.logback.classic.AsyncAppender">
+	<appender name="OS_REFERENCE_ASYNC_CONSOLE_APPENDER" class="ch.qos.logback.classic.AsyncAppender">
 		<queueSize>262144</queueSize> <!--default is 256 -->
 		<discardingThreshold>0</discardingThreshold> <!--events are not discarded -->
-		<appender-ref ref="ASCENT_CONSOLE_LOG_ENCODER" />
+		<appender-ref ref="OS_REFERENCE_CONSOLE_LOG_ENCODER" />
 	</appender>
 
 </included>
