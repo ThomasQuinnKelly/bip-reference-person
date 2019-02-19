@@ -3,10 +3,10 @@ version: "3.3"
 services:
   
   # Fill this out once the dev team has their app code into the repo
-  os-reference-spring-boot-service:
-    image: bip/os-reference-spring-boot-service
+  os-reference-service:
+    image: bip/os-reference-service
     build:
-      context: ./os-reference-spring-boot-service
+      context: ./os-reference-service-1
     environment:
       - spring.profiles.active=local-int
       - spring.cloud.consul.host=consul
