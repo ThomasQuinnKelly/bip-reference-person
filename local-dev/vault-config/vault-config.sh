@@ -2,7 +2,7 @@
 echo "Configuring Vault..."
 
 # Wait up to 60 seconds for Vault to be available
-until $(curl -XGET --insecure --fail --output /dev/null --silent -H "X-Vault-Token: $VAULT_TOKEN" $VAULT_ADDR/sys/health); do
+until $(curl -XGET --insecure --fail --output /dev/null --silent -H "X-Vault-Token: $VAULT_TOKEN" $VAULT_ADDR/v1/sys/health); do
     echo "Waiting for Vault to be available..."
     sleep 10
 done
