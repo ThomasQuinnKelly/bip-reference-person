@@ -5,8 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.lang3.CharEncoding;
-
 import gov.va.os.reference.framework.log.ReferenceLogger;
 import gov.va.os.reference.framework.log.ReferenceLoggerFactory;
 
@@ -17,6 +15,8 @@ import gov.va.os.reference.framework.log.ReferenceLoggerFactory;
  * @author jshrader
  */
 public class BaseWsClientSimulator {
+
+	private final static String CHARSET_UTF8 = "UTF-8";
 
 	/** The Constant LOGGER. */
 	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(BaseWsClientSimulator.class);
@@ -103,7 +103,7 @@ public class BaseWsClientSimulator {
 			byteArrayOutputStream.write(singleByte);
 			result = bufferedInputStream.read();
 		}
-		return byteArrayOutputStream.toString(CharEncoding.UTF_8);
+		return byteArrayOutputStream.toString(CHARSET_UTF8);
 	}
 
 }

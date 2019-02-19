@@ -100,9 +100,6 @@
 		<embedded-redis.version>0.6</embedded-redis.version>
 		<jfiglet.version>0.0.8</jfiglet.version>
 
-		<!-- to be removed on re-factor -->
-		<findbugs.version>1.3.7</findbugs.version>
-
 	</properties>
 
 	<repositories>

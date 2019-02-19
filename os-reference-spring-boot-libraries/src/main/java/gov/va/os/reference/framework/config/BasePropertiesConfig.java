@@ -57,10 +57,7 @@ public class BasePropertiesConfig {
 	 * @return the property sources placeholder configurer
 	 */
 	@Bean(name = "properties")
-	// jshrader - ignoring DesignForExtension check, we cannot make this spring bean method private or final
-	// CHECKSTYLE:OFF
 	static PropertySourcesPlaceholderConfigurer properties() {
-		// CHECKSTYLE:ON
 		return new ReferencePropertySourcesPlaceholderConfigurer();
 	}
 

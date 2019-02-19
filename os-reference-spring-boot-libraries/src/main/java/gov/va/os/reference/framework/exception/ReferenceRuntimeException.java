@@ -2,7 +2,7 @@ package gov.va.os.reference.framework.exception;
 
 /**
  * Custom extension of RuntimeException so that we can raise this for exceptions we have no intention
- * of handling and need to raise but for some reason (i.e. checkstyle checks) cannot raise
+ * of handling and need to raise but for some reason cannot raise
  * java's RuntimeException or allow the original exception to simply propagate.
  *
  * @author jshrader

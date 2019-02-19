@@ -79,8 +79,6 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 *
 	 * @return object marshaller
 	 */
-	// Ignoring DesignForExtension check, we cannot make this spring bean method private or final
-	// CHECKSTYLE:OFF
 	@Bean
 	@Qualifier("personWsClient")
 	Jaxb2Marshaller personMarshaller() {
@@ -102,12 +100,9 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 * @throws CertificateException the certificate exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	// Ignoring DesignForExtension check, we cannot make this spring bean method private or final
-	// CHECKSTYLE:OFF
 	@Bean
 	@Qualifier("personWsClient.axiom")
 	WebServiceTemplate personWsClientAxiomTemplate(
-			// CHECKSTYLE:ON
 			@Value("${wss-partner-person.ws.client.endpoint}") final String endpoint,
 			@Value("${wss-partner-person.ws.client.readTimeout:60000}") final int readTimeout,
 			@Value("${wss-partner-person.ws.client.connectionTimeout:60000}") final int connectionTimeout) {
@@ -121,12 +116,8 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 *
 	 * @return security interceptor
 	 */
-	// jluck - ignoring DesignForExtension check, we cannot make this spring
-	// bean method private or final
-	// CHECKSTYLE:OFF
 	@Bean
 	Wss4jSecurityInterceptor personSecurityInterceptor() {
-		// CHECKSTYLE:ON
 		return getVAServiceWss4jSecurityInterceptor(username, password, vaApplicationName, stationId);
 	}
 
@@ -138,12 +129,9 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 * @param methodWarningThreshhold the method warning threshold
 	 * @return the performance log method interceptor
 	 */
-	// Ignoring DesignForExtension check, we cannot make this spring bean method private or final
-	// CHECKSTYLE:OFF
 	@Bean
 	PerformanceLogMethodInterceptor personWsClientPerformanceLogMethodInterceptor(
 			@Value("${wss-partner-person.ws.client.methodWarningThreshhold:2500}") final Integer methodWarningThreshhold) {
-		// CHECKSTYLE:ON
 		return getPerformanceLogMethodInterceptor(methodWarningThreshhold);
 	}
 
@@ -155,14 +143,9 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 * @return the intercepting exception translator
 	 * @throws ClassNotFoundException the class not found exception
 	 */
-	// Ignoring DesignForExtension check, we cannot make this spring bean method private or final
-	// CHECKSTYLE:OFF
 	@SuppressWarnings("unchecked")
 	@Bean
 	InterceptingExceptionTranslator personWsClientExceptionInterceptor() throws ClassNotFoundException {
-		// CHECKSTYLE:ON
-
-		// CHECKSTYLE:ON
 		final InterceptingExceptionTranslator interceptingExceptionTranslator = new InterceptingExceptionTranslator();
 
 		// set the default type of exception that should be returned when this
@@ -187,11 +170,8 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 *
 	 * @return the bean name auto proxy creator
 	 */
-	// Ignoring DesignForExtension check, we cannot make this spring bean method private or final
-	// CHECKSTYLE:OFF
 	@Bean
 	BeanNameAutoProxyCreator personWsClientBeanProxy() {
-		// CHECKSTYLE:ON
 		return getBeanNameAutoProxyCreator(new String[] { PersonWsClientImpl.BEAN_NAME, PersonWsClientSimulator.BEAN_NAME },
 				new String[] { "personWsClientExceptionInterceptor", "personWsClientPerformanceLogMethodInterceptor" });
 	}
@@ -203,11 +183,8 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 *
 	 * @return the ws client simulator marshalling interceptor
 	 */
-	// Ignoring DesignForExtension check, we cannot make this spring bean method private or final
-	// CHECKSTYLE:OFF
 	@Bean
 	WsClientSimulatorMarshallingInterceptor personWsClientSimulatorMarshallingInterceptor() {
-		// CHECKSTYLE:ON
 		final Map<String, Jaxb2Marshaller> marshallerForPackageMap = new HashMap<>();
 		marshallerForPackageMap.put(TRANSFER_PACKAGE, personMarshaller());
 		return new WsClientSimulatorMarshallingInterceptor(marshallerForPackageMap);
@@ -219,15 +196,18 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 *
 	 * @return the bean name auto proxy creator
 	 */
-	// Ignoring DesignForExtension check, we cannot make this spring bean method private or final
-	// CHECKSTYLE:OFF
 	@Bean
 	BeanNameAutoProxyCreator personWsClientSimulatorProxy() {
-		// CHECKSTYLE:ON
 		return getBeanNameAutoProxyCreator(new String[] { PersonWsClientSimulator.BEAN_NAME },
 				new String[] { "personWsClientSimulatorMarshallingInterceptor" });
 	}
 
+	/**
+	 * Placeholders for ${...} in @Value expressions.
+	 * 
+	 * @see org.springframework.context.support.PropertySourcesPlaceholderConfigurer
+	 * @return
+	 */
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer placeHolderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();

@@ -86,7 +86,7 @@ public class ExceptionToExceptionTranslationHandler {
 	 * @param args the args
 	 * @param throwable the throwable
 	 */
-	// Sonar - ignore throws Throwable because this method could be translating any error.
+	@SuppressWarnings("unlikely-arg-type")
 	public final void handleViaTranslation(final Method method, final Object[] args, final Throwable throwable) throws Throwable {
 
 		if (method == null || throwable == null) {
@@ -128,11 +128,11 @@ public class ExceptionToExceptionTranslationHandler {
 			}
 
 		} catch (final InstantiationException e) {
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 					"InstantiationException likely configuration error, review log/configuration to troubleshoot", e);
 
 		} catch (final IllegalAccessException e) {
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 					"IllegalAccessException likely configuration error, review log/configuration to troubleshoot", e);
 		}
 	}
