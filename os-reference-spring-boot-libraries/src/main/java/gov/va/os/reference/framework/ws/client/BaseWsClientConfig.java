@@ -42,11 +42,11 @@ import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 
 import gov.va.os.reference.framework.constants.AnnotationConstants;
-import gov.va.os.reference.framework.exception.ReferenceRuntimeException;
 import gov.va.os.reference.framework.exception.InterceptingExceptionTranslator;
+import gov.va.os.reference.framework.exception.ReferenceRuntimeException;
+import gov.va.os.reference.framework.log.PerformanceLogMethodInterceptor;
 import gov.va.os.reference.framework.log.ReferenceLogger;
 import gov.va.os.reference.framework.log.ReferenceLoggerFactory;
-import gov.va.os.reference.framework.log.PerformanceLogMethodInterceptor;
 import gov.va.os.reference.framework.security.VAServiceWss4jSecurityInterceptor;
 import gov.va.os.reference.framework.util.Defense;
 import gov.va.os.reference.framework.ws.client.remote.RemoteServiceCallInterceptor;
@@ -538,7 +538,6 @@ public class BaseWsClientConfig {
 	 * @param isLogValidationErrors the is log validation errors
 	 * @return the marshaller
 	 */
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings("REC_CATCH_EXCEPTION")
 	public final Jaxb2Marshaller getMarshaller(final String transferPackage, final Resource[] schemaLocations,
 			final boolean isLogValidationErrors) {
 		Defense.notNull(transferPackage);
@@ -551,11 +550,7 @@ public class BaseWsClientConfig {
 		}
 		try {
 			marshaller.afterPropertiesSet();
-			// jluck - We want to catch exception here as that
-			// is the exception type declared by the afterPropertiesSet() method
-			// CHECKSTYLE:OFF
 		} catch (final Exception ex) {
-			// CHECKSTYLE:ON
 			throw new IllegalArgumentException("Error configuring JAXB marshaller", ex);
 		}
 		return marshaller;
@@ -572,7 +567,7 @@ public class BaseWsClientConfig {
 		performanceLogMethodInteceptor.setWarningThreshhold(methodWarningThreshhold);
 		return performanceLogMethodInteceptor;
 	}
-	
+
 	/**
 	 * Gets the RemoteServiceCallInterceptor interceptor.
 	 *
@@ -581,7 +576,6 @@ public class BaseWsClientConfig {
 	public final RemoteServiceCallInterceptor getRemoteServiceCallInterceptor() {
 		return new RemoteServiceCallInterceptor();
 	}
-
 
 	/**
 	 * Gets the security interceptor.

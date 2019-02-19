@@ -65,11 +65,7 @@ public class PerformanceLogMethodInterceptor implements MethodInterceptor {
 	 * @see org.aopalliance.intercept.MethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
 	 */
 	@Override
-	// JSHRADER throws throwable part of the interface, unavoidable
-	// CHECKSTYLE:OFF
-	public final
-			Object invoke(final MethodInvocation methodInvocation) throws Throwable {
-		// CHECKSTYLE:ON
+	public final Object invoke(final MethodInvocation methodInvocation) throws Throwable {
 		final ReferenceLogger methodLog = ReferenceLoggerFactory.getLogger(methodInvocation.getMethod().getDeclaringClass());
 
 		// only log entry at the debug level

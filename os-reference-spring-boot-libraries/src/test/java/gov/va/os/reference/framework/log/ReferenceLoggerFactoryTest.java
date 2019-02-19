@@ -10,17 +10,15 @@ import org.junit.Test;
 import org.slf4j.ILoggerFactory;
 
 import gov.va.os.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.os.reference.framework.log.ReferenceLogger;
-import gov.va.os.reference.framework.log.ReferenceLoggerFactory;
 
 public class ReferenceLoggerFactoryTest {
 
 	@Test
 	public final void testAscentLoggerFactory() throws NoSuchMethodException, SecurityException {
-		Constructor<ReferenceLoggerFactory> constructor = ReferenceLoggerFactory.class.getDeclaredConstructor(null);
+		Constructor<ReferenceLoggerFactory> constructor = ReferenceLoggerFactory.class.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		try {
-			constructor.newInstance(null);
+			constructor.newInstance();
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			assertTrue(InvocationTargetException.class.equals(e.getClass()));
 			assertTrue(ReferenceRuntimeException.class.equals(e.getCause().getClass()));

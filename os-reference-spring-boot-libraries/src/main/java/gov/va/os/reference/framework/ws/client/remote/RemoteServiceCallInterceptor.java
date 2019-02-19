@@ -20,7 +20,7 @@ import gov.va.os.reference.framework.messages.MessageSeverity;
 
 /**
  * Audit log partner request/response data
- * 
+ *
  * @see org.aopalliance.intercept.MethodInterceptor
  */
 @Component
@@ -37,9 +37,7 @@ public class RemoteServiceCallInterceptor implements MethodInterceptor {
 	 * @see org.aopalliance.intercept.MethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
 	 */
 	@Override
-	// CHECKSTYLE:OFF
 	public final Object invoke(final MethodInvocation methodInvocation) throws Throwable {
-		// CHECKSTYLE:ON
 
 		String paramtypesToLog = "";
 		for (Class<?> c : methodInvocation.getMethod().getParameterTypes()) {

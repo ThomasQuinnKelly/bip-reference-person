@@ -47,11 +47,7 @@ public class BaseYamlConfig {
 	 * @return the property sources placeholder configurer
 	 */
 	@Bean(name = "properties")
-	// akulkarni - ignoring DesignForExtension check, we cannot make this spring bean method private or final
-	// CHECKSTYLE:OFF
-	static
-			PropertySourcesPlaceholderConfigurer properties(@Value("classpath:/application.yml") Resource config) {
-		// CHECKSTYLE:ON
+	static PropertySourcesPlaceholderConfigurer properties(@Value("classpath:/application.yml") Resource config) {
 		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
 		YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
 		yaml.setResources(config);

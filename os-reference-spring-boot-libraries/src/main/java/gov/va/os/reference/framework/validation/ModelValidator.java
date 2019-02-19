@@ -12,6 +12,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.validation.groups.Default;
 
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
@@ -198,13 +199,13 @@ public class ModelValidator implements Serializable {
 		// (used to contain all aspects of the violation message)
 		final ViolationMessageParts violationMessageParts = new ViolationMessageParts();
 		String replacement = violation.getMessageTemplate();
-		replacement = StringUtils.replaceAll(replacement, "\\{", "");
-		replacement = StringUtils.replaceAll(replacement, "\\}", "");
+		replacement = RegExUtils.replaceAll(replacement, "\\{", "");
+		replacement = RegExUtils.replaceAll(replacement, "\\}", "");
 		violationMessageParts.setOriginalKey(replacement);
 
 		replacement = convertKeyToNodepathStyle(propertyPathKey, violation.getMessageTemplate());
-		replacement = StringUtils.replaceAll(replacement, "\\{", "");
-		replacement = StringUtils.replaceAll(replacement, "\\}", "");
+		replacement = RegExUtils.replaceAll(replacement, "\\{", "");
+		replacement = RegExUtils.replaceAll(replacement, "\\}", "");
 		violationMessageParts.setNewKey(replacement);
 		violationMessageParts.setText(violation.getMessage());
 

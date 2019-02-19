@@ -11,12 +11,11 @@ import gov.va.os.reference.framework.security.SecurityUtils;
 import gov.va.os.reference.framework.service.ServiceResponse;
 
 /**
- * utils for cache
+ * Utils for cache
  *
  * @author akulkarni
  */
 public final class ReferenceCacheUtil {
-	/// CHECKSTYLE:ON
 
 	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(ReferenceCacheUtil.class);
 	protected static final String SEPARATOR = "_";
