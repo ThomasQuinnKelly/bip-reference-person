@@ -90,12 +90,8 @@ public class WsClientSimulatorMarshallingInterceptor implements
 	/**
 	 * @see org.aopalliance.intercept.MethodInterceptor#invoke(org.aopalliance.intercept.MethodInvocation)
 	 */
-	// JSHRADER throws throwable part of the interface, unavoidable
-	// CHECKSTYLE:OFF
 	@Override
-	public final Object invoke(final MethodInvocation methodInvocation)
-			throws Throwable {
-		// CHECKSTYLE:ON
+	public final Object invoke(final MethodInvocation methodInvocation) throws Throwable {
 
 		final Object request = methodInvocation.getArguments()[0];
 
@@ -219,7 +215,7 @@ public class WsClientSimulatorMarshallingInterceptor implements
 					objectToMarshal = createMethod.invoke(objectFactory, obj);
 				} catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException
 						| InvocationTargetException methodEx) {
-					LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+					LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 							methodEx.getMessage(), methodEx);
 					LOGGER.info(methodEx.getMessage(), methodEx);
 					LOGGER.warn(obj.getClass().getName() + XML_ROOT_ERROR);
@@ -236,14 +232,14 @@ public class WsClientSimulatorMarshallingInterceptor implements
 				ret = outputStream.toString();
 			}
 		} catch (Exception ex) {
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 					ex.getMessage(), ex);
 		} finally {
 			if (outputStream != null) {
 				try {
 					outputStream.close();
 				} catch (IOException ioe) {
-					LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+					LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 							ioe.getMessage(), ioe);
 				}
 			}

@@ -112,15 +112,6 @@
 		</dependency>
 
 		<!-- Provided Dependencies -->
-		<!-- Required during compile but not at runtime due to findbugs annotations
-			throughout code -->
-		<dependency>
-			<groupId>net.sourceforge.findbugs</groupId>
-			<artifactId>findbugs</artifactId>
-			<version>${findbugs.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-core</artifactId>
