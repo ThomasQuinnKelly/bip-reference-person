@@ -76,7 +76,7 @@ public class DemoServiceRestClientTests implements SwaggerResponseMessages {
 	public ResponseEntity<EchoHostServiceResponse> demoCallEchoUsingRestTemplate(final HttpServletRequest request) {
 		// invoke the service using classic REST Template from Spring, but load balanced through Eureka/Zuul
 		final ResponseEntity<EchoHostServiceResponse> exchange =
-				demoUsageRestTemplate.executeURL("http://ascent-demo-service/demo/v1/echo",
+				demoUsageRestTemplate.executeURL("http://os-reference-spring-boot-service/demo/v1/echo",
 						new ParameterizedTypeReference<EchoHostServiceResponse>() {
 						});
 		LOGGER.info("INVOKED A ASCENT-DEMO-SERVICE USING REST TEMPLATE: " + exchange.getBody());

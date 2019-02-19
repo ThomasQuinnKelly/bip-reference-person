@@ -19,12 +19,12 @@ import org.springframework.stereotype.Service;
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonByPtcpntId;
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonBySSN;
-import gov.va.ascent.demo.partner.person.ws.transfer.FindPersonBySSNResponse;
-import gov.va.ascent.demo.partner.person.ws.transfer.ObjectFactory;
-import gov.va.ascent.demo.partner.person.ws.transfer.PersonDTO;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonBySSN;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonBySSNResponse;
+import gov.va.os.reference.partner.person.ws.transfer.ObjectFactory;
+import gov.va.os.reference.partner.person.ws.transfer.PersonDTO;
 import gov.va.os.reference.framework.exception.ReferenceRuntimeException;
 import gov.va.os.reference.framework.messages.Message;
 import gov.va.os.reference.framework.messages.MessageSeverity;

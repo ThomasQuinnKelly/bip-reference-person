@@ -9,14 +9,14 @@
 		<relativePath>../os-reference-spring-boot-parentpom</relativePath>
 	</parent>
 
-	<artifactId>os-reference-spring-boot-shared-autoconfigure</artifactId>
+	<artifactId>os-reference-spring-boot-autoconfigure</artifactId>
 	<name>${project.artifactId}</name>
 	<description>OpenShift Reference Spring Boot AutoConfigure for services</description>
 	
 	<dependencies>
 		<dependency>
 			<groupId>gov.va.os.reference.spring.boot</groupId>
-			<artifactId>os-reference-spring-boot-shared-library</artifactId>
+			<artifactId>os-reference-spring-boot-libraries</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -77,6 +77,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

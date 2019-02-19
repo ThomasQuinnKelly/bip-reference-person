@@ -21,7 +21,7 @@
 
         <dependency>
             <groupId>gov.va.os.reference.spring.boot</groupId>
-            <artifactId>os-reference-spring-boot-shared-library</artifactId>
+            <artifactId>os-reference-spring-boot-libraries</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     
@@ -118,7 +118,7 @@
 					</goals>
 					<configuration>
 						<schemaDirectory>${project.basedir}/src/main/resources/xsd/PersonService</schemaDirectory>
-						<packageName>gov.va.ascent.demo.partner.person.ws.transfer</packageName>
+						<packageName>gov.va.os.reference.partner.person.ws.transfer</packageName>
 						<staleFile>${project.build.directory}/generated-sources/.jaxb-staleFlag-PersonService</staleFile>
 					</configuration>
 				</execution>

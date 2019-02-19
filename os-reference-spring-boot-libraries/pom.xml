@@ -12,7 +12,7 @@
 		<relativePath>../os-reference-spring-boot-parentpom</relativePath>
 	</parent>
 
-	<artifactId>os-reference-spring-boot-shared-library</artifactId>
+	<artifactId>os-reference-spring-boot-libraries</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 	<description>Shared library for the BIP services</description>

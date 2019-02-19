@@ -16,9 +16,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 
 	<modules>
 		<module>os-reference-spring-boot-parentpom</module>
-		<module>os-reference-spring-boot-shared-library</module>
+		<module>os-reference-spring-boot-libraries</module>
 		<module>os-reference-spring-boot-partner</module>
-		<module>os-reference-spring-boot-shared-autoconfigure</module>
+		<module>os-reference-spring-boot-autoconfigure</module>
 		<module>os-reference-spring-boot-service</module>
 	<!--<module>os-reference-spring-boot-document-service</module>
 		<module>os-reference-spring-boot-service-inttest</module>

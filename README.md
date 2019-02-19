@@ -5,15 +5,15 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 ## Project Breakdown ##
 
+1. os-reference-spring-boot-autoconfigure: Shared autoconfiguration for the services to enable the patterns for audit, feign, rest, security, swagger and service 
+
+1. os-reference-spring-boot-libraries: Shared libraries for the services to provide common framework and security interfaces. 
+
 1. os-reference-spring-boot-parentpom: This project is the parent POM for spring boot reference service. This supplies common maven configuration specific to the submodules and dependencies for the suite of projects.
 
 1. os-reference-spring-boot-partner: Partner services for reference, showing BGS with sample mock data
 
 1. os-reference-spring-boot-service: Service implementation project.  It has REST endpoints and shows various patterns for producing endpoints, swagger for the application, registering the application with Consul, Secrets from Vault calling REST endpoints through Zuul, Hystrix Circuit Breaker, logging pattern etc.
-
-1. os-reference-spring-boot-shared-autoconfigure: Shared autoconfiguration for the services to enable the patterns for audit, feign, rest, security, swagger and service 
-
-1. os-reference-spring-boot-shared-library: Shared library for the services to provide common framework and security interfaces. 
 
 1. os-reference-spring-boot-service-inttest: Contains the integration tests using RestAssured, Cucumber libraries. Includes Test cases against the end points for ascent demo and claims demo. 
 

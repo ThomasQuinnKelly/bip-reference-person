@@ -33,7 +33,7 @@ public class DemoUsageDiscoveryClient {
 			serviceInstanceDetail.setUri(serviceInstance.getUri().toString());
 			serviceInstanceDetail.setServiceId(serviceInstance.getServiceId());
 			serviceInstanceDetail.setMetaData(Arrays.toString(serviceInstance.getMetadata().entrySet().toArray()));
-			response.getServiceInstanceDetail().add(serviceInstanceDetail);
+			response.getServiceInstanceDetails().add(serviceInstanceDetail);
 		}));
 		return response;
 	}

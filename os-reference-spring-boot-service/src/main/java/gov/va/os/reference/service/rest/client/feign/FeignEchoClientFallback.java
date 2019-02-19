@@ -19,7 +19,7 @@ public class FeignEchoClientFallback implements FeignEchoClient {
 	public ResponseEntity<EchoHostServiceResponse> echo() {
 		EchoHostServiceResponse response = new EchoHostServiceResponse();
 		response.addMessage(MessageSeverity.FATAL, "SERVICE_NOT_AVAILABLE", "This is feign fallback handler, the service wasn't available");
-		return new ResponseEntity(response, HttpStatus.SERVICE_UNAVAILABLE);
+		return new ResponseEntity<EchoHostServiceResponse>(response, HttpStatus.SERVICE_UNAVAILABLE);
 	}
 
 }
