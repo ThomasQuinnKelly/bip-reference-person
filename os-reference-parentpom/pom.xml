@@ -11,7 +11,7 @@
 	</parent>
 
 	<groupId>gov.va.os.reference.spring.boot</groupId>
-	<artifactId>os-reference-spring-boot-parentpom</artifactId>
+	<artifactId>os-reference-parentpom</artifactId>
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 

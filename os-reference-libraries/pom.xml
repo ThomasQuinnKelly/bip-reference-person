@@ -7,15 +7,15 @@
 
 	<parent>
 		<groupId>gov.va.os.reference.spring.boot</groupId>
-		<artifactId>os-reference-spring-boot-parentpom</artifactId>
+		<artifactId>os-reference-parentpom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../os-reference-spring-boot-parentpom</relativePath>
+		<relativePath>../os-reference-parentpom</relativePath>
 	</parent>
 
-	<artifactId>os-reference-spring-boot-libraries</artifactId>
+	<artifactId>os-reference-libraries</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
-	<description>Shared library for the BIP services</description>
+	<description>Shared library for Spring Boot Reference Project</description>
 
 	<dependencies>
 

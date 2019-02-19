@@ -4,22 +4,22 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 	
 	<parent>
 		<groupId>gov.va.os.reference.spring.boot</groupId>
-		<artifactId>os-reference-spring-boot-parentpom</artifactId>
+		<artifactId>os-reference-parentpom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>os-reference-spring-boot-parentpom</relativePath>
+		<relativePath>os-reference-parentpom</relativePath>
 	</parent>
 	
-	<artifactId>os-reference-spring-boot-reactor</artifactId>
+	<artifactId>os-reference-reactor</artifactId>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>Reactor POM for Spring Boot Reference Project</description>
 
 	<modules>
-		<module>os-reference-spring-boot-parentpom</module>
-		<module>os-reference-spring-boot-libraries</module>
-		<module>os-reference-spring-boot-partner</module>
-		<module>os-reference-spring-boot-autoconfigure</module>
-		<module>os-reference-spring-boot-service</module>
+		<module>os-reference-parentpom</module>
+		<module>os-reference-libraries</module>
+		<module>os-reference-partner</module>
+		<module>os-reference-autoconfigure</module>
+		<module>os-reference-service-1</module>
 	<!--<module>os-reference-spring-boot-document-service</module>
 		<module>os-reference-spring-boot-service-inttest</module>
 		<module>os-reference-spring-boot-service-perftest</module> -->
