@@ -24,6 +24,8 @@ services:
     image: consul
     ports:
       - "8500:8500"
+    volumes: 
+      - "./local-dev/consul/acl.json:/consul/config/acl.json"
     networks:
       - bip
 
@@ -33,6 +35,18 @@ services:
       - "8200:8200"
     environment:
       - VAULT_DEV_ROOT_TOKEN_ID=${VAULT_TOKEN:-vaultroot}
+    networks:
+      - bip
+
+  vault-config:
+    image: bip/vault-config
+    build:
+      context: ./local-dev/vault-config
+    environment:
+      - VAULT_ADDR=http://vault:8200
+      - VAULT_DEV_ROOT_TOKEN_ID=${VAULT_TOKEN:-vaultroot}
+      - CONSUL_HTTP_ADDR=http://consul:8500
+      - CONSUL_HTTP_TOKEN=7652ba4c-0f6e-8e75-5724-5e083d72cfe4
     networks:
       - bip
 
