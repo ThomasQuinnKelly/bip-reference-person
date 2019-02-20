@@ -10,10 +10,12 @@ import gov.va.os.reference.framework.messages.MessageSeverity;
 import gov.va.os.reference.framework.transfer.AbstractTransferObject;
 import gov.va.os.reference.framework.transfer.ServiceTransferObjectMarker;
 
+
+
 /**
  * A base Response object capable of representing the payload of a service response.
  *
- * @see gov.va.os.reference.framework.transfer.AbstractTransferObject
+ * @see gov.va.ascent.framework.transfer.AbstractTransferObject
  */
 public class ServiceResponse extends AbstractTransferObject implements ServiceTransferObjectMarker {
 
@@ -52,6 +54,28 @@ public class ServiceResponse extends AbstractTransferObject implements ServiceTr
 		message.setSeverity(severity);
 		message.setKey(key);
 		message.setText(text);
+		messages.add(message);
+	}
+	
+	/**
+	 * Adds the message.
+	 *
+	 * @param severity the severity
+	 * @param key the key
+	 * @param text the text
+	 */
+	public final void addMessage(final MessageSeverity severity, final String key, final String text,
+			Integer paramCount, String[] paramNames, String[] paramValues) {
+		if (messages == null) {
+			messages = new LinkedList<>();
+		}
+		final Message message = new Message();
+		message.setSeverity(severity);
+		message.setKey(key);
+		message.setText(text);
+		message.setParamCount(paramCount);
+		message.setParamNames(paramNames);
+		message.setParamValues(paramValues);
 		messages.add(message);
 	}
 
