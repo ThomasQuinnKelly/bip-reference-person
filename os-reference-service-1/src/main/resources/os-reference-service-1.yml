@@ -186,9 +186,9 @@ spring.sleuth.rxjava.schedulers.ignoredthreads: HystixMetricPoller,^RxComputatio
 ascent:
   security:
     jwt:
-      enabled: false
+      enabled: true
       filter-process-url: /demo/v?/**
-      excludeUrls: 
+      excludeUrls:
         - /**
         - /v2/api-docs/**
         - /configuration/ui/**
@@ -201,7 +201,7 @@ ascent:
   swagger:
     title: OpenShift Reference Spring Boot Service v1 API Documentation
     description: API Error Keys <a href="swagger/error-keys.html">error keys</a>
-    groupName: demo-v1
+    groupName: "@project.name@-@project.version@"
     version: ${info.build.version}
     securePaths: /demo.*
 # ---
