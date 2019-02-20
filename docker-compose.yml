@@ -3,8 +3,8 @@ version: "3.3"
 services:
   
   # Fill this out once the dev team has their app code into the repo
-  os-reference-service:
-    image: bip/os-reference-service
+  os-reference-service-1:
+    image: bip/os-reference-service-1
     build:
       context: ./os-reference-service-1
     environment:
