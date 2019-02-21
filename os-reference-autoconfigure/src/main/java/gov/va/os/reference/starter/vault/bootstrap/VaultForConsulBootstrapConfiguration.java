@@ -1,23 +1,10 @@
 package gov.va.os.reference.starter.vault.bootstrap;
 
-/*
- * Copyright 2016 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+import java.util.HashMap;
+import java.util.Map;
 
-import java.util.Collections;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
@@ -32,7 +19,12 @@ import org.springframework.vault.core.VaultOperations;
 import org.springframework.vault.core.env.VaultPropertySource;
 
 /**
- * @author Mark Paluch
+ * This class bootstraps the Vault PropertySource as the first source loaded. This is important so that we can use the Vault generated Consul ACL token to authenticate with Consul
+ * for both Service Discovery and a K/V configuration source.
+ * 
+ * This is a workaround for this not being supported by the spring-cloud-vault library. https://github.com/spring-cloud/spring-cloud-vault/issues/58
+ * 
+ * @author Jason Luck
  */
 @Configuration
 @AutoConfigureOrder(1)
@@ -40,14 +32,25 @@ import org.springframework.vault.core.env.VaultPropertySource;
 public class VaultForConsulBootstrapConfiguration implements ApplicationContextAware,
 		InitializingBean {
 
+	
+	/** Logger object */
+	private static final Logger LOGGER = LoggerFactory.getLogger(VaultForConsulBootstrapConfiguration.class); 
+	
+	/** Reference to the Spring Context. Need this in order to get access to the Environment object. */
 	private ApplicationContext applicationContext;
 
+	/* (non-Javadoc)
+	 * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
+	 */
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
 		this.applicationContext = applicationContext;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+	 */
 	@Override
 	public void afterPropertiesSet() {
 
@@ -55,9 +58,11 @@ public class VaultForConsulBootstrapConfiguration implements ApplicationContextA
 				.getEnvironment();
 
 		if (ce.getPropertySources().contains("consul-token")) {
+			LOGGER.debug("Consul ACL Token already present in properties, no need to generate a new one.");
 			return;
 		}
 
+		LOGGER.info("Intializaing Vault Property Source...");
 		VaultOperations vaultOperations = applicationContext
 				.getBean(VaultOperations.class);
 		VaultConsulProperties consulProperties = applicationContext
@@ -66,11 +71,14 @@ public class VaultForConsulBootstrapConfiguration implements ApplicationContextA
 		VaultPropertySource vaultPropertySource = new VaultPropertySource(
 				vaultOperations, String.format("%s/creds/%s",
 						consulProperties.getBackend(), consulProperties.getRole()));
-
-		MapPropertySource mps = new MapPropertySource("consul-token",
-				Collections.singletonMap("spring.cloud.consul.token",
-						vaultPropertySource.getProperty("token")));
+		
+		//Store the generator Consul ACL token in properties for both service discovery and consul configuration.
+		Map<String, Object> props = new HashMap<String, Object>();
+		props.put("spring.cloud.consul.token", vaultPropertySource.getProperty("token")); //Consul Config
+		props.put("spring.cloud.consul.discovery.acl-token", vaultPropertySource.getProperty("token")); //Service Discovery
+		MapPropertySource mps = new MapPropertySource("consul-token", props);
 
 		ce.getPropertySources().addFirst(mps);
+		
 	}
 }
