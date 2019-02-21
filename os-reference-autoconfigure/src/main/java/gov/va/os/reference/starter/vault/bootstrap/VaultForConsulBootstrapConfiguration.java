@@ -28,7 +28,7 @@ import org.springframework.vault.core.env.VaultPropertySource;
  */
 @Configuration
 @AutoConfigureOrder(1)
-@ConditionalOnProperty(prefix = "spring.cloud.vault", name = "enabled", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "spring.cloud.vault.consul", name = "enabled", matchIfMissing = false)
 public class VaultForConsulBootstrapConfiguration implements ApplicationContextAware,
 		InitializingBean {
 
