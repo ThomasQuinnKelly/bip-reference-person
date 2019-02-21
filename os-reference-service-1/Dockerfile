@@ -10,4 +10,4 @@ ARG JAR_FILE=target/os-reference-service-1.jar
 ADD ${JAR_FILE} os-reference-service-1.jar
 
 # Run the jar file 
-ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000","-Djava.security.egd=file:/dev/./urandom","-jar","/os-reference-service-1.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/os-reference-service-1.jar"]
