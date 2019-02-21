@@ -7,6 +7,19 @@ info:
     artifact: "@project.artifactId@"
     name: "@project.name@"
     description: "@project.description@"
+    
+spring:
+  jackson:
+    mapper:
+      DEFAULT_VIEW_INCLUSION: true 
+    serialization: 
+      indent_output: true
+      WRITE_DATES_AS_TIMESTAMPS: false
+    deserialization:
+      FAIL_ON_IGNORED_PROPERTIES: false
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+      ACCEPT_SINGLE_VALUE_AS_ARRAY: true
+    default-property-inclusion: non_empty
 
 # Route Path
 # service.context: http://localhost:8080
@@ -49,19 +62,19 @@ spring:
     bus:
       enabled: false
 #Application Custom Properties          
-ascent-demo-service:
+service-1:
   env: default
   propSource: internal
   password: secret
   sampleProperty: >
-                  sampleProperty___env/profile:${ascent-demo-service.env}___propSource:
-                  ${ascent-demo-service.propSource}__password:${ascent-demo-service.password}
+                  sampleProperty___env/profile:${service-1.env}___propSource:
+                  ${service-1.propSource}__password:${service-1.password}
 #*********************************************************************
 # BGS-Specific SERVICE CLIENT PROPERTIES
 #*********************************************************************
 ---
 # demo should never hit partner, should it?
-spring.profiles: docker-demo, aws-ci, aws-dev, aws-stage, aws-prod
+spring.profiles: local-int, ci, dev, stage, prod
 spring.profiles.include: remote_client_sims
 ---
 #----------------------------------------
@@ -101,6 +114,7 @@ logging:
         os.reference: DEBUG
     org: 
       springframework:
+        security.web: INFO
         cloud.consul.config: TRACE
         cloud.consul: INFO
         client.discovery: INFO
@@ -117,8 +131,8 @@ spring:
     basic:
       enabled: false
     user:
-      name: ${ascent.security.username:admin}
-      password: ${ascent.security.password:default}
+      name: ${os.reference.security.username:admin}
+      password: ${os.reference.security.password:default}
 management:
   health:
     rabbit:
@@ -180,30 +194,24 @@ spring.sleuth.web.skipPattern: (/api/.*/webjars.*|/api/.*/v2/api-docs.*|/api/.*/
 # comma separated list of matchers
 spring.sleuth.rxjava.schedulers.ignoredthreads: HystixMetricPoller,^RxComputation.*$,^RxIoScheduler.*$
 
-#Property configuration to enable or disable JWT security for service calls 
-#JWT security is enabled by default in exteral repo. So to disable it you have to
-#set the environment system property ascent.security.jwt.enabled=false
-ascent:
+#Property configuration to enable or disable JWT security for the service calls 
+#JWT security is enabled by default. So to disable it you have to
+#set the environment system property os.reference.security.jwt.enabled=false
+os.reference:
   security:
     jwt:
       enabled: true
-      filter-process-url: /demo/v?/**
+      filterProcessUrls: 
+        - /service-1/v1/**
+        - /service-1/v2/**
       excludeUrls:
         - /**
-        - /v2/api-docs/**
-        - /configuration/ui/**
-        - /swagger-resources/**
-        - /configuration/security/**
-        - /swagger-ui.html
-        - /webjars/**
-        - /**/token
-        - /**/swagger/error-keys.html
   swagger:
     title: OpenShift Reference Spring Boot Service v1 API Documentation
     description: API Error Keys <a href="swagger/error-keys.html">error keys</a>
     groupName: "@project.name@-@project.version@"
     version: ${info.build.version}
-    securePaths: /demo.*
+    securePaths: /service-1/.*/v?.*
 # ---
 #spring:
 #  profiles: docker-demo,aws-ci,aws-dev,aws-stage,aws-prod

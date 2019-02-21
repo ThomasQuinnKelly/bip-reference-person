@@ -38,7 +38,7 @@ public class ModelValidator implements Serializable {
 
 	private static final String DEFAULT_RESOURCE_BUNDLE = "ValidationMessages";
 
-	@Value("${ascent.validation.messages.user-resource-bundle:}")
+	@Value("${os.reference.validation.messages.user-resource-bundle:}")
 	private String jsr303Validator;
 
 	/** The factory. */

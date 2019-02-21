@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.va.os.reference.framework.messages.MessageSeverity;
 import gov.va.os.reference.framework.swagger.SwaggerResponseMessages;
 import gov.va.os.reference.partner.person.ws.client.transfer.PersonInfoRequest;
 import gov.va.os.reference.partner.person.ws.client.transfer.PersonInfoResponse;
@@ -48,7 +47,7 @@ public class DemoServiceEndpoint implements HealthIndicator, SwaggerResponseMess
 	@Qualifier("IMPL")
 	DemoPersonService demoPersonService;
 
-	public static final String URL_PREFIX = "/demo/v1";
+	public static final String URL_PREFIX = "/service-1/v1";
 
 	// NOSONAR TODO make this method a REST call to test this endpoint is up and running
 	@Override
@@ -70,7 +69,7 @@ public class DemoServiceEndpoint implements HealthIndicator, SwaggerResponseMess
 
 	/**
 	 * CODING PRACTICE FOR RETURN TYPES - Ascent Platform auditing aspects support two return types.
-	 * 1) An object derived from ServiceResponse. For ex: PersonInfoResponse as returned below.
+	 * 1) An object derived from ServiceResponse. For Ex: PersonInfoResponse as returned below.
 	 * 2) An object derived from ServiceResponse wrapped inside ResponseEntity.
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *

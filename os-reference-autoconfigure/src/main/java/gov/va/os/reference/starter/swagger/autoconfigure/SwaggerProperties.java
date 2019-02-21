@@ -6,20 +6,20 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Created by vgadda on 8/3/17.
  */
 
-@ConfigurationProperties(prefix = "ascent.swagger")
+@ConfigurationProperties(prefix = "os.reference.swagger")
 public class SwaggerProperties {
 
     private boolean enabled = true;
 
-    private String securePaths = "[Api secure paths via ascent.swagger.securePaths]";
+    private String securePaths = "[Api secure paths via os.reference.swagger.securePaths]";
 
-    private String groupName = "[Api Group Name via ascent.swagger.groupName]";
+    private String groupName = "[Api Group Name via os.reference.swagger.groupName]";
 
-    private String title = "[Api title via 'ascent.swagger.title']";
+    private String title = "[Api title via 'os.reference.swagger.title']";
 
-    private String description = "[Api description via 'ascent.swagger.description']";
+    private String description = "[Api description via 'os.reference.swagger.description']";
 
-    private String version = "[Api version via 'ascent.swagger.version']";
+    private String version = "[Api version via 'os.reference.swagger.version']";
 
     public boolean isEnabled() {
         return enabled;
