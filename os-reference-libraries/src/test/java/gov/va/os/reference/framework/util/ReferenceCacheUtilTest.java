@@ -3,6 +3,7 @@ package gov.va.os.reference.framework.util;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.After;
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,10 +12,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import gov.va.os.reference.framework.security.PersonTraits;
 import gov.va.os.reference.framework.service.ServiceResponse;
-import gov.va.os.reference.framework.util.ReferenceCacheUtil;
 
 public class ReferenceCacheUtilTest {
-	
+
+	@After
+	public void teardown() {
+		SecurityContextHolder.clearContext();
+	}
+
 	@Test
 	public void testCheckResultConditions() {
 		ServiceResponse serviceResponse = new ServiceResponse();
@@ -25,7 +30,7 @@ public class ReferenceCacheUtilTest {
 		result = ReferenceCacheUtil.checkResultConditions(serviceResponse);
 		assertFalse(result);
 	}
-	
+
 	@Test
 	public void testGetUserBasedKey() {
 		PersonTraits personTraits = new PersonTraits("user", "password",
@@ -34,12 +39,12 @@ public class ReferenceCacheUtilTest {
 		personTraits.setFirstName("firstName");
 		personTraits.setLastName("lastName");
 		Authentication auth = new UsernamePasswordAuthenticationToken(personTraits,
-		personTraits.getPassword(), personTraits.getAuthorities());
+				personTraits.getPassword(), personTraits.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		String result = ReferenceCacheUtil.getUserBasedKey("test");
 		assertTrue(result.length() > 0);
 	}
-	
+
 	@Test
 	public void testGetUserBasedKey_fileNumber() {
 		PersonTraits personTraits = new PersonTraits("user", "password",
@@ -48,12 +53,12 @@ public class ReferenceCacheUtilTest {
 		personTraits.setFirstName("firstName");
 		personTraits.setLastName("lastName");
 		Authentication auth = new UsernamePasswordAuthenticationToken(personTraits,
-		personTraits.getPassword(), personTraits.getAuthorities());
+				personTraits.getPassword(), personTraits.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		String result = ReferenceCacheUtil.getUserBasedKey("test");
 		assertTrue(result.length() > 0);
 	}
-	
+
 	@Test
 	public void testGetUserBasedKey_pidZeroLength() {
 		PersonTraits personTraits = new PersonTraits("user", "password",
@@ -62,12 +67,12 @@ public class ReferenceCacheUtilTest {
 		personTraits.setFirstName("firstName");
 		personTraits.setLastName("lastName");
 		Authentication auth = new UsernamePasswordAuthenticationToken(personTraits,
-		personTraits.getPassword(), personTraits.getAuthorities());
+				personTraits.getPassword(), personTraits.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		String result = ReferenceCacheUtil.getUserBasedKey("test");
 		assertTrue(result.length() > 0);
 	}
-		
+
 	@Test
 	public void testGetUserBasedKey_fileNumberZeroLength() {
 		PersonTraits personTraits = new PersonTraits("user", "password",
@@ -76,12 +81,12 @@ public class ReferenceCacheUtilTest {
 		personTraits.setFirstName("firstName");
 		personTraits.setLastName("lastName");
 		Authentication auth = new UsernamePasswordAuthenticationToken(personTraits,
-		personTraits.getPassword(), personTraits.getAuthorities());
+				personTraits.getPassword(), personTraits.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		String result = ReferenceCacheUtil.getUserBasedKey("test");
 		assertTrue(result.length() > 0);
 	}
-	
+
 	@Test
 	public void testGetUserBasedKey_fileNumberAndPidNull() {
 		PersonTraits personTraits = new PersonTraits("user", "password",
@@ -89,15 +94,15 @@ public class ReferenceCacheUtilTest {
 		personTraits.setFirstName("firstName");
 		personTraits.setLastName("lastName");
 		Authentication auth = new UsernamePasswordAuthenticationToken(personTraits,
-		personTraits.getPassword(), personTraits.getAuthorities());
+				personTraits.getPassword(), personTraits.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		String result = ReferenceCacheUtil.getUserBasedKey("test");
 		assertTrue(result.length() > 0);
 	}
-	
+
 	@Test
 	public void testGetUserBasedKeyForNull() {
-		SecurityContextHolder.getContext ().setAuthentication (null);
+		SecurityContextHolder.getContext().setAuthentication(null);
 		String result = ReferenceCacheUtil.getUserBasedKey("test");
 		assertTrue(result.length() > 0);
 	}
