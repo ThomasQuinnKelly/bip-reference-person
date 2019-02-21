@@ -8,9 +8,8 @@ spring.cloud.consul:
     enabled: true
     prefix: config
     defaultContext: application
-    data-key: data
     profileSeparator: ','
-    format: yaml
+    format: KEY_VALUE
     failFast: false #Set value as 'true' to throw exceptions during consul config lookup
     watch:
       wait-time: 30 #defaults to 55 seconds
@@ -33,27 +32,19 @@ spring.cloud.vault:
   scheme: http
   #authentication: TOKEN
   token: ${VAULT_TOKEN:vaultroot}
-  generic:
+  kv:
     enabled: true
     backend: secret
     profile-separator: '/'
     default-context: application
     application-name: "@project.name@"
   consul: 
-    enabled: true  
-    role: readonly
+    enabled: false  
+    role: os-svc
     backend: consul
     token-property: spring.cloud.consul.token
 # Bean overriding has been disabled by default to prevent a bean being accidentally overridden. 
 # If you are relying on overriding, you will need to set spring.main.allow-bean-definition-overriding to true.
 # https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.1-Release-Notes
 spring.main:
-     allow-bean-definition-overriding: true 
----
-spring.profiles: local-int
-spring.cloud.consul:
- config:
-  failFast: true
- discovery: 
-    enabled: true 
-    register: true
+     allow-bean-definition-overriding: true

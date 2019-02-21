@@ -26,6 +26,8 @@ import feign.Target;
 import feign.hystrix.SetterFactory;
 import gov.va.os.reference.framework.rest.provider.RestProviderHttpResponseCodeAspect;
 import gov.va.os.reference.starter.audit.autoconfigure.ReferenceAuditAutoConfiguration;
+import gov.va.os.reference.starter.feign.autoconfigure.ReferenceFeignAutoConfiguration;
+import gov.va.os.reference.starter.feign.autoconfigure.TokenFeignRequestInterceptor;
 import gov.va.os.reference.starter.security.autoconfigure.ReferenceSecurityAutoConfiguration;
 
 /**
@@ -44,10 +46,8 @@ public class ReferenceFeignAutoConfigurationTest {
 	public void setup() {
 		context = new AnnotationConfigWebApplicationContext();
 		TestPropertyValues.of("feign.hystrix.enabled=true").applyTo(context);
-		TestPropertyValues.of("reference.rest.client.connection-timeout=" + CONNECTION_TIMEOUT).applyTo(context);
-		;
-		context.register(JacksonAutoConfiguration.class, SecurityAutoConfiguration.class,
-				EmbeddedWebServerFactoryCustomizerAutoConfiguration.class,
+		TestPropertyValues.of("os.reference.rest.client.connection-timeout=" + CONNECTION_TIMEOUT).applyTo(context);
+		context.register(JacksonAutoConfiguration.class, SecurityAutoConfiguration.class, EmbeddedWebServerFactoryCustomizerAutoConfiguration.class,
 				ReferenceSecurityAutoConfiguration.class,
 				ReferenceAuditAutoConfiguration.class, ReferenceFeignAutoConfiguration.class,
 				RestProviderHttpResponseCodeAspect.class);
@@ -74,8 +74,7 @@ public class ReferenceFeignAutoConfigurationTest {
 
 	@Test
 	public void testWebConfiguration_BrokenProp() throws Exception {
-		TestPropertyValues.of("reference.rest.client.connection-timeout=BLAHBLAH").applyTo(context);
-		;
+		TestPropertyValues.of("os.reference.rest.client.connection-timeout=BLAHBLAH").applyTo(context);
 		context.refresh();
 
 		try {
@@ -84,8 +83,7 @@ public class ReferenceFeignAutoConfigurationTest {
 		} catch (Exception e) {
 			assertTrue(BeansException.class.isAssignableFrom(e.getClass()));
 		} finally {
-			TestPropertyValues.of("reference.rest.client.connection-timeout=" + CONNECTION_TIMEOUT).applyTo(context);
-			;
+			TestPropertyValues.of("os.reference.rest.client.connection-timeout=" + CONNECTION_TIMEOUT).applyTo(context);
 			context.refresh();
 		}
 

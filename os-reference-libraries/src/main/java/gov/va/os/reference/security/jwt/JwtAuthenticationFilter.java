@@ -49,8 +49,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	public JwtAuthenticationFilter(JwtAuthenticationProperties jwtAuthenticationProperties,
 			AuthenticationSuccessHandler jwtAuthenticationSuccessHandler,
 			AuthenticationProvider jwtAuthenticationProvider) {
-		super(new IgnoredRequestMatcher(jwtAuthenticationProperties.getFilterProcessUrl(),
-				jwtAuthenticationProperties.getExcludeUrls()));
+		super(new AuthenticationRequestMatcher(jwtAuthenticationProperties.getFilterProcessUrls()));
 		this.jwtAuthenticationProperties = jwtAuthenticationProperties;
 		setAuthenticationSuccessHandler(jwtAuthenticationSuccessHandler);
 		setAuthenticationManager(new ProviderManager(new ArrayList<>(Arrays.asList(jwtAuthenticationProvider))));
@@ -112,9 +111,8 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 /**
  * Set rules for what requests should be ignored.
  */
-class IgnoredRequestMatcher implements RequestMatcher {
+class AuthenticationRequestMatcher implements RequestMatcher {
 	private RequestMatcher baselineMatches;
-	private RequestMatcher ignoreMatches;
 
 	/**
 	 * Requests to ignore based on ant path configurations.
@@ -122,9 +120,8 @@ class IgnoredRequestMatcher implements RequestMatcher {
 	 * @param baselineMatches
 	 * @param ignoreUrls
 	 */
-	public IgnoredRequestMatcher(String baselineMatches, String[] ignoreUrls) {
-		this.baselineMatches = new AntPathRequestMatcher(baselineMatches);
-		this.ignoreMatches = ignoreMatchers(ignoreUrls);
+	public AuthenticationRequestMatcher(String[] baselineMatches) {
+		this.baselineMatches = authMatchers(baselineMatches);
 	}
 
 	/**
@@ -133,9 +130,8 @@ class IgnoredRequestMatcher implements RequestMatcher {
 	 * @param baselineMatches
 	 * @param ignoreMatches
 	 */
-	public IgnoredRequestMatcher(RequestMatcher baselineMatches, RequestMatcher ignoreMatches) {
+	public AuthenticationRequestMatcher(RequestMatcher baselineMatches) {
 		this.baselineMatches = baselineMatches;
-		this.ignoreMatches = ignoreMatches;
 	}
 
 	/**
@@ -144,9 +140,9 @@ class IgnoredRequestMatcher implements RequestMatcher {
 	 * @param exclusionUrls
 	 * @return RequestMatcher
 	 */
-	private RequestMatcher ignoreMatchers(String[] exclusionUrls) {
+	private RequestMatcher authMatchers(String[] authUrls) {
 		LinkedList<RequestMatcher> matcherList = new LinkedList<>();
-		for (String url : exclusionUrls) {
+		for (String url : authUrls) {
 			matcherList.add(new AntPathRequestMatcher(url));
 		}
 		return new OrRequestMatcher(matcherList);
@@ -154,10 +150,6 @@ class IgnoredRequestMatcher implements RequestMatcher {
 
 	@Override
 	public boolean matches(HttpServletRequest request) {
-		if (ignoreMatches.matches(request)) {
-			return false;
-		} else {
-			return baselineMatches.matches(request);
-		}
+		return baselineMatches.matches(request);
 	}
 }

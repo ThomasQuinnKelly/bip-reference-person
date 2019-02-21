@@ -48,39 +48,39 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	// ####### for test, member values are from src/test/resource/application.yml ######
 
 	/** Location of the truststore containing the cert */
-	@Value("${vetservices-partner-intenttofile.ws.client.ssl.keystore:src/test/resources/ssl/dev/vaebnweb1Keystore.jks}")
+	@Value("${os-reference-partner-person.ws.client.ssl.keystore:src/test/resources/ssl/dev/vaebnweb1Keystore.jks}")
 	private String keystore;
 
 	/** Password for the cert */
-	@Value("${os-reference-partner.ws.client.ssl.keystorePass:password}")
+	@Value("${os-reference-partner-person.ws.client.ssl.keystorePass:password}")
 	private String keystorePass;
 
 	/** Location of the truststore containing the cert */
-	@Value("${os-reference-partner.ws.client.ssl.truststore:src/test/resources/ssl/dev/vaebnTruststore.jks}")
+	@Value("${os-reference-partner-person.ws.client.ssl.truststore:src/test/resources/ssl/dev/vaebnTruststore.jks}")
 	private String truststore;
 
 	/** Password for the cert */
-	@Value("${os-reference-partner.ws.client.ssl.truststorePass:password}")
+	@Value("${os-reference-partner-person.ws.client.ssl.truststorePass:password}")
 	private String truststorePass;
 
 	/** Decides if jaxb validation logs errors. */
-	@Value("${os-reference-partner.ws.client.logValidation:true}")
+	@Value("${os-reference-partner-person.ws.client.logValidation:true}")
 	private boolean logValidation;
 
 	/** Username for WS Authentication. */
-	@Value("${os-reference-partner.ws.client.username}")
+	@Value("${os-reference-partner-person.ws.client.username}")
 	private String username;
 
 	/** Password for WS Authentication. */
-	@Value("${os-reference-partner.ws.client.password}")
+	@Value("${os-reference-partner-person.ws.client.password}")
 	private String password;
 
 	/** VA Application Name Header value. */
-	@Value("${os-reference-partner.ws.client.vaApplicationName}")
+	@Value("${os-reference-partner-person.ws.client.vaApplicationName}")
 	private String vaApplicationName;
 
 	/** The VA Station ID header value */
-	@Value("${os-reference-partner.ws.client.vaStationId:281}")
+	@Value("${os-reference-partner-person.ws.client.vaStationId:281}")
 	private String vaStationId;
 
 	/**
@@ -123,9 +123,9 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 */
 	@Bean
 	WebServiceTemplate personWsClientAxiomTemplate(
-			@Value("${os-reference-partner.ws.client.endpoint}") final String endpoint,
-			@Value("${os-reference-partner.ws.client.readTimeout:60000}") final int readTimeout,
-			@Value("${os-reference-partner.ws.client.connectionTimeout:60000}") final int connectionTimeout) {
+			@Value("${os-reference-partner-person.ws.client.endpoint}") final String endpoint,
+			@Value("${os-reference-partner-person.ws.client.readTimeout:60000}") final int readTimeout,
+			@Value("${os-reference-partner-person.ws.client.connectionTimeout:60000}") final int connectionTimeout) {
 
 		Defense.hasText(endpoint, "personWsClientAxiomTemplate endpoint cannot be empty.");
 
@@ -156,7 +156,7 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 */
 	@Bean
 	PerformanceLogMethodInterceptor personWsClientPerformanceLogMethodInterceptor(
-			@Value("${os-reference-partner.ws.client.methodWarningThreshhold:2500}") final Integer methodWarningThreshhold) {
+			@Value("${os-reference-partner-person.ws.client.methodWarningThreshhold:2500}") final Integer methodWarningThreshhold) {
 		return getPerformanceLogMethodInterceptor(methodWarningThreshhold);
 	}
 

@@ -8,163 +8,122 @@ info:
     description: "@project.description@"
 server: 
   port: ${reference.server.port:8080}
+---
+spring.profiles: default
+spring.profiles.include: remote_client_sims, embedded-redis
+---
+spring.profiles: local-int, ci, dev, stage, prod
+spring.profiles.include: remote_client_sims
+---
+spring: 
+  cache:
+    type: redis
+  redis: 
+    host: localhost
+    port: 6379
+  sleuth:
+    stream:
+      enabled: false 
+  cloud:
+    bus:
+      enabled: false
+  security:
+    basic:
+      enabled: false
+    user:
+      name: ${os.reference.security.username:admin}
+      password: ${os.reference.security.password:default}
+  # spring jackson mapper, serialization and deserialization global settings
+  jackson:
+    mapper:
+      DEFAULT_VIEW_INCLUSION: true 
+    serialization: 
+      indent_output: true
+      WRITE_DATES_AS_TIMESTAMPS: false
+    deserialization:
+      FAIL_ON_IGNORED_PROPERTIES: false
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+      ACCEPT_SINGLE_VALUE_AS_ARRAY: true
+    default-property-inclusion: non_empty
 
 # Route Path
 # service.context: http://localhost:8080
-      
+
 # expose all endpoints:
 management.endpoints.web.exposure.include: "*"
 # disable beans endpoint  
 management.endpoint.beans.enabled: false
----
-reference:
-########################################
-# JSR303 properties to be added for
-# resolving message keys
-########################################
-  validation:
-    messages:
-      user-resource-bundle: 
-##################################################
-# Feign or REST client connection timeout
-# when making inter-service or external REST calls
-##################################################
-  rest:
-    client:
-      connection-timeout: 30000
-########################################
-# REDIS Custom Cache Properties
-# Default Expiration and For Each Bucket
-########################################
-  cache:
-    defaultExpires: 86400 # (24hr - in seconds)
-    expires:
-      # name: Cache Name
-      # ttl:  TTL (in Seconds)
-      - 
-        name: findPersonByParticipantID_@project.name@_@project.version@
-        ttl: 604800 # 1 week
-      - 
-        name: getPersonInfo_@project.name@_@project.version@
-        ttl: 604800 # 1 week
-      - 
-        name: read_@project.name@_@project.version@
-        ttl: 604800 # 1 week
-  ############################################################################
-  #Property configuration to enable or disable JWT security for service calls
-  ############################################################################
-#  security:
-#    jwt:
-#      enabled: false
-#      filter-process-url: /demo/v?/**
-#      excludeUrls: 
-#        - /**
-#        - /v2/api-docs/**
-#        - /configuration/ui/**
-#        - /swagger-resources/**
-#        - /configuration/security/**
-#        - /swagger-ui.html
-#        - /webjars/**
-#        - /**/token
-#        - /**/swagger/error-keys.html
-#  swagger:
-#    title: OpenShift Reference Spring Boot Service v1 API Documentation
-#    description: API Error Keys <a href="swagger/error-keys.html">error keys</a>
-#    groupName: demo-v1
-#    version: ${info.build.version}
-#    securePaths: /demo.*
-#Property configuration to enable or disable JWT security for service calls 
-#JWT security is enabled by default in exteral repo. So to disable it you have to
-#set the environment system property reference.security.jwt.enabled=false
-  security:
-    jwt:
-      enabled: true
-      filter-process-url: /v?/**
-      validation:
-        required-parameters: pid
-  swagger:
-    title: OpenShift Reference @project.version@ API Documentation
-    description: API Error Keys <a href="swagger/error-keys.html">error keys</a>
-    groupName: os.reference-@project.version@
-    version: ${info.build.version}
-    securePaths: /api/.*/v?.*|/v[0-9]/?.*
 
-####################################### 
+# REDIS (RedisProperties)
+reference:
+  cache:
+    defaultExpires: 86400 # (Seconds)
+    expires:
+      #Cache Name: TTL (In Seconds)
+      - 
+        name: demoPersonService
+        ttl: 1800
+      - 
+        name: demoService
+        ttl: 600
+    redis-config:
+      host: localhost
+      port: 6379
+#Application Custom Properties          
+service-1:
+  env: default
+  propSource: internal
+  password: secret
+  sampleProperty: >
+                  sampleProperty___env/profile:${service-1.env}___propSource:
+                  ${service-1.propSource}__password:${service-1.password}
+
+#---------------------------------------------------
 #   Logging Level for packages
-#######################################
-logging:
+#---------------------------------------------------
+logging: 
   level:
-    gov:
-      va:
-        reference: INFO
-    org:
-      springframework:
-        cloud.sleuth: INFO
-        cloud.sleuth.instrument.web: INFO
-        security: INFO
-        ws: INFO
-        cache: INFO
-      apache:
-        http:
-          impl.client: INFO
-          # org.apache.http.wire value logs rest and soap requests/responses
-          # as they are on the wire. Change to DEBUG in springboot manager
-          # to see request/response in the logs
-          wire: ERROR
-####################################### 
-#   Base security
-#######################################
-security:
-  user:
-    name: ${reference.security.username:admin}
-    password: ${reference.security.password:default}
-####################################### 
-#   Base cloud
-#######################################
+    com.ecwid.consul: INFO
+    gov.va.os.reference: DEBUG
+    org.springframework.security.web: INFO
+    org.springframework.cloud.consul.config: TRACE
+    org.springframework.cloud.consul: INFO
+    org.springframework.client.discovery: INFO
+    org.springframework.cloud.sleuth: INFO 
+    org.springframework.cloud.sleuth.log: DEBUG
+    org.springframework.security: INFO
+    org.springframework.ws: INFO
+    org.springframework.cache: INFO 
+    org.apache.http.impl.client: INFO
 management:
-  # is security.enabled=false needed ???
-  security:
-    enabled: false
   health:
     rabbit:
       enabled: false
     redis:
       enabled: false
-#######################################
 #sanitize properties for keys when using /configprops.
-#######################################
 endpoints:
   configprops:
     keys-to-sanitize: 'enabled, password'
-#######################################
-#  hystrix command overrides
-#######################################
 hystrix:
+  # set the hystrix.shareSecurityContext property to true. Doing so will auto configure an Hystrix concurrency strategy 
+  # plugin hook who will transfer the SecurityContext from your main thread to the one used by the Hystrix command
   shareSecurityContext: true
   command:
-    #DemoServiceAsyncReadCommand: 
-    #  execution:
-    #    isolation:
-    #      thread:
-            # This property sets the time in milliseconds after which the caller will observe a timeout and 
-            # walk away from the command execution. Hystrix marks the HystrixCommand as a TIMEOUT, and performs fallback 
-            # logic. Note that there is configuration for turning off timeouts per-command, if that is desired (see command.timeout.enabled).
-            # Default Value: 1000
-    #        timeoutInMilliseconds: 6000
     default:
       metrics:
         rollingStats:
-          # This property sets the duration of the statistical rolling window, in milliseconds.
-          # This is how long Hystrix keeps metrics for the circuit breaker to use and for publishing
+          # This property sets the duration of the statistical rolling window, in milliseconds. 
+          # This is how long Hystrix keeps metrics for the circuit breaker to use and for publishing 
           # Default Value: 10000
           timeInMilliseconds: 20000
-        # This property sets the time to wait, in milliseconds, between allowing health snapshots to be taken that calculate
-        # success and error percentages and affect circuit breaker status.
+        # This property sets the time to wait, in milliseconds, between allowing health snapshots to be taken that calculate 
+        # success and error percentages and affect circuit breaker status. 
         # Default Value: 500
-        healthSnapshot:
+        healthSnapshot: 
           intervalInMilliseconds: 1000
       circuitBreaker:
-        # This property sets the amount of time, after tripping the circuit, to reject requests
+        # This property sets the amount of time, after tripping the circuit, to reject requests 
         # before allowing attempts again to determine if the circuit should again be closed.
         # Default Value: 5000
         sleepWindowInMilliseconds: 10000
@@ -174,160 +133,101 @@ hystrix:
       execution:
         isolation:
           thread:
-            # This property sets the time in milliseconds after which the caller will observe a timeout and walk away from the
-            # command execution. Hystrix marks the HystrixCommand as a TIMEOUT, and performs fallback logic. Note that there
-            # is configuration for turning off timeouts per-command, if that is desired (see command.timeout.enabled).
-            # IMPORTANT NOTE: THIS TIMEOUT VALUE MUST BE GREATER THAN ANY SERVICE TIMEOUT TO AVOID ERRORS
+            # This property sets the time in milliseconds after which the caller will observe a timeout and 
+            # walk away from the command execution. Hystrix marks the HystrixCommand as a TIMEOUT, and performs fallback 
+            # logic. Note that there is configuration for turning off timeouts per-command, if that is desired (see command.timeout.enabled).
             # Default Value: 1000
             timeoutInMilliseconds: 20000
-  threadpool:
-    default:
-      # This property allows the configuration for maximumSize to take effect
-      allowMaximumSizeToDivergeFromCoreSize: true
-      # maximum number of threads in the pool. Default value for coreSize and maximumSize = 10 
-      maximumSize: 100
-      # maximum number of Runnable task the ExecutorService can take in.
-      maxQueueSize: 200
-      # This property exists because the maxQueueSize of a BlockingQueue cannot be dynamically changed and we want to allow you to 
-      # dynamically change the queue size that affects rejections
-      queueSizeRejectionThreshold: 200
 
-#######################################
-# Sleuth configuration
+# Sleuth configuration     
 # To skip specific patterns being exported, added few more customs on top of default skip pattern
 # see org.springframework.cloud.sleuth.instrument.web.TraceFilter.DEFAULT_SKIP_PATTERN
-#######################################
 spring.sleuth.web.skipPattern: (/api/.*/webjars.*|/api/.*/v2/api-docs.*|/api/.*/swagger-resources.*|/api/.*/swagger-ui.*|/api-docs.*|/autoconfig|/configprops|/dump|/health|/info|/metrics.*|/mappings|/trace|/swagger.*|.*\\.png|.*\\.css|.*\\.js|.*\\.html|/favicon.ico|/hystrix.stream)
 # comma separated list of matchers
 spring.sleuth.rxjava.schedulers.ignoredthreads: HystixMetricPoller,^RxComputation.*$,^RxIoScheduler.*$
----
-spring.profiles: default, local-int
-spring.profiles.include: remote_client_sims, embedded-redis
-reference:
-  cache:
-    redis-config: 
-      host: localhost
-      port: 6379
+
+#Property configuration to enable or disable JWT security for the service calls 
+#JWT security is enabled by default. So to disable it you have to
+#set the environment system property os.reference.security.jwt.enabled=false
+os.reference:
   security:
     jwt:
-      secret: vetsgov
-spring: 
-  cache:
-    type: redis
-  cloud:
-    bus:
-      enabled: false
-  redis: 
-    host: localhost
-    port: 6379
-  sleuth:
-    stream:
-      enabled: false
+      enabled: true
+      filterProcessUrls: 
+        - /service-1/v1/**
+        - /service-1/v2/**
+      excludeUrls:
+        - /**
+  swagger:
+    title: OpenShift Reference Spring Boot Service v1 API Documentation
+    description: API Error Keys <a href="swagger/error-keys.html">error keys</a>
+    groupName: "@project.name@-@project.version@"
+    version: ${info.build.version}
+    securePaths: /service-1/.*/v?.*
 ---
-spring: 
-  cloud:
-    bus:
-      enabled: false
-#Application Custom Properties          
-reference-demo-service:
-  env: default
-  propSource: internal
-  password: secret
-  sampleProperty: >
-                  sampleProperty___env/profile:${reference-demo-service.env}___propSource:
-                  ${reference-demo-service.propSource}__password:${reference-demo-service.password}
+#########################################################################
+# Partner config properties
+#
+# These URLs use external service name entries
+# in Consul to resolve to the appropriate partner endpoint for each env.
+#########################################################################
+bgs:
+  url: ${bgs.service.consul}
+
 #*********************************************************************
 # BGS-Specific SERVICE CLIENT PROPERTIES
 #*********************************************************************
----
-# demo should never hit partner, should it?
-# For other projects, the two lines below would not be here
-spring.profiles: docker-demo, aws-ci, aws-dev, aws-stage, aws-prod
-spring.profiles.include: remote_client_sims
----
-# config for non-docker environments
-spring.profiles: default,local-int
-spring.profiles.include: remote_client_sims,embedded-redis
-reference:
-  cache:
-    redis-config:
-      host: localhost
-      port: 6379
-  security:
-    jwt:
-      secret: vetsgov
-spring:
-  cache:
-    type: redis
-  cloud:
-    bus:
-      enabled: false
-  redis:
-    host: localhost
-    port: 6379
-  sleuth:
-    stream:
-      enabled: false
----
-#######################################
-# Partner config properties
-#######################################
-
-### partner SIMULATED vs IMPL environments ###
-# The bgs URL is controlled from ext-config (points to consul)
-spring.profiles: default,local-int,docker-demo,aws-ci
-spring.profiles.include: remote_client_sims
-bgs:
-  url: http://localhost:58540/mockWebServicePortBinding
-  username: unitTestUsername
-  password: unitTestPassword
----
-### BGS partner data ###
-# !!!!!!!!!!---  NOTE  ---!!!!!!!!!!!!!
-# most 'bgs.**' properties need to be set differently
-# depending on the spring profile.
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-### partner common properties
+#------------------------------------------
+# BGS-Specific default *common* properties
+#------------------------------------------
 bgs:
   systemId: eBenefits
   vaApplicationName: eBenefits
   vaUCApplicationName: EBENEFITS
   stationId: 281
-  #url: ... url is set in ext config
   default:
     methodWarningThreshhold: 2500
     readTimeout: 60000
     connectionTimeout: 60000
+
+#---------------------------------------------------
+# PersonService SOAP web service client configuration
+#---------------------------------------------------
 ---
-# the following is the typical properties for a partner
-os-reference-partner: 
+### when vault/consul not available (e.g. unit tests) override the URL and credentials
+spring.profiles: default
+bgs:
+  url: http://localhost:58540/mockWebServicePortBinding
+  username: unitTestUsername
+  password: unitTestPassword
+---
+### Set values when vault/consul is available ...
+os-reference-partner-person: 
   server:
     ssl:
-      key-alias: bgs # separate declaration because it is not always the same between partners
-  ws:
-    client:
-      endpoint: ${bgs.url}/IntentToFileWebServiceBean/IntentToFileWebService?WSDL
-      username: ${bgs.username}
-      password: ${bgs.password}
-      vaApplicationName: ${bgs.vaApplicationName}
-      logValidation: true
-      readTimeout: ${bgs.default.readTimeout}
-      connectionTimeout: ${bgs.default.connectionTimeout}
-      methodWarningThreshhold: ${bgs.default.methodWarningThreshhold}
-      stationID: ${bgs.stationId}
-      ssl:
         keystore: ${javax.net.ssl.keyStore:src/test/resources/ssl/dev/vaebnweb1Keystore.jks}
         keystorePass: ${javax.net.ssl.keyStorePassword:password}
         truststore: ${javax.net.ssl.trustStore:src/test/resources/ssl/dev/vaebnTruststore.jks}
         truststorePass: ${javax.net.ssl.trustStorePassword:password}
-
+  ws:
+    client: 
+      endpoint: ${$bgs.url}/PersonWebService/PersonWebService?WSDL
+      username: ${bgs.username}
+      password: ${bgs.password}
+      vaApplicationName: ${bgs.vaApplicationName}
+      stationId: ${bgs.stationId}
+      logValidation: false
+      ### replace below values for endpoint-sepecific TTLs
+      methodWarningThreshhold: ${bgs.default.readTimeout}
+      readTimeout: ${bgs.default.connectionTimeout}
+      connectionTimeout: ${bgs.default.methodWarningThreshhold}
 # ---
 #spring:
-#  profiles: docker-demo,aws-ci,aws-dev,aws-stage,aws-prod
+#  profiles: local-int,ci,dev,stage,prod
 #server:
 #  ssl:
 #    enabled: true
-#    ######### These properties are set by the run-wrapper.sh script in the reference-base container #########
+#    ######### These properties are set by the run-wrapper.sh script in the ascent-base container #########
 #    # key-alias: @project.name@
 #    # key-store: /app/certs/server.jks
 #    # key-store-password: 
