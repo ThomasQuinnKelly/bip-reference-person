@@ -63,6 +63,11 @@
 			<groupId>com.netflix.netflix-commons</groupId>
 			<artifactId>netflix-commons-util</artifactId>
 		</dependency>
+		<!-- Vault Support -->
+		<dependency> 
+	       	<groupId>org.springframework.cloud</groupId>
+	       	<artifactId>spring-cloud-vault-config-consul</artifactId>
+	   	</dependency>
 		<!-- Metrics Support -->
 		<!-- Micormeter core dependecy  -->
 		<dependency>

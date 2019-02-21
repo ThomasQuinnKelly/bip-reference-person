@@ -115,7 +115,7 @@ logging:
     org: 
       springframework:
         security.web: INFO
-        cloud.consul.config: TRACE
+        cloud.consul.config: INFO
         cloud.consul: INFO
         client.discovery: INFO
         cloud.sleuth: INFO

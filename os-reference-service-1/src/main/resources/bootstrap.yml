@@ -39,7 +39,7 @@ spring.cloud.vault:
     default-context: application
     application-name: "@project.name@"
   consul: 
-    enabled: true  
+    enabled: false  
     role: os-svc
     backend: consul
     token-property: spring.cloud.consul.token
@@ -47,12 +47,4 @@ spring.cloud.vault:
 # If you are relying on overriding, you will need to set spring.main.allow-bean-definition-overriding to true.
 # https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.1-Release-Notes
 spring.main:
-     allow-bean-definition-overriding: true 
----
-spring.profiles: local-int
-spring.cloud.consul:
- config:
-  failFast: true
- discovery: 
-    enabled: true 
-    register: true
+     allow-bean-definition-overriding: true
