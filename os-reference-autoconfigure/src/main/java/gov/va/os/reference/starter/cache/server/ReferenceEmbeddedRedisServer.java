@@ -60,7 +60,9 @@ public class ReferenceEmbeddedRedisServer {
 				ss = ServerSocketFactory.getDefault().createServerSocket(0);
 				properties.getRedisConfig().setPort(ss.getLocalPort());
 			} finally {
-				IOUtils.closeQuietly(ss);
+				if (ss!=null) {
+					ss.close();
+				}
 			}
 		}
 		LOGGER.info("Starting Embedded Redis. This embedded redis is only to be used in local enviroments");

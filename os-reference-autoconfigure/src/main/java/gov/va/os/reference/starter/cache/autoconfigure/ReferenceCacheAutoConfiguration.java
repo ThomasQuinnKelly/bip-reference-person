@@ -33,6 +33,9 @@ import gov.va.os.reference.framework.log.ReferenceLoggerFactory;
 import gov.va.os.reference.starter.cache.autoconfigure.ReferenceCacheProperties.RedisExpires;
 import gov.va.os.reference.starter.cache.server.ReferenceEmbeddedRedisServer;
 
+/**
+ * The Class ReferenceCacheAutoConfiguration.
+ */
 @Configuration
 @EnableConfigurationProperties(ReferenceCacheProperties.class)
 @AutoConfigureAfter(CacheAutoConfiguration.class)
@@ -48,9 +51,7 @@ public class ReferenceCacheAutoConfiguration extends CachingConfigurerSupport {
 	@Autowired
 	private ReferenceCacheProperties referenceCacheProperties;
 
-	/**
-	 * Embedded Redis bean to make sure embedded redis is started before redis cache is created
-	 */
+	/** Embedded Redis bean to make sure embedded redis is started before redis cache is created. */
 	@SuppressWarnings("unused")
 	@Autowired(required = false)
 	private ReferenceEmbeddedRedisServer referenceServerRedisEmbedded;
@@ -65,25 +66,6 @@ public class ReferenceCacheAutoConfiguration extends CachingConfigurerSupport {
 	public RedisCacheConfiguration redisCacheConfiguration() {
 		return RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(referenceCacheProperties.getDefaultExpires()));
 	}
-
-	// @Bean
-	// public CacheManagerCustomizers cacheManagerCustomizers() {
-	// return new CacheManagerCustomizers(Arrays.asList(new RedisCacheManagerCustomizer(referenceCacheProperties)));
-	// }
-	//
-	// /**
-	// * Redis template
-	// *
-	// * @param redisConnectionFactory redis connection factory
-	// * @return Redis template
-	// */
-	// @Bean
-	// public RedisTemplate<Object, Object> redisTemplate(final RedisConnectionFactory redisConnectionFactory) {
-	// final RedisTemplate<Object, Object> template = new RedisTemplate<>();
-	// template.setConnectionFactory(redisConnectionFactory);
-	// template.setDefaultSerializer(new GenericJackson2JsonRedisSerializer());
-	// return template;
-	// }
 
 	/**
 	 * Produce the Map of {@link RedisCacheConfiguration} objects derived from the list declared by {@code ascent:cache:expires:*} in
@@ -103,7 +85,7 @@ public class ReferenceCacheAutoConfiguration extends CachingConfigurerSupport {
 			for (Entry<String, Long> entry : resultExpires.entrySet()) {
 				org.springframework.data.redis.cache.RedisCacheConfiguration rcc =
 						org.springframework.data.redis.cache.RedisCacheConfiguration.defaultCacheConfig()
-								.entryTtl(Duration.ofSeconds(entry.getValue()));
+						.entryTtl(Duration.ofSeconds(entry.getValue()));
 				cacheConfigs.put(entry.getKey(), rcc);
 			}
 		}
