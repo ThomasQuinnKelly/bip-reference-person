@@ -23,7 +23,7 @@ import gov.va.os.reference.framework.util.Defense;
 @Configuration
 public class ReferenceRestAutoConfiguration {
 
-	@Value("${ascent.rest.client.connection-timeout:20000}")
+	@Value("${os.reference.rest.client.connection-timeout:20000}")
 	private String connectionTimeout;
 
 	/**
@@ -65,7 +65,7 @@ public class ReferenceRestAutoConfiguration {
 		Defense.state(connTimeoutValue > 0,
 				"Invalid settings: Connection Timeout value must be greater than zero.\n"
 						+ "  - Ensure spring scan directive includes gov.va.os.reference.framework.rest.client.resttemplate;\n"
-						+ "  - Application property must be set to non-zero positive integer value: ascent.rest.client.connection-timeout {} "
+						+ "  - Application property must be set to non-zero positive integer value: os.reference.rest.client.connection-timeout {} "
 						+ connectionTimeout + ".");
 
 		restTemplateBuilder.setConnectTimeout(Duration.ofMillis(connTimeoutValue)); // milliseconds

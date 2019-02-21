@@ -3,7 +3,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>gov.va.os.reference.spring.boot</groupId>
+		<groupId>gov.va.os.reference</groupId>
 		<artifactId>os-reference-parentpom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>os-reference-parentpom</relativePath>

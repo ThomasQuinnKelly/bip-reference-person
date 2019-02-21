@@ -31,9 +31,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import gov.va.os.reference.framework.audit.AuditEventData;
-import gov.va.os.reference.framework.audit.AuditEvents;
-import gov.va.os.reference.framework.audit.AuditLogger;
 import gov.va.os.reference.framework.log.ReferenceBaseLogger;
 import gov.va.os.reference.framework.log.ReferenceLogger;
 import gov.va.os.reference.framework.log.ReferenceLoggerFactory;
@@ -70,6 +67,7 @@ public class AuditLoggerTest {
 	@After
 	public void teardown() {
 		ReferenceLoggerFactory.getLogger(ReferenceLogger.ROOT_LOGGER_NAME).getLoggerBoundImpl().detachAppender(mockAppender);
+		SecurityContextHolder.clearContext();
 	}
 
 	@Test

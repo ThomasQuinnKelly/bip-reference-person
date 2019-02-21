@@ -36,7 +36,7 @@ import java.util.List;
 @Configuration
 @EnableConfigurationProperties(SwaggerProperties.class)
 @EnableSwagger2
-@ConditionalOnProperty(prefix = "ascent.swagger", name = "enabled", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "os.reference.swagger", name = "enabled", matchIfMissing = true)
 @Import({BeanValidatorPluginsConfiguration.class})
 public class SwaggerAutoConfiguration {
 

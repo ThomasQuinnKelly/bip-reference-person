@@ -9,8 +9,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import gov.va.os.reference.framework.transfer.AbstractTransferObject;
-
 /**
  * Message is a generic abstraction of a "message" or "notification" which is layer agnostic and can be used to communicate status or
  * other sorts of information during method calls between components/layers. This is serializable and can be used in SOAP or REST
@@ -18,7 +16,7 @@ import gov.va.os.reference.framework.transfer.AbstractTransferObject;
  *
  * @author jshrader
  */
-public class Message extends AbstractTransferObject {
+public class Message extends AbstractMessage {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -1711431368372127555L;
@@ -73,6 +71,36 @@ public class Message extends AbstractTransferObject {
 	 */
 	public Message(final MessageSeverity severity, final String key, final String text) {
 		super();
+		this.severity = severity;
+		this.key = key;
+		this.text = text;
+	}
+
+	/**
+	 * Instantiates a new message providing only replaceable parameters.
+	 * 
+	 * @param paramCount the number of elements in the name and value arrays
+	 * @param paramNames the names, in same order as thier respective getParamValues
+	 * @param paramValues the values, in same order as their respective getParamNames
+	 */
+	public Message(Integer paramCount, String[] paramNames, String[] paramValues) {
+		super(paramCount, paramNames, paramValues);
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * Instantiates a new message.
+	 *
+	 * @param severity
+	 * @param key
+	 * @param text
+	 * @param paramCount the number of elements in the name and value arrays
+	 * @param paramNames the names, in same order as thier respective getParamValues
+	 * @param paramValues the values, in same order as their respective getParamNames
+	 */
+	public Message(final MessageSeverity severity, final String key, final String text,
+			Integer paramCount, String[] paramNames, String[] paramValues) {
+		super(paramCount, paramNames, paramValues);
 		this.severity = severity;
 		this.key = key;
 		this.text = text;
@@ -166,7 +194,7 @@ public class Message extends AbstractTransferObject {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see gov.va.os.reference.framework.transfer.AbstractTransferObject#equals(java.lang.Object)
+	 * @see gov.va.ascent.framework.transfer.AbstractTransferObject#equals(java.lang.Object)
 	 */
 	@Override
 	public final boolean equals(final Object obj) {
@@ -176,10 +204,11 @@ public class Message extends AbstractTransferObject {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see gov.va.os.reference.framework.transfer.AbstractTransferObject#hashCode()
+	 * @see gov.va.ascent.framework.transfer.AbstractTransferObject#hashCode()
 	 */
 	@Override
 	public final int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this, EQUALS_HASH_EXCLUDE_FIELDS);
 	}
+
 }
