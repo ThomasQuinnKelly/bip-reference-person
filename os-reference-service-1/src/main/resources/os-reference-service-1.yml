@@ -101,7 +101,7 @@ logging:
         os.reference: DEBUG
     org: 
       springframework:
-        cloud.consul.config: TRACE
+        cloud.consul.config: INFO
         cloud.consul: INFO
         client.discovery: INFO
         cloud.sleuth: INFO
