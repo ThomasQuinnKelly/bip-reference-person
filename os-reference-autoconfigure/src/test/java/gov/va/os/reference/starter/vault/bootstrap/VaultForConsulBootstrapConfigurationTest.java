@@ -1,31 +1,64 @@
 package gov.va.os.reference.starter.vault.bootstrap;
 
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import org.junit.After;
-import org.junit.Ignore;
+import java.util.Collections;
+
 import org.junit.Test;
-import org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.cloud.vault.config.VaultBootstrapConfiguration;
+import org.springframework.cloud.vault.config.VaultProperties;
+import org.springframework.cloud.vault.config.consul.VaultConsulProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.vault.core.VaultOperations;
+import org.springframework.vault.support.VaultResponse;
 
-@Ignore
 public class VaultForConsulBootstrapConfigurationTest {
-	private AnnotationConfigWebApplicationContext context;
+	
+	private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+			.withConfiguration(AutoConfigurations
+					.of(VaultForConsulBootstrapConfiguration.class));
 
-    @After
-    public void close() {
-        if (this.context != null) {
-            this.context.close();
-        }
-    }
+	@Test
+	public void shouldConfigureConsulToken() {
 
-    @Test
-    public void testWebConfiguration() throws Exception {
-        context = new AnnotationConfigWebApplicationContext();
-        context.register(VaultForConsulBootstrapConfiguration.class, EmbeddedWebServerFactoryCustomizerAutoConfiguration.class);
-        context.refresh();
-        assertNotNull(context);
-        assertNotNull(this.context.getBean(VaultForConsulBootstrapConfiguration.class));
+		this.contextRunner.withUserConfiguration(MockConfiguration.class)
+				.withPropertyValues("spring.cloud.vault.consul.enabled=true",
+						"spring.cloud.vault.consul.role=test")
+				.run(context -> {
+					assertThat(context.getEnvironment().getProperty("spring.cloud.consul.discovery.acl-token"))
+						.isEqualTo("test");
+					
+				});
+	}
+	
+	
 
-    }
+	@EnableConfigurationProperties({VaultProperties.class, VaultConsulProperties.class})
+	private static class MockConfiguration {
+
+		
+		@Bean
+		VaultOperations vaultOperations() {
+			VaultResponse response = new VaultResponse();
+			response.setData(Collections.singletonMap("token", "test"));
+			
+			VaultOperations mock = mock(VaultOperations.class);
+			when(mock.read("consul/creds/test")).thenReturn(response);
+			return mock;
+		}
+
+		@Bean
+		VaultBootstrapConfiguration.TaskSchedulerWrapper taskSchedulerWrapper() {
+			return new VaultBootstrapConfiguration.TaskSchedulerWrapper(
+					mock(ThreadPoolTaskScheduler.class));
+		}
+
+	}
+	
 }
