@@ -7,8 +7,32 @@ info:
     artifact: "@project.artifactId@"
     name: "@project.name@"
     description: "@project.description@"
-    
-spring:
+---
+spring.profiles: default
+spring.profiles.include: remote_client_sims, embedded-redis
+---
+spring.profiles: local-int, ci, dev, stage, prod
+spring.profiles.include: remote_client_sims
+---
+spring: 
+  cache:
+    type: redis
+  redis: 
+    host: localhost
+    port: 6379
+  sleuth:
+    stream:
+      enabled: false 
+  cloud:
+    bus:
+      enabled: false
+  security:
+    basic:
+      enabled: false
+    user:
+      name: ${os.reference.security.username:admin}
+      password: ${os.reference.security.password:default}
+  # spring jackson mapper, serialization and deserialization global settings
   jackson:
     mapper:
       DEFAULT_VIEW_INCLUSION: true 
@@ -23,44 +47,27 @@ spring:
 
 # Route Path
 # service.context: http://localhost:8080
-      
+
 # expose all endpoints:
 management.endpoints.web.exposure.include: "*"
 # disable beans endpoint  
 management.endpoint.beans.enabled: false
 
 # REDIS (RedisProperties)
-ascent:
+reference:
   cache:
     defaultExpires: 86400 # (Seconds)
     expires:
       #Cache Name: TTL (In Seconds)
-      demoPersonService: 1800
-      demoService: 600
----
-spring.profiles: default, local-int
-# spring.profiles.include: remote_client_sims, embedded-redis
-spring.profiles.include: remote_client_sims
-
-#ascent:
-#  cache:
-#    redis-config: 
-#      host: localhost
-#      port: 6379
-spring: 
-#  cache:
-#    type: redis
-#  redis: 
-#    host: localhost
-#    port: 6379
-  sleuth:
-    stream:
-      enabled: false
----
-spring: 
-  cloud:
-    bus:
-      enabled: false
+      - 
+        name: demoPersonService
+        ttl: 1800
+      - 
+        name: demoService
+        ttl: 600
+    redis-config:
+      host: localhost
+      port: 6379
 #Application Custom Properties          
 service-1:
   env: default
@@ -72,11 +79,6 @@ service-1:
 #*********************************************************************
 # BGS-Specific SERVICE CLIENT PROPERTIES
 #*********************************************************************
----
-# demo should never hit partner, should it?
-spring.profiles: local-int, ci, dev, stage, prod
-spring.profiles.include: remote_client_sims
----
 #----------------------------------------
 # BGS-Specific default properties
 #----------------------------------------
@@ -109,30 +111,17 @@ wss-partner-person:
 logging: 
   level:
     com.ecwid.consul: INFO
-    gov:
-      va:
-        os.reference: DEBUG
-    org: 
-      springframework:
-        security.web: INFO
-        cloud.consul.config: TRACE
-        cloud.consul: INFO
-        client.discovery: INFO
-        cloud.sleuth: INFO
-        cloud.sleuth.log: DEBUG
-        security: INFO
-        ws: INFO
-        cache: INFO
-      apache:
-        http: 
-          impl.client: INFO
-spring:
-  security:
-    basic:
-      enabled: false
-    user:
-      name: ${os.reference.security.username:admin}
-      password: ${os.reference.security.password:default}
+    gov.va.os.reference: DEBUG
+    org.springframework.security.web: INFO
+    org.springframework.cloud.consul.config: TRACE
+    org.springframework.cloud.consul: INFO
+    org.springframework.client.discovery: INFO
+    org.springframework.cloud.sleuth: INFO 
+    org.springframework.cloud.sleuth.log: DEBUG
+    org.springframework.security: INFO
+    org.springframework.ws: INFO
+    org.springframework.cache: INFO 
+    org.apache.http.impl.client: INFO
 management:
   health:
     rabbit:
@@ -148,16 +137,6 @@ hystrix:
   # plugin hook who will transfer the SecurityContext from your main thread to the one used by the Hystrix command
   shareSecurityContext: true
   command:
-    #Property configuration for hystrix command key to monitor async service method
-    DemoServiceAsyncReadCommand: 
-      execution:
-        isolation:
-          thread:
-            # This property sets the time in milliseconds after which the caller will observe a timeout and 
-            # walk away from the command execution. Hystrix marks the HystrixCommand as a TIMEOUT, and performs fallback 
-            # logic. Note that there is configuration for turning off timeouts per-command, if that is desired (see command.timeout.enabled).
-            # Default Value: 1000
-            timeoutInMilliseconds: 6000
     default:
       metrics:
         rollingStats:
@@ -214,7 +193,7 @@ os.reference:
     securePaths: /service-1/.*/v?.*
 # ---
 #spring:
-#  profiles: docker-demo,aws-ci,aws-dev,aws-stage,aws-prod
+#  profiles: local-int,ci,dev,stage,prod
 #server:
 #  ssl:
 #    enabled: true

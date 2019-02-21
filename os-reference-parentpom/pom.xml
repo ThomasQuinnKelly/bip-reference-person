@@ -151,6 +151,12 @@
 				<artifactId>logback-core</artifactId>
 				<version>${logback.version}</version>
 			</dependency>
+			<!-- Embedded REDIS -->
+			<dependency>
+				<groupId>com.github.kstyrc</groupId>
+				<artifactId>embedded-redis</artifactId>
+				<version>${embedded-redis.version}</version>
+			</dependency>
 			<!-- Apache Common IO dependency -->
 			<dependency>
 				<groupId>commons-io</groupId>

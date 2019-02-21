@@ -68,15 +68,6 @@ public class DemoPersonServiceImpl implements DemoPersonService {
 	@Autowired
 	private CacheManager cacheManager;
 
-	/** The length of a valid SSN */
-	private static final int SSN_LENGTH = 9;
-
-	/** String Constant NO_PERSON_FOUND_FOR_SSN */
-	private static final String NO_PERSON_FOUND_FOR_SSN = "No person found for SSN ";
-
-	/** String Constant NOPERSONFORSSN */
-	private static final String NOPERSONFORSSN = "NOPERSONFORSSN";
-
 	/** String Constant NOPERSONFORPTCTID */
 	private static final String NOPERSONFORPTCTID = "NOPERSONFORPTCTID";
 
@@ -85,58 +76,6 @@ public class DemoPersonServiceImpl implements DemoPersonService {
 
 	/** The Constant PERSON_OBJECT_FACTORY. */
 	protected static final ObjectFactory PERSON_OBJECT_FACTORY = new ObjectFactory();
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see gov.va.os.reference.service.api.DemoPersonService#getPersonInfo
-	 * (gov.va.os.reference.partner.person.ws.client.transfer.PersonInfoRequest)
-	 *
-	 * @CachePut Annotation In contrast to the {@link Cacheable @Cacheable} annotation, this annotation does not
-	 * cause the advised method to be skipped. Rather, it always causes the method to be invoked and its result to be stored in the
-	 * associated cache
-	 *
-	 */
-	@Override
-	@CachePut(value = "demoPersonService", key = "#personInfoRequest",
-			unless = "#result == null || #result.personInfo == null || #result.hasErrors() || #result.hasFatals()")
-	@HystrixCommand(
-			fallbackMethod = "getPersonInfoFallBack",
-			commandKey = "GetPersonInfoBySSNCommand",
-			ignoreExceptions = { IllegalArgumentException.class })
-	public PersonInfoResponse getPersonInfo(final PersonInfoRequest personInfoRequest) {
-		// Check for valid input arguments and WS Client reference.
-		Defense.notNull(personWsClient, "Unable to proceed with Person Service request. The personWsClient must not be null.");
-		Defense.notNull(personInfoRequest, "Invalid argument, personInfoRequest must not be null.");
-		Defense.notNull(personInfoRequest.getSsn(), "Invalid personInfoRequest. SSN must not be null.");
-		Defense.isTrue(personInfoRequest.getSsn().length() == SSN_LENGTH, "Invalid personInfoRequest SSN. Length must be "
-				+ SSN_LENGTH);
-		if (cacheManager.getCache(CACHENAME_DEMO_PERSON_SERVICE) != null
-				&& cacheManager.getCache(CACHENAME_DEMO_PERSON_SERVICE).get(personInfoRequest) != null) {
-			return cacheManager.getCache(CACHENAME_DEMO_PERSON_SERVICE).get(personInfoRequest, PersonInfoResponse.class);
-		} else {
-			// Prepare the WS request
-			final JAXBElement<FindPersonBySSN> findPersonBySSNRequestElement = createFindPersonBySSNRequest(personInfoRequest);
-
-			LOGGER.debug("FindPersonBySSN JAXBElement: {}",
-					findPersonBySSNRequestElement != null ? ReflectionToStringBuilder.toString(findPersonBySSNRequestElement) : null);
-
-			// Invoke the Person Web Service via the WS Client
-			final JAXBElement<FindPersonBySSNResponse> findPersonBySSNResponseElement =
-					personWsClient.getPersonInfo(findPersonBySSNRequestElement);
-
-			LOGGER.debug("FindPersonBySSNResponse JAXBElement: {}",
-					findPersonBySSNResponseElement != null ? ReflectionToStringBuilder.toString(findPersonBySSNResponseElement)
-							: null);
-
-			// Prepare the service response
-			final PersonInfoResponse personInfoResponse =
-					createPersonInfoResponse(findPersonBySSNResponseElement, personInfoRequest.getSsn());
-			LOGGER.debug("PersonInfoResponse: {}",
-					ReflectionToStringBuilder.toString(personInfoResponse));
-			return personInfoResponse;
-		}
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -249,56 +188,6 @@ public class DemoPersonServiceImpl implements DemoPersonService {
 		findPersonByPtcpntId.setPtcpntId(personInfoRequest.getParticipantID());
 
 		return PERSON_OBJECT_FACTORY.createFindPersonByPtcpntId(findPersonByPtcpntId);
-	}
-
-	/**
-	 * @param personInfoRequest The request from the Java Service.
-	 * @return A JAXB element for the WS request
-	 */
-	private JAXBElement<FindPersonBySSN> createFindPersonBySSNRequest(final PersonInfoRequest personInfoRequest) {
-
-		final FindPersonBySSN findPersonBySSN = new FindPersonBySSN();
-		findPersonBySSN.setSsn(personInfoRequest.getSsn());
-		return PERSON_OBJECT_FACTORY.createFindPersonBySSN(findPersonBySSN);
-	}
-
-	/**
-	 * @param findPersonBySSNResponseElement The response JAXB element
-	 * @param ssn The person's SSN
-	 * @return the person info response
-	 */
-	private PersonInfoResponse createPersonInfoResponse(
-			final JAXBElement<FindPersonBySSNResponse> findPersonBySSNResponseElement, final String ssn) {
-
-		final PersonInfoResponse personInfoResponse = new PersonInfoResponse();
-		final String maskedInfo = StringUtil.getMask4(ssn);
-		// Check for null xml element
-		if (findPersonBySSNResponseElement == null) {
-
-			personInfoResponse.addMessage(MessageSeverity.ERROR, NOPERSONFORSSN, NO_PERSON_FOUND_FOR_SSN + maskedInfo);
-
-		} else {
-			final FindPersonBySSNResponse findPersonBySSNResponse = findPersonBySSNResponseElement.getValue();
-			// Check for null response object
-			if (findPersonBySSNResponse == null) {
-
-				personInfoResponse.addMessage(MessageSeverity.ERROR, NOPERSONFORSSN, NO_PERSON_FOUND_FOR_SSN + maskedInfo);
-
-			} else {
-				final PersonDTO personDto = findPersonBySSNResponse.getPersonDTO();
-				// If no DTO was returned, the SSN did not match a person.
-				if (personDto == null) {
-
-					personInfoResponse.addMessage(MessageSeverity.ERROR, NOPERSONFORSSN, NO_PERSON_FOUND_FOR_SSN + maskedInfo);
-
-				} else {
-					// Copy the data of interest to the person info and add it to the service response.
-					final PersonInfo personInfo = createPersonInfo(personDto);
-					personInfoResponse.setPersonInfo(personInfo);
-				}
-			}
-		}
-		return personInfoResponse;
 	}
 
 	/**
