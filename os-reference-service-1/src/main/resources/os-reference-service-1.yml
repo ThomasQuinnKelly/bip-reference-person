@@ -30,7 +30,7 @@ management.endpoints.web.exposure.include: "*"
 management.endpoint.beans.enabled: false
 
 # REDIS (RedisProperties)
-ascent:
+reference:
   cache:
     defaultExpires: 86400 # (Seconds)
     expires:
