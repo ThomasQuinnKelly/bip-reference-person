@@ -17,6 +17,7 @@
 	<properties>
 		<!-- 3rd party versions -->
 		<dom4j.version>2.1.0</dom4j.version>
+		<commons.version>1.6</commons.version>
 	</properties>
 
 	<dependencies>
@@ -115,6 +116,12 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-text</artifactId>
+		    <version>1.6</version>
 		</dependency>
 		
 	</dependencies>

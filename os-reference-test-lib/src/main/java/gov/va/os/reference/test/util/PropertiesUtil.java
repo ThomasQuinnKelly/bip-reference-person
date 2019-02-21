@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import org.apache.commons.lang3.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,7 +88,7 @@ public class PropertiesUtil {
 			}
 		}
 
-		final StrSubstitutor substitutor = new StrSubstitutor(valuesMap);
+		final StringSubstitutor substitutor = new StringSubstitutor(valuesMap);
 		for (final Entry<String, String> entry : templateMap.entrySet()) {
 			final String tmplt = entry.getKey();
 			final String subbed = substitutor.replace(tmplt);
