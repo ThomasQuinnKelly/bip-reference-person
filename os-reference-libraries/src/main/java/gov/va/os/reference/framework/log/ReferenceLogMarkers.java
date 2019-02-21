@@ -4,7 +4,7 @@ import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
 /**
- * Standard logging markers for Ascent.
+ * Standard logging markers.
  * Markers are included in the log stream, making it possible to search and aggregate based on the marker name.
  *
  * @author aburkholder

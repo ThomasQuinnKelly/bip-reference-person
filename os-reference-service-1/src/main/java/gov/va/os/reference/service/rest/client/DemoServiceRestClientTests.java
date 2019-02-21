@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.va.os.reference.service.api.v1.transfer.EchoHostServiceResponse;
-import gov.va.os.reference.service.api.v1.transfer.ServiceInstancesServiceResponse;
-import gov.va.os.reference.document.service.api.transfer.GetDocumentTypesResponse;
 import gov.va.os.reference.framework.rest.client.resttemplate.RestClientTemplate;
 import gov.va.os.reference.framework.swagger.SwaggerResponseMessages;
+import gov.va.os.reference.service.api.v1.transfer.EchoHostServiceResponse;
+import gov.va.os.reference.service.api.v1.transfer.ServiceInstancesServiceResponse;
 import gov.va.os.reference.service.rest.client.discovery.DemoUsageDiscoveryClient;
 import gov.va.os.reference.service.rest.client.feign.FeignDocumentClient;
 import gov.va.os.reference.service.rest.client.feign.FeignEchoClient;
@@ -79,7 +78,7 @@ public class DemoServiceRestClientTests implements SwaggerResponseMessages {
 				demoUsageRestTemplate.executeURL("http://os-reference-spring-boot-service/demo/v1/echo",
 						new ParameterizedTypeReference<EchoHostServiceResponse>() {
 						});
-		LOGGER.info("INVOKED A ASCENT-DEMO-SERVICE USING REST TEMPLATE: " + exchange.getBody());
+		LOGGER.info("INVOKED A REFERENCE-DEMO-SERVICE USING REST TEMPLATE: " + exchange.getBody());
 		return new ResponseEntity<>(exchange.getBody(), exchange.getStatusCode());
 	}
 
@@ -108,7 +107,7 @@ public class DemoServiceRestClientTests implements SwaggerResponseMessages {
 	@ApiOperation(value = "An endpoint which uses a REST client using Feign to call the remote document service operation.")
 	@RequestMapping(value = URL_PREFIX + "/demoCallDocumentServiceFeignClient", method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GetDocumentTypesResponse> demoCallDocumentServiceUsingFeignClient(final HttpServletRequest request) {
+	public GetDocumentTypesResponse demoCallDocumentServiceUsingFeignClient(final HttpServletRequest request) {
 
 		// use this in case of feign hystrix to test fallback handler invocation
 		// NOSONAR ConfigurationManager.getConfigInstance().setProperty("hystrix.command.default.circuitBreaker.forceOpen", "true");

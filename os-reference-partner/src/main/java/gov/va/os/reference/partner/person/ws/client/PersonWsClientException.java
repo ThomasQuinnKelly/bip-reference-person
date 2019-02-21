@@ -9,9 +9,7 @@ import gov.va.os.reference.framework.exception.ReferenceRuntimeException;
  */
 public class PersonWsClientException extends ReferenceRuntimeException {
 
-	/**
-	 * the serialVersionUID
-	 */
+	/** The serialVersionUID */
 	private static final long serialVersionUID = 406968015972994683L;
 
 	/**
@@ -23,19 +21,18 @@ public class PersonWsClientException extends ReferenceRuntimeException {
 
 	/**
 	 * Instantiates a new exception.
-	 * 
-	 * @param message  the message
-	 * @param cause  the cause
+	 *
+	 * @param message the message
+	 * @param cause the cause
 	 */
-	public PersonWsClientException(final String message,
-			final Throwable cause) {
+	public PersonWsClientException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
 	/**
 	 * Instantiates a new exception.
-	 * 
-	 * @param message  the message
+	 *
+	 * @param message the message
 	 */
 	public PersonWsClientException(final String message) {
 		super(message);
@@ -43,8 +40,8 @@ public class PersonWsClientException extends ReferenceRuntimeException {
 
 	/**
 	 * Instantiates a new exception.
-	 * 
-	 * @param cause  the cause
+	 *
+	 * @param cause the cause
 	 */
 	public PersonWsClientException(final Throwable cause) {
 		super(cause);

@@ -44,7 +44,7 @@ import gov.va.os.reference.framework.properties.PropertyFileHolder;
 public class ReferencePropertySourcesPlaceholderConfigurerTest {
 	public static final String APP_NAME = "framework-test";
 	private static final String DEFAULT_PROPERTIES = "classpath:/config/" + APP_NAME + ".properties";
-	ReferencePropertySourcesPropertyResolver ascentPropertySourcesPropertyResolver;
+	ReferencePropertySourcesPropertyResolver referencePropertySourcesPropertyResolver;
 	ReferencePropertySourcesPlaceholderConfigurer instance;
 
 	public ReferencePropertySourcesPlaceholderConfigurerTest() {
@@ -60,7 +60,7 @@ public class ReferencePropertySourcesPlaceholderConfigurerTest {
 
 	@Before
 	public void setUp() {
-		ascentPropertySourcesPropertyResolver = new ReferencePropertySourcesPropertyResolver();
+		referencePropertySourcesPropertyResolver = new ReferencePropertySourcesPropertyResolver();
 		ResourcePropertySource propertySource = null;
 		try {
 			propertySource = new ResourcePropertySource(
@@ -70,7 +70,7 @@ public class ReferencePropertySourcesPlaceholderConfigurerTest {
 		}
 		MutablePropertySources propertySources = new MutablePropertySources();
 		propertySources.addFirst(propertySource);
-		ascentPropertySourcesPropertyResolver.setPropertySources(propertySources);
+		referencePropertySourcesPropertyResolver.setPropertySources(propertySources);
 		instance = new ReferencePropertySourcesPlaceholderConfigurer();
 		MockEnvironment env = new MockEnvironment();
 		env.setProperty("key", "value");

@@ -4,7 +4,7 @@ import org.slf4j.event.Level;
 import org.slf4j.helpers.MessageFormatter;
 
 /**
- * A logger for the Ascent platform that extends and enhances org.slf4j.Logger.
+ * A logger for the platform that extends and enhances org.slf4j.Logger.
  * <p>
  * Get an instance of this logger with the static {@link #getLogger(Logger)} method.
  * <p>

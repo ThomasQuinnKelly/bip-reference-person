@@ -1,25 +1,14 @@
 package gov.va.os.reference.partner.person.ws.client;
 
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import javax.annotation.PostConstruct;
 
-import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.core.WebServiceTemplate;
@@ -28,51 +17,90 @@ import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 
 import gov.va.os.reference.framework.exception.InterceptingExceptionTranslator;
 import gov.va.os.reference.framework.log.PerformanceLogMethodInterceptor;
+import gov.va.os.reference.framework.log.ReferenceLogger;
+import gov.va.os.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.os.reference.framework.util.Defense;
 import gov.va.os.reference.framework.ws.client.BaseWsClientConfig;
-import gov.va.os.reference.framework.ws.client.WsClientSimulatorMarshallingInterceptor;
+import gov.va.os.reference.framework.ws.client.remote.RemoteServiceCallInterceptor;
 
 /**
  * This class represents the Spring configuration for the Person Web Service Client.
  */
 @Configuration
-@ComponentScan(basePackages = { "gov.va.os.reference.partner.person.ws.client" },
+@ComponentScan(basePackages = { "gov.va.os.reference.partner",
+		"gov.va.os.reference.framework.ws.client",
+		"gov.va.os.reference.framework.audit" },
 		excludeFilters = @Filter(Configuration.class))
 public class PersonWsClientConfig extends BaseWsClientConfig {
 
-	/**
-	 * The Constant TRANSFER_PACKAGE.
-	 */
+	/** The logger for this class */
+	public static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(PersonWsClientConfig.class);
+
+	/** The package name for data transfer objects. */
 	private static final String TRANSFER_PACKAGE = "gov.va.os.reference.partner.person.ws.transfer";
 
-	/**
-	 * The username.
-	 */
-	@Value("${wss-partner-person.ws.client.username}")
+	/** The XSD for this web service */
+	private static final String XSD = "xsd/PersonService/PersonWebService.xsd";
+
+	/** Exception class for exception interceptor */
+	private static final String DEFAULT_EXCEPTION_CLASS = PersonWsClientException.class.getName();
+
+	// ####### for test, member values are from src/test/resource/application.yml ######
+
+	/** Location of the truststore containing the cert */
+	@Value("${vetservices-partner-intenttofile.ws.client.ssl.keystore:src/test/resources/ssl/dev/vaebnweb1Keystore.jks}")
+	private String keystore;
+
+	/** Password for the cert */
+	@Value("${os-reference-partner.ws.client.ssl.keystorePass:password}")
+	private String keystorePass;
+
+	/** Location of the truststore containing the cert */
+	@Value("${os-reference-partner.ws.client.ssl.truststore:src/test/resources/ssl/dev/vaebnTruststore.jks}")
+	private String truststore;
+
+	/** Password for the cert */
+	@Value("${os-reference-partner.ws.client.ssl.truststorePass:password}")
+	private String truststorePass;
+
+	/** Decides if jaxb validation logs errors. */
+	@Value("${os-reference-partner.ws.client.logValidation:true}")
+	private boolean logValidation;
+
+	/** Username for WS Authentication. */
+	@Value("${os-reference-partner.ws.client.username}")
 	private String username;
 
-	/**
-	 * The password.
-	 */
-	@Value("${wss-partner-person.ws.client.password}")
+	/** Password for WS Authentication. */
+	@Value("${os-reference-partner.ws.client.password}")
 	private String password;
 
-	/**
-	 * The va application name.
-	 */
-	@Value("${wss-partner-person.ws.client.vaApplicationName}")
+	/** VA Application Name Header value. */
+	@Value("${os-reference-partner.ws.client.vaApplicationName}")
 	private String vaApplicationName;
 
-	/**
-	 * VA STN_ID value
-	 */
-	@Value("${wss-partner-person.ws.client.stationId}")
-	private String stationId;
+	/** The VA Station ID header value */
+	@Value("${os-reference-partner.ws.client.vaStationId:281}")
+	private String vaStationId;
 
 	/**
-	 * decides if jaxb validation logs errors.
+	 * Executed after dependency injection is done to validate initialization.
 	 */
-	@Value("${wss-common-services.ws.log.jaxb.validation:false}")
-	private boolean logValidation;
+	@PostConstruct
+	public final void postConstruct() {
+		Defense.hasText(keystore, "Partner keystore cannot be empty.");
+		Defense.hasText(keystorePass, "Partner keystorePass cannot be empty.");
+		Defense.hasText(truststore, "Partner truststore cannot be empty.");
+		Defense.hasText(truststorePass, "Partner truststorePass cannot be empty.");
+		Defense.hasText(username, "Partner username cannot be empty.");
+		Defense.hasText(password, "Partner password cannot be empty.");
+		Defense.hasText(vaApplicationName, "Partner vaApplicationName cannot be empty.");
+		Defense.hasText(vaStationId, "Station ID cannot be empty.");
+
+		LOGGER.info("Station ID value : " + vaStationId);
+		LOGGER.info("vaApplicationName : " + vaApplicationName);
+
+	}
 
 	/**
 	 * WS Client object marshaller
@@ -80,49 +108,46 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 * @return object marshaller
 	 */
 	@Bean
-	@Qualifier("personWsClient")
 	Jaxb2Marshaller personMarshaller() {
-		final Resource[] schemas = new Resource[] { new ClassPathResource("xsd/PersonService/PersonWebService.xsd") };
+		final Resource[] schemas = new Resource[] { new ClassPathResource(XSD) };
 		return getMarshaller(TRANSFER_PACKAGE, schemas, logValidation);
 	}
 
 	/**
-	 * Axiom based WebServiceTemplate for the Person Web Service Client.
+	 * Axiom based WebServiceTemplate for the Web Service Client.
 	 *
 	 * @param endpoint the endpoint
 	 * @param readTimeout the read timeout
 	 * @param connectionTimeout the connection timeout
 	 * @return the web service template
-	 * @throws KeyManagementException the key management exception
-	 * @throws UnrecoverableKeyException the unrecoverable key exception
-	 * @throws NoSuchAlgorithmException the no such algorithm exception
-	 * @throws KeyStoreException the key store exception
-	 * @throws CertificateException the certificate exception
-	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@Bean
-	@Qualifier("personWsClient.axiom")
 	WebServiceTemplate personWsClientAxiomTemplate(
-			@Value("${wss-partner-person.ws.client.endpoint}") final String endpoint,
-			@Value("${wss-partner-person.ws.client.readTimeout:60000}") final int readTimeout,
-			@Value("${wss-partner-person.ws.client.connectionTimeout:60000}") final int connectionTimeout) {
+			@Value("${os-reference-partner.ws.client.endpoint}") final String endpoint,
+			@Value("${os-reference-partner.ws.client.readTimeout:60000}") final int readTimeout,
+			@Value("${os-reference-partner.ws.client.connectionTimeout:60000}") final int connectionTimeout) {
 
-		return createDefaultWebServiceTemplate(endpoint, readTimeout, connectionTimeout, personMarshaller(), personMarshaller(),
-				new ClientInterceptor[] { personSecurityInterceptor() });
+		Defense.hasText(endpoint, "personWsClientAxiomTemplate endpoint cannot be empty.");
+
+		return createSslWebServiceTemplate(endpoint, readTimeout, connectionTimeout, personMarshaller(), personMarshaller(),
+				new ClientInterceptor[] { personSecurityInterceptor() },
+				new FileSystemResource(keystore), keystorePass, new FileSystemResource(truststore), truststorePass);
 	}
 
 	/**
-	 * Security interceptor to apply WSS security to Person WS calls.
+	 * Security interceptor to apply WSS security to WS calls.
 	 *
 	 * @return security interceptor
 	 */
 	@Bean
 	Wss4jSecurityInterceptor personSecurityInterceptor() {
-		return getVAServiceWss4jSecurityInterceptor(username, password, vaApplicationName, stationId);
+		LOGGER.debug("Station ID value : " + vaStationId);
+		LOGGER.debug("vaApplicationName : " + vaApplicationName);
+		return getVAServiceWss4jSecurityInterceptor(username, password, vaApplicationName, vaStationId);
 	}
 
 	/**
-	 * PerformanceLogMethodInterceptor for the Person Web Service Client
+	 * PerformanceLogMethodInterceptor for the Web Service Client
 	 * <p>
 	 * Handles performance related logging of the web service client response times.
 	 *
@@ -131,86 +156,34 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 */
 	@Bean
 	PerformanceLogMethodInterceptor personWsClientPerformanceLogMethodInterceptor(
-			@Value("${wss-partner-person.ws.client.methodWarningThreshhold:2500}") final Integer methodWarningThreshhold) {
+			@Value("${os-reference-partner.ws.client.methodWarningThreshhold:2500}") final Integer methodWarningThreshhold) {
 		return getPerformanceLogMethodInterceptor(methodWarningThreshhold);
 	}
 
 	/**
-	 * InterceptingExceptionTranslator for the Person Web Service Client
+	 * InterceptingExceptionTranslator for the Web Service Client
 	 * <p>
 	 * Handles runtime exceptions raised by the web service client through runtime operation and communication with the remote service.
 	 *
 	 * @return the intercepting exception translator
 	 * @throws ClassNotFoundException the class not found exception
 	 */
-	@SuppressWarnings("unchecked")
 	@Bean
 	InterceptingExceptionTranslator personWsClientExceptionInterceptor() throws ClassNotFoundException {
-		final InterceptingExceptionTranslator interceptingExceptionTranslator = new InterceptingExceptionTranslator();
-
-		// set the default type of exception that should be returned when this
-		// interceptor runs
-		interceptingExceptionTranslator.setDefaultExceptionType(
-				(Class<? extends RuntimeException>) Class
-						.forName("gov.va.os.reference.partner.person.ws.client.PersonWsClientException"));
-
-		// define packages that contain "our exceptions" that we want to
-		// propagate through
-		// without again logging and/or wrapping
-		final Set<String> exclusionSet = new HashSet<>();
-		exclusionSet.add(PACKAGE_ASCENT_FRAMEWORK_EXCEPTION);
-		interceptingExceptionTranslator.setExclusionSet(exclusionSet);
-
-		return interceptingExceptionTranslator;
-
+		return getInterceptingExceptionTranslator(DEFAULT_EXCEPTION_CLASS, PACKAGE_REFERENCE_FRAMEWORK_EXCEPTION);
 	}
 
 	/**
-	 * A standard bean proxy to apply interceptors to the Address web service client.
+	 * RemoteServiceCallInterceptor for the Web Service Client
 	 *
-	 * @return the bean name auto proxy creator
-	 */
-	@Bean
-	BeanNameAutoProxyCreator personWsClientBeanProxy() {
-		return getBeanNameAutoProxyCreator(new String[] { PersonWsClientImpl.BEAN_NAME, PersonWsClientSimulator.BEAN_NAME },
-				new String[] { "personWsClientExceptionInterceptor", "personWsClientPerformanceLogMethodInterceptor" });
-	}
-
-	/**
-	 * Ws client simulator marshalling interceptor, so that requests and responses to the simulator are passed through the marshaller
-	 * to ensure we don't have any Java-to-XML conversion surprises if we leverage simulators heavily in development and then start
-	 * using real web services later on.
+	 * Handles runtime exceptions raised by the web service client through runtime
+	 * operation and communication with the remote service.
 	 *
-	 * @return the ws client simulator marshalling interceptor
+	 * @return the RemoteServiceCallInterceptor
+	 * @throws ClassNotFoundException the class not found exception
 	 */
 	@Bean
-	WsClientSimulatorMarshallingInterceptor personWsClientSimulatorMarshallingInterceptor() {
-		final Map<String, Jaxb2Marshaller> marshallerForPackageMap = new HashMap<>();
-		marshallerForPackageMap.put(TRANSFER_PACKAGE, personMarshaller());
-		return new WsClientSimulatorMarshallingInterceptor(marshallerForPackageMap);
+	RemoteServiceCallInterceptor personWsClientRemoteServiceCallInterceptor() {
+		return getRemoteServiceCallInterceptor();
 	}
-
-	/**
-	 * A standard bean proxy to apply interceptors to the web service client simulations that we don't need/want to apply to real web
-	 * service client impls.
-	 *
-	 * @return the bean name auto proxy creator
-	 */
-	@Bean
-	BeanNameAutoProxyCreator personWsClientSimulatorProxy() {
-		return getBeanNameAutoProxyCreator(new String[] { PersonWsClientSimulator.BEAN_NAME },
-				new String[] { "personWsClientSimulatorMarshallingInterceptor" });
-	}
-
-	/**
-	 * Placeholders for ${...} in @Value expressions.
-	 * 
-	 * @see org.springframework.context.support.PropertySourcesPlaceholderConfigurer
-	 * @return
-	 */
-	@Bean
-	public static PropertySourcesPlaceholderConfigurer placeHolderConfigurer() {
-		return new PropertySourcesPlaceholderConfigurer();
-	}
-
 }

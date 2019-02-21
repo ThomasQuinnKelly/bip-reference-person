@@ -1,4 +1,4 @@
-ascent:
+reference:
   rest:
     client:
       connection-timeout: 20000

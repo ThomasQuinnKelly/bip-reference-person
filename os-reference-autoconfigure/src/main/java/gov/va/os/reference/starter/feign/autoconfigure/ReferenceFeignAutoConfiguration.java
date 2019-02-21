@@ -30,7 +30,7 @@ public class ReferenceFeignAutoConfiguration {
 
 	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(ReferenceFeignAutoConfiguration.class);
 
-	@Value("${ascent.rest.client.connection-timeout:20000}")
+	@Value("${reference.rest.client.connection-timeout:20000}")
 	private String connectionTimeout;
 
 	private String groupKey = "defaultGroup";
@@ -59,9 +59,9 @@ public class ReferenceFeignAutoConfiguration {
 	 * with a SetterFactory pre-configured with groupKey and commandKey.
 	 * <p>
 	 * Useful for making Feign enabled REST calls (e.g. {@code @EnableFeignClients})
-	 * that are made from Ascent services.
+	 * that are made from OpenShift services.
 	 * <p>
-	 * The bean also performs Ascent-standardized configuration that can be used to execute REST calls:
+	 * The bean also performs standardized configuration that can be used to execute REST calls:
 	 * <ul>
 	 * <li>derives request timeout values from the application properties
 	 * <li>attaches the JWT from the current session to the outgoing request via {@link TokenFeignRequestInterceptor}.
@@ -83,7 +83,7 @@ public class ReferenceFeignAutoConfiguration {
 		Defense.state(connTimeoutValue > 0,
 				"Invalid settings: Connection Timeout value must be greater than zero.\n"
 						+ "  - Ensure spring scan directive includes gov.va.os.reference.framework.rest.client.resttemplate;\n"
-						+ "  - Application property must be set to non-zero positive integer values for ascent.rest.client.connection-timeout {} "
+						+ "  - Application property must be set to non-zero positive integer values for reference.rest.client.connection-timeout {} "
 						+ connectionTimeout + ".");
 		final int connTimeoutValueFinal = connTimeoutValue;
 

@@ -1,11 +1,11 @@
 #This file is only used for the unit test purposes
-wss-partner-person.ws.client.endpoint: http://localhost:9736/testEndPoint
+os-reference-partner.ws.client.endpoint: http://localhost:9736/testEndPoint
 
 #*********************************************************************
 # Apache Trusted Crypto Configuration Security files
 #*********************************************************************
-ascent.security.crypto.provider: org.apache.ws.security.components.crypto.Merlin
-ascent.security.crypto.keystore.type: jks
-ascent.security.crypto.keystore.alias: ebn_vbms_cert
-ascent.security.crypto.keystore.password: changeit
-ascent.security.crypto.keystore.keystore:  /encryption/EFolderService/vbmsKeystore.jks
+reference.security.crypto.provider: org.apache.ws.security.components.crypto.Merlin
+reference.security.crypto.keystore.type: jks
+reference.security.crypto.keystore.alias: ebn_vbms_cert
+reference.security.crypto.keystore.password: changeit
+reference.security.crypto.keystore.keystore:  /encryption/EFolderService/vbmsKeystore.jks

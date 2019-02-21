@@ -42,7 +42,7 @@ import gov.va.os.reference.service.utils.StringUtil;
 @Component
 @Qualifier("IMPL")
 @RefreshScope
-@DefaultProperties(groupKey = HystrixCommandConstants.ASCENT_PERSON_DEMO_SERVICE_GROUP_KEY)
+@DefaultProperties(groupKey = HystrixCommandConstants.REFERENCE_PERSON_DEMO_SERVICE_GROUP_KEY)
 
 /**
  * Implementation class for the Demo Person Service.

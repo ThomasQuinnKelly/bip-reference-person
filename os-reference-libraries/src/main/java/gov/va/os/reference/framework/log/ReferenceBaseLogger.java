@@ -59,7 +59,7 @@ public class ReferenceBaseLogger {
 	public static final int MAX_STACK_TRACE_TEXT_LENGTH = 6144;
 
 	/**
-	 * Create a new logger for Ascent.
+	 * Create a new logger for apps.
 	 *
 	 * @param logger org.slf4j.Logger
 	 */
@@ -138,7 +138,7 @@ public class ReferenceBaseLogger {
 		} else {
 			// split message into MAX_MSG_OR_STACK_TRACE_LENGTH strings
 			List<String> listToReturn =
-					new ArrayList<>(((stackTraceText.length() + MAX_STACK_TRACE_TEXT_LENGTH) - 1) / MAX_STACK_TRACE_TEXT_LENGTH);
+					new ArrayList<>((stackTraceText.length() + MAX_STACK_TRACE_TEXT_LENGTH - 1) / MAX_STACK_TRACE_TEXT_LENGTH);
 
 			for (int start = 0; start < stackTraceText.length(); start += MAX_STACK_TRACE_TEXT_LENGTH) {
 				listToReturn
@@ -168,7 +168,7 @@ public class ReferenceBaseLogger {
 		int stackTraceLength = stackTrace == null ? 0 : stackTrace.length();
 		int mdcReserveLength = MDC_RESERVE_LENGTH;
 
-		if ((mdcReserveLength + messageLength + stackTraceLength) > MAX_TOTAL_LOG_LEN) {
+		if (mdcReserveLength + messageLength + stackTraceLength > MAX_TOTAL_LOG_LEN) {
 			int seq = 0;
 			boolean shouldStackTraceBePrinted = stackTraceLength != 0;
 			if (messageLength >= MAX_MSG_LENGTH) {

@@ -4,11 +4,11 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Class used as authentication properties in Ascent projects.
+ * Class used as authentication properties in projects.
  * The values assigned to members in this class are defaults,
  * and are typically overridden in yml and spring configuration.
  */
-@ConfigurationProperties(prefix = "ascent.security.jwt")
+@ConfigurationProperties(prefix = "reference.security.jwt")
 public class JwtAuthenticationProperties {
 	private boolean enabled = true;
 	private String header = "Authorization";
@@ -24,7 +24,7 @@ public class JwtAuthenticationProperties {
 
 	/**
 	 * Authentication enabled
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean isEnabled() {
@@ -33,7 +33,7 @@ public class JwtAuthenticationProperties {
 
 	/**
 	 * Authentication enabled
-	 * 
+	 *
 	 * @param enabled
 	 */
 	public void setEnabled(boolean enabled) {
@@ -42,7 +42,7 @@ public class JwtAuthenticationProperties {
 
 	/**
 	 * Authentication header
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getHeader() {
@@ -51,7 +51,7 @@ public class JwtAuthenticationProperties {
 
 	/**
 	 * Authentication header
-	 * 
+	 *
 	 * @param header
 	 */
 	public void setHeader(String header) {
@@ -60,7 +60,7 @@ public class JwtAuthenticationProperties {
 
 	/**
 	 * Authentication secret
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getSecret() {
@@ -69,7 +69,7 @@ public class JwtAuthenticationProperties {
 
 	/**
 	 * Authentication issuer
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getIssuer() {
@@ -78,7 +78,7 @@ public class JwtAuthenticationProperties {
 
 	/**
 	 * Authentication secret
-	 * 
+	 *
 	 * @param secret
 	 */
 	public void setSecret(String secret) {
@@ -87,7 +87,7 @@ public class JwtAuthenticationProperties {
 
 	/**
 	 * Authentication issuer
-	 * 
+	 *
 	 * @param issuer
 	 */
 	public void setIssuer(String issuer) {
@@ -96,7 +96,7 @@ public class JwtAuthenticationProperties {
 
 	/**
 	 * A wildcard URL that filters with URls to process
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getFilterProcessUrl() {
@@ -105,7 +105,7 @@ public class JwtAuthenticationProperties {
 
 	/**
 	 * A wildcard URL / path that filters which URls to process
-	 * 
+	 *
 	 * @param filterProcessUrl
 	 */
 	public void setFilterProcessUrl(String filterProcessUrl) {
@@ -114,7 +114,7 @@ public class JwtAuthenticationProperties {
 
 	/**
 	 * An array of wildcard URLs / paths should be excluded from processing
-	 * 
+	 *
 	 * @return String[]
 	 */
 	public String[] getExcludeUrls() {
@@ -123,7 +123,7 @@ public class JwtAuthenticationProperties {
 
 	/**
 	 * An array of wildcard URLs / paths should be excluded from processing
-	 * 
+	 *
 	 * @param excludeUrls
 	 */
 	public void setExcludeUrls(String[] excludeUrls) {
@@ -132,7 +132,7 @@ public class JwtAuthenticationProperties {
 
 	/**
 	 * Request expiration time expressed in seconds
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getExpireInSeconds() {
@@ -141,7 +141,7 @@ public class JwtAuthenticationProperties {
 
 	/**
 	 * Request expiration time expressed in seconds
-	 * 
+	 *
 	 * @param expireInSeconds
 	 */
 	public void setExpireInSeconds(int expireInSeconds) {

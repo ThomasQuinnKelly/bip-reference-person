@@ -132,7 +132,7 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 				writeResponseAudit(response, auditEventData, MessageSeverity.INFO, null);
 			}
 		} catch (Throwable e) {
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 					"Error while executing logAnnotatedMethodRequestResponse around auditableExecution", e);
 		}
 		return response;
@@ -211,36 +211,36 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 			} else {
 				writeResponseAudit(responseObject, auditEventData, MessageSeverity.INFO, null);
 			}
-		} catch (final ReferenceRuntimeException ascentRuntimeException) {
+		} catch (final ReferenceRuntimeException referenceRuntimeException) {
 			Object returnObj = null;
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 					"Error while executing RestProviderHttpResponseCodeAspect.aroundAdvice around restController",
-					ascentRuntimeException);
+					referenceRuntimeException);
 			try {
-				responseObject = writeAuditError(ascentRuntimeException, auditEventData);
+				responseObject = writeAuditError(referenceRuntimeException, auditEventData);
 				if (response != null) {
 					response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 				}
 				returnObj = getReturnResponse(returnTypeIsServiceResponse, responseObject);
 			} catch (Throwable e) { // NOSONAR intentionally catching throwable
-				LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+				LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 						"Throwable occured while attempting to writeAuditError for ReferenceRuntimeException.", e);
 
 			}
 			return returnObj;
 		} catch (final Throwable throwable) { // NOSONAR intentionally catching throwable
 			Object returnObj = null;
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 					"Throwable while executing RestProviderHttpResponseCodeAspect.aroundAdvice around restController", throwable);
-				try {
-				final ReferenceRuntimeException ascentRuntimeException = new ReferenceRuntimeException(throwable);
-				responseObject = writeAuditError(ascentRuntimeException, auditEventData);
+			try {
+				final ReferenceRuntimeException referenceRuntimeException = new ReferenceRuntimeException(throwable);
+				responseObject = writeAuditError(referenceRuntimeException, auditEventData);
 				if (response != null) {
 					response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 				}
 				returnObj = getReturnResponse(returnTypeIsServiceResponse, responseObject);
 			} catch (Throwable e) { // NOSONAR intentionally catching throwable
-				LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+				LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 						"Throwable occured while attempting to writeAuditError for Throwable.", e);
 			}
 			return returnObj;
@@ -269,18 +269,18 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 	/**
 	 * Write into Audit when exceptions occur
 	 *
-	 * @param ascentRuntimeException
+	 * @param referenceRuntimeException
 	 * @param auditEventData
 	 * @return
 	 */
-	private ResponseEntity<ServiceResponse> writeAuditError(final ReferenceRuntimeException ascentRuntimeException,
+	private ResponseEntity<ServiceResponse> writeAuditError(final ReferenceRuntimeException referenceRuntimeException,
 			final AuditEventData auditEventData) {
-		LOGGER.error("RestProviderHttpResponseCodeAspect encountered uncaught exception in REST endpoint.", ascentRuntimeException);
+		LOGGER.error("RestProviderHttpResponseCodeAspect encountered uncaught exception in REST endpoint.", referenceRuntimeException);
 		final ServiceResponse serviceResponse = new ServiceResponse();
-		serviceResponse.addMessage(MessageSeverity.FATAL, "UNEXPECTED_ERROR", ascentRuntimeException.getMessage());
+		serviceResponse.addMessage(MessageSeverity.FATAL, "UNEXPECTED_ERROR", referenceRuntimeException.getMessage());
 		final StringBuilder sb = new StringBuilder();
-		sb.append("Error Message: ").append(ascentRuntimeException);
-		AuditLogger.error(auditEventData, sb.toString(), ascentRuntimeException);
+		sb.append("Error Message: ").append(referenceRuntimeException);
+		AuditLogger.error(auditEventData, sb.toString(), referenceRuntimeException);
 		return new ResponseEntity<>(serviceResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
@@ -387,7 +387,7 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 					// NOSONAR IOUtils.closeQuietly(partTooBigMessage);
 				}
 			} catch (final Exception ex) {
-				LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+				LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 						"Error occurred while reading the upload file. {}", ex);
 
 			} finally {
@@ -395,7 +395,7 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 					try {
 						inputstream.close();
 					} catch (IOException e) {
-						LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+						LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 								"Error occurred while closing the upload file. {}", e);
 					}
 				}

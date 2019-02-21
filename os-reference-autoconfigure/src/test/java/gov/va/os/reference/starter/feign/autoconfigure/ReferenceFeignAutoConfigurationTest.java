@@ -26,8 +26,6 @@ import feign.Target;
 import feign.hystrix.SetterFactory;
 import gov.va.os.reference.framework.rest.provider.RestProviderHttpResponseCodeAspect;
 import gov.va.os.reference.starter.audit.autoconfigure.ReferenceAuditAutoConfiguration;
-import gov.va.os.reference.starter.feign.autoconfigure.ReferenceFeignAutoConfiguration;
-import gov.va.os.reference.starter.feign.autoconfigure.TokenFeignRequestInterceptor;
 import gov.va.os.reference.starter.security.autoconfigure.ReferenceSecurityAutoConfiguration;
 
 /**
@@ -38,7 +36,7 @@ public class ReferenceFeignAutoConfigurationTest {
 
 	private static String CONNECTION_TIMEOUT = "20000";
 
-	private ReferenceFeignAutoConfiguration ascentFeignAutoConfiguration;
+	private ReferenceFeignAutoConfiguration referenceFeignAutoConfiguration;
 
 	private AnnotationConfigWebApplicationContext context;
 
@@ -46,8 +44,10 @@ public class ReferenceFeignAutoConfigurationTest {
 	public void setup() {
 		context = new AnnotationConfigWebApplicationContext();
 		TestPropertyValues.of("feign.hystrix.enabled=true").applyTo(context);
-		TestPropertyValues.of("ascent.rest.client.connection-timeout=" + CONNECTION_TIMEOUT).applyTo(context);;
-		context.register(JacksonAutoConfiguration.class, SecurityAutoConfiguration.class, EmbeddedWebServerFactoryCustomizerAutoConfiguration.class,
+		TestPropertyValues.of("reference.rest.client.connection-timeout=" + CONNECTION_TIMEOUT).applyTo(context);
+		;
+		context.register(JacksonAutoConfiguration.class, SecurityAutoConfiguration.class,
+				EmbeddedWebServerFactoryCustomizerAutoConfiguration.class,
 				ReferenceSecurityAutoConfiguration.class,
 				ReferenceAuditAutoConfiguration.class, ReferenceFeignAutoConfiguration.class,
 				RestProviderHttpResponseCodeAspect.class);
@@ -55,8 +55,8 @@ public class ReferenceFeignAutoConfigurationTest {
 		context.refresh();
 		assertNotNull(context);
 
-		ascentFeignAutoConfiguration = context.getBean(ReferenceFeignAutoConfiguration.class);
-		assertNotNull(ascentFeignAutoConfiguration);
+		referenceFeignAutoConfiguration = context.getBean(ReferenceFeignAutoConfiguration.class);
+		assertNotNull(referenceFeignAutoConfiguration);
 	}
 
 	@After
@@ -74,27 +74,29 @@ public class ReferenceFeignAutoConfigurationTest {
 
 	@Test
 	public void testWebConfiguration_BrokenProp() throws Exception {
-		TestPropertyValues.of("ascent.rest.client.connection-timeout=BLAHBLAH").applyTo(context);;
+		TestPropertyValues.of("reference.rest.client.connection-timeout=BLAHBLAH").applyTo(context);
+		;
 		context.refresh();
 
 		try {
-			ascentFeignAutoConfiguration.feignBuilder();
-			fail("ascentFeignAutoConfiguration.feignBuilder() should have thrown IllegalStateException");
+			referenceFeignAutoConfiguration.feignBuilder();
+			fail("referenceFeignAutoConfiguration.feignBuilder() should have thrown IllegalStateException");
 		} catch (Exception e) {
 			assertTrue(BeansException.class.isAssignableFrom(e.getClass()));
 		} finally {
-			TestPropertyValues.of("ascent.rest.client.connection-timeout=" + CONNECTION_TIMEOUT).applyTo(context);;
+			TestPropertyValues.of("reference.rest.client.connection-timeout=" + CONNECTION_TIMEOUT).applyTo(context);
+			;
 			context.refresh();
 		}
 
 	}
 
 	@Test
-	public void testGetterSettingAscentFiegnConfig() throws Exception {
-		final ReferenceFeignAutoConfiguration ascentFeignAutoConfiguration = new ReferenceFeignAutoConfiguration();
-		assertEquals("defaultGroup", ascentFeignAutoConfiguration.getGroupKey());
-		ascentFeignAutoConfiguration.setGroupKey("NewGroupKey");
-		assertEquals("NewGroupKey", ascentFeignAutoConfiguration.getGroupKey());
+	public void testGetterSettingReferenceFiegnConfig() throws Exception {
+		final ReferenceFeignAutoConfiguration referenceFeignAutoConfiguration = new ReferenceFeignAutoConfiguration();
+		assertEquals("defaultGroup", referenceFeignAutoConfiguration.getGroupKey());
+		referenceFeignAutoConfiguration.setGroupKey("NewGroupKey");
+		assertEquals("NewGroupKey", referenceFeignAutoConfiguration.getGroupKey());
 	}
 
 	/**
@@ -102,14 +104,14 @@ public class ReferenceFeignAutoConfigurationTest {
 	 */
 	@Test
 	public void testFeignBuilder() {
-		final Feign.Builder result = ascentFeignAutoConfiguration.feignBuilder();
+		final Feign.Builder result = referenceFeignAutoConfiguration.feignBuilder();
 		assertNotNull(result);
 
 	}
 
 	@Test
 	public void testSetterFactory() {
-		final Feign.Builder result = ascentFeignAutoConfiguration.feignBuilder();
+		final Feign.Builder result = referenceFeignAutoConfiguration.feignBuilder();
 
 		try {
 			final Field setterFactoryField = result.getClass().getDeclaredField("setterFactory");

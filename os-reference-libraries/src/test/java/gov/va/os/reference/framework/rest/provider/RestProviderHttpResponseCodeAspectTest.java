@@ -36,9 +36,6 @@ import gov.va.os.reference.framework.exception.ReferenceRuntimeException;
 import gov.va.os.reference.framework.log.ReferenceLogger;
 import gov.va.os.reference.framework.messages.Message;
 import gov.va.os.reference.framework.messages.MessageSeverity;
-import gov.va.os.reference.framework.rest.provider.MessageSeverityMatchRule;
-import gov.va.os.reference.framework.rest.provider.MessagesToHttpStatusRulesEngine;
-import gov.va.os.reference.framework.rest.provider.RestProviderHttpResponseCodeAspect;
 import gov.va.os.reference.framework.service.ServiceRequest;
 import gov.va.os.reference.framework.service.ServiceResponse;
 
@@ -217,7 +214,7 @@ public class RestProviderHttpResponseCodeAspectTest extends AbstractBaseLogTeste
 	}
 
 	@Test
-	public void testAroundAdviceCatchAscentExceptionLogging() {
+	public void testAroundAdviceCatchReferenceExceptionLogging() {
 		super.getAppender().clear();
 
 		restProviderLog.setLevel(Level.ERROR);
@@ -244,7 +241,8 @@ public class RestProviderHttpResponseCodeAspectTest extends AbstractBaseLogTeste
 		restProviderHttpResponseCodeAspect = new RestProviderHttpResponseCodeAspect();
 		Object returnObject = null;
 		try {
-			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenThrow(new Throwable("Unit Test Throwable converted to AscentRuntimException"));
+			Mockito.lenient().when(proceedingJoinPoint.proceed())
+					.thenThrow(new Throwable("Unit Test Throwable converted to ReferenceRuntimException"));
 			Mockito.lenient().when(proceedingJoinPoint.getSignature()).thenReturn(mockSignature);
 			Mockito.lenient().when(mockSignature.getMethod()).thenReturn(myMethod());
 			Mockito.lenient().when(proceedingJoinPoint.getTarget()).thenReturn(new TestClass());

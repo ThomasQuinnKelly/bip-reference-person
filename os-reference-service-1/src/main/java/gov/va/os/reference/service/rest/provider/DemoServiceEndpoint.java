@@ -116,7 +116,7 @@ public class DemoServiceEndpoint implements HealthIndicator, SwaggerResponseMess
 	}
 
 	/**
-	 * CODING PRACTICE FOR RETURN TYPES - Ascent Platform auditing aspects support two return types.
+	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two return types.
 	 * 1) An object derived from ServiceResponse. For ex: PersonInfoResponse as returned below.
 	 * 2) An object derived from ServiceResponse wrapped inside ResponseEntity.
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
@@ -144,7 +144,7 @@ public class DemoServiceEndpoint implements HealthIndicator, SwaggerResponseMess
 	}
 
 	/**
-	 * CODING PRACTICE FOR RETURN TYPES - Ascent Platform auditing aspects support two return types.
+	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two return types.
 	 * 1) An object derived from ServiceResponse. For ex: PersonInfoResponse as returned below.
 	 * 2) An object derived from ServiceResponse wrapped inside ResponseEntity.
 	 * The auditing aspect won't be triggered if the return type in not one of the above.

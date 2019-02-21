@@ -13,8 +13,6 @@ import org.junit.rules.ExpectedException;
 import org.slf4j.event.Level;
 
 import gov.va.os.reference.framework.AbstractBaseLogTester;
-import gov.va.os.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.os.reference.framework.exception.InterceptingExceptionTranslator;
 import gov.va.os.reference.framework.log.ReferenceLogger;
 
 public class InterceptingExceptionTranslatorTest extends AbstractBaseLogTester {
@@ -26,7 +24,7 @@ public class InterceptingExceptionTranslatorTest extends AbstractBaseLogTester {
 	private ReferenceLogger LOG = super.getLogger(InterceptingExceptionTranslator.class);
 
 	@Test
-	public void testAscentRunTimeExceptionDefault() throws Exception {
+	public void testReferenceRunTimeExceptionDefault() throws Exception {
 		InterceptingExceptionTranslator interceptingExceptionTranslator = new InterceptingExceptionTranslator();
 		interceptingExceptionTranslator.setDefaultExceptionType(ReferenceRuntimeException.class);
 
@@ -36,12 +34,12 @@ public class InterceptingExceptionTranslatorTest extends AbstractBaseLogTester {
 //		exceptions.expectMessage((String) null);
 		exceptions.expectCause(Matchers.<Throwable> equalTo(throwable));
 
-		interceptingExceptionTranslator.afterThrowing(this.getClass().getMethod("testAscentRunTimeExceptionDefault"), null, null,
+		interceptingExceptionTranslator.afterThrowing(this.getClass().getMethod("testReferenceRunTimeExceptionDefault"), null, null,
 				throwable);
 	}
 
 	@Test
-	public void testAscentRunTimeExceptionMapNullAndDefaultExceptionTypeNull() throws Exception {
+	public void testReferenceRunTimeExceptionMapNullAndDefaultExceptionTypeNull() throws Exception {
 		super.getAppender().clear();
 
 		InterceptingExceptionTranslator interceptingExceptionTranslator = new InterceptingExceptionTranslator();
@@ -49,12 +47,12 @@ public class InterceptingExceptionTranslatorTest extends AbstractBaseLogTester {
 		Throwable throwable = new Throwable("Cause Unit Test");
 
 		interceptingExceptionTranslator.afterThrowing(
-				this.getClass().getMethod("testAscentRunTimeExceptionMapNullAndDefaultExceptionTypeNull"), null, null, throwable);
+				this.getClass().getMethod("testReferenceRunTimeExceptionMapNullAndDefaultExceptionTypeNull"), null, null, throwable);
 
 		Assert.assertTrue(super.getAppender().get(0).getMessage().startsWith(
 				"InterceptingExceptionTranslator caught exception, handling it as configured."
 						+ "  Here are details [java.lang.Throwable thrown by gov.va.os.reference.framework.exception."
-						+ "InterceptingExceptionTranslatorTest.testAscentRunTimeExceptionMapNullAndDefaultExceptionTypeNull]"
+						+ "InterceptingExceptionTranslatorTest.testReferenceRunTimeExceptionMapNullAndDefaultExceptionTypeNull]"
 						+ " args [null]."));
 	}
 

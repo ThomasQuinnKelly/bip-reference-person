@@ -18,7 +18,6 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 
 import gov.va.os.reference.framework.rest.provider.RestProviderHttpResponseCodeAspect;
 import gov.va.os.reference.starter.audit.autoconfigure.ReferenceAuditAutoConfiguration;
-import gov.va.os.reference.starter.rest.autoconfigure.ReferenceRestAutoConfiguration;
 import gov.va.os.reference.starter.security.autoconfigure.ReferenceSecurityAutoConfiguration;
 
 /**
@@ -29,16 +28,19 @@ public class ReferenceRestAutoConfigurationTest {
 
 	private static final String CONNECTION_TIMEOUT = "20000";
 
-	private ReferenceRestAutoConfiguration ascentRestAutoConfiguration;
+	private ReferenceRestAutoConfiguration referenceRestAutoConfiguration;
 
 	private AnnotationConfigWebApplicationContext context;
 
 	@Before
 	public void setup() {
 		context = new AnnotationConfigWebApplicationContext();
-		TestPropertyValues.of("feign.hystrix.enabled=true").applyTo(context);;
-		TestPropertyValues.of("ascent.rest.client.connection-timeout=" + CONNECTION_TIMEOUT).applyTo(context);;
-		context.register(JacksonAutoConfiguration.class, SecurityAutoConfiguration.class, EmbeddedWebServerFactoryCustomizerAutoConfiguration.class,
+		TestPropertyValues.of("feign.hystrix.enabled=true").applyTo(context);
+		;
+		TestPropertyValues.of("reference.rest.client.connection-timeout=" + CONNECTION_TIMEOUT).applyTo(context);
+		;
+		context.register(JacksonAutoConfiguration.class, SecurityAutoConfiguration.class,
+				EmbeddedWebServerFactoryCustomizerAutoConfiguration.class,
 				ReferenceSecurityAutoConfiguration.class,
 				ReferenceAuditAutoConfiguration.class, ReferenceRestAutoConfiguration.class,
 				RestProviderHttpResponseCodeAspect.class);
@@ -46,9 +48,9 @@ public class ReferenceRestAutoConfigurationTest {
 		context.refresh();
 		assertNotNull(context);
 
-		// test configuration and give ascentRestAutoConfiguration a value for other tests
-		ascentRestAutoConfiguration = context.getBean(ReferenceRestAutoConfiguration.class);
-		assertNotNull(ascentRestAutoConfiguration);
+		// test configuration and give referenceRestAutoConfiguration a value for other tests
+		referenceRestAutoConfiguration = context.getBean(ReferenceRestAutoConfiguration.class);
+		assertNotNull(referenceRestAutoConfiguration);
 	}
 
 	@After
@@ -60,28 +62,30 @@ public class ReferenceRestAutoConfigurationTest {
 
 	@Test
 	public void testConfiguration_Broken() {
-		TestPropertyValues.of("ascent.rest.client.connection-timeout=BLAHBLAH").applyTo(context);;
+		TestPropertyValues.of("reference.rest.client.connection-timeout=BLAHBLAH").applyTo(context);
+		;
 
 		try {
 			context.refresh();
-			ascentRestAutoConfiguration.restClientTemplate();
+			referenceRestAutoConfiguration.restClientTemplate();
 			fail("ReferenceRestAutoConfiguration should have thrown IllegalStateException or BeansException");
 		} catch (Exception e) {
 			assertTrue(BeansException.class.isAssignableFrom(e.getClass()));
 		} finally {
-			TestPropertyValues.of("ascent.rest.client.connection-timeout=" + CONNECTION_TIMEOUT).applyTo(context);;
+			TestPropertyValues.of("reference.rest.client.connection-timeout=" + CONNECTION_TIMEOUT).applyTo(context);
+			;
 			context.refresh();
-			ascentRestAutoConfiguration = context.getBean(ReferenceRestAutoConfiguration.class);
-			assertNotNull(ascentRestAutoConfiguration);
+			referenceRestAutoConfiguration = context.getBean(ReferenceRestAutoConfiguration.class);
+			assertNotNull(referenceRestAutoConfiguration);
 		}
 	}
 
 	@Test
 	public void testWebConfiguration() throws Exception {
-		assertNotNull(ascentRestAutoConfiguration.restProviderHttpResponseCodeAspect());
-		assertNotNull(ascentRestAutoConfiguration.restProviderTimerAspect());
-		assertNotNull(ascentRestAutoConfiguration.restClientTemplate());
-		assertNotNull(ascentRestAutoConfiguration.tokenClientHttpRequestInterceptor());
+		assertNotNull(referenceRestAutoConfiguration.restProviderHttpResponseCodeAspect());
+		assertNotNull(referenceRestAutoConfiguration.restProviderTimerAspect());
+		assertNotNull(referenceRestAutoConfiguration.restClientTemplate());
+		assertNotNull(referenceRestAutoConfiguration.tokenClientHttpRequestInterceptor());
 	}
 
 }

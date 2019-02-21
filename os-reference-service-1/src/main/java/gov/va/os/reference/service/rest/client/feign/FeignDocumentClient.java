@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import gov.va.os.reference.document.service.api.transfer.GetDocumentTypesResponse;
 import gov.va.os.reference.service.config.ReferenceDocumentServiceFeignConfig;
 
-@FeignClient(value = "ascent-document-service",
+@FeignClient(value = "reference-document-service",
 		fallback = FeignDocumentClientFallback.class,
 		configuration = ReferenceDocumentServiceFeignConfig.class)
 public interface FeignDocumentClient { // NOSONAR not a functional interface

@@ -5,12 +5,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import gov.va.os.reference.framework.log.ReferenceLogMarkers;
-
 public class ReferenceLogMarkersTest {
 
 	@Test
-	public final void testAscentLogMarkers() {
+	public final void testReferenceLogMarkers() {
 		assertNotNull(ReferenceLogMarkers.FATAL.getMarker());
 		assertNotNull(ReferenceLogMarkers.EXCEPTION.getMarker());
 		assertNotNull(ReferenceLogMarkers.TEST.getMarker());

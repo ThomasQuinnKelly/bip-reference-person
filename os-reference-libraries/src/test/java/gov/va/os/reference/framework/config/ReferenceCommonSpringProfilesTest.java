@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import gov.va.os.reference.framework.config.ReferenceCommonSpringProfiles;
-
 public class ReferenceCommonSpringProfilesTest {
 
 	/**
@@ -159,7 +157,7 @@ public class ReferenceCommonSpringProfilesTest {
 	}
 
 	@Test(expected = IllegalStateException.class)
-	public void ascentCommonSpringProfilesConstructor() throws Exception {
+	public void referenceCommonSpringProfilesConstructor() throws Exception {
 		new ReferenceCommonSpringProfiles();
 	}
 }

@@ -30,7 +30,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 
 /**
- * Configure springboot starter for the Ascent platform.
+ * Configure springboot starter for the platform.
  * Similar to {@code UsernamePasswordAuthenticationFilter}
  */
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
@@ -41,7 +41,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 	/**
 	 * Create the filter.
-	 * 
+	 *
 	 * @param jwtAuthenticationProperties
 	 * @param jwtAuthenticationSuccessHandler
 	 * @param jwtAuthenticationProvider
@@ -82,7 +82,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 	/**
 	 * Audit any errors.
-	 * 
+	 *
 	 * @param cause - cause
 	 * @param request - original request
 	 */
@@ -118,7 +118,7 @@ class IgnoredRequestMatcher implements RequestMatcher {
 
 	/**
 	 * Requests to ignore based on ant path configurations.
-	 * 
+	 *
 	 * @param baselineMatches
 	 * @param ignoreUrls
 	 */
@@ -129,7 +129,7 @@ class IgnoredRequestMatcher implements RequestMatcher {
 
 	/**
 	 * Requests to ignore based on ant path configurations.
-	 * 
+	 *
 	 * @param baselineMatches
 	 * @param ignoreMatches
 	 */
@@ -140,7 +140,7 @@ class IgnoredRequestMatcher implements RequestMatcher {
 
 	/**
 	 * Add exclusion URLs to the list.
-	 * 
+	 *
 	 * @param exclusionUrls
 	 * @return RequestMatcher
 	 */

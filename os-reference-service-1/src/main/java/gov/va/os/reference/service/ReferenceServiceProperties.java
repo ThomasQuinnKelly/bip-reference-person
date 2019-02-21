@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties
-@ConfigurationProperties(prefix="ascent-demo-service")
+@ConfigurationProperties(prefix="reference-demo-service")
 @RefreshScope //to demo refreshing the properties after app running
 public class ReferenceServiceProperties {
 

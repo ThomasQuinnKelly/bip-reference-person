@@ -59,20 +59,14 @@ import gov.va.os.reference.framework.ws.client.remote.RemoteServiceCallIntercept
 @Configuration
 public class BaseWsClientConfig {
 
-	/**
-	 * The Constant LOGGER.
-	 */
+	/** Logger for this class */
 	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(BaseWsClientConfig.class);
 
-	/**
-	 * The Constant JAVA_IO_TMPDIR.
-	 */
+	/** Java's tmpdir property */
 	protected static final String JAVA_IO_TMPDIR = "java.io.tmpdir";
 
-	/**
-	 * The Constant PACKAGE_ASCENT_FOUNDATION_EXCEPTION.
-	 */
-	public static final String PACKAGE_ASCENT_FRAMEWORK_EXCEPTION = "gov.va.os.reference.framework.exception";
+	/** base package for framework exceptions */
+	public static final String PACKAGE_REFERENCE_FRAMEWORK_EXCEPTION = "gov.va.os.reference.framework.exception";
 
 	/**
 	 * Creates the default web service template using the default audit request/response interceptors and no web service interceptors.
@@ -524,7 +518,7 @@ public class BaseWsClientConfig {
 		// define packages that contain "our exceptions" that we want to propagate through
 		// without again logging and/or wrapping
 		final Set<String> exclusionSet = new HashSet<>();
-		exclusionSet.add(PACKAGE_ASCENT_FRAMEWORK_EXCEPTION);
+		exclusionSet.add(PACKAGE_REFERENCE_FRAMEWORK_EXCEPTION);
 		interceptingExceptionTranslator.setExclusionSet(exclusionSet);
 
 		return interceptingExceptionTranslator;

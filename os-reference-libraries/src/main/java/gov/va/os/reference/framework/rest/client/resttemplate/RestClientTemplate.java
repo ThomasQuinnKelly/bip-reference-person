@@ -15,7 +15,7 @@ public class RestClientTemplate {
 	/**
 	 * Create the client template with the default Spring {@link RestTemplate}.
 	 * <p>
-	 * This type of client RestTemplate is not appropriate for most Ascent inter-service operations.</br>
+	 * This type of client RestTemplate is not appropriate for most inter-service operations.</br>
 	 * The default template:
 	 * <ul>
 	 * <li>does <b>not</> derive request timeout values from the application properties
@@ -30,7 +30,7 @@ public class RestClientTemplate {
 	/**
 	 * Create the client template with a pre-configured {@link RestTemplate}.
 	 * <p>
-	 * For most Ascent inter-service calls, the pre-configured template should:
+	 * For most inter-service calls, the pre-configured template should:
 	 * <ul>
 	 * <li>derive request timeout values from the application properties
 	 * <li>attach the JWT from the existing session to the outgoing request

@@ -14,7 +14,7 @@ import gov.va.os.reference.framework.exception.ReferenceRuntimeException;
 public class ReferenceLoggerFactoryTest {
 
 	@Test
-	public final void testAscentLoggerFactory() throws NoSuchMethodException, SecurityException {
+	public final void testReferenceLoggerFactory() throws NoSuchMethodException, SecurityException {
 		Constructor<ReferenceLoggerFactory> constructor = ReferenceLoggerFactory.class.getDeclaredConstructor();
 		constructor.setAccessible(true);
 		try {

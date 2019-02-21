@@ -14,8 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import gov.va.os.reference.framework.audit.AuditEvents;
-import gov.va.os.reference.framework.audit.Auditable;
 import gov.va.os.reference.framework.messages.MessageSeverity;
 import gov.va.os.reference.framework.service.ServiceRequest;
 import gov.va.os.reference.framework.service.ServiceResponse;
@@ -73,7 +71,8 @@ class AuditServiceRequest extends ServiceRequest {
 }
 
 @Configuration
-@ComponentScan("gov.va.os.reference.framework.audit")
+@ComponentScan({ "gov.va.os.reference.framework.audit",
+		"gov.va.os.reference.starter.audit.autoconfigure" })
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 class Config {
 

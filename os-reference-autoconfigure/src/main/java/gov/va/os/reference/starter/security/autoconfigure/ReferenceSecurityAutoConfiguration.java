@@ -33,7 +33,7 @@ import gov.va.os.reference.security.jwt.JwtParser;
 import gov.va.os.reference.security.jwt.JwtTokenService;
 
 /**
- * Autoconfiguration for various authentication types on the Ascent Platform (basic auth, JWT)
+ * Autoconfiguration for various authentication types on the Platform (basic auth, JWT)
  */
 @Configuration
 @AutoConfigureAfter(SecurityAutoConfiguration.class)
@@ -61,12 +61,12 @@ public class ReferenceSecurityAutoConfiguration {
 		protected void configure(HttpSecurity http) throws Exception {
 			http.httpBasic().and()
 					.authorizeRequests()
-					    //.antMatchers("").permitAll()
-						.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-						.requestMatchers(EndpointRequest.to("info")).permitAll()
-						.requestMatchers(EndpointRequest.to("metrics")).permitAll()
-						.requestMatchers(EndpointRequest.to("env")).permitAll()
-						.and().csrf().disable();
+					// .antMatchers("").permitAll()
+					.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+					.requestMatchers(EndpointRequest.to("info")).permitAll()
+					.requestMatchers(EndpointRequest.to("metrics")).permitAll()
+					.requestMatchers(EndpointRequest.to("env")).permitAll()
+					.and().csrf().disable();
 		}
 
 		private void addInMemoryAuthenticationProvider(AuthenticationManagerBuilder auth) {
@@ -86,7 +86,7 @@ public class ReferenceSecurityAutoConfiguration {
 	 * Adapter for JWT
 	 */
 	@Configuration
-	@ConditionalOnProperty(prefix = "ascent.security.jwt", name = "enabled", matchIfMissing = true)
+	@ConditionalOnProperty(prefix = "reference.security.jwt", name = "enabled", matchIfMissing = true)
 	@Order(JwtAuthenticationProperties.AUTH_ORDER)
 	protected static class JwtWebSecurityConfigurerAdapter
 			extends WebSecurityConfigurerAdapter {
@@ -133,7 +133,7 @@ public class ReferenceSecurityAutoConfiguration {
 	 * Adapter that only processes URLs specified in the filter
 	 */
 	@Configuration
-	@ConditionalOnProperty(prefix = "ascent.security.jwt", name = "enabled", havingValue = "false")
+	@ConditionalOnProperty(prefix = "reference.security.jwt", name = "enabled", havingValue = "false")
 	@Order(JwtAuthenticationProperties.AUTH_ORDER)
 	protected static class JwtNoWebSecurityConfigurerAdapter
 			extends WebSecurityConfigurerAdapter {
@@ -196,7 +196,7 @@ public class ReferenceSecurityAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	@ConditionalOnExpression("${ascent.security.jwt.enabled:true} && ${ascent.security.jwt.generate.enabled:true}")
+	@ConditionalOnExpression("${reference.security.jwt.enabled:true} && ${reference.security.jwt.generate.enabled:true}")
 	public TokenResource tokenResource() {
 		return new TokenResource();
 	}

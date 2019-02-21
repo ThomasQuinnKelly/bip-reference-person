@@ -21,7 +21,7 @@ import gov.va.os.reference.service.utils.HystrixCommandConstants;
 @Component
 @Qualifier("IMPL")
 @RefreshScope
-@DefaultProperties(groupKey = HystrixCommandConstants.ASCENT_DEMO_SERVICE_GROUP_KEY)
+@DefaultProperties(groupKey = HystrixCommandConstants.REFERENCE_DEMO_SERVICE_GROUP_KEY)
 public class DemoServiceImpl implements DemoService {
 
 	private static final String THROWN_ON_PURPOSE = "Thrown on purpose!";
@@ -29,7 +29,7 @@ public class DemoServiceImpl implements DemoService {
 	@Autowired
 	private ReferenceServiceProperties properties;
 
-	@Value("${ascent-demo-service.sampleProperty}")
+	@Value("${reference-demo-service.sampleProperty}")
 	private String sampleProperty;
 
 	@Override

@@ -9,7 +9,7 @@ import gov.va.os.reference.starter.feign.autoconfigure.ReferenceFeignAutoConfigu
 public class ReferenceServiceFeignConfig extends ReferenceFeignAutoConfiguration{
 
     public ReferenceServiceFeignConfig() {
-    		super.setGroupKey(HystrixCommandConstants.ASCENT_DEMO_SERVICE_GROUP_KEY); 
+    		super.setGroupKey(HystrixCommandConstants.REFERENCE_DEMO_SERVICE_GROUP_KEY); 
     }	
     
 }

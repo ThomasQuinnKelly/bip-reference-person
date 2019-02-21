@@ -1,7 +1,7 @@
 package gov.va.os.reference.framework.config;
 
 /**
- * Constants to store the profiles commonly used in ASCENT applications.
+ * Constants to store the profiles commonly used in the applications.
  *
  */
 public final class ReferenceCommonSpringProfiles {

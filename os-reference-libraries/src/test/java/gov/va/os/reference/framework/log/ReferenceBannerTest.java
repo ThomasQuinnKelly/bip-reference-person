@@ -11,8 +11,6 @@ import org.slf4j.event.Level;
 
 import com.github.lalyos.jfiglet.FigletFont;
 
-import gov.va.os.reference.framework.log.ReferenceBanner;
-
 public class ReferenceBannerTest {
 
 	private static final String TEXT = "TEST BANNER";
@@ -22,7 +20,7 @@ public class ReferenceBannerTest {
 	}
 
 	@Test
-	public final void testAscentLogBanner() throws IOException {
+	public final void testReferenceLogBanner() throws IOException {
 		String compare = "\n" + FigletFont.convertOneLine(ReferenceBanner.FONT_FILE, Level.DEBUG.name() + ": " + TEXT.toUpperCase());
 		ReferenceBanner banner = new ReferenceBanner(TEXT, Level.DEBUG);
 		assertNotNull(banner);
@@ -30,7 +28,7 @@ public class ReferenceBannerTest {
 	}
 
 	@Test
-	public final void testAscentLogBannerNullBannerText() throws IOException {
+	public final void testReferenceLogBannerNullBannerText() throws IOException {
 		String compare = "\n" + FigletFont.convertOneLine(ReferenceBanner.FONT_FILE, Level.DEBUG.name() + ": ");
 		ReferenceBanner banner = new ReferenceBanner(null, Level.DEBUG);
 		assertNotNull(banner);

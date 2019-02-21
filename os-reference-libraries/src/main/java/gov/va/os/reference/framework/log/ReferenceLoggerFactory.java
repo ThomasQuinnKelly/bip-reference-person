@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import gov.va.os.reference.framework.exception.ReferenceRuntimeException;
 
 /**
- * This class wraps the SLF4J logger to add logging enhancements for the Ascent platform.
+ * This class wraps the SLF4J logger to add logging enhancements for the platform.
  * <p>
  * If a future upgrade of SLF4J changes the Logger interface, changes will be required in the ReferenceLogger class.
  *
@@ -22,7 +22,7 @@ public final class ReferenceLoggerFactory {
 	}
 
 	/**
-	 * Gets a SLF4J-compliant logger, enhanced for Ascent applications, for the specified class.
+	 * Gets a SLF4J-compliant logger, enhanced for applications, for the specified class.
 	 *
 	 * @param clazz the Class for which logging is desired
 	 * @return ReferenceLogger
@@ -33,7 +33,7 @@ public final class ReferenceLoggerFactory {
 	}
 
 	/**
-	 * Gets a SLF4J-compliant logger, enhanced for Ascent applications, for the specified name.
+	 * Gets a SLF4J-compliant logger, enhanced for applications, for the specified name.
 	 *
 	 * @param name the name under which logging is desired
 	 * @return ReferenceLogger

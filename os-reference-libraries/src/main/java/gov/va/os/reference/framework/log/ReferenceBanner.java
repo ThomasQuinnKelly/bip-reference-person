@@ -36,11 +36,11 @@ public class ReferenceBanner {
 	}
 
 	/**
-	 * Convenience method. Same as {@link #AscentLogBanner(String, Level)}
+	 * Convenience method. Same as {@link #ReferenceBanner(String, Level)}
 	 *
 	 * @param bannerText the banner text
 	 * @param level the log level reported by the banner
-	 * @return AscentLogBanner
+	 * @return ReferenceBanner
 	 */
 	public static ReferenceBanner newBanner(final String bannerText, final Level level) {
 		return new ReferenceBanner(bannerText, level);
