@@ -60,7 +60,6 @@
 		<templating-maven-plugin.version>1.0.0</templating-maven-plugin.version>
 		<jaxb2-maven-plugin-codehaus.version>1.5</jaxb2-maven-plugin-codehaus.version>
 		<maven-jaxb2-plugin-jvnet.version>0.14.0</maven-jaxb2-plugin-jvnet.version>
-		<maven-cucumber-reporting.version>3.14.0</maven-cucumber-reporting.version>
 		<krasa-jaxb-tools.version>1.5</krasa-jaxb-tools.version>
 		<jaxb2-basics-annotate.version>1.1.0</jaxb2-basics-annotate.version>
 		<!-- build pipeline plugins -->
@@ -72,16 +71,16 @@
 		<spring-metrics.version>0.5.1.RELEASE</spring-metrics.version>
 		<prometheus.version>0.5.0</prometheus.version>
 
-		<!-- testing - unit / integratino / performance -->
+		<!-- testing - unit / integration / performance -->
 		<surefire-junit47.version>2.22.0</surefire-junit47.version>
-		<maven-cucumber-reporting.version>2.8.0</maven-cucumber-reporting.version>
+		<maven-cucumber-reporting.version>4.4.0</maven-cucumber-reporting.version>
 		<jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
-		<jmeter-maven-plugin.version>2.7.0</jmeter-maven-plugin.version>
-		<jmeter-maven-plugin.versionRange>[2.7.0,)</jmeter-maven-plugin.versionRange>
-		<testng.version>6.9.10</testng.version>
+		<jmeter-maven-plugin.version>2.8.5</jmeter-maven-plugin.version>
+		<jmeter-maven-plugin.versionRange>[2.8.5,)</jmeter-maven-plugin.versionRange>
+		<testng.version>6.14.3</testng.version>
 		<cucumber.version>1.2.5</cucumber.version>
-		<restassured.version>3.1.1</restassured.version>
-		<selenium-htmlunit-driver.version>2.52.0</selenium-htmlunit-driver.version>
+		<restassured.version>3.3.0</restassured.version>
+		
 
 		<!-- application plugins -->
 		<spring-cloud-dependencies.version>Greenwich.RELEASE</spring-cloud-dependencies.version>
@@ -175,11 +174,7 @@
 				<artifactId>wss4j</artifactId>
 				<version>1.6.18</version>
 			</dependency>
-			<dependency>
-				<groupId>org.seleniumhq.selenium</groupId>
-				<artifactId>selenium-api</artifactId>
-				<version>3.11.0</version>
-			</dependency>
+			
 			<!-- Micormeter core dependecy -->
 			<dependency>
 				<groupId>io.micrometer</groupId>
@@ -275,31 +270,7 @@
 					<skipTests>${skipTests}</skipTests>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>net.masterthought</groupId>
-				<artifactId>maven-cucumber-reporting</artifactId>
-				<version>${maven-cucumber-reporting.version}</version>
-				<executions>
-					<execution>
-						<id>execution</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<skipTests>${skipITs}</skipTests>
-							<projectName>${project.artifactId}</projectName>
-							<outputDirectory>${project.build.directory}/site/cucumber-reports
-							</outputDirectory>
-							<cucumberOutput>${project.build.directory}/cucumber.json
-							</cucumberOutput>
-							<skippedFails>true</skippedFails>
-							<enableFlashCharts>false</enableFlashCharts>
-							<buildNumber>${project.version}</buildNumber>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+			
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
@@ -556,6 +527,31 @@
 						</execution>
 					</executions>
 				</plugin>
+				<plugin>
+				<groupId>net.masterthought</groupId>
+				<artifactId>maven-cucumber-reporting</artifactId>
+				<version>${maven-cucumber-reporting.version}</version>
+				<executions>
+					<execution>
+						<id>execution</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<skip>${skipITs}</skip>
+							<projectName>${project.artifactId}</projectName>
+							<outputDirectory>${project.build.directory}/site/cucumber-reports
+							</outputDirectory>
+							<cucumberOutput>${project.build.directory}/cucumber.json
+							</cucumberOutput>
+							<skippedFails>true</skippedFails>
+							<enableFlashCharts>false</enableFlashCharts>
+							<buildNumber>${project.version}</buildNumber>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 				<!-- NOTE: Plugins for JMeter Performance Tests -->
 				<plugin>
 					<groupId>com.lazerycode.jmeter</groupId>
