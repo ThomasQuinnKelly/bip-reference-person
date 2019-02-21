@@ -39,20 +39,20 @@ ascent:
       demoService: 600
 ---
 spring.profiles: default, local-int
-# spring.profiles.include: remote_client_sims, embedded-redis
-spring.profiles.include: remote_client_sims
+spring.profiles.include: remote_client_sims, embedded-redis
+#spring.profiles.include: remote_client_sims
 
-#ascent:
-#  cache:
-#    redis-config: 
-#      host: localhost
-#      port: 6379
+reference:
+  cache:
+    redis-config: 
+      host: localhost
+      port: 6379
 spring: 
-#  cache:
-#    type: redis
-#  redis: 
-#    host: localhost
-#    port: 6379
+  cache:
+    type: redis
+  redis: 
+    host: localhost
+    port: 6379
   sleuth:
     stream:
       enabled: false
