@@ -79,7 +79,7 @@
 		<jmeter-maven-plugin.versionRange>[2.8.5,)</jmeter-maven-plugin.versionRange>
 		<testng.version>6.14.3</testng.version>
 		<cucumber.version>1.2.5</cucumber.version>
-		<restassured.version>3.3.0</restassured.version>
+		<rest-assured.version>3.3.0</rest-assured.version>
 		
 
 		<!-- application plugins -->

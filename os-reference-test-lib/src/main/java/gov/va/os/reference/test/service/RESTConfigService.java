@@ -2,11 +2,10 @@ package gov.va.os.reference.test.service;
 
 import java.net.URL;
 import java.util.Properties;
-import java.util.regex.Pattern;
+
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import gov.va.os.reference.test.util.PropertiesUtil;
 
@@ -35,8 +34,7 @@ import gov.va.os.reference.test.util.PropertiesUtil;
  *
  */
 public class RESTConfigService {
-	private static final Logger LOGGER = LoggerFactory.getLogger(RESTConfigService.class);
-	private static final String CHARSET = "UTF-8";
+	
 
 	/** The singleton instance of this class */
 	private static RESTConfigService instance = null;
@@ -46,7 +44,6 @@ public class RESTConfigService {
 	/** The name of the environment in which testing is occurring */
 	static final String TEST_ENV = "test.env";
 	/** URL regex for use by matchers */
-	private static final Pattern urlPattern = Pattern.compile("(http|https)://([A-Za-z0-9\\-\\.]+)(:(\\d+))?$");
 
 	/**
 	 * Do not instantiate
