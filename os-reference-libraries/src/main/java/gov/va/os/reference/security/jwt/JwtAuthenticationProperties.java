@@ -8,16 +8,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * The values assigned to members in this class are defaults,
  * and are typically overridden in yml and spring configuration.
  */
-@ConfigurationProperties(prefix = "ascent.security.jwt")
+@ConfigurationProperties(prefix = "os.reference.security.jwt")
 public class JwtAuthenticationProperties {
 	private boolean enabled = true;
 	private String header = "Authorization";
 	private String secret = "secret";
 	private String issuer = "Vets.gov";
 	private int expireInSeconds = 900;
-	private String filterProcessUrl = "/**";
-	private String[] excludeUrls = { "/**", "/v2/api-docs/**", "/configuration/ui/**", "/swagger-resources/**",
-			"/configuration/security/**", "/swagger-ui.html", "/webjars/**", "/**/token", "/**/swagger/error-keys.html" };
+	private String[] filterProcessUrls = { "/api/**" };
+	private String[] excludeUrls = { "/**" };
 
 	public static final int AUTH_ORDER = SecurityProperties.BASIC_AUTH_ORDER - 2;
 	public static final int NO_AUTH_ORDER = AUTH_ORDER + 1;
@@ -99,8 +98,8 @@ public class JwtAuthenticationProperties {
 	 * 
 	 * @return String
 	 */
-	public String getFilterProcessUrl() {
-		return filterProcessUrl;
+	public String[] getFilterProcessUrls() {
+		return filterProcessUrls;
 	}
 
 	/**
@@ -108,8 +107,8 @@ public class JwtAuthenticationProperties {
 	 * 
 	 * @param filterProcessUrl
 	 */
-	public void setFilterProcessUrl(String filterProcessUrl) {
-		this.filterProcessUrl = filterProcessUrl;
+	public void setFilterProcessUrls(String[] filterProcessUrls) {
+		this.filterProcessUrls = filterProcessUrls;
 	}
 
 	/**

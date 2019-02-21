@@ -13,7 +13,7 @@ import gov.va.os.reference.service.config.ReferenceServiceFeignConfig;
 		configuration = ReferenceServiceFeignConfig.class)
 public interface FeignEchoClient { // NOSONAR not a functional interface
 
-	@RequestMapping(value = "/demo/v1/echo", method = RequestMethod.GET)
+	@RequestMapping(value = "/service-1/v1/echo", method = RequestMethod.GET)
 	ResponseEntity<EchoHostServiceResponse> echo();
 
 }

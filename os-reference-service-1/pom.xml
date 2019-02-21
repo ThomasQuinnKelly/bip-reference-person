@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
     
     <parent>
-		<groupId>gov.va.os.reference.spring.boot</groupId>
+		<groupId>gov.va.os.reference</groupId>
 		<artifactId>os-reference-parentpom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../os-reference-parentpom</relativePath>
@@ -18,17 +18,17 @@
     
     <dependencies>
     	<dependency>
-            <groupId>gov.va.os.reference.spring.boot</groupId>
+            <groupId>gov.va.os.reference</groupId>
             <artifactId>os-reference-libraries</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 		 <dependency>
-            <groupId>gov.va.os.reference.spring.boot</groupId>
+            <groupId>gov.va.os.reference</groupId>
             <artifactId>os-reference-partner</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>gov.va.os.reference.spring.boot</groupId>
+            <groupId>gov.va.os.reference</groupId>
             <artifactId>os-reference-autoconfigure</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
