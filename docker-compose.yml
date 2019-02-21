@@ -63,6 +63,17 @@ services:
     networks:
       - bip
 
+  prometheus:
+    image:  prom/prometheus:v2.5.0
+    ports:
+      - "9090:9090"
+    volumes: 
+      - "./local-dev/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+    networks:
+      - bip
+    depends_on:
+      - consul
+
 networks:
   bip:
     driver: bridge
