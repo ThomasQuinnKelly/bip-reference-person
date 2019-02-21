@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>gov.va.os.reference.spring.boot</groupId>
+		<groupId>gov.va.os.reference</groupId>
 		<artifactId>os-reference-parentpom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
@@ -74,7 +74,6 @@
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
-			<version>${restassured.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>commons-logging</groupId>
@@ -85,17 +84,14 @@
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>json-path</artifactId>
-			<version>${restassured.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>xml-path</artifactId>
-			<version>${restassured.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>json-schema-validator</artifactId>
-			<version>${restassured.version}</version>
 		</dependency>
 
 
