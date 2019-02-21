@@ -59,8 +59,12 @@ reference:
     defaultExpires: 86400 # (Seconds)
     expires:
       #Cache Name: TTL (In Seconds)
-      demoPersonService: 1800
-      demoService: 600
+      - 
+        name: demoPersonService
+        ttl: 1800
+      - 
+        name: demoService
+        ttl: 600
     redis-config:
       host: localhost
       port: 6379
