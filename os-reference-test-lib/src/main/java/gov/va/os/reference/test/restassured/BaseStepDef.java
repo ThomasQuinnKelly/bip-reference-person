@@ -10,7 +10,6 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -183,7 +182,9 @@ public class BaseStepDef {
 				tblHeader.put((String) entry.getKey(), (String) entry.getValue());
 			}
 		} finally {
-			IOUtils.closeQuietly(is);
+			if (is !=null) {
+				is.close();
+			}
 		}
 
 		passHeaderInformation(tblHeader);
