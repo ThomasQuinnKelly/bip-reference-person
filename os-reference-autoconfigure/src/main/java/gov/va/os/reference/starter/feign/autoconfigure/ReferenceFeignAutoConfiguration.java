@@ -30,7 +30,7 @@ public class ReferenceFeignAutoConfiguration {
 
 	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(ReferenceFeignAutoConfiguration.class);
 
-	@Value("${ascent.rest.client.connection-timeout:20000}")
+	@Value("${os.reference.rest.client.connection-timeout:20000}")
 	private String connectionTimeout;
 
 	private String groupKey = "defaultGroup";
@@ -83,7 +83,7 @@ public class ReferenceFeignAutoConfiguration {
 		Defense.state(connTimeoutValue > 0,
 				"Invalid settings: Connection Timeout value must be greater than zero.\n"
 						+ "  - Ensure spring scan directive includes gov.va.os.reference.framework.rest.client.resttemplate;\n"
-						+ "  - Application property must be set to non-zero positive integer values for ascent.rest.client.connection-timeout {} "
+						+ "  - Application property must be set to non-zero positive integer values for os.reference.rest.client.connection-timeout {} "
 						+ connectionTimeout + ".");
 		final int connTimeoutValueFinal = connTimeoutValue;
 

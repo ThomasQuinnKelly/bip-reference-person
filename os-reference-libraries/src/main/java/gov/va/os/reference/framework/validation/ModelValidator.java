@@ -43,7 +43,7 @@ public class ModelValidator implements Serializable {
 	
 	private static final String BOOTSTRAP_YML = "bootstrap.yml";
 	
-	private static final String ASCENT_VALIDATION_RESOURCE_PROP= "ascent.validation.messages.user-resource-bundle";
+	private static final String ASCENT_VALIDATION_RESOURCE_PROP= "os.reference.validation.messages.user-resource-bundle";
 
 	/** The factory. */
 	private transient ValidatorFactory factory;
@@ -81,7 +81,7 @@ public class ModelValidator implements Serializable {
 	         
 	    } catch (Exception e) {
 	        LOGGER.error("Failed to read bootstrap.yml to get "
-	        		+ "ascent.validation.messages.user-resource-bundle :" + e.getMessage());
+	        		+ "os.reference.validation.messages.user-resource-bundle :" + e.getMessage());
 	        return null;
 	    }
 	}
