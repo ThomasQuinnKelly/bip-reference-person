@@ -12,6 +12,7 @@ services:
       - spring.cloud.consul.host=consul
       - spring.cloud.vault.host=vault
       - spring.cloud.consul.discovery.acl-token=7652ba4c-0f6e-8e75-5724-5e083d72cfe4
+      - spring.redis.host=redis
       - CONSUL_TOKEN=7652ba4c-0f6e-8e75-5724-5e083d72cfe4
     ports:
       - "8080:8080"
