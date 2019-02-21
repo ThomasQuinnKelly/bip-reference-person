@@ -29,7 +29,7 @@ public class DemoServiceImpl implements DemoService {
 	@Autowired
 	private ReferenceServiceProperties properties;
 
-	@Value("${ascent-demo-service.sampleProperty}")
+	@Value("${service-1.sampleProperty}")
 	private String sampleProperty;
 
 	@Override

@@ -3,15 +3,16 @@ version: "3.3"
 services:
   
   # Fill this out once the dev team has their app code into the repo
-  os-reference-spring-boot-service:
-    image: bip/os-reference-spring-boot-service
+  os-reference-service-1:
+    image: bip/os-reference-service-1
     build:
-      context: ./os-reference-spring-boot-service
+      context: ./os-reference-service-1
     environment:
       - spring.profiles.active=local-int
       - spring.cloud.consul.host=consul
       - spring.cloud.vault.host=vault
       - spring.cloud.consul.discovery.acl-token=7652ba4c-0f6e-8e75-5724-5e083d72cfe4
+      - CONSUL_TOKEN=7652ba4c-0f6e-8e75-5724-5e083d72cfe4
     ports:
       - "8080:8080"
     networks:

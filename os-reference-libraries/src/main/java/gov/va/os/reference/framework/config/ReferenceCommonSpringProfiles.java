@@ -24,22 +24,22 @@ public final class ReferenceCommonSpringProfiles {
 	/**
 	 * Spring profile for AWS CI environment
 	 */
-	public static final String PROFILE_ENV_AWS_CI = "aws-ci";
+	public static final String PROFILE_ENV_CI = "ci";
 
 	/**
 	 * Spring profile for AWS DEV environment
 	 */
-	public static final String PROFILE_ENV_AWS_DEV = "aws-dev";
+	public static final String PROFILE_ENV_DEV = "dev";
 
 	/**
 	 * Spring profile for AWS STAGE environment
 	 */
-	public static final String PROFILE_ENV_AWS_STAGE = "aws-stage";
+	public static final String PROFILE_ENV_STAGE = "stage";
 
 	/**
 	 * Spring profile for AWS PROD environment
 	 */
-	public static final String PROFILE_ENV_AWS_PROD = "aws-prod";
+	public static final String PROFILE_ENV_PROD = "prod";
 
 	/**
 	 * Spring profile for remote client real implementations

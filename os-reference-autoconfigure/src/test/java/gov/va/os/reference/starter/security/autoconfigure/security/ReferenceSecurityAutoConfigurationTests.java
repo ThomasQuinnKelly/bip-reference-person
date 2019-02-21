@@ -31,7 +31,7 @@ public class ReferenceSecurityAutoConfigurationTests {
         context.register(SecurityAutoConfiguration.class, EmbeddedWebServerFactoryCustomizerAutoConfiguration.class, ReferenceSecurityAutoConfiguration.class);
         context.refresh();
         assertNotNull(context);
-        assertEquals(13, this.context.getBean(FilterChainProxy.class).getFilterChains().size());
+        assertEquals(4, this.context.getBean(FilterChainProxy.class).getFilterChains().size());
 
     }
 }

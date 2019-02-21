@@ -26,22 +26,22 @@ public class ReferenceCommonSpringProfilesTest {
 	/**
 	 * Spring profile for AWS CI environment
 	 */
-	public static final String TEST_PROFILE_ENV_AWS_CI = "aws-ci";
+	public static final String TEST_PROFILE_ENV_CI = "ci";
 
 	/**
 	 * Spring profile for AWS DEV environment
 	 */
-	public static final String TEST_PROFILE_ENV_AWS_DEV = "aws-dev";
+	public static final String TEST_PROFILE_ENV_DEV = "dev";
 
 	/**
 	 * Spring profile for AWS STAGE environment
 	 */
-	public static final String TEST_PROFILE_ENV_AWS_STAGE = "aws-stage";
+	public static final String TEST_PROFILE_ENV_STAGE = "stage";
 
 	/**
 	 * Spring profile for AWS PROD environment
 	 */
-	public static final String TEST_PROFILE_ENV_AWS_PROD = "aws-prod";
+	public static final String TEST_PROFILE_ENV_PROD = "prod";
 
 	/**
 	 * Spring profile for remote client real implementations
@@ -100,22 +100,22 @@ public class ReferenceCommonSpringProfilesTest {
 
 	@Test
 	public void profileAwsCITest() throws Exception {
-		assertEquals(TEST_PROFILE_ENV_AWS_CI, ReferenceCommonSpringProfiles.PROFILE_ENV_AWS_CI);
+		assertEquals(TEST_PROFILE_ENV_CI, ReferenceCommonSpringProfiles.PROFILE_ENV_CI);
 	}
 
 	@Test
 	public void profileAwsDevTest() throws Exception {
-		assertEquals(TEST_PROFILE_ENV_AWS_DEV, ReferenceCommonSpringProfiles.PROFILE_ENV_AWS_DEV);
+		assertEquals(TEST_PROFILE_ENV_DEV, ReferenceCommonSpringProfiles.PROFILE_ENV_DEV);
 	}
 
 	@Test
 	public void profileAwsStageTest() throws Exception {
-		assertEquals(TEST_PROFILE_ENV_AWS_STAGE, ReferenceCommonSpringProfiles.PROFILE_ENV_AWS_STAGE);
+		assertEquals(TEST_PROFILE_ENV_STAGE, ReferenceCommonSpringProfiles.PROFILE_ENV_STAGE);
 	}
 
 	@Test
 	public void profileAwsProdTest() throws Exception {
-		assertEquals(TEST_PROFILE_ENV_AWS_PROD, ReferenceCommonSpringProfiles.PROFILE_ENV_AWS_PROD);
+		assertEquals(TEST_PROFILE_ENV_PROD, ReferenceCommonSpringProfiles.PROFILE_ENV_PROD);
 	}
 
 	@Test
