@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +18,6 @@ import org.springframework.stereotype.Service;
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
-import gov.va.os.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
-import gov.va.os.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
-import gov.va.os.reference.partner.person.ws.transfer.FindPersonBySSN;
-import gov.va.os.reference.partner.person.ws.transfer.FindPersonBySSNResponse;
-import gov.va.os.reference.partner.person.ws.transfer.ObjectFactory;
-import gov.va.os.reference.partner.person.ws.transfer.PersonDTO;
 import gov.va.os.reference.framework.exception.ReferenceRuntimeException;
 import gov.va.os.reference.framework.messages.Message;
 import gov.va.os.reference.framework.messages.MessageSeverity;
@@ -33,6 +26,10 @@ import gov.va.os.reference.partner.person.ws.client.PersonWsClient;
 import gov.va.os.reference.partner.person.ws.client.transfer.PersonInfo;
 import gov.va.os.reference.partner.person.ws.client.transfer.PersonInfoRequest;
 import gov.va.os.reference.partner.person.ws.client.transfer.PersonInfoResponse;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
+import gov.va.os.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
+import gov.va.os.reference.partner.person.ws.transfer.ObjectFactory;
+import gov.va.os.reference.partner.person.ws.transfer.PersonDTO;
 import gov.va.os.reference.service.api.DemoPersonService;
 import gov.va.os.reference.service.exception.DemoServiceException;
 import gov.va.os.reference.service.utils.HystrixCommandConstants;
