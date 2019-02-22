@@ -3,8 +3,6 @@ package gov.va.os.reference.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBElement;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +21,15 @@ import gov.va.os.reference.framework.messages.Message;
 import gov.va.os.reference.framework.messages.MessageSeverity;
 import gov.va.os.reference.framework.util.Defense;
 import gov.va.os.reference.partner.person.ws.client.PersonWsClient;
-import gov.va.os.reference.partner.person.ws.client.transfer.PersonInfo;
-import gov.va.os.reference.partner.person.ws.client.transfer.PersonInfoRequest;
-import gov.va.os.reference.partner.person.ws.client.transfer.PersonInfoResponse;
 import gov.va.os.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.os.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
 import gov.va.os.reference.partner.person.ws.transfer.ObjectFactory;
 import gov.va.os.reference.partner.person.ws.transfer.PersonDTO;
 import gov.va.os.reference.service.api.DemoPersonService;
 import gov.va.os.reference.service.exception.DemoServiceException;
+import gov.va.os.reference.service.model.person.v1.PersonInfo;
+import gov.va.os.reference.service.model.person.v1.PersonInfoRequest;
+import gov.va.os.reference.service.model.person.v1.PersonInfoResponse;
 import gov.va.os.reference.service.utils.HystrixCommandConstants;
 import gov.va.os.reference.service.utils.StringUtil;
 
@@ -100,15 +98,15 @@ public class DemoPersonServiceImpl implements DemoPersonService {
 			return cacheManager.getCache(CACHENAME_DEMO_PERSON_SERVICE).get(personInfoRequest, PersonInfoResponse.class);
 		} else {
 			// Prepare the WS request
-			final JAXBElement<FindPersonByPtcpntId> findPersonByPtcpntIdRequestElement =
-					createFindPersonByPidRequest(personInfoRequest);
-
-			// Invoke the Person Web Service via the WS Client
-			final JAXBElement<FindPersonByPtcpntIdResponse> findPersonByPtcpntIdResponseElement =
-					personWsClient.getPersonInfoByPtcpntId(findPersonByPtcpntIdRequestElement);
-
-			// Prepare the service response
-			return createPersonInfoResponse(findPersonByPtcpntIdResponseElement, personInfoRequest.getParticipantID());
+			final FindPersonByPtcpntId findPersonByPtcpntIdRequestElement = createFindPersonByPidRequest(personInfoRequest);
+// TODO
+//			// Invoke the Person Web Service via the WS Client
+//			final JAXBElement<FindPersonByPtcpntIdResponse> findPersonByPtcpntIdResponseElement =
+//					personWsClient.getPersonInfoByPtcpntId(findPersonByPtcpntIdRequestElement);
+//
+//			// Prepare the service response
+//			return createPersonInfoResponse(findPersonByPtcpntIdResponseElement, personInfoRequest.getParticipantID());
+			return null;
 		}
 	}
 
@@ -179,12 +177,14 @@ public class DemoPersonServiceImpl implements DemoPersonService {
 	 * @param personInfoRequest The request from the Java Service.
 	 * @return A JAXB element for the WS request
 	 */
-	private JAXBElement<FindPersonByPtcpntId> createFindPersonByPidRequest(final PersonInfoRequest personInfoRequest) {
+	private FindPersonByPtcpntId createFindPersonByPidRequest(final PersonInfoRequest personInfoRequest) {
 
 		final FindPersonByPtcpntId findPersonByPtcpntId = new FindPersonByPtcpntId();
 		findPersonByPtcpntId.setPtcpntId(personInfoRequest.getParticipantID());
 
-		return PERSON_OBJECT_FACTORY.createFindPersonByPtcpntId(findPersonByPtcpntId);
+//		TODO
+//		return PERSON_OBJECT_FACTORY.createFindPersonByPtcpntId(findPersonByPtcpntId);
+		return null;
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class DemoPersonServiceImpl implements DemoPersonService {
 	 * @return the person info response
 	 */
 	private PersonInfoResponse createPersonInfoResponse(
-			final JAXBElement<FindPersonByPtcpntIdResponse> findPersonByPtcpntIdResponseElement, final Long participantID) {
+			final FindPersonByPtcpntIdResponse findPersonByPtcpntIdResponseElement, final Long participantID) {
 
 		final PersonInfoResponse personInfoResponse = new PersonInfoResponse();
 		final String maskedInfo = StringUtil.getMask4(participantID.toString());
@@ -204,7 +204,7 @@ public class DemoPersonServiceImpl implements DemoPersonService {
 					NO_PERSON_FOUND_FOR_PARTICIPANT_ID + maskedInfo);
 
 		} else {
-			final FindPersonByPtcpntIdResponse findPersonByPtcpntIdResponse = findPersonByPtcpntIdResponseElement.getValue();
+			final FindPersonByPtcpntIdResponse findPersonByPtcpntIdResponse = findPersonByPtcpntIdResponseElement;
 			// Check for null response object
 			if (findPersonByPtcpntIdResponse == null) {
 

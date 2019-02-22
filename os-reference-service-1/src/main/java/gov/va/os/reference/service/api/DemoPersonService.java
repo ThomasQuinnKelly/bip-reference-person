@@ -1,7 +1,7 @@
 package gov.va.os.reference.service.api;
 
-import gov.va.os.reference.partner.person.ws.client.transfer.PersonInfoRequest;
-import gov.va.os.reference.partner.person.ws.client.transfer.PersonInfoResponse;
+import gov.va.os.reference.service.model.person.v1.PersonInfoRequest;
+import gov.va.os.reference.service.model.person.v1.PersonInfoResponse;
 
 public interface DemoPersonService {
 	/**
@@ -10,5 +10,5 @@ public interface DemoPersonService {
 	 * @param personInfoRequest A PersonInfoRequest instance
 	 * @return A PersonInfoResponse instance
 	 */
-	PersonInfoResponse findPersonByParticipantID( PersonInfoRequest personInfoRequest);
+	PersonInfoResponse findPersonByParticipantID(PersonInfoRequest personInfoRequest);
 }

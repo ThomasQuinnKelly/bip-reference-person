@@ -2,7 +2,7 @@ package gov.va.os.reference.partner.person.ws.client.remote;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.ws.test.client.RequestMatchers.payload;
 import static org.springframework.ws.test.client.ResponseCreators.withPayload;
@@ -112,7 +112,7 @@ public class RemoteServiceCallImplTest extends AbstractPersonTest {
 		try {
 			callPartnerService.callRemoteService(axiomWebServiceTemplateMock, request, FindPersonByPtcpntId.class);
 
-		} catch (final Throwable e) {
+		} catch (Throwable e) {
 			e.printStackTrace();
 			assertNotNull(e);
 		}

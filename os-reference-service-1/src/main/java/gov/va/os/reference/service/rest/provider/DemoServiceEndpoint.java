@@ -6,23 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.va.os.reference.framework.swagger.SwaggerResponseMessages;
-import gov.va.os.reference.partner.person.ws.client.transfer.PersonInfoRequest;
-import gov.va.os.reference.partner.person.ws.client.transfer.PersonInfoResponse;
 import gov.va.os.reference.service.api.DemoPersonService;
-import gov.va.os.reference.service.api.DemoService;
-import gov.va.os.reference.service.api.v1.transfer.DemoServiceResponse;
+import gov.va.os.reference.service.model.person.v1.PersonInfoRequest;
+import gov.va.os.reference.service.model.person.v1.PersonInfoResponse;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -42,10 +37,6 @@ public class DemoServiceEndpoint implements HealthIndicator, SwaggerResponseMess
 
 	@Autowired
 	@Qualifier("IMPL")
-	DemoService demoService;
-
-	@Autowired
-	@Qualifier("IMPL")
 	DemoPersonService demoPersonService;
 
 	public static final String URL_PREFIX = "/service-1/v1";
@@ -59,13 +50,6 @@ public class DemoServiceEndpoint implements HealthIndicator, SwaggerResponseMess
 			@ApiResponse(code = 200, message = MESSAGE_200) })
 	public Health health() {
 		return Health.up().withDetail("Demo Service REST Endpoint", "Demo Service REST Provider Up and Running!").build();
-	}
-
-
-	@RequestMapping(value = URL_PREFIX + "/read/{name}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-	@ApiOperation(value = "Reads a DEMO.", notes = "Will retrieve and return a previously created DEMO entity.")
-	public ResponseEntity<DemoServiceResponse> read(@PathVariable final String name) {
-		return new ResponseEntity<>(demoService.read(name), HttpStatus.OK);
 	}
 
 	/**
