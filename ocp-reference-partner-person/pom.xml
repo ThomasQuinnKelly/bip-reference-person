@@ -122,7 +122,7 @@
 					</goals>
 					<configuration>
 						<schemaDirectory>${project.basedir}/src/main/resources/xsd/PersonService</schemaDirectory>
-						<packageName>gov.va.os.reference.partner.person.ws.transfer</packageName>
+						<packageName>gov.va.ocp.reference.partner.person.ws.transfer</packageName>
 						<staleFile>${project.build.directory}/generated-sources/.jaxb-staleFlag-PersonService</staleFile>
 					</configuration>
 				</execution>
