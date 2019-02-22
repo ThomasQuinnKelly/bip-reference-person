@@ -16,9 +16,6 @@ services:
       - spring.cloud.consul.discovery.enabled=true
       - spring.cloud.consul.discovery.register=true
       - spring.cloud.vault.consul.enabled=true
-      - spring.profiles.active=local-int
-      - spring.cloud.consul.host=consul
-      - spring.cloud.vault.host=vault
     ports:
       - "8080:8080"
     networks:
