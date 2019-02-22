@@ -6,6 +6,12 @@ scrape_configs:
       scheme: 'http'
       token: '7652ba4c-0f6e-8e75-5724-5e083d72cfe4'
       services: ['os-reference-service-1']
+    
+    relabel_configs:
+    - source_labels: ['__meta_consul_service']
+      target_label: 'service'
+      replacement: '${1}'
+      action: replace
 
     scrape_interval: 5s
     scheme: http
