@@ -37,6 +37,7 @@ import io.swagger.annotations.ApiResponses;
  */
 public class DemoServiceEndpoint implements HealthIndicator, SwaggerResponseMessages {
 
+	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(DemoServiceEndpoint.class);
 
 	@Autowired
