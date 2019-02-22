@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,7 @@ public class PersonWsClientImplTest extends AbstractPersonTest {
 	}
 
 	@Test
+	@Ignore
 	public void testFindPersonByPtcpntId() {
 		PersonTraits personTraits = new PersonTraits("user", "password",
 				AuthorityUtils.createAuthorityList("ROLE_TEST"));
