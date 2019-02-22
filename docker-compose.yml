@@ -74,6 +74,17 @@ services:
     depends_on:
       - consul
 
+  grafana:
+    image:  bip/grafana
+    build:
+      context: ./local-dev/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - bip
+    depends_on:
+      - prometheus
+
 networks:
   bip:
     driver: bridge
