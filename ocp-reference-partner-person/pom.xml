@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-		<groupId>gov.va.os.reference</groupId>
-		<artifactId>os-reference-parentpom</artifactId>
+		<groupId>gov.va.ocp.reference</groupId>
+		<artifactId>ocp-reference-parentpom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../os-reference-parentpom</relativePath>
+		<relativePath>../ocp-reference-parentpom</relativePath>
 	</parent>
 
-    <artifactId>os-reference-partner</artifactId>
+    <artifactId>ocp-reference-partner-person</artifactId>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
@@ -20,8 +20,8 @@
     <dependencies>
 
         <dependency>
-            <groupId>gov.va.os.reference</groupId>
-            <artifactId>os-reference-libraries</artifactId>
+            <groupId>gov.va.ocp.reference</groupId>
+            <artifactId>ocp-reference-libraries</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     

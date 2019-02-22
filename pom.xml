@@ -3,24 +3,24 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>gov.va.os.reference</groupId>
-		<artifactId>os-reference-parentpom</artifactId>
+		<groupId>gov.va.ocp.reference</groupId>
+		<artifactId>ocp-reference-parentpom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>os-reference-parentpom</relativePath>
+		<relativePath>../ocp-reference-parentpom</relativePath>
 	</parent>
 	
-	<artifactId>os-reference-reactor</artifactId>
+	<artifactId>ocp-reference-reactor</artifactId>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
-    <description>Reactor POM for Spring Boot Reference Project</description>
+    <description>Reactor POM for OpenShift Container Platform (OCP) Spring Boot Reference Service</description>
 
 	<modules>
-		<module>os-reference-parentpom</module>
-		<module>os-reference-libraries</module>
-		<module>os-reference-test-lib</module>
-		<module>os-reference-autoconfigure</module>
-		<module>os-reference-partner</module>
-		<module>os-reference-service-1</module>
+		<module>ocp-reference-parentpom</module>
+		<module>ocp-reference-libraries</module>
+		<module>ocp-reference-test-lib</module>
+		<module>ocp-reference-autoconfigure</module>
+		<module>ocp-reference-partner-person</module>
+		<module>ocp-reference-person</module>
 	<!--<module>os-reference-spring-boot-document-service</module>
 		<module>os-reference-spring-boot-service-inttest</module>
 		<module>os-reference-spring-boot-service-perftest</module> -->

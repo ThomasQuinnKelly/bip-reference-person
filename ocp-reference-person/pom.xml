@@ -4,32 +4,32 @@
 	<modelVersion>4.0.0</modelVersion>
     
     <parent>
-		<groupId>gov.va.os.reference</groupId>
-		<artifactId>os-reference-parentpom</artifactId>
+		<groupId>gov.va.ocp.reference</groupId>
+		<artifactId>ocp-reference-parentpom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../os-reference-parentpom</relativePath>
+		<relativePath>../ocp-reference-parentpom</relativePath>
 	</parent>
 	
-    <artifactId>os-reference-service-1</artifactId>
+    <artifactId>ocp-reference-person</artifactId>
     <packaging>jar</packaging>
     
     <name>${project.artifactId}</name>
-    <description>Service Implementation for Spring Boot Reference Project</description>
+    <description>Person Service Implementation for Spring Boot Reference Project</description>
     
     <dependencies>
     	<dependency>
-            <groupId>gov.va.os.reference</groupId>
-            <artifactId>os-reference-libraries</artifactId>
+            <groupId>gov.va.ocp.reference</groupId>
+            <artifactId>ocp-reference-libraries</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 		 <dependency>
-            <groupId>gov.va.os.reference</groupId>
-            <artifactId>os-reference-partner</artifactId>
+            <groupId>gov.va.ocp.reference</groupId>
+            <artifactId>ocp-reference-partner-person</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>gov.va.os.reference</groupId>
-            <artifactId>os-reference-autoconfigure</artifactId>
+            <groupId>gov.va.ocp.reference</groupId>
+            <artifactId>ocp-reference-autoconfigure</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     	<!-- spring-boot dependencies -->

@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>gov.va.os.reference</groupId>
-		<artifactId>os-reference-parentpom</artifactId>
+		<groupId>gov.va.ocp.reference</groupId>
+		<artifactId>ocp-reference-parentpom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>os-reference-test-lib</artifactId>
+	<artifactId>ocp-reference-test-lib</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 	<description>Test Framework for integration test</description>
