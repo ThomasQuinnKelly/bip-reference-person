@@ -17,8 +17,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 	<modules>
 		<module>os-reference-parentpom</module>
 		<module>os-reference-libraries</module>
-		<module>os-reference-partner</module>
+		<module>os-reference-test-lib</module>
 		<module>os-reference-autoconfigure</module>
+		<module>os-reference-partner</module>
 		<module>os-reference-service-1</module>
 	<!--<module>os-reference-spring-boot-document-service</module>
 		<module>os-reference-spring-boot-service-inttest</module>
