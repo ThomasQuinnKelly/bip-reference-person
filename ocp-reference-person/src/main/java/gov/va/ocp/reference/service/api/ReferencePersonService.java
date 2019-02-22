@@ -3,7 +3,7 @@ package gov.va.ocp.reference.service.api;
 import gov.va.ocp.reference.service.model.person.v1.PersonInfoRequest;
 import gov.va.ocp.reference.service.model.person.v1.PersonInfoResponse;
 
-public interface DemoPersonService {
+public interface ReferencePersonService {
 	/**
 	 * Gets the person info.
 	 *

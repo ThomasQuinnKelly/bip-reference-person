@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gov.va.ocp.reference.framework.rest.client.resttemplate.RestClientTemplate;
 import gov.va.ocp.reference.framework.swagger.SwaggerResponseMessages;
-import gov.va.ocp.reference.service.rest.client.discovery.DemoUsageDiscoveryClient;
-import gov.va.ocp.reference.service.rest.client.feign.FeignDocumentClient;
+import gov.va.ocp.reference.service.rest.client.discovery.PersonUsageDiscoveryClient;
 import gov.va.ocp.reference.service.rest.client.feign.FeignEchoClient;
-import gov.va.ocp.reference.service.rest.provider.DemoServiceEndpoint;
+import gov.va.ocp.reference.service.rest.provider.PersonResource;
 
 /**
  * The purpose of this class is to make REST client calls. These are REST clients to our own
@@ -19,12 +18,12 @@ import gov.va.ocp.reference.service.rest.provider.DemoServiceEndpoint;
  * @author jshrader
  */
 @RestController
-public class DemoServiceRestClientTests implements SwaggerResponseMessages {
+public class PersonRestClientTests implements SwaggerResponseMessages {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DemoServiceRestClientTests.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PersonRestClientTests.class);
 
 	@Autowired
-	private DemoUsageDiscoveryClient demoUsageDiscoveryClient;
+	private PersonUsageDiscoveryClient demoUsageDiscoveryClient;
 
 	@Autowired
 	private RestClientTemplate demoUsageRestTemplate;
@@ -32,10 +31,7 @@ public class DemoServiceRestClientTests implements SwaggerResponseMessages {
 	@Autowired
 	private FeignEchoClient feignEchoClient;
 
-	@Autowired
-	private FeignDocumentClient feignDocumentClient;
-
-	public static final String URL_PREFIX = DemoServiceEndpoint.URL_PREFIX + "/clientTests";
+	public static final String URL_PREFIX = PersonResource.URL_PREFIX + "/clientTests";
 
 //	TODO
 //	/**

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.va.ocp.reference.framework.swagger.SwaggerResponseMessages;
-import gov.va.ocp.reference.service.api.DemoPersonService;
+import gov.va.ocp.reference.service.api.ReferencePersonService;
 import gov.va.ocp.reference.service.model.person.v1.PersonInfoRequest;
 import gov.va.ocp.reference.service.model.person.v1.PersonInfoResponse;
 import io.swagger.annotations.ApiOperation;
@@ -30,14 +30,14 @@ import io.swagger.annotations.ApiResponses;
  * @author
  *
  */
-public class DemoServiceEndpoint implements HealthIndicator, SwaggerResponseMessages {
+public class PersonResource implements HealthIndicator, SwaggerResponseMessages {
 
 	@SuppressWarnings("unused")
-	private static final Logger LOGGER = LoggerFactory.getLogger(DemoServiceEndpoint.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PersonResource.class);
 
 	@Autowired
 	@Qualifier("IMPL")
-	DemoPersonService demoPersonService;
+	ReferencePersonService demoPersonService;
 
 	public static final String URL_PREFIX = "/service-1/v1";
 

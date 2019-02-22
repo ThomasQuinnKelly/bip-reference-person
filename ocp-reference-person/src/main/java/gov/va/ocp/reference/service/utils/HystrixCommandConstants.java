@@ -5,14 +5,8 @@ package gov.va.ocp.reference.service.utils;
  */
 public final class HystrixCommandConstants {
 
-	/** Demo Service Thread Pool Group. */
-	public static final String REFERENCE_DEMO_SERVICE_GROUP_KEY = "ReferenceDemoServiceGroup";
-
 	/** Demo Person Service Thread Pool Group. */
-	public static final String REFERENCE_PERSON_DEMO_SERVICE_GROUP_KEY = "ReferencePersonDemoServiceGroup";
-
-	/** Document Service Thread Pool Group. */
-	public static final String REFERENCE_DOCUMENT_SERVICE_GROUP_KEY = "ReferenceDocumentServiceGroup";
+	public static final String REFERENCE_PERSON_SERVICE_GROUP_KEY = "ReferencePersonServiceGroup";
 
 	/**
 	 * Instantiates a new letter generator constants.

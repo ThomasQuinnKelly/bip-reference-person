@@ -16,7 +16,7 @@ import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonsByPtcpntIds;
 @Qualifier(TransformFindPersonByPtcpntId.BEAN_NAME)
 @Scope("prototype")
 @RefreshScope
-@DefaultProperties(groupKey = HystrixCommandConstants.REFERENCE_PERSON_DEMO_SERVICE_GROUP_KEY)
+@DefaultProperties(groupKey = HystrixCommandConstants.REFERENCE_PERSON_SERVICE_GROUP_KEY)
 public class TransformFindPersonByPtcpntId extends AbstractPartnerTransformer<FindPersonsByPtcpntIds, PersonInfoResponse> {
 	public static final String BEAN_NAME = "transformFindPersonByPtcpntId";
 

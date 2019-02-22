@@ -3,10 +3,10 @@ version: "3.3"
 services:
   
   # Fill this out once the dev team has their app code into the repo
-  os-reference-service-1:
-    image: bip/os-reference-person
+  ocp-reference-person:
+    image: bip/ocp-reference-person
     build:
-      context: ./os-reference-person
+      context: ./ocp-reference-person
     environment:
       - spring.profiles.active=local-int
       - spring.cloud.consul.host=consul

@@ -11,7 +11,7 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
  *
  */
 
-public class DemoUsageDiscoveryClient {
+public class PersonUsageDiscoveryClient {
 	@Autowired
 	private DiscoveryClient discoveryClient;
 

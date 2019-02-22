@@ -21,7 +21,7 @@ import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.util.Defense;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClient;
-import gov.va.ocp.reference.service.api.DemoPersonService;
+import gov.va.ocp.reference.service.api.ReferencePersonService;
 import gov.va.ocp.reference.service.exception.DemoServiceException;
 import gov.va.ocp.reference.service.model.person.v1.PersonInfo;
 import gov.va.ocp.reference.service.model.person.v1.PersonInfoRequest;
@@ -33,11 +33,11 @@ import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdRespo
 import gov.va.ocp.reference.partner.person.ws.transfer.ObjectFactory;
 import gov.va.ocp.reference.partner.person.ws.transfer.PersonDTO;
 
-@Service(value = DemoPersonServiceImpl.BEAN_NAME)
+@Service(value = ReferencePersonServiceImpl.BEAN_NAME)
 @Component
 @Qualifier("IMPL")
 @RefreshScope
-@DefaultProperties(groupKey = HystrixCommandConstants.REFERENCE_PERSON_DEMO_SERVICE_GROUP_KEY)
+@DefaultProperties(groupKey = HystrixCommandConstants.REFERENCE_PERSON_SERVICE_GROUP_KEY)
 
 /**
  * Implementation class for the Demo Person Service.
@@ -48,8 +48,8 @@ import gov.va.ocp.reference.partner.person.ws.transfer.PersonDTO;
  * @author
  *
  */
-public class DemoPersonServiceImpl implements DemoPersonService {
-	private static final Logger LOGGER = LoggerFactory.getLogger(DemoPersonServiceImpl.class);
+public class ReferencePersonServiceImpl implements ReferencePersonService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ReferencePersonServiceImpl.class);
 
 	private static final String CACHENAME_DEMO_PERSON_SERVICE = "demoPersonService";
 
@@ -75,7 +75,7 @@ public class DemoPersonServiceImpl implements DemoPersonService {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see gov.va.ocp.reference.service.api.DemoPersonService#findPersonByParticipantID
+	 * @see gov.va.ocp.reference.service.api.ReferencePersonService#findPersonByParticipantID
 	 * (gov.va.ocp.reference.partner.person.ws.client.transfer.PersonInfoRequest)
 	 *
 	 * @Cacheable Annotation indicating that the result of invoking a method (or all methods in a class) can be cached.
