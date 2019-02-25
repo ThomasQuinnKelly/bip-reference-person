@@ -223,12 +223,20 @@
 				</includes>
 				<excludes>
 					<exclude>**/cert/*</exclude>
+					 <exclude>**/*.jks</exclude>
 					<exclude>**/vetservices-document-inttest/src/inttest/resources/documents/*</exclude>
 				</excludes>
 			</resource>
 			<resource>
 				<directory>src/main/resources/cert</directory>
 			</resource>
+			<resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.jks</include>
+                </includes>
+            </resource>
 		</resources>
 		<plugins>
 			<!-- repackages jar and war plugins so they can be executed with command

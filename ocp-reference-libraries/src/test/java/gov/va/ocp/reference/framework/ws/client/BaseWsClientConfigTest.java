@@ -110,7 +110,7 @@ public class BaseWsClientConfigTest {
 
 		// IOException
 		try {
-			Mockito.lenient().when(mockKeystore.getFile()).thenThrow(UnsupportedOperationException.class);
+			Mockito.lenient().when(mockKeystore.getInputStream()).thenThrow(UnsupportedOperationException.class);
 		} catch (IOException e1) {
 			fail("Mocking should not throw exception");
 		}

@@ -20,7 +20,7 @@ public class PersonRemoteServiceCallImpl implements RemoteServiceCall {
 	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(PersonRemoteServiceCallImpl.class);
 
 	/** The spring bean name for implementation. MUST BE UNIQUE ACROSS ALL PARTNER JARS */
-	public static final String BEAN_NAME = "intenttofileRemoteServiceCall";
+	public static final String BEAN_NAME = "personRemoteServiceCall";
 
 	@Override
 	public PartnerTransferObjectMarker callRemoteService(final WebServiceTemplate webserviceTemplate,
