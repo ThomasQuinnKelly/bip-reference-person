@@ -66,6 +66,28 @@ services:
     networks:
       - bip
 
+  prometheus:
+    image:  prom/prometheus:v2.5.0
+    ports:
+      - "9090:9090"
+    volumes: 
+      - "./local-dev/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+    networks:
+      - bip
+    depends_on:
+      - consul
+
+  grafana:
+    image:  bip/grafana
+    build:
+      context: ./local-dev/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - bip
+    depends_on:
+      - prometheus
+
 networks:
   bip:
     driver: bridge
