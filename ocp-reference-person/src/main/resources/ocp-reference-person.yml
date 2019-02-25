@@ -45,7 +45,6 @@ spring:
       FAIL_ON_UNKNOWN_PROPERTIES: false
       ACCEPT_SINGLE_VALUE_AS_ARRAY: true
     default-property-inclusion: non_empty
-
 # Route Path
 # service.context: http://localhost:8080
 
@@ -61,11 +60,8 @@ reference:
     expires:
       #Cache Name: TTL (In Seconds)
       - 
-        name: demoPersonService
+        name: refPersonService
         ttl: 1800
-      - 
-        name: demoService
-        ttl: 600
     redis-config:
       host: localhost
       port: 6379
@@ -77,7 +73,6 @@ service-1:
   sampleProperty: >
                   sampleProperty___env/profile:${service-1.env}___propSource:
                   ${service-1.propSource}__password:${service-1.password}
-
 #---------------------------------------------------
 #   Logging Level for packages
 #---------------------------------------------------
@@ -139,7 +134,6 @@ hystrix:
             # logic. Note that there is configuration for turning off timeouts per-command, if that is desired (see command.timeout.enabled).
             # Default Value: 1000
             timeoutInMilliseconds: 20000
-
 # Sleuth configuration     
 # To skip specific patterns being exported, added few more customs on top of default skip pattern
 # see org.springframework.cloud.sleuth.instrument.web.TraceFilter.DEFAULT_SKIP_PATTERN
@@ -160,7 +154,7 @@ os.reference:
       excludeUrls:
         - /**
   swagger:
-    title: OpenShift Reference Spring Boot Service v1 API Documentation
+    title: OCP Reference Person Spring Boot Service v1 API Documentation
     description: API Error Keys <a href="swagger/error-keys.html">error keys</a>
     groupName: "@project.name@-@project.version@"
     version: ${info.build.version}

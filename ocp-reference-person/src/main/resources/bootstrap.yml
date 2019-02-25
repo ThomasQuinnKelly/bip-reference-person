@@ -5,7 +5,7 @@ spring:
     name: "@project.name@"
 spring.cloud.consul: 
   config:
-    enabled: true
+    enabled: false
     prefix: config
     defaultContext: application
     profileSeparator: ','
@@ -26,6 +26,7 @@ spring.cloud.consul:
     health-check-tls-skip-verify: true
     scheme: http
 spring.cloud.vault:
+  enabled: false
   failFast: false #Set value as 'true' to throw exceptions if data cannot be obtained from Vault.
   host: localhost
   port: 8200
@@ -33,7 +34,7 @@ spring.cloud.vault:
   #authentication: TOKEN
   token: ${VAULT_TOKEN:vaultroot}
   kv:
-    enabled: true
+    enabled: false
     backend: secret
     profile-separator: '/'
     default-context: application

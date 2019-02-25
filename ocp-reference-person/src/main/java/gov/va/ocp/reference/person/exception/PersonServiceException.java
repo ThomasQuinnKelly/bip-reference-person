@@ -1,0 +1,41 @@
+package gov.va.ocp.reference.person.exception;
+
+import gov.va.ocp.reference.framework.messages.MessageSeverity;
+
+public class PersonServiceException extends RuntimeException {
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 8436650114143466441L;
+
+	private MessageSeverity severity; // NOSONAR cannot be final
+	private String key; // NOSONAR cannot be final
+	private final String message; // NOSONAR cannot be final
+
+	public PersonServiceException(final MessageSeverity severity, final String key, final String message) {
+		this.severity = severity;
+		this.key = key;
+		this.message = message;
+	}
+
+	public PersonServiceException(final MessageSeverity severity, final String message) {
+		this.severity = severity;
+		this.message = message;
+	}
+
+	public PersonServiceException(final String message) {
+		this.message = message;
+	}
+
+	public MessageSeverity getSeverity() {
+		return severity;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	@Override
+	public String getMessage() {
+		return message;
+	}
+
+}
