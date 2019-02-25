@@ -1,0 +1,11 @@
+#This file is only used for the unit test purposes
+os-reference-partner.ws.client.endpoint: http://localhost:9736/testEndPoint
+
+#*********************************************************************
+# Apache Trusted Crypto Configuration Security files
+#*********************************************************************
+os.reference.security.crypto.provider: org.apache.ws.security.components.crypto.Merlin
+os.reference.security.crypto.keystore.type: jks
+os.reference.security.crypto.keystore.alias: ebn_vbms_cert
+os.reference.security.crypto.keystore.password: changeit
+os.reference.security.crypto.keystore.keystore:  /encryption/EFolderService/vbmsKeystore.jks
