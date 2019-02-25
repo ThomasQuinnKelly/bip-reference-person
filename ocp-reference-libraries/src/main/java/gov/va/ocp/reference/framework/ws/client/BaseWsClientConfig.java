@@ -1,7 +1,6 @@
 package gov.va.ocp.reference.framework.ws.client;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyManagementException;
@@ -33,7 +32,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.util.ResourceUtils;
 import org.springframework.ws.WebServiceMessageFactory;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
@@ -427,22 +425,22 @@ public class BaseWsClientConfig {
 	 * If keystore and truststore are not null, SSL context is added to the httpClient.
 	 *
 	 * @param httpClient the http client
-	 * @param keystore the keystore
+	 * @param keystoreResource the keystore resource
 	 * @param keystorePass the keystore pass
 	 * @param truststore the truststore
 	 * @param truststorePass the truststore pass
 	 */
 	protected void addSslContext(final HttpClientBuilder httpClient,
-			final Resource keystore, final String keystorePass, final Resource truststore, final String truststorePass) {
+			final Resource keystoreResource, final String keystorePass, final Resource truststore, final String truststorePass) {
 
-		if (keystore != null && truststore != null) {
+		if (keystoreResource != null && truststore != null) {
 			// Add SSL
 			try {
-				KeyStore keystoreFile = this.keyStore(keystore, keystorePass.toCharArray());
-				
+				KeyStore keystore = this.keyStore(keystoreResource, keystorePass.toCharArray());
+
 				SSLContext sslContext =
 						SSLContextBuilder.create()
-								.loadKeyMaterial(keystoreFile, keystorePass.toCharArray())
+								.loadKeyMaterial(keystore, keystorePass.toCharArray())
 								.loadTrustMaterial(truststore.getURL(), truststorePass.toCharArray()).build();
 				// use NoopHostnameVerifier to turn off host name verification
 				SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
@@ -460,7 +458,7 @@ public class BaseWsClientConfig {
 	/**
 	 * Produce a KeyStore object for a given JKS file and its password.
 	 *
-	 * @param fileResource the file path resource
+	 * @param keystoreResource the keystore resource
 	 * @param pass the password
 	 * @return KeyStore
 	 * @throws KeyStoreException the key store exception
@@ -468,14 +466,14 @@ public class BaseWsClientConfig {
 	 * @throws CertificateException the certificate exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	private KeyStore keyStore(Resource fileResource, char[] pass)
+	private KeyStore keyStore(Resource keystoreResource, char[] pass)
 			throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
 		KeyStore keyStore = KeyStore.getInstance("JKS");
-		
-		LOGGER.debug("KeyStore: {}", keyStore);
-		LOGGER.debug("Resource: {}", fileResource);
 
-		try (InputStream in = fileResource.getInputStream()) {
+		LOGGER.debug("KeyStore: {}", keyStore);
+		LOGGER.debug("Resource: {}", keystoreResource);
+
+		try (InputStream in = keystoreResource.getInputStream()) {
 			keyStore.load(in, pass);
 			LOGGER.debug("KeyStore load done");
 		}

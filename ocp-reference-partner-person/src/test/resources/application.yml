@@ -5,7 +5,7 @@
 # local endpoint for test that runs against SoapUI
 # we need to use a unique port per ws-partner micro jar, convention is use 97# using 9701 as the starting point, and we need to increment by 1 for each newly added jar
 # so count the number of vetservices-partner projects, if your project is #30 then your port would be 9730
-ocp-reference-partner-person.ws.client.endpoint: http://localhost:9723/mockIntentToFileServicePortBinding
+ocp-reference-partner-person.ws.client.endpoint: http://localhost:9723/mockPersonServicePortBinding
 
 ocp-reference-partner-person.ws.client.username: unitTestUsername
 ocp-reference-partner-person.ws.client.password: unitTestPassword
