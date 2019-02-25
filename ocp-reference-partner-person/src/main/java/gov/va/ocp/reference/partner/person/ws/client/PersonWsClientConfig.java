@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.core.WebServiceTemplate;
@@ -48,39 +47,39 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	// ####### for test, member values are from src/test/resource/application.yml ######
 
 	/** Location of the truststore containing the cert */
-	@Value("${os-reference-partner-person.ws.client.ssl.keystore:src/test/resources/ssl/dev/vaebnweb1Keystore.jks}")
-	private String keystore;
+	@Value("${ocp-reference-partner-person.ws.client.ssl.keystore:classpath:ssl/dev/vaebnweb1Keystore.jks}")
+	private Resource keystore;
 
 	/** Password for the cert */
-	@Value("${os-reference-partner-person.ws.client.ssl.keystorePass:password}")
+	@Value("${ocp-reference-partner-person.ws.client.ssl.keystorePass:password}")
 	private String keystorePass;
 
 	/** Location of the truststore containing the cert */
-	@Value("${os-reference-partner-person.ws.client.ssl.truststore:src/test/resources/ssl/dev/vaebnTruststore.jks}")
-	private String truststore;
+	@Value("${ocp-reference-partner-person.ws.client.ssl.truststore:classpath:ssl/dev/vaebnTruststore.jks}")
+	private Resource truststore;
 
 	/** Password for the cert */
-	@Value("${os-reference-partner-person.ws.client.ssl.truststorePass:password}")
+	@Value("${ocp-reference-partner-person.ws.client.ssl.truststorePass:password}")
 	private String truststorePass;
 
 	/** Decides if jaxb validation logs errors. */
-	@Value("${os-reference-partner-person.ws.client.logValidation:true}")
+	@Value("${ocp-reference-partner-person.ws.client.logValidation:true}")
 	private boolean logValidation;
 
 	/** Username for WS Authentication. */
-	@Value("${os-reference-partner-person.ws.client.username}")
+	@Value("${ocp-reference-partner-person.ws.client.username}")
 	private String username;
 
 	/** Password for WS Authentication. */
-	@Value("${os-reference-partner-person.ws.client.password}")
+	@Value("${ocp-reference-partner-person.ws.client.password}")
 	private String password;
 
 	/** VA Application Name Header value. */
-	@Value("${os-reference-partner-person.ws.client.vaApplicationName}")
+	@Value("${ocp-reference-partner-person.ws.client.vaApplicationName}")
 	private String vaApplicationName;
 
 	/** The VA Station ID header value */
-	@Value("${os-reference-partner-person.ws.client.vaStationId:281}")
+	@Value("${ocp-reference-partner-person.ws.client.vaStationId:281}")
 	private String vaStationId;
 
 	/**
@@ -88,9 +87,9 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 */
 	@PostConstruct
 	public final void postConstruct() {
-		Defense.hasText(keystore, "Partner keystore cannot be empty.");
+		Defense.notNull(keystore, "Partner keystore cannot be empty.");
 		Defense.hasText(keystorePass, "Partner keystorePass cannot be empty.");
-		Defense.hasText(truststore, "Partner truststore cannot be empty.");
+		Defense.notNull(truststore, "Partner truststore cannot be empty.");
 		Defense.hasText(truststorePass, "Partner truststorePass cannot be empty.");
 		Defense.hasText(username, "Partner username cannot be empty.");
 		Defense.hasText(password, "Partner password cannot be empty.");
@@ -123,15 +122,15 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 */
 	@Bean
 	WebServiceTemplate personWsClientAxiomTemplate(
-			@Value("${os-reference-partner-person.ws.client.endpoint}") final String endpoint,
-			@Value("${os-reference-partner-person.ws.client.readTimeout:60000}") final int readTimeout,
-			@Value("${os-reference-partner-person.ws.client.connectionTimeout:60000}") final int connectionTimeout) {
+			@Value("${ocp-reference-partner-person.ws.client.endpoint}") final String endpoint,
+			@Value("${ocp-reference-partner-person.ws.client.readTimeout:60000}") final int readTimeout,
+			@Value("${ocp-reference-partner-person.ws.client.connectionTimeout:60000}") final int connectionTimeout) {
 
 		Defense.hasText(endpoint, "personWsClientAxiomTemplate endpoint cannot be empty.");
 
 		return createSslWebServiceTemplate(endpoint, readTimeout, connectionTimeout, personMarshaller(), personMarshaller(),
 				new ClientInterceptor[] { personSecurityInterceptor() },
-				new FileSystemResource(keystore), keystorePass, new FileSystemResource(truststore), truststorePass);
+				keystore, keystorePass, truststore, truststorePass);
 	}
 
 	/**
@@ -156,7 +155,7 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 */
 	@Bean
 	PerformanceLogMethodInterceptor personWsClientPerformanceLogMethodInterceptor(
-			@Value("${os-reference-partner-person.ws.client.methodWarningThreshhold:2500}") final Integer methodWarningThreshhold) {
+			@Value("${ocp-reference-partner-person.ws.client.methodWarningThreshhold:2500}") final Integer methodWarningThreshhold) {
 		return getPerformanceLogMethodInterceptor(methodWarningThreshhold);
 	}
 

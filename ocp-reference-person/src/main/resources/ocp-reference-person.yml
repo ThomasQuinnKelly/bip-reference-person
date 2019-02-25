@@ -84,13 +84,14 @@ service-1:
 logging: 
   level:
     com.ecwid.consul: INFO
-    gov.va.ocp.reference: DEBUG
+    gov.va.ocp.reference.framework.ws.client: DEBUG
+    gov.va.ocp.reference.partner: DEBUG
     org.springframework.security.web: INFO
-    org.springframework.cloud.consul.config: TRACE
+    org.springframework.cloud.consul.config: INFO
     org.springframework.cloud.consul: INFO
     org.springframework.client.discovery: INFO
     org.springframework.cloud.sleuth: INFO 
-    org.springframework.cloud.sleuth.log: DEBUG
+    org.springframework.cloud.sleuth.log: INFO
     org.springframework.security: INFO
     org.springframework.ws: INFO
     org.springframework.cache: INFO 
@@ -185,14 +186,8 @@ bgs:
     methodWarningThreshhold: 2500
     readTimeout: 60000
     connectionTimeout: 60000
-### Set values when vault/consul is available ...
-os-reference-partner-person: 
-  server:
-    ssl:
-        keystore: ${javax.net.ssl.keyStore:src/test/resources/ssl/dev/vaebnweb1Keystore.jks}
-        keystorePass: ${javax.net.ssl.keyStorePassword:password}
-        truststore: ${javax.net.ssl.trustStore:src/test/resources/ssl/dev/vaebnTruststore.jks}
-        truststorePass: ${javax.net.ssl.trustStorePassword:password}
+
+ocp-reference-partner-person: 
   ws:
     client: 
       endpoint: ${bgs.url}/PersonWebService/PersonWebService?WSDL
@@ -205,6 +200,12 @@ os-reference-partner-person:
       methodWarningThreshhold: ${bgs.default.readTimeout}
       readTimeout: ${bgs.default.connectionTimeout}
       connectionTimeout: ${bgs.default.methodWarningThreshhold}
+      ssl:
+        # For the JKS file on file system use value as Ex: 'file:/Users/akulkarni/Desktop/vaebnweb1Keystore.jks'
+        keystore: ${javax.net.ssl.keyStore:classpath:test/ssl/dev/vaebnweb1Keystore.jks}
+        keystorePass: ${javax.net.ssl.keyStorePassword:password}
+        truststore: ${javax.net.ssl.trustStore:classpath:test/ssl/dev/vaebnTruststore.jks}
+        truststorePass: ${javax.net.ssl.trustStorePassword:password}
 # ---
 #spring:
 #  profiles: local-int,ci,dev,stage,prod

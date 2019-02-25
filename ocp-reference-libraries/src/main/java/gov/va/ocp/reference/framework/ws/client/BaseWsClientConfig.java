@@ -426,11 +426,11 @@ public class BaseWsClientConfig {
 	/**
 	 * If keystore and truststore are not null, SSL context is added to the httpClient.
 	 *
-	 * @param httpClient
-	 * @param keystore
-	 * @param keystorePass
-	 * @param truststore
-	 * @param truststorePass
+	 * @param httpClient the http client
+	 * @param keystore the keystore
+	 * @param keystorePass the keystore pass
+	 * @param truststore the truststore
+	 * @param truststorePass the truststore pass
 	 */
 	protected void addSslContext(final HttpClientBuilder httpClient,
 			final Resource keystore, final String keystorePass, final Resource truststore, final String truststorePass) {
@@ -438,12 +438,12 @@ public class BaseWsClientConfig {
 		if (keystore != null && truststore != null) {
 			// Add SSL
 			try {
-				KeyStore keystoreFile = this.keyStore(keystore.getFile().getPath(), keystorePass.toCharArray());
-
+				KeyStore keystoreFile = this.keyStore(keystore, keystorePass.toCharArray());
+				
 				SSLContext sslContext =
 						SSLContextBuilder.create()
 								.loadKeyMaterial(keystoreFile, keystorePass.toCharArray())
-								.loadTrustMaterial(truststore.getFile(), truststorePass.toCharArray()).build();
+								.loadTrustMaterial(truststore.getURL(), truststorePass.toCharArray()).build();
 				// use NoopHostnameVerifier to turn off host name verification
 				SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
 				httpClient.setSSLSocketFactory(csf);
@@ -460,21 +460,24 @@ public class BaseWsClientConfig {
 	/**
 	 * Produce a KeyStore object for a given JKS file and its password.
 	 *
-	 * @param filePath the JKS file path
+	 * @param fileResource the file path resource
 	 * @param pass the password
 	 * @return KeyStore
-	 * @throws KeyStoreException
-	 * @throws NoSuchAlgorithmException
-	 * @throws CertificateException
-	 * @throws IOException
+	 * @throws KeyStoreException the key store exception
+	 * @throws NoSuchAlgorithmException the no such algorithm exception
+	 * @throws CertificateException the certificate exception
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	private KeyStore keyStore(String filePath, char[] pass)
+	private KeyStore keyStore(Resource fileResource, char[] pass)
 			throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
 		KeyStore keyStore = KeyStore.getInstance("JKS");
-		File key = ResourceUtils.getFile(filePath);
+		
+		LOGGER.debug("KeyStore: {}", keyStore);
+		LOGGER.debug("Resource: {}", fileResource);
 
-		try (InputStream in = new FileInputStream(key)) {
+		try (InputStream in = fileResource.getInputStream()) {
 			keyStore.load(in, pass);
+			LOGGER.debug("KeyStore load done");
 		}
 		return keyStore;
 	}

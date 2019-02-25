@@ -24,7 +24,7 @@ import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdRespo
 public class PersonWsClientImpl extends BaseWsClientImpl implements PersonWsClient {
 
 	/** A constant representing the Spring Bean name. */
-	public static final String BEAN_NAME = "personWsClientImpl";
+	public static final String BEAN_NAME = "personWsClient";
 
 	/** the switchable remote for service calls (impl or mock) */
 	@Autowired
