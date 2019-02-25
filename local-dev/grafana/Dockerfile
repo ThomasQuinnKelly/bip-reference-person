@@ -15,4 +15,6 @@ RUN if [ ! -z "${GF_INSTALL_PLUGINS}" ]; then \
     done; \
 fi
 
+RUN mkdir -p /var/lib/grafana/dashboards
+COPY dashboards /var/lib/grafana/dashboards
 COPY provisioning /etc/grafana/provisioning
