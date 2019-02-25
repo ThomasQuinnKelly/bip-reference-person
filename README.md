@@ -27,4 +27,7 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 ## Contribution guidelines ## 
 * If you or your team wants to contribute to this repository, then fork the repository and follow the steps to create a PR for our upstream repo to review and commit the changes
 * [Creating a pull request from a fork](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)
+
+## Local Development
+Instructions on running the application locall can be found [here].(local-dev)
 	
