@@ -66,13 +66,13 @@ reference:
       host: localhost
       port: 6379
 #Application Custom Properties          
-service-1:
+ocp-reference-person:
   env: default
   propSource: internal
   password: secret
   sampleProperty: >
-                  sampleProperty___env/profile:${service-1.env}___propSource:
-                  ${service-1.propSource}__password:${service-1.password}
+                  sampleProperty___env/profile:${ocp-reference-person.env}___propSource:
+                  ${ocp-reference-person.propSource}__password:${ocp-reference-person.password}
 #---------------------------------------------------
 #   Logging Level for packages
 #---------------------------------------------------
@@ -149,8 +149,8 @@ os.reference:
     jwt:
       enabled: true
       filterProcessUrls: 
-        - /service-1/v1/**
-        - /service-1/v2/**
+        - /api/v1/persons/**
+        - /api/v2/persons/**
       excludeUrls:
         - /**
   swagger:
@@ -158,7 +158,7 @@ os.reference:
     description: API Error Keys <a href="swagger/error-keys.html">error keys</a>
     groupName: "@project.name@-@project.version@"
     version: ${info.build.version}
-    securePaths: /service-1/.*/v?.*
+    securePaths: /api/v?.*/persons/.*
 
 #########################################################################
 # Partner config properties

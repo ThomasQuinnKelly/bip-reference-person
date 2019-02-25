@@ -7,6 +7,6 @@ import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientConfig;
 
 @Configuration
 @Import({ReferenceServiceRestClientTestsConfig.class, PersonWsClientConfig.class})
-public class ReferenceServiceConfig {
+public class ReferencePersonConfig {
 
 }

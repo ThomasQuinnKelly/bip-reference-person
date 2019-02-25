@@ -38,7 +38,6 @@ import gov.va.ocp.reference.person.utils.StringUtil;
 @Qualifier("IMPL")
 @RefreshScope
 @DefaultProperties(groupKey = HystrixCommandConstants.REFERENCE_PERSON_SERVICE_GROUP_KEY)
-
 /**
  * Implementation class for the Reference Person Service.
  * The class demonstrates the implementation of hystrix circuit breaker
@@ -107,25 +106,6 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 //			// Prepare the service response
 //			return createPersonInfoResponse(findPersonByPtcpntIdResponseElement, personInfoRequest.getParticipantID());
 			return null;
-		}
-	}
-
-	/**
-	 * Hystrix Fallback Method Which is Triggered When there Is An Unexpected Exception
-	 * in getPersonInfo.
-	 *
-	 * @param personInfoRequest The request from the Java Service.
-	 * @param throwable the throwable
-	 * @return A JAXB element for the WS request
-	 */
-	@HystrixCommand(commandKey = "GetPersonInfoFallBackCommand")
-	public PersonInfoResponse getPersonInfoFallBack(final PersonInfoRequest personInfoRequest, final Throwable throwable) {
-		final PersonInfoResponse response = new PersonInfoResponse();
-		if (throwable != null) {
-			LOGGER.error("Exception occurred in getPersonInfoFallBack {}", throwable);
-			throw new PersonServiceException("Error: " + throwable.toString());
-		} else {
-			return response;
 		}
 	}
 

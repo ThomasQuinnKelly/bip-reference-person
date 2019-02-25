@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import brave.sampler.Sampler;
-import gov.va.ocp.reference.person.config.ReferenceServiceConfig;
+import gov.va.ocp.reference.person.config.ReferencePersonConfig;
 
 /**
  * An <tt>Reference Person Service Application</tt> enabled for Spring Boot Application,
@@ -27,7 +27,7 @@ import gov.va.ocp.reference.person.config.ReferenceServiceConfig;
 @EnableHystrix
 @EnableCaching
 @EnableAsync
-@Import(ReferenceServiceConfig.class)
+@Import(ReferencePersonConfig.class)
 public class ReferencePersonApplication {
 	
 	/**
@@ -39,6 +39,11 @@ public class ReferencePersonApplication {
 		SpringApplication.run(ReferencePersonApplication.class, args);
 	}
 
+	/**
+	 * Always sampler.
+	 *
+	 * @return the sampler
+	 */
 	@Bean
 	Sampler alwaysSampler() {
 		return Sampler.ALWAYS_SAMPLE;
