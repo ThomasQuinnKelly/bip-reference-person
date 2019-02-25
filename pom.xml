@@ -6,7 +6,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 		<groupId>gov.va.ocp.reference</groupId>
 		<artifactId>ocp-reference-parentpom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../ocp-reference-parentpom</relativePath>
+		<relativePath>./ocp-reference-parentpom</relativePath>
 	</parent>
 	
 	<artifactId>ocp-reference-reactor</artifactId>
