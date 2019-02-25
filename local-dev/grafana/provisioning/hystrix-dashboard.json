@@ -562,9 +562,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "{__name__=~\".*_hystrix_command_count_failure\",command_group=~\"$commandGroup\",command_name=~\"$commandName\",job=~\"$service\"}",
+              "expr": "{__name__=~\"hystrix_execution_total\",event=~\"failure\",group=~\"$commandGroup\",key=~\"$commandName\",service=~\"$service\"}",
               "intervalFactor": 2,
-              "legendFormat": "{{command_name}} ({{command_group}})",
+              "legendFormat": "{{key}} ({{group}})",
               "metric": "ml_hystrix_command_count_exceptions_thrown",
               "refId": "A",
               "step": 120
@@ -636,9 +636,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "{__name__=~\".*_hystrix_command_count_success\",command_group=~\"$commandGroup\",command_name=~\"$commandName\",job=~\"$service\"}",
+              "expr": "{__name__=~\"hystrix_execution_total\",event=~\"success\",group=~\"$commandGroup\",key=~\"$commandName\",service=~\"$service\"}",
               "intervalFactor": 2,
-              "legendFormat": "{{command_name}} ({{command_group}})",
+              "legendFormat": "{{key}} ({{group}})",
               "metric": "ml_hystrix_command_count_exceptions_thrown",
               "refId": "A",
               "step": 60
@@ -710,9 +710,9 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "{__name__=~\".*_hystrix_command_count_timeout\",command_group=~\"$commandGroup\",command_name=~\"$commandName\",job=~\"$service\"}",
+              "expr": "{__name__=~\"hystrix_execution_total\",event=~\"timeout\",group=~\"$commandGroup\",key=~\"$commandName\",service=~\"$service\"}",
               "intervalFactor": 2,
-              "legendFormat": "{{command_name}} ({{command_group}})",
+              "legendFormat": "{{key}} ({{group}})",
               "metric": "ml_hystrix_command_count_exceptions_thrown",
               "refId": "A",
               "step": 60
@@ -746,310 +746,6 @@
             {
               "format": "short",
               "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            }
-          ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": 242,
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "fill": 1,
-          "id": 10,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 3,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "{__name__=~\".*_hystrix_thread_pool_queue_size\", pool_name=~\"$commandGroup\"}",
-              "intervalFactor": 1,
-              "legendFormat": "{{pool_name}}",
-              "metric": "api_hystrix_command_count_emit",
-              "refId": "A",
-              "step": 30
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Thread Pool / Queue Size",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "fill": 1,
-          "id": 12,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 3,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "{__name__=~\".*_hystrix_thread_pool_thread_active_count\", pool_name=~\"$commandGroup\"}",
-              "intervalFactor": 1,
-              "legendFormat": "{{pool_name}}",
-              "metric": "api_hystrix_command_count_emit",
-              "refId": "A",
-              "step": 30
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Thread Pool / Active Threads",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "fill": 1,
-          "id": 11,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 3,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "{__name__=~\".*_hystrix_thread_pool_completed_task_count\", pool_name=~\"$commandGroup\"}",
-              "intervalFactor": 1,
-              "legendFormat": "{{pool_name}}",
-              "metric": "api_hystrix_command_count_emit",
-              "refId": "A",
-              "step": 30
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Thread Pool / Completed Tasks",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "datasource": "${DS_PROMETHEUS}",
-          "fill": 1,
-          "id": 13,
-          "legend": {
-            "alignAsTable": true,
-            "avg": false,
-            "current": true,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "span": 3,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "{__name__=~\".*_hystrix_command_count_thread_pool_rejected\",command_group=~\"$commandGroup\",command_name=~\"$commandName\",job=~\"$service\"}",
-              "intervalFactor": 1,
-              "legendFormat": "{{command_name}} ({{command_group}})",
-              "metric": "api_hystrix_command_count_emit",
-              "refId": "A",
-              "step": 30
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Thread Pool / Rejected Tasks",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": "",
-              "logBase": 1,
-              "max": null,
-              "min": "0",
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": "",
               "logBase": 1,
               "max": null,
               "min": "0",
