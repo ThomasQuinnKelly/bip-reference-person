@@ -34,7 +34,7 @@ spring.cloud.vault:
   #authentication: TOKEN
   token: ${VAULT_TOKEN:vaultroot}
   kv:
-    enabled: false
+    enabled: true
     backend: secret
     profile-separator: '/'
     default-context: application

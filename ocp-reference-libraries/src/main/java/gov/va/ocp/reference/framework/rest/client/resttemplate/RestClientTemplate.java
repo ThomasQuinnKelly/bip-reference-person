@@ -1,6 +1,7 @@
 package gov.va.ocp.reference.framework.rest.client.resttemplate;
 
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -44,14 +45,17 @@ public class RestClientTemplate {
 	}
 
 	/**
-	 * Simplified method to send a GET request using
+	 * Simplified method to send a request using
 	 * {@link RestTemplate#exchange(java.net.URI, HttpMethod, org.springframework.http.HttpEntity, ParameterizedTypeReference)
 	 *
-	 * @param url the URL to GET from
+	 * @param <T> the generic type
+	 * @param url the URL
+	 * @param methodType the method type
+	 * @param requestEntity the request entity
 	 * @param responseType the {@link java.lang.reflect.Type} to return
 	 * @return ResponseEntity a {@link ResponseEntity} of {@code responseType}
 	 */
-	public <T> ResponseEntity<T> executeURL(String url, ParameterizedTypeReference<T> responseType) {
-		return this.restTemplate.exchange(url, HttpMethod.GET, null, responseType);
+	public <T> ResponseEntity<T> executeURL(String url, HttpMethod methodType, HttpEntity<?> requestEntity, ParameterizedTypeReference<T> responseType) {
+		return this.restTemplate.exchange(url, methodType, requestEntity, responseType);
 	}
 }

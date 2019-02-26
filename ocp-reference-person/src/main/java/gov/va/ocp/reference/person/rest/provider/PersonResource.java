@@ -49,7 +49,7 @@ public class PersonResource implements HealthIndicator, SwaggerResponseMessages 
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = MESSAGE_200) })
 	public Health health() {
-		return Health.up().withDetail("Person Service REST Endpoint", "Person Service REST Provider Up and Running!").build();
+		return Health.up().withDetail("Reference Person Service REST Endpoint", "Person Service REST Provider Up and Running!").build();
 	}
 
 	/**
@@ -65,6 +65,7 @@ public class PersonResource implements HealthIndicator, SwaggerResponseMessages 
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	@ApiOperation(value = "PID based Person Info from Person Partner Service.", notes = "Will return a person info based on PID.")
 	public PersonInfoResponse personByPid(@RequestBody final PersonInfoRequest personInfoRequest) {
+		LOGGER.debug("personByPid() method invoked");
 		return refPersonService.findPersonByParticipantID(personInfoRequest);
 	}
 

@@ -14,6 +14,7 @@ import com.netflix.hystrix.HystrixCommandKey;
 import com.netflix.hystrix.HystrixCommandProperties;
 
 import feign.Feign;
+import feign.Logger;
 import feign.hystrix.HystrixFeign;
 import feign.hystrix.SetterFactory;
 import gov.va.ocp.reference.framework.log.ReferenceLogger;
@@ -105,6 +106,16 @@ public class ReferenceFeignAutoConfiguration {
 
 		return HystrixFeign.builder().setterFactory(commandKeyIsRequestLine).requestInterceptor(tokenFeignRequestInterceptor());
 	}
+	
+	/**
+	 * Feign logger level.
+	 *
+	 * @return the logger. level
+	 */
+	@Bean
+	Logger.Level feignLoggerLevel() {
+		return Logger.Level.FULL;
+    }
 
 	/**
 	 * A bean for internal purposes, the standard (non-feign) REST request intercepter
