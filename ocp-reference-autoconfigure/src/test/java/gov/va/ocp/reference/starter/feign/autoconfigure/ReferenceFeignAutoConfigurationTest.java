@@ -24,7 +24,7 @@ import com.netflix.hystrix.HystrixCommand;
 import feign.Feign;
 import feign.Target;
 import feign.hystrix.SetterFactory;
-import gov.va.ocp.reference.framework.rest.provider.RestProviderHttpResponseCodeAspect;
+import gov.va.ocp.reference.framework.rest.provider.RestProviderHttpResponseAspect;
 import gov.va.ocp.reference.starter.audit.autoconfigure.ReferenceAuditAutoConfiguration;
 import gov.va.ocp.reference.starter.feign.autoconfigure.ReferenceFeignAutoConfiguration;
 import gov.va.ocp.reference.starter.feign.autoconfigure.TokenFeignRequestInterceptor;
@@ -50,7 +50,7 @@ public class ReferenceFeignAutoConfigurationTest {
 		context.register(JacksonAutoConfiguration.class, SecurityAutoConfiguration.class, EmbeddedWebServerFactoryCustomizerAutoConfiguration.class,
 				ReferenceSecurityAutoConfiguration.class,
 				ReferenceAuditAutoConfiguration.class, ReferenceFeignAutoConfiguration.class,
-				RestProviderHttpResponseCodeAspect.class);
+				RestProviderHttpResponseAspect.class);
 
 		context.refresh();
 		assertNotNull(context);
