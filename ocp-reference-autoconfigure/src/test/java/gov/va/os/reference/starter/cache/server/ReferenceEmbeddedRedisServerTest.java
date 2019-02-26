@@ -24,41 +24,41 @@ import redis.clients.jedis.JedisPool;
 public class ReferenceEmbeddedRedisServerTest {
 
 	@Autowired
-	ReferenceEmbeddedRedisServer ascentEmbeddedServer;
+	ReferenceEmbeddedRedisServer referenceEmbeddedServer;
 
 	@Before
 	public void setUp() {
-		if (ascentEmbeddedServer.getRedisServer().isActive()) {
-			ascentEmbeddedServer.stopRedis();
+		if (referenceEmbeddedServer.getRedisServer().isActive()) {
+			referenceEmbeddedServer.stopRedis();
 		}
 	}
 
 	@Test(timeout = 1500L)
 	public void testSimpleRun() throws Exception {
-		ascentEmbeddedServer.startRedis();
-		ascentEmbeddedServer.stopRedis();
+		referenceEmbeddedServer.startRedis();
+		referenceEmbeddedServer.stopRedis();
 	}
 
 	@Test
 	public void shouldAllowSubsequentRuns() throws Exception {
-		ascentEmbeddedServer.startRedis();
-		ascentEmbeddedServer.stopRedis();
+		referenceEmbeddedServer.startRedis();
+		referenceEmbeddedServer.stopRedis();
 
-		ascentEmbeddedServer.startRedis();
-		ascentEmbeddedServer.stopRedis();
+		referenceEmbeddedServer.startRedis();
+		referenceEmbeddedServer.stopRedis();
 
-		ascentEmbeddedServer.startRedis();
-		ascentEmbeddedServer.stopRedis();
+		referenceEmbeddedServer.startRedis();
+		referenceEmbeddedServer.stopRedis();
 	}
 
 	@Test
 	public void testSimpleOperationsAfterRun() throws Exception {
-		ascentEmbeddedServer.startRedis();
+		referenceEmbeddedServer.startRedis();
 
 		JedisPool pool = null;
 		Jedis jedis = null;
 		try {
-			pool = new JedisPool("localhost", ascentEmbeddedServer.getRedisServer().ports().get(0));
+			pool = new JedisPool("localhost", referenceEmbeddedServer.getRedisServer().ports().get(0));
 			jedis = pool.getResource();
 			jedis.mset("abc", "1", "def", "2");
 
@@ -68,33 +68,33 @@ public class ReferenceEmbeddedRedisServerTest {
 		} finally {
 			if (jedis != null)
 				pool.close();
-			ascentEmbeddedServer.stopRedis();
+			referenceEmbeddedServer.stopRedis();
 		}
 	}
 
 	@Test
 	public void shouldIndicateInactiveBeforeStart() throws Exception {
-		assertFalse(ascentEmbeddedServer.getRedisServer().isActive());
+		assertFalse(referenceEmbeddedServer.getRedisServer().isActive());
 	}
 
 	@Test
 	public void shouldIndicateActiveAfterStart() throws Exception {
-		ascentEmbeddedServer.startRedis();
-		assertTrue(ascentEmbeddedServer.getRedisServer().isActive());
-		ascentEmbeddedServer.stopRedis();
+		referenceEmbeddedServer.startRedis();
+		assertTrue(referenceEmbeddedServer.getRedisServer().isActive());
+		referenceEmbeddedServer.stopRedis();
 	}
 
 	@Test
 	public void shouldIndicateInactiveAfterStop() throws Exception {
-		ascentEmbeddedServer.startRedis();
-		ascentEmbeddedServer.stopRedis();
-		assertFalse(ascentEmbeddedServer.getRedisServer().isActive());
+		referenceEmbeddedServer.startRedis();
+		referenceEmbeddedServer.stopRedis();
+		assertFalse(referenceEmbeddedServer.getRedisServer().isActive());
 	}
 
 	@After
 	public void teardown() {
-		if (ascentEmbeddedServer.getRedisServer().isActive()) {
-			ascentEmbeddedServer.stopRedis();
+		if (referenceEmbeddedServer.getRedisServer().isActive()) {
+			referenceEmbeddedServer.stopRedis();
 		}
 	}
 }

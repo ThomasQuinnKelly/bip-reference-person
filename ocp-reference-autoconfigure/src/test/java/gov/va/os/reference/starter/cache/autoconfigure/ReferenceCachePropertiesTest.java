@@ -15,23 +15,23 @@ public class ReferenceCachePropertiesTest {
 
 	@Test
 	public void testGetters() {
-		ReferenceCacheProperties ascentCacheProperties = new ReferenceCacheProperties();
-		assertNull(ascentCacheProperties.getExpires());
-		assertEquals(new Long(86400L), ascentCacheProperties.getDefaultExpires());
+		ReferenceCacheProperties referenceCacheProperties = new ReferenceCacheProperties();
+		assertNull(referenceCacheProperties.getExpires());
+		assertEquals(new Long(86400L), referenceCacheProperties.getDefaultExpires());
 	}
 
 	@Test
 	public void testSetters() {
-		ReferenceCacheProperties ascentCacheProperties = new ReferenceCacheProperties();
+		ReferenceCacheProperties referenceCacheProperties = new ReferenceCacheProperties();
 		List<ReferenceCacheProperties.RedisExpires> listRedisExpires = new ArrayList<>();
 		ReferenceCacheProperties.RedisExpires redisExpires = new ReferenceCacheProperties.RedisExpires();
 		redisExpires.setName("methodcachename_projectname_projectversion");
 		redisExpires.setTtl(86400L);
 		listRedisExpires.add(0, redisExpires);
-		ascentCacheProperties.setExpires(listRedisExpires);
-		ascentCacheProperties.setDefaultExpires(500L);
-		assertTrue(!ascentCacheProperties.getExpires().isEmpty());
-		assertTrue(Long.valueOf(86400L).equals(ascentCacheProperties.getExpires().get(0).getTtl()));
-		assertEquals(new Long(500L), ascentCacheProperties.getDefaultExpires());
+		referenceCacheProperties.setExpires(listRedisExpires);
+		referenceCacheProperties.setDefaultExpires(500L);
+		assertTrue(!referenceCacheProperties.getExpires().isEmpty());
+		assertTrue(Long.valueOf(86400L).equals(referenceCacheProperties.getExpires().get(0).getTtl()));
+		assertEquals(new Long(500L), referenceCacheProperties.getDefaultExpires());
 	}
 }

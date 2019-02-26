@@ -39,7 +39,7 @@ public class ReferenceCacheAutoConfigurationTests {
 	}
 
 	@Test
-	public void testAscentCacheConfiguration() throws Exception {
+	public void testReferenceCacheConfiguration() throws Exception {
 		context = new AnnotationConfigApplicationContext();
 		TestPropertyValues.of("spring.cache.type=redis").applyTo(context);
 		context.register(RedisAutoConfiguration.class, ReferenceCacheAutoConfiguration.class);
@@ -50,7 +50,7 @@ public class ReferenceCacheAutoConfigurationTests {
 	}
 
 	@Test
-	public void testAscentCacheConfigurationKeyGenerator() throws Exception {
+	public void testReferenceCacheConfigurationKeyGenerator() throws Exception {
 		context = new AnnotationConfigApplicationContext();
 		TestPropertyValues.of("spring.cache.type=redis").applyTo(context);
 		context.register(RedisAutoConfiguration.class, ReferenceCacheAutoConfiguration.class);
@@ -69,8 +69,8 @@ public class ReferenceCacheAutoConfigurationTests {
 		context.refresh();
 		assertNotNull(context);
 
-		ReferenceCacheAutoConfiguration ascentCacheAutoConfiguration = context.getBean(ReferenceCacheAutoConfiguration.class);
-		ascentCacheAutoConfiguration.errorHandler().handleCacheGetError(new RuntimeException("Test Message"), mockCache, "TestKey");
+		ReferenceCacheAutoConfiguration referenceCacheAutoConfiguration = context.getBean(ReferenceCacheAutoConfiguration.class);
+		referenceCacheAutoConfiguration.errorHandler().handleCacheGetError(new RuntimeException("Test Message"), mockCache, "TestKey");
 	}
 
 	@Test
@@ -81,8 +81,8 @@ public class ReferenceCacheAutoConfigurationTests {
 		context.refresh();
 		assertNotNull(context);
 
-		ReferenceCacheAutoConfiguration ascentCacheAutoConfiguration = context.getBean(ReferenceCacheAutoConfiguration.class);
-		ascentCacheAutoConfiguration.errorHandler().handleCachePutError(new RuntimeException("Test Message"), mockCache, "TestKey",
+		ReferenceCacheAutoConfiguration referenceCacheAutoConfiguration = context.getBean(ReferenceCacheAutoConfiguration.class);
+		referenceCacheAutoConfiguration.errorHandler().handleCachePutError(new RuntimeException("Test Message"), mockCache, "TestKey",
 				"TestValue");
 	}
 
@@ -94,8 +94,8 @@ public class ReferenceCacheAutoConfigurationTests {
 		context.refresh();
 		assertNotNull(context);
 
-		ReferenceCacheAutoConfiguration ascentCacheAutoConfiguration = context.getBean(ReferenceCacheAutoConfiguration.class);
-		ascentCacheAutoConfiguration.errorHandler().handleCacheEvictError(new RuntimeException("Test Message"), mockCache, "TestKey");
+		ReferenceCacheAutoConfiguration referenceCacheAutoConfiguration = context.getBean(ReferenceCacheAutoConfiguration.class);
+		referenceCacheAutoConfiguration.errorHandler().handleCacheEvictError(new RuntimeException("Test Message"), mockCache, "TestKey");
 	}
 
 	@Test
@@ -106,8 +106,8 @@ public class ReferenceCacheAutoConfigurationTests {
 		context.refresh();
 		assertNotNull(context);
 
-		ReferenceCacheAutoConfiguration ascentCacheAutoConfiguration = context.getBean(ReferenceCacheAutoConfiguration.class);
-		ascentCacheAutoConfiguration.errorHandler().handleCacheClearError(new RuntimeException("Test Message"), mockCache);
+		ReferenceCacheAutoConfiguration referenceCacheAutoConfiguration = context.getBean(ReferenceCacheAutoConfiguration.class);
+		referenceCacheAutoConfiguration.errorHandler().handleCacheClearError(new RuntimeException("Test Message"), mockCache);
 	}
 
 	public Method myMethod() throws NoSuchMethodException {
