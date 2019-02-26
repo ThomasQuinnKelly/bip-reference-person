@@ -194,7 +194,7 @@ public class Message extends AbstractMessage {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see gov.va.ascent.framework.transfer.AbstractTransferObject#equals(java.lang.Object)
+	 * @see gov.va.ocp.reference.framework.transfer.AbstractTransferObject#equals(java.lang.Object)
 	 */
 	@Override
 	public final boolean equals(final Object obj) {
@@ -204,7 +204,7 @@ public class Message extends AbstractMessage {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see gov.va.ascent.framework.transfer.AbstractTransferObject#hashCode()
+	 * @see gov.va.ocp.reference.framework.transfer.AbstractTransferObject#hashCode()
 	 */
 	@Override
 	public final int hashCode() {
