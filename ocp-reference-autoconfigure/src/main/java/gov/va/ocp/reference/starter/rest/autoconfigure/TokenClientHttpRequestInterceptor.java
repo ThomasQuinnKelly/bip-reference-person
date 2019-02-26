@@ -41,9 +41,23 @@ public class TokenClientHttpRequestInterceptor implements ClientHttpRequestInter
 
 		Map<String, String> tokenMap = tokenService.getTokenFromRequest();
 		for (Map.Entry<String, String> token : tokenMap.entrySet()) {
-			LOGGER.info("Adding Token Header {} {}", token.getKey(), token.getValue());
+			LOGGER.debug("Adding Token Header {} {}", token.getKey(), token.getValue());
 			request.getHeaders().add(token.getKey(), token.getValue());
 		}
+		
+		logRequestDetails(request);
+		
 		return execution.execute(request, body);
 	}
+	
+	/**
+	 * Log request details.
+	 *
+	 * @param request the request
+	 */
+	private void logRequestDetails(HttpRequest request) {
+        LOGGER.debug("Request Headers: {}", request.getHeaders());
+        LOGGER.debug("Request Method: {}", request.getMethod());
+        LOGGER.debug("Request URI: {}", request.getURI());
+    }
 }
