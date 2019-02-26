@@ -55,7 +55,7 @@ public class ReferenceRestAutoConfiguration {
 	 *
 	 * @param restTemplateBuilder the RestTemplateBuilder to configure
 	 */
-	private void configureCommon(RestTemplateBuilder restTemplateBuilder) {
+	private RestTemplateBuilder configureCommon(RestTemplateBuilder restTemplateBuilder) {
 		int connTimeoutValue = 0;
 		try {
 			connTimeoutValue = Integer.valueOf(connectionTimeout);
@@ -69,6 +69,7 @@ public class ReferenceRestAutoConfiguration {
 						+ connectionTimeout + ".");
 
 		restTemplateBuilder.setConnectTimeout(Duration.ofMillis(connTimeoutValue)); // milliseconds
+		return restTemplateBuilder;
 	}
 
 	/**
@@ -88,12 +89,11 @@ public class ReferenceRestAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	@LoadBalanced
 	public RestClientTemplate restClientTemplate() {
 		RestTemplateBuilder builder = new RestTemplateBuilder();
-		configureCommon(builder);
+		builder = configureCommon(builder);
 		// add intercepter
-		builder.interceptors(tokenClientHttpRequestInterceptor());
+		builder = builder.interceptors(tokenClientHttpRequestInterceptor());
 		return new RestClientTemplate(builder.build());
 	}
 

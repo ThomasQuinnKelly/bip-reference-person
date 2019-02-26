@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
     
     <name>${project.artifactId}</name>
-    <description>Person Service Implementation for Spring Boot Reference Project</description>
+    <description>Reference Person Service Implementation for OpenShift Container Platform (OCP) Spring Boot Project</description>
     
     <dependencies>
     	<dependency>

@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -46,7 +47,7 @@ public class RestClientTemplateTest {
 		restClientTemplate = this.context.getBean("restClientTemplate", RestClientTemplate.class);
 		assertNotNull(restClientTemplate);
 		try {
-			setResponseEntity(restClientTemplate.executeURL(DUMMY_ENDPOINT, responseType));
+			setResponseEntity(restClientTemplate.executeURL(DUMMY_ENDPOINT, HttpMethod.GET, null, responseType));
 		} catch (Exception e) {
 			System.out.println("REST call is expected to fail");
 			assertTrue(e instanceof RestClientException);

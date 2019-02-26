@@ -52,7 +52,7 @@ import gov.va.ocp.reference.framework.util.SanitizationUtil;
  * This aspect pointcuts on standard REST endpoints.
  * Ensure you follow that pattern to make use of this standard aspect.
  *
- * @author jshrader
+ * @author akulkarni
  * @see gov.va.ocp.reference.framework.rest.provider.BaseRestProviderAspect
  */
 @Aspect
@@ -193,13 +193,21 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 			} else {
 				serviceResponse = ((ResponseEntity<ServiceResponse>) responseObject).getBody();
 			}
+			
+			if (serviceResponse == null) {
+				serviceResponse = new ServiceResponse();
+			}
+			
+			LOGGER.debug("ServiceResponse: {}", serviceResponse);
 
 			final HttpStatus ruleStatus = rulesEngine.messagesToHttpStatus(serviceResponse.getMessages());
+			
+			LOGGER.debug("HttpStatus: {}", ruleStatus);
 
 			auditEventData = new AuditEventData(AuditEvents.REST_RESPONSE, method.getName(), method.getDeclaringClass().getName());
 			if (ruleStatus != null && (HttpStatus.Series.valueOf(ruleStatus.value()) == HttpStatus.Series.SERVER_ERROR
 					|| HttpStatus.Series.valueOf(ruleStatus.value()) == HttpStatus.Series.CLIENT_ERROR)) {
-				LOGGER.debug("HttpStatus {}", ruleStatus.value());
+				LOGGER.debug("HttpStatus Code: {}", ruleStatus.value());
 				writeResponseAudit(responseObject, auditEventData, MessageSeverity.ERROR, null);
 
 				if (returnTypeIsServiceResponse) {

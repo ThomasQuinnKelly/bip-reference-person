@@ -39,7 +39,7 @@ public class PersonResource implements HealthIndicator, SwaggerResponseMessages 
 	@Qualifier("IMPL")
 	ReferencePersonService refPersonService;
 
-	public static final String URL_PREFIX = "/service-1/v1";
+	public static final String URL_PREFIX = "/api/v1/persons";
 
 	// NOSONAR TODO make this method a REST call to test this endpoint is up and running
 	@Override
@@ -49,7 +49,7 @@ public class PersonResource implements HealthIndicator, SwaggerResponseMessages 
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = MESSAGE_200) })
 	public Health health() {
-		return Health.up().withDetail("Person Service REST Endpoint", "Person Service REST Provider Up and Running!").build();
+		return Health.up().withDetail("Reference Person Service REST Endpoint", "Person Service REST Provider Up and Running!").build();
 	}
 
 	/**
@@ -61,10 +61,11 @@ public class PersonResource implements HealthIndicator, SwaggerResponseMessages 
 	 * @param personInfoRequest the person info request
 	 * @return the person info response
 	 */
-	@RequestMapping(value = URL_PREFIX + "/person/pid",
+	@RequestMapping(value = URL_PREFIX + "/pid",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	@ApiOperation(value = "PID based Person Info from Person Partner Service.", notes = "Will return a person info based on PID.")
 	public PersonInfoResponse personByPid(@RequestBody final PersonInfoRequest personInfoRequest) {
+		LOGGER.debug("personByPid() method invoked");
 		return refPersonService.findPersonByParticipantID(personInfoRequest);
 	}
 

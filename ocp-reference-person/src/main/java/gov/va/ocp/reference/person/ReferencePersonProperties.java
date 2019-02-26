@@ -12,11 +12,15 @@ import org.springframework.context.annotation.Configuration;
  * (1) It provides a bean that classes can use to get to our properties.
  * (2) It allows the actuator and the /configprops endpoint to surface all bound/bindable properties (as documentation)
  */
+/**
+ * @author akulkarni
+ *
+ */
 @Configuration
 @EnableConfigurationProperties
-@ConfigurationProperties(prefix="service-1")
+@ConfigurationProperties(prefix="ocp-reference-person")
 @RefreshScope //to demo refreshing the properties after app running
-public class ReferenceServiceProperties {
+public class ReferencePersonProperties {
 
 	@NotNull
     private String env;
