@@ -32,7 +32,6 @@ import io.swagger.annotations.ApiResponses;
  */
 public class PersonResource implements HealthIndicator, SwaggerResponseMessages {
 
-	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(PersonResource.class);
 
 	@Autowired
