@@ -206,6 +206,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 				}
 			}
 		}
+		personInfoResponse.setDoNotCacheResponse(true);
 		return personInfoResponse;
 	}
 

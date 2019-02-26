@@ -1,6 +1,6 @@
 package gov.va.ocp.reference.person.utils;
 
-import gov.va.ocp.reference.service.utils.ApplicationInfo;
+import gov.va.ocp.reference.person.utils.ApplicationInfo;
 
 /**
  * <p>

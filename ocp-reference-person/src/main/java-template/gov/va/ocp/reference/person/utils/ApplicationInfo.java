@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.service.utils;
+package gov.va.ocp.reference.person.utils;
 
 /**
  * Meta-information about the web application.<br/>
