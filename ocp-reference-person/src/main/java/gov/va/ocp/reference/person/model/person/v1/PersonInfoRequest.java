@@ -12,9 +12,6 @@ public class PersonInfoRequest extends ServiceRequest {
 	private static final long serialVersionUID = -1348027376496517555L;
 
 	/** A String representing a social security number. */
-	private String ssn;
-
-	/** A String representing a social security number. */
 	private Long participantID;
 
 	/**
@@ -33,23 +30,5 @@ public class PersonInfoRequest extends ServiceRequest {
 	 */
 	public final void setParticipantID(final Long participantID) {
 		this.participantID = participantID;
-	}
-
-	/**
-	 * Gets the ssn.
-	 *
-	 * @return the SSN
-	 */
-	public final String getSsn() {
-		return this.ssn;
-	}
-
-	/**
-	 * Sets the ssn.
-	 *
-	 * @param ssn the SSN
-	 */
-	public final void setSsn(final String ssn) {
-		this.ssn = ssn;
 	}
 }
