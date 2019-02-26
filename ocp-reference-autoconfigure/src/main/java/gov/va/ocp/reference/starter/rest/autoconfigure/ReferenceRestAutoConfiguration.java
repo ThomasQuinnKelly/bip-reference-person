@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 import gov.va.ocp.reference.framework.rest.client.resttemplate.RestClientTemplate;
-import gov.va.ocp.reference.framework.rest.provider.RestProviderHttpResponseCodeAspect;
+import gov.va.ocp.reference.framework.rest.provider.RestProviderHttpResponseAspect;
 import gov.va.ocp.reference.framework.rest.provider.RestProviderTimerAspect;
 import gov.va.ocp.reference.framework.util.Defense;
 
@@ -27,15 +27,15 @@ public class ReferenceRestAutoConfiguration {
 	private String connectionTimeout;
 
 	/**
-	 * Aspect bean of the {@link RestProviderHttpResponseCodeAspect}
+	 * Aspect bean of the {@link RestProviderHttpResponseAspect}
 	 * (currently executed around auditables and REST controllers).
 	 *
-	 * @return RestProviderHttpResponseCodeAspect
+	 * @return RestProviderHttpResponseAspect
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public RestProviderHttpResponseCodeAspect restProviderHttpResponseCodeAspect() {
-		return new RestProviderHttpResponseCodeAspect();
+	public RestProviderHttpResponseAspect restProviderHttpResponseAspect() {
+		return new RestProviderHttpResponseAspect();
 	}
 
 	/**
