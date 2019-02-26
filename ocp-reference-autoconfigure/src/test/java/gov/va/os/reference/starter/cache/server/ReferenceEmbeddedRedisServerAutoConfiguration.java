@@ -30,7 +30,6 @@ public class ReferenceEmbeddedRedisServerAutoConfiguration {
 		ReferenceCacheProperties referenceCacheProperties = new ReferenceCacheProperties();
 		referenceCacheProperties.setRedisConfig(new RedisConfig());
 		referenceCacheProperties.getRedisConfig().setHost("localhost");
-		// ascentCacheProperties.getRedisConfig().setPort(6379);
 		referenceCacheProperties.setExpires(new ArrayList<>());
 		referenceCacheProperties.setDefaultExpires(500L);
 		return referenceCacheProperties;

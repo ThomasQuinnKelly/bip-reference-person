@@ -80,8 +80,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 */
 	@Override
 	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE,
-			key = "#root.methodName + T(gov.va.os.reference.framework.util.ReferenceCacheUtil).getUserBasedKey()",
-			unless = "T(gov.va.os.reference.framework.util.ReferenceCacheUtil).checkResultConditions(#result)")
+			key = "#root.methodName + T(gov.va.ocp.reference.framework.util.ReferenceCacheUtil).getUserBasedKey()",
+			unless = "T(gov.va.ocp.reference.framework.util.ReferenceCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
 			ignoreExceptions = { IllegalArgumentException.class })
 	public PersonInfoResponse findPersonByParticipantID(final PersonInfoRequest personInfoRequest) {
