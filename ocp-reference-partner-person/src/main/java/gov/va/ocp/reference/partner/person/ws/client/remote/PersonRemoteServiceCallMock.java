@@ -50,10 +50,8 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * gov.va.ascent.framework.ws.client.remote.RemoteServiceCall#callRemoteService(
-	 * org.springframework.ws.client.core. WebServiceTemplate,
-	 * gov.va.ascent.framework.transfer.PartnerTransferObjectMarker, java.lang.Class)
+	 * @see gov.va.ocp.reference.framework.ws.client.remote.RemoteServiceCall#callRemoteService( org.springframework.ws.client.core.
+	 * WebServiceTemplate, gov.va.ocp.reference.framework.transfer.PartnerTransferObjectMarker, java.lang.Class)
 	 */
 	@Override
 	public PartnerTransferObjectMarker callRemoteService(final WebServiceTemplate webserviceTemplate,
@@ -68,8 +66,7 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	 * (non-Javadoc)
 	 *
 	 * @see gov.va.ocp.reference.framework.ws.client.remote.AbstractRemoteServiceCallMock#
-	 * getKeyForMockResponse(gov.va.ascent.framework.transfer.
-	 * PartnerTransferObjectMarker)
+	 * getKeyForMockResponse(gov.va.ocp.reference.framework.transfer. PartnerTransferObjectMarker)
 	 */
 	@Override
 	protected String getKeyForMockResponse(final PartnerTransferObjectMarker request) {
