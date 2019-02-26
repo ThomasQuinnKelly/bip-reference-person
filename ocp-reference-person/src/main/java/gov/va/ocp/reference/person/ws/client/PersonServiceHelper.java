@@ -1,21 +1,28 @@
 package gov.va.ocp.reference.person.ws.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
 import gov.va.ocp.reference.framework.log.ReferenceLogger;
 import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClient;
-import gov.va.ocp.reference.person.transform.AbstractPartnerTransformer;
-import gov.va.ocp.reference.person.transform.impl.TransformFindPersonByPtcpntId;
+import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
+import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
+import gov.va.ocp.reference.person.exception.PersonServiceException;
+import gov.va.ocp.reference.person.model.person.v1.PersonInfoRequest;
+import gov.va.ocp.reference.person.model.person.v1.PersonInfoResponse;
+import gov.va.ocp.reference.person.transform.impl.PersonByPid_DomainToPartner;
+import gov.va.ocp.reference.person.transform.impl.PersonByPid_PartnerToDomain;
+import gov.va.ocp.reference.person.ws.client.validate.PersonDomainValidator;
 
+/**
+ * Make external calls to the partner using the partner client.
+ *
+ * @author aburkholder
+ */
 @Component(PersonServiceHelper.BEAN_NAME)
 public class PersonServiceHelper {
-	/** Spring bean name for beans of this class */
 	public static final String BEAN_NAME = "personServiceHelper";
-
 	/** Logger */
 	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(PersonServiceHelper.class);
 
@@ -26,20 +33,34 @@ public class PersonServiceHelper {
 	@Autowired
 	private PersonWsClient personWsClient;
 
-	/** Message source for error messages */
-	@Autowired
-	private MessageSource messageSource;
+	/** Transformer for domain-to-partner model transformation */
+	private PersonByPid_DomainToPartner personByPidD2P = new PersonByPid_DomainToPartner();
 
-// TODO
-//	@Autowired
-//	private PersonServiceValidatorImpl personServiceValidatorImpl;
+	/** Transformer for partner-to-domain model transformation */
+	private PersonByPid_PartnerToDomain personByPidP2D = new PersonByPid_PartnerToDomain();
 
-	@Autowired
-	@Qualifier(TransformFindPersonByPtcpntId.BEAN_NAME)
-	AbstractPartnerTransformer<?, ?> transformPersonInfoResponse;
+	/**
+	 * Make the partner call to find person information by participant id.
+	 *
+	 * @param request the {@link PersonInfoRequest} from the domain
+	 * @return PersonInfoResponse domain representation of the partner response
+	 */
+	public PersonInfoResponse findPersonByPid(PersonInfoRequest request) {
+		// If validation fails, throws IllegalArgumentException back to ServiceExceptionHandlerAspect
+		PersonDomainValidator.validatePersonInfoRequest(request);
 
-	public PersonServiceHelper() {
-		// TODO Auto-generated constructor stub
+		FindPersonByPtcpntId partnerRequest = personByPidD2P.transform(request);
+
+		FindPersonByPtcpntIdResponse partnerResponse = null;
+		try {
+			partnerResponse = personWsClient.getPersonInfoByPtcpntId(partnerRequest);
+		} catch (final Exception clientException) {
+			String message = THROWSTR + clientException.getClass().getName() + ": " + clientException.getMessage();
+			LOGGER.error(message, clientException);
+			throw new PersonServiceException(message, clientException);
+		}
+
+		return personByPidP2D.transform(partnerResponse);
 	}
 
 }
