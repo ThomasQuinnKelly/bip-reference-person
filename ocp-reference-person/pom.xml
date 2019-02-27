@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
     
     <name>${project.artifactId}</name>
-    <description>Person Service Implementation for Spring Boot Reference Project</description>
+    <description>Reference Person Service Implementation for OpenShift Container Platform (OCP) Spring Boot Project</description>
     
     <dependencies>
     	<dependency>
@@ -54,10 +54,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-	    <dependency>
-	        <groupId>org.springframework.boot</groupId>
-	        <artifactId>spring-boot-starter-cache</artifactId>
-	    </dependency>
         <!-- spring cloud dependencies -->
         <!-- Spring-cloud Netflix Feign dependency for defining declarative REST clients -->
         <dependency>
@@ -134,16 +130,6 @@
 		    <artifactId>jolokia-core</artifactId>
 		</dependency>
 		
-		<!-- Cache Manager Dependencies -->
-		<dependency>
-		    <groupId>org.springframework.data</groupId>
-		    <artifactId>spring-data-redis</artifactId>
-		</dependency>
-		<dependency>
-		    <groupId>redis.clients</groupId>
-		    <artifactId>jedis</artifactId>
-		</dependency>
-        
         <!-- misc dependencies -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -166,5 +152,58 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    
+    <build>
+    	<plugins>
+    		 <plugin>
+
+				<!-- 
+				 * Meta-information about the web application.<br/><br/>
+				 * 
+				 * The templating maven plugin handles generating and copying files from a source to a given output directory, while filtering them. 
+				 * This plugin is useful to filter Java Source Code as there is a need to have things in the code replaced with properties values.
+				 * Generates class to store project.* properties in the ApplicationInfo.java placed under <sourceDirectory>
+				 * This mojo helps adding a filtered source folder in one go. This is useful as we want to use properties coming from the POM inside 
+				 * parts of our source code that requires real constants
+				 *
+				 * @see ApplicationInfo.java in src/java-template directory
+			    -->
+			    <groupId>org.codehaus.mojo</groupId>
+			    <artifactId>templating-maven-plugin</artifactId>
+			    <version>${templating-maven-plugin.version}</version>
+			    <executions>
+			        <execution>
+			            <id>filtering-java-templates</id>
+			            <goals>
+			                <goal>filter-sources</goal>
+			            </goals>
+			            <configuration>
+			             <sourceDirectory>${basedir}/src/main/java-template</sourceDirectory>
+			          		<outputDirectory>${project.build.directory}/generated-sources/java-template</outputDirectory>
+			          	</configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+			<plugin>
+				<!-- Generate the source java file described by the templating-maven-plugin above -->
+			      <groupId>org.codehaus.mojo</groupId>
+			      <artifactId>build-helper-maven-plugin</artifactId>
+			      <executions>
+			          <execution>
+			              <id>add-source</id>
+			              <phase>generate-sources</phase>
+			              <goals>
+			                  <goal>add-source</goal>
+			              </goals>
+			              <configuration>
+			                  <sources>
+			                      <source>${project.build.directory}/generated-sources/java-template</source>
+			                  </sources>
+			              </configuration>
+			          </execution>
+			      </executions>
+			  </plugin>
+    	</plugins>
+    </build>
     
 </project>

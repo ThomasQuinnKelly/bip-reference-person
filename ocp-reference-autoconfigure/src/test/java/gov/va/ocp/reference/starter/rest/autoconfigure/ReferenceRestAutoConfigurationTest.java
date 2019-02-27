@@ -16,7 +16,7 @@ import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-import gov.va.ocp.reference.framework.rest.provider.RestProviderHttpResponseCodeAspect;
+import gov.va.ocp.reference.framework.rest.provider.RestProviderHttpResponseAspect;
 import gov.va.ocp.reference.starter.audit.autoconfigure.ReferenceAuditAutoConfiguration;
 import gov.va.ocp.reference.starter.rest.autoconfigure.ReferenceRestAutoConfiguration;
 import gov.va.ocp.reference.starter.security.autoconfigure.ReferenceSecurityAutoConfiguration;
@@ -41,7 +41,7 @@ public class ReferenceRestAutoConfigurationTest {
 		context.register(JacksonAutoConfiguration.class, SecurityAutoConfiguration.class, EmbeddedWebServerFactoryCustomizerAutoConfiguration.class,
 				ReferenceSecurityAutoConfiguration.class,
 				ReferenceAuditAutoConfiguration.class, ReferenceRestAutoConfiguration.class,
-				RestProviderHttpResponseCodeAspect.class);
+				RestProviderHttpResponseAspect.class);
 
 		context.refresh();
 		assertNotNull(context);
@@ -78,7 +78,7 @@ public class ReferenceRestAutoConfigurationTest {
 
 	@Test
 	public void testWebConfiguration() throws Exception {
-		assertNotNull(referenceRestAutoConfiguration.restProviderHttpResponseCodeAspect());
+		assertNotNull(referenceRestAutoConfiguration.restProviderHttpResponseAspect());
 		assertNotNull(referenceRestAutoConfiguration.restProviderTimerAspect());
 		assertNotNull(referenceRestAutoConfiguration.restClientTemplate());
 		assertNotNull(referenceRestAutoConfiguration.tokenClientHttpRequestInterceptor());

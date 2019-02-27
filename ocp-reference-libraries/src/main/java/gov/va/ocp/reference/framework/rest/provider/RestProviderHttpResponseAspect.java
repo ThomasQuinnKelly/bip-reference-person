@@ -46,21 +46,21 @@ import gov.va.ocp.reference.framework.service.ServiceResponse;
 import gov.va.ocp.reference.framework.util.SanitizationUtil;
 
 /**
- * The Class RestProviderHttpResponseCodeAspect is an aspect to alter HTTP response codes from our REST endpoints.
+ * The Class RestProviderHttpResponseAspect is an aspect to alter HTTP response codes from our REST endpoints.
  * It defers to the MessagesToHttpStatusRulesEngine to determine codes.
  *
  * This aspect pointcuts on standard REST endpoints.
  * Ensure you follow that pattern to make use of this standard aspect.
  *
- * @author jshrader
+ * @author akulkarni
  * @see gov.va.ocp.reference.framework.rest.provider.BaseRestProviderAspect
  */
 @Aspect
 @Order(-9998)
-public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
+public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 
 	/** The Constant LOGGER. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(RestProviderHttpResponseCodeAspect.class);
+	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(RestProviderHttpResponseAspect.class);
 
 	private static final int NUMBER_OF_BYTES = 1024;
 
@@ -71,12 +71,12 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 	RequestResponseLogSerializer asyncLogging;
 
 	/**
-	 * Instantiates a new RestProviderHttpResponseCodeAspect using a default MessagesToHttpStatusRulesEngine.
+	 * Instantiates a new RestProviderHttpResponseAspect using a default MessagesToHttpStatusRulesEngine.
 	 *
 	 * Use a custom bean and the other constructor to customize the rules.
 	 *
 	 */
-	public RestProviderHttpResponseCodeAspect() {
+	public RestProviderHttpResponseAspect() {
 		final MessagesToHttpStatusRulesEngine ruleEngine = new MessagesToHttpStatusRulesEngine();
 		ruleEngine.addRule(
 				new MessageSeverityMatchRule(MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR));
@@ -87,11 +87,11 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 	}
 
 	/**
-	 * Instantiates a new RestProviderHttpResponseCodeAspect using the specified MessagesToHttpStatusRulesEngine
+	 * Instantiates a new RestProviderHttpResponseAspect using the specified MessagesToHttpStatusRulesEngine
 	 *
 	 * @param rulesEngine the rules engine
 	 */
-	public RestProviderHttpResponseCodeAspect(final MessagesToHttpStatusRulesEngine rulesEngine) {
+	public RestProviderHttpResponseAspect(final MessagesToHttpStatusRulesEngine rulesEngine) {
 		this.rulesEngine = rulesEngine;
 	}
 
@@ -148,8 +148,9 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 	@SuppressWarnings({ "unchecked", "squid:MethodCyclomaticComplexity" })
 	@Around("!@annotation(gov.va.ocp.reference.framework.audit.Auditable) && restController() && publicServiceResponseRestMethod()")
 	public Object aroundAdvice(final ProceedingJoinPoint joinPoint) throws Throwable {
+		
 		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("RestProviderHttpResponseCodeAspect executing around method:" + joinPoint.toLongString());
+			LOGGER.debug("RestProviderHttpResponseAspect executing around method:" + joinPoint.toLongString());
 		}
 
 		Object responseObject = null;
@@ -158,14 +159,13 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 		AuditEventData auditEventData = null;
 		boolean returnTypeIsServiceResponse = false;
 		HttpServletResponse response = null;
-		Method method = null;
-
+		
 		if (joinPoint.getArgs().length > 0) {
 			requestObject = Arrays.asList(joinPoint.getArgs());
 		}
-
+		
 		try {
-			method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+			Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
 			response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
 
 			returnTypeIsServiceResponse = method.getReturnType().toString().contains("ResponseEntity") ? false : true;
@@ -173,19 +173,18 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 			auditEventData = new AuditEventData(AuditEvents.REST_REQUEST, method.getName(), method.getDeclaringClass().getName());
 
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Request Object: {}", requestObject);
+				LOGGER.debug("Request: {}", requestObject);
 				LOGGER.debug("Method: {}", method);
-				LOGGER.debug("Return Type as ResponseEntity: {}", returnTypeIsServiceResponse);
-				LOGGER.debug("AuditEventData Object: {}", auditEventData.toString());
+				LOGGER.debug("Return type contains ResponseEntity: {}", returnTypeIsServiceResponse);
+				LOGGER.debug("AuditEventData: {}", auditEventData.toString());
 			}
 			writeRequestInfoAudit(requestObject, auditEventData);
 
 			responseObject = joinPoint.proceed();
 
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Response Object: {}", responseObject);
+				LOGGER.debug("Response: {}", responseObject);
 			}
-
 			if (responseObject == null) {
 				serviceResponse = new ServiceResponse();
 			} else if (responseObject instanceof ServiceResponse) {
@@ -193,13 +192,17 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 			} else {
 				serviceResponse = ((ResponseEntity<ServiceResponse>) responseObject).getBody();
 			}
-
+			if (serviceResponse == null) {
+				serviceResponse = new ServiceResponse();
+			}
+			LOGGER.debug("ServiceResponse: {}", serviceResponse);
 			final HttpStatus ruleStatus = rulesEngine.messagesToHttpStatus(serviceResponse.getMessages());
-
+			LOGGER.debug("HttpStatus: {}", ruleStatus);
+			
 			auditEventData = new AuditEventData(AuditEvents.REST_RESPONSE, method.getName(), method.getDeclaringClass().getName());
 			if (ruleStatus != null && (HttpStatus.Series.valueOf(ruleStatus.value()) == HttpStatus.Series.SERVER_ERROR
 					|| HttpStatus.Series.valueOf(ruleStatus.value()) == HttpStatus.Series.CLIENT_ERROR)) {
-				LOGGER.debug("HttpStatus {}", ruleStatus.value());
+				LOGGER.debug("HttpStatus Code: {}", ruleStatus.value());
 				writeResponseAudit(responseObject, auditEventData, MessageSeverity.ERROR, null);
 
 				if (returnTypeIsServiceResponse) {
@@ -214,7 +217,7 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 		} catch (final ReferenceRuntimeException referenceRuntimeException) {
 			Object returnObj = null;
 			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
-					"Error while executing RestProviderHttpResponseCodeAspect.aroundAdvice around restController",
+					"Error while executing RestProviderHttpResponseAspect.aroundAdvice around restController",
 					referenceRuntimeException);
 			try {
 				responseObject = writeAuditError(referenceRuntimeException, auditEventData);
@@ -231,7 +234,7 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 		} catch (final Throwable throwable) { // NOSONAR intentionally catching throwable
 			Object returnObj = null;
 			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
-					"Throwable while executing RestProviderHttpResponseCodeAspect.aroundAdvice around restController", throwable);
+					"Throwable while executing RestProviderHttpResponseAspect.aroundAdvice around restController", throwable);
 			try {
 				final ReferenceRuntimeException referenceRuntimeException = new ReferenceRuntimeException(throwable);
 				responseObject = writeAuditError(referenceRuntimeException, auditEventData);
@@ -245,7 +248,7 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 			}
 			return returnObj;
 		} finally {
-			LOGGER.debug("RestProviderHttpResponseCodeAspect after method was called.");
+			LOGGER.debug("RestProviderHttpResponseAspect after method was called.");
 		}
 
 		return responseObject;
@@ -275,7 +278,7 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 	 */
 	private ResponseEntity<ServiceResponse> writeAuditError(final ReferenceRuntimeException referenceRuntimeException,
 			final AuditEventData auditEventData) {
-		LOGGER.error("RestProviderHttpResponseCodeAspect encountered uncaught exception in REST endpoint.", referenceRuntimeException);
+		LOGGER.error("RestProviderHttpResponseAspect encountered uncaught exception in REST endpoint.", referenceRuntimeException);
 		final ServiceResponse serviceResponse = new ServiceResponse();
 		serviceResponse.addMessage(MessageSeverity.FATAL, "UNEXPECTED_ERROR", referenceRuntimeException.getMessage());
 		final StringBuilder sb = new StringBuilder();
@@ -305,7 +308,7 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 			getHttpRequestAuditData(httpServletRequest, requestAuditData);
 		}
 
-		LOGGER.debug("Invoking asyncLogRequestResponseAspectAuditData");
+		LOGGER.debug("RequestAuditData: {}", requestAuditData.toString());
 
 		if (asyncLogging != null) {
 			asyncLogging.asyncLogRequestResponseAspectAuditData(auditEventData, requestAuditData, RequestAuditData.class,

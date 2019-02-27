@@ -11,6 +11,9 @@ server:
 ---
 spring.profiles: default
 spring.profiles.include: remote_client_sims, embedded-redis
+ocp-reference-person:
+  ribbon:
+    listOfServers: localhost:${server.port}
 ---
 spring.profiles: local-int, ci, dev, stage, prod
 spring.profiles.include: remote_client_sims
@@ -52,35 +55,46 @@ spring:
 management.endpoints.web.exposure.include: "*"
 # disable beans endpoint  
 management.endpoint.beans.enabled: false
-
+management.endpoint.health.show-details: "ALWAYS"
+management:
+  health:
+    rabbit:
+      enabled: false
+    redis:
+      enabled: false
 # REDIS (RedisProperties)
 reference:
   cache:
     defaultExpires: 86400 # (Seconds)
     expires:
-      #Cache Name: TTL (In Seconds)
-      - 
-        name: refPersonService
+#     -
+#       name: Cache Name
+#       ttl:  TTL (In Seconds)
+      -
+        name: refPersonService_@project.name@_@project.version@
         ttl: 1800
     redis-config:
       host: localhost
       port: 6379
 #Application Custom Properties          
-service-1:
+ocp-reference-person:
   env: default
   propSource: internal
   password: secret
   sampleProperty: >
-                  sampleProperty___env/profile:${service-1.env}___propSource:
-                  ${service-1.propSource}__password:${service-1.password}
-#---------------------------------------------------
-#   Logging Level for packages
-#---------------------------------------------------
+                  sampleProperty___env/profile:${ocp-reference-person.env}___propSource:
+                  ${ocp-reference-person.propSource}__password:${ocp-reference-person.password}
+#-##################################################
+# Logging Level for packages
+#-##################################################
 logging: 
   level:
-    com.ecwid.consul: INFO
     gov.va.ocp.reference.framework.ws.client: DEBUG
     gov.va.ocp.reference.partner: DEBUG
+    gov.va.ocp.reference.person.rest.client.feign.FeignPersonClient: INFO
+    gov.va.ocp.reference: INFO
+    com.ecwid.consul: INFO
+    org.springframework.cloud.openfeign: INFO
     org.springframework.security.web: INFO
     org.springframework.cloud.consul.config: INFO
     org.springframework.cloud.consul: INFO
@@ -89,18 +103,37 @@ logging:
     org.springframework.cloud.sleuth.log: INFO
     org.springframework.security: INFO
     org.springframework.ws: INFO
+    org.springframework.web.client: INFO
     org.springframework.cache: INFO 
     org.apache.http.impl.client: INFO
-management:
-  health:
-    rabbit:
-      enabled: false
-    redis:
-      enabled: false
-#sanitize properties for keys when using /configprops.
-endpoints:
-  configprops:
-    keys-to-sanitize: 'enabled, password'
+    org.springframework.retry: INFO
+    feign: INFO
+##################################################
+# Feign or REST client connection timeout
+# when making inter-service or external REST calls
+##################################################
+rest:
+  client:
+    connection-timeout: 30000
+##################################################
+# Ribbon timeout, server refresh interval, retry
+# settings for the requests
+##################################################
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 5000
+  ServerListRefreshInterval: 10000
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 2
+  OkToRetryOnAllOperations: true
+##################################################
+# Disable hystrix for feign. Enable it if fallback
+# needs to be implemented
+##################################################
+feign.hystrix.enabled: false
+##################################################
+# hystrix command settings
+##################################################
 hystrix:
   # set the hystrix.shareSecurityContext property to true. Doing so will auto configure an Hystrix concurrency strategy 
   # plugin hook who will transfer the SecurityContext from your main thread to the one used by the Hystrix command
@@ -134,23 +167,26 @@ hystrix:
             # logic. Note that there is configuration for turning off timeouts per-command, if that is desired (see command.timeout.enabled).
             # Default Value: 1000
             timeoutInMilliseconds: 20000
+##################################################
 # Sleuth configuration     
 # To skip specific patterns being exported, added few more customs on top of default skip pattern
 # see org.springframework.cloud.sleuth.instrument.web.TraceFilter.DEFAULT_SKIP_PATTERN
+##################################################
 spring.sleuth.web.skipPattern: (/api/.*/webjars.*|/api/.*/v2/api-docs.*|/api/.*/swagger-resources.*|/api/.*/swagger-ui.*|/api-docs.*|/autoconfig|/configprops|/dump|/health|/info|/metrics.*|/mappings|/trace|/swagger.*|.*\\.png|.*\\.css|.*\\.js|.*\\.html|/favicon.ico|/hystrix.stream)
 # comma separated list of matchers
 spring.sleuth.rxjava.schedulers.ignoredthreads: HystixMetricPoller,^RxComputation.*$,^RxIoScheduler.*$
-
+###############################################################################
 #Property configuration to enable or disable JWT security for the service calls 
 #JWT security is enabled by default. So to disable it you have to
 #set the environment system property os.reference.security.jwt.enabled=false
+###############################################################################
 os.reference:
   security:
     jwt:
-      enabled: true
+      enabled: false
       filterProcessUrls: 
-        - /service-1/v1/**
-        - /service-1/v2/**
+        - /api/v1/persons/**
+        - /api/v2/persons/**
       excludeUrls:
         - /**
   swagger:
@@ -158,8 +194,7 @@ os.reference:
     description: API Error Keys <a href="swagger/error-keys.html">error keys</a>
     groupName: "@project.name@-@project.version@"
     version: ${info.build.version}
-    securePaths: /service-1/.*/v?.*
-
+    securePaths: /api/v?.*/persons/.*
 #########################################################################
 # Partner config properties
 #
@@ -200,17 +235,3 @@ ocp-reference-partner-person:
         keystorePass: ${javax.net.ssl.keyStorePassword:password}
         truststore: ${javax.net.ssl.trustStore:classpath:test/ssl/dev/vaebnTruststore.jks}
         truststorePass: ${javax.net.ssl.trustStorePassword:password}
-# ---
-#spring:
-#  profiles: local-int,ci,dev,stage,prod
-#server:
-#  ssl:
-#    enabled: true
-#    ######### These properties are set by the run-wrapper.sh script in the ascent-base container #########
-#    # key-alias: @project.name@
-#    # key-store: /app/certs/server.jks
-#    # key-store-password: 
-#    # trust-store: /app/certs/server-truststore.jks
-#    # trust-store-password:
-#    ######################################################################################################
-#    client-auth: need
