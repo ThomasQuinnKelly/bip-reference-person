@@ -44,7 +44,15 @@
 			</providers>
 		</encoder>
 	</appender>
-
+	
+	<!--
+	  Async appenders can drastically speed up logging as well as your application's response time but with some potential drawbacks. 
+	  Read more at. 
+	  https://logback.qos.ch/manual/appenders.html#AsyncAppender
+	  http://blog.takipi.com/how-to-instantly-improve-your-java-logging-with-7-logback-tweaks/
+	  
+	  Always be sure to test different configurations for yourself. Every application has different requirements.
+	-->
 	<appender name="OCP_REFERENCE_ASYNC_CONSOLE_APPENDER" class="ch.qos.logback.classic.AsyncAppender">
 		<queueSize>262144</queueSize> <!--default is 256 -->
 		<discardingThreshold>0</discardingThreshold> <!--events are not discarded -->

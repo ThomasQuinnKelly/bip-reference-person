@@ -67,9 +67,11 @@ reference:
   cache:
     defaultExpires: 86400 # (Seconds)
     expires:
-      #Cache Name: TTL (In Seconds)
-      - 
-        name: refPersonService
+#     -
+#       name: Cache Name
+#       ttl:  TTL (In Seconds)
+      -
+        name: refPersonService_@project.name@_@project.version@
         ttl: 1800
     redis-config:
       host: localhost

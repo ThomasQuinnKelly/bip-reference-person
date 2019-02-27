@@ -15,7 +15,7 @@ import gov.va.ocp.reference.framework.transfer.ServiceTransferObjectMarker;
 /**
  * A base Response object capable of representing the payload of a service response.
  *
- * @see gov.va.ascent.framework.transfer.AbstractTransferObject
+ * @see gov.va.ocp.reference.framework.transfer.AbstractTransferObject
  */
 public class ServiceResponse extends AbstractTransferObject implements ServiceTransferObjectMarker {
 

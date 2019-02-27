@@ -20,16 +20,17 @@ import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.util.Defense;
+import gov.va.ocp.reference.framework.util.ReferenceCacheUtil;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClient;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
 import gov.va.ocp.reference.partner.person.ws.transfer.ObjectFactory;
 import gov.va.ocp.reference.partner.person.ws.transfer.PersonDTO;
 import gov.va.ocp.reference.person.api.ReferencePersonService;
-import gov.va.ocp.reference.person.exception.PersonServiceException;
 import gov.va.ocp.reference.person.model.person.v1.PersonInfo;
 import gov.va.ocp.reference.person.model.person.v1.PersonInfoRequest;
 import gov.va.ocp.reference.person.model.person.v1.PersonInfoResponse;
+import gov.va.ocp.reference.person.utils.CacheConstants;
 import gov.va.ocp.reference.person.utils.HystrixCommandConstants;
 import gov.va.ocp.reference.person.utils.StringUtil;
 
@@ -49,8 +50,6 @@ import gov.va.ocp.reference.person.utils.StringUtil;
  */
 public class ReferencePersonServiceImpl implements ReferencePersonService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ReferencePersonServiceImpl.class);
-
-	private static final String CACHENAME_REFERENCE_PERSON_SERVICE = "refPersonService";
 
 	/** Bean name constant */
 	public static final String BEAN_NAME = "personServiceImpl";
@@ -80,21 +79,22 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 * @Cacheable Annotation indicating that the result of invoking a method (or all methods in a class) can be cached.
 	 */
 	@Override
-	@CachePut(value = "demoPersonService", key = "#personInfoRequest",
-			unless = "#result == null || #result.personInfo == null || #result.hasErrors() || #result.hasFatals()")
-	@HystrixCommand(
-			fallbackMethod = "findPersonByParticipantIDFallBack",
-			commandKey = "GetPersonInfoByPIDCommand",
+	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE,
+			key = "#root.methodName + T(gov.va.ocp.reference.framework.util.ReferenceCacheUtil).getUserBasedKey()",
+			unless = "T(gov.va.ocp.reference.framework.util.ReferenceCacheUtil).checkResultConditions(#result)")
+	@HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
 			ignoreExceptions = { IllegalArgumentException.class })
 	public PersonInfoResponse findPersonByParticipantID(final PersonInfoRequest personInfoRequest) {
 
 		// Check for valid input arguments and WS Client reference.
 		Defense.notNull(personWsClient, "Unable to proceed with Person Service request. The personWsClient must not be null.");
 		Defense.notNull(personInfoRequest.getParticipantID(), "Invalid argument, pid must not be null.");
+		String cacheKey = "findPersonByParticipantID" + ReferenceCacheUtil.getUserBasedKey();
 
-		if (cacheManager.getCache(CACHENAME_REFERENCE_PERSON_SERVICE) != null
-				&& cacheManager.getCache(CACHENAME_REFERENCE_PERSON_SERVICE).get(personInfoRequest) != null) {
-			return cacheManager.getCache(CACHENAME_REFERENCE_PERSON_SERVICE).get(personInfoRequest, PersonInfoResponse.class);
+		if (((cacheManager != null) && (cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE) != null)
+				&& (cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey) != null))) {
+			LOGGER.debug("findPersonByParticipantID returning cached data");
+			return cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey, PersonInfoResponse.class);
 		} else {
 			// Prepare the WS request
 			final FindPersonByPtcpntId findPersonByPtcpntIdRequestElement = createFindPersonByPidRequest(personInfoRequest);
@@ -206,6 +206,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 				}
 			}
 		}
+		personInfoResponse.setDoNotCacheResponse(true);
 		return personInfoResponse;
 	}
 

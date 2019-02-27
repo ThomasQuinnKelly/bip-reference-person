@@ -68,8 +68,8 @@ public class ReferenceCacheAutoConfiguration extends CachingConfigurerSupport {
 	}
 
 	/**
-	 * Produce the Map of {@link RedisCacheConfiguration} objects derived from the list declared by {@code ascent:cache:expires:*} in
-	 * the <i>[app].yml</i>. Used by {@link RedisCacheManager}.
+	 * Produce the Map of {@link RedisCacheConfiguration} objects derived from the list declared by {@code reference:cache:expires:*}
+	 * in the <i>[app].yml</i>. Used by {@link RedisCacheManager}.
 	 *
 	 * @return Map&lt;String, org.springframework.data.redis.cache.RedisCacheConfiguration&gt;
 	 */
