@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import gov.va.ocp.reference.partner.person.ws.client.AbstractPersonTest;
-import gov.va.ocp.reference.partner.person.ws.client.remote.PersonRemoteServiceCallMock;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 
 public class RemoteServiceCallMockTest extends AbstractPersonTest {
@@ -26,7 +25,7 @@ public class RemoteServiceCallMockTest extends AbstractPersonTest {
 		String keyForMockResponse = mock.getKeyForMockResponse(request);
 
 		assertNotNull(keyForMockResponse);
-		assertTrue(keyForMockResponse.equals(PersonRemoteServiceCallMock.MOCK_FINDPERSONBYPTCPNTID_RESPONSE));
+		assertTrue(keyForMockResponse.startsWith("person.getPersonInfoByPtcpntId"));
 	}
 
 	@Test

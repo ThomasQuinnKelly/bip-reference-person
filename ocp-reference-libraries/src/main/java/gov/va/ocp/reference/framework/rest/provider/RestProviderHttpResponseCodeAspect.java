@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -108,33 +109,46 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 		Object response = null;
 		List<Object> request = null;
 
+		LOGGER.info("Beginning logAnnotatedMethodRequestResponse");
 		try {
+			LOGGER.info("getting request");
 			if (joinPoint.getArgs().length > 0) {
 				request = Arrays.asList(joinPoint.getArgs());
 			}
 
+			LOGGER.info("getting method");
 			final Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+			LOGGER.info("getting Auditable annotation");
 			final Auditable auditableAnnotation = method.getAnnotation(Auditable.class);
-			AuditEventData auditEventData;
+			AuditEventData auditEventData = null;
 			if (auditableAnnotation != null) {
+				LOGGER.info("building request AuditEventData");
 				auditEventData =
 						new AuditEventData(auditableAnnotation.event(), auditableAnnotation.activity(),
 								auditableAnnotation.auditClass());
-
+				LOGGER.info("Writing request to Audit");
 				writeRequestInfoAudit(request, auditEventData);
 			}
 
+			LOGGER.info("Proceeding with JoinPoint " + joinPoint.toLongString() + ": "
+					+ ReflectionToStringBuilder.reflectionToString(joinPoint));
 			response = joinPoint.proceed();
+			LOGGER.info("Returned from JoinPoint " + joinPoint.toLongString() + " with response "
+					+ ReflectionToStringBuilder.reflectionToString(response));
 
 			if (auditableAnnotation != null) {
+				LOGGER.info("building request AuditEventData");
 				auditEventData = new AuditEventData(auditableAnnotation.event(), auditableAnnotation.activity(),
 						auditableAnnotation.auditClass());
+				LOGGER.info("Writing response to Audit");
 				writeResponseAudit(response, auditEventData, MessageSeverity.INFO, null);
 			}
+			LOGGER.info("");
 		} catch (Throwable e) {
 			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 					"Error while executing logAnnotatedMethodRequestResponse around auditableExecution", e);
 		}
+		LOGGER.info("Returning response: " + ReflectionToStringBuilder.reflectionToString(response));
 		return response;
 	}
 
@@ -193,15 +207,15 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 			} else {
 				serviceResponse = ((ResponseEntity<ServiceResponse>) responseObject).getBody();
 			}
-			
+
 			if (serviceResponse == null) {
 				serviceResponse = new ServiceResponse();
 			}
-			
+
 			LOGGER.debug("ServiceResponse: {}", serviceResponse);
 
 			final HttpStatus ruleStatus = rulesEngine.messagesToHttpStatus(serviceResponse.getMessages());
-			
+
 			LOGGER.debug("HttpStatus: {}", ruleStatus);
 
 			auditEventData = new AuditEventData(AuditEvents.REST_RESPONSE, method.getName(), method.getDeclaringClass().getName());
@@ -300,8 +314,10 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 	 */
 	private void writeRequestInfoAudit(final List<Object> request, final AuditEventData auditEventData) {
 
-		final HttpServletRequest httpServletRequest =
-				((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		LOGGER.info("Putting audit data on servlet request");
+		final HttpServletRequest httpServletRequest = RequestContextHolder.getRequestAttributes() == null
+				? null
+				: ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
 		final RequestAuditData requestAuditData = new RequestAuditData();
 
@@ -313,11 +329,11 @@ public class RestProviderHttpResponseCodeAspect extends BaseRestProviderAspect {
 			getHttpRequestAuditData(httpServletRequest, requestAuditData);
 		}
 
-		LOGGER.debug("Invoking asyncLogRequestResponseAspectAuditData");
-
 		if (asyncLogging != null) {
+			LOGGER.info("Invoking asyncLogRequestResponseAspectAuditData");
 			asyncLogging.asyncLogRequestResponseAspectAuditData(auditEventData, requestAuditData, RequestAuditData.class,
 					MessageSeverity.INFO, null);
+			LOGGER.info("Invoked asyncLogRequestResponseAspectAuditData");
 		}
 	}
 

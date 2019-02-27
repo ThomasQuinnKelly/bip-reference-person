@@ -48,7 +48,8 @@ public class PersonResource implements HealthIndicator, SwaggerResponseMessages 
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = MESSAGE_200) })
 	public Health health() {
-		return Health.up().withDetail("Reference Person Service REST Endpoint", "Person Service REST Provider Up and Running!").build();
+		return Health.up().withDetail("Reference Person Service REST Endpoint", "Person Service REST Provider Up and Running!")
+				.build();
 	}
 
 	/**

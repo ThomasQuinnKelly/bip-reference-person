@@ -87,13 +87,14 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 				"Unable to proceed with Person Service request. The personServiceHelper must not be null.");
 		Defense.notNull(personInfoRequest.getParticipantID(), "Invalid argument, pid must not be null.");
 
+		PersonInfoResponse response = null;
 		if (cacheManager.getCache(CACHENAME_REFERENCE_PERSON_SERVICE) != null
 				&& cacheManager.getCache(CACHENAME_REFERENCE_PERSON_SERVICE).get(personInfoRequest) != null) {
-			return cacheManager.getCache(CACHENAME_REFERENCE_PERSON_SERVICE).get(personInfoRequest, PersonInfoResponse.class);
+			response = cacheManager.getCache(CACHENAME_REFERENCE_PERSON_SERVICE).get(personInfoRequest, PersonInfoResponse.class);
 		} else {
-			PersonInfoResponse response = personServiceHelper.findPersonByPid(personInfoRequest);
-			return response;
+			response = personServiceHelper.findPersonByPid(personInfoRequest);
 		}
+		return response;
 	}
 
 	/**
@@ -106,6 +107,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 */
 	@HystrixCommand(commandKey = "FindPersonByParticipantIDFallBackCommand")
 	public PersonInfoResponse findPersonByParticipantIDFallBack(final PersonInfoRequest personInfoRequest, final Throwable throwable) {
+		LOGGER.info("Hystrix findPersonByParticipantIDFallBack has been activated");
 		final PersonInfoResponse response = new PersonInfoResponse();
 		if (throwable != null) {
 			final String msg = throwable.getMessage();

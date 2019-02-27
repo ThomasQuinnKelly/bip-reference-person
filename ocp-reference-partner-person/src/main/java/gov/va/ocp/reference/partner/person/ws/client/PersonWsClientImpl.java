@@ -9,6 +9,8 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 
 import gov.va.ocp.reference.framework.audit.AuditEvents;
 import gov.va.ocp.reference.framework.audit.Auditable;
+import gov.va.ocp.reference.framework.log.ReferenceLogger;
+import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
 import gov.va.ocp.reference.framework.util.Defense;
 import gov.va.ocp.reference.framework.ws.client.BaseWsClientImpl;
 import gov.va.ocp.reference.framework.ws.client.remote.RemoteServiceCall;
@@ -22,6 +24,8 @@ import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdRespo
  */
 @Component(PersonWsClientImpl.BEAN_NAME)
 public class PersonWsClientImpl extends BaseWsClientImpl implements PersonWsClient {
+	/** Logger */
+	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(PersonWsClientImpl.class);
 
 	/** A constant representing the Spring Bean name. */
 	public static final String BEAN_NAME = "personWsClient";
@@ -49,15 +53,23 @@ public class PersonWsClientImpl extends BaseWsClientImpl implements PersonWsClie
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see gov.va.ocp.reference.partner.person.ws.client.PersonWsClient#getPersonInfoByPtcpntId(gov.va.ocp.reference.partner.person.ws.
+	 * @see
+	 * gov.va.ocp.reference.partner.person.ws.client.PersonWsClient#getPersonInfoByPtcpntId(gov.va.ocp.reference.partner.person.ws.
 	 * transfer.FindPersonByPtcpntId)
 	 */
 	@Override
 	@Auditable(event = AuditEvents.REQUEST_RESPONSE, activity = "partnerPersonInfoByPtcpntId")
 	public FindPersonByPtcpntIdResponse getPersonInfoByPtcpntId(final FindPersonByPtcpntId findPersonByPtcpntIdRequest) {
 		Defense.notNull(findPersonByPtcpntIdRequest, REQUEST_FOR_WEBSERVICE_CALL_NULL);
-		final Object webServiceResponse = personWsTemplate.marshalSendAndReceive(findPersonByPtcpntIdRequest);
+		LOGGER.debug("Calling partner client " + remoteServiceCall.getClass().getSimpleName()
+				+ " with request " + findPersonByPtcpntIdRequest.getClass().getSimpleName());
+		final Object webServiceResponse = remoteServiceCall.callRemoteService(
+				personWsTemplate, findPersonByPtcpntIdRequest, findPersonByPtcpntIdRequest.getClass());
 		Defense.notNull(webServiceResponse, RESPONSE_FROM_WEBSERVICE_CALL_NULL);
+		// Below Defense is IMPORTANT - mocked responses are easy to mess up,
+		// and partner responses that come back with unexpected type are hard to trace otherwise
+		Defense.isInstanceOf(FindPersonByPtcpntIdResponse.class, webServiceResponse);
+
 		return (FindPersonByPtcpntIdResponse) webServiceResponse;
 	}
 

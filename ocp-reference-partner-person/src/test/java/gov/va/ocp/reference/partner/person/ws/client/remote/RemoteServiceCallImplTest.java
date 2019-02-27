@@ -39,13 +39,10 @@ import org.springframework.xml.transform.StringSource;
 import gov.va.ocp.reference.framework.config.ReferenceCommonSpringProfiles;
 import gov.va.ocp.reference.framework.transfer.PartnerTransferObjectMarker;
 import gov.va.ocp.reference.framework.util.Defense;
-import gov.va.ocp.reference.framework.ws.client.remote.AbstractRemoteServiceCallMock;
 import gov.va.ocp.reference.partner.person.ws.client.AbstractPersonTest;
 import gov.va.ocp.reference.partner.person.ws.client.PartnerMockFrameworkTestConfig;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientConfig;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientException;
-import gov.va.ocp.reference.partner.person.ws.client.remote.PersonRemoteServiceCallImpl;
-import gov.va.ocp.reference.partner.person.ws.client.remote.PersonRemoteServiceCallMock;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -54,6 +51,8 @@ import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 @ActiveProfiles({ ReferenceCommonSpringProfiles.PROFILE_REMOTE_CLIENT_SIMULATORS })
 @ContextConfiguration(inheritLocations = false, classes = { PartnerMockFrameworkTestConfig.class, PersonWsClientConfig.class })
 public class RemoteServiceCallImplTest extends AbstractPersonTest {
+
+	private static final String MOCKS_PATH = "test/mocks/";
 
 	/** Specifically the IMPL class for the RemoteServiceCall interface */
 	private final PersonRemoteServiceCallImpl callPartnerService = new PersonRemoteServiceCallImpl();
@@ -83,11 +82,13 @@ public class RemoteServiceCallImplTest extends AbstractPersonTest {
 	public void testCallRemoteService() {
 		// call the impl declared by the current @ActiveProfiles
 
+		// TODO add PersonTraits to security context here?
+
 		final FindPersonByPtcpntId request = super.makeFindPersonByPtcpntIdRequest();
 		final Source requestPayload =
 				marshalMockRequest((Jaxb2Marshaller) axiomWebServiceTemplate.getMarshaller(), request, request.getClass());
 		final Source responsePayload =
-				readMockResponseByKey(PersonRemoteServiceCallMock.MOCK_FINDPERSONBYPTCPNTID_RESPONSE);
+				readMockResponseByKey(PersonRemoteServiceCallMock.MOCK_FINDPERSONBYPTCPNTID_RESPONSE, "13364995");
 
 		mockWebServicesServer.expect(payload(requestPayload)).andRespond(withPayload(responsePayload));
 
@@ -141,17 +142,18 @@ public class RemoteServiceCallImplTest extends AbstractPersonTest {
 	 * @param keyPath
 	 * @return
 	 */
-	private ResourceSource readMockResponseByKey(final String keyPath) {
-		Defense.hasText(keyPath);
+	private ResourceSource readMockResponseByKey(final String filenamePattern, final String replaceableParam) {
+		Defense.hasText(filenamePattern);
+		Defense.hasText(replaceableParam);
 
 		// read the resource
+		String filename = MOCKS_PATH + MessageFormat.format(filenamePattern, replaceableParam) + ".xml";
 		ResourceSource resource = null;
 		try {
 			resource = new ResourceSource(
-					new ClassPathResource(MessageFormat.format(AbstractRemoteServiceCallMock.MOCK_FILENAME_TEMPLATE, keyPath)));
+					new ClassPathResource(filename));
 		} catch (final IOException e) {
-			throw new PersonWsClientException("Could not read mock XML file '"
-					+ MessageFormat.format(AbstractRemoteServiceCallMock.MOCK_FILENAME_TEMPLATE, keyPath) + "' using key '" + keyPath
+			throw new PersonWsClientException("Could not read mock XML file '" + filename
 					+ "'. Please make sure this response file exists in the main/resources directory.", e);
 		}
 		return resource;

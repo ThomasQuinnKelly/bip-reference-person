@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import gov.va.ocp.reference.framework.log.ReferenceLogger;
 import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
-import gov.va.ocp.reference.partner.person.ws.client.PersonWsClient;
+import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientImpl;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
 import gov.va.ocp.reference.person.exception.PersonServiceException;
@@ -31,7 +31,7 @@ public class PersonServiceHelper {
 
 	/** WS client to run all intent to file operations via SOAP */
 	@Autowired
-	private PersonWsClient personWsClient;
+	private PersonWsClientImpl personWsClient;
 
 	/** Transformer for domain-to-partner model transformation */
 	private PersonByPid_DomainToPartner personByPidD2P = new PersonByPid_DomainToPartner();
@@ -60,7 +60,7 @@ public class PersonServiceHelper {
 			throw new PersonServiceException(message, clientException);
 		}
 
-		return personByPidP2D.transform(partnerResponse);
+		return partnerResponse == null ? null : personByPidP2D.transform(partnerResponse);
 	}
 
 }
