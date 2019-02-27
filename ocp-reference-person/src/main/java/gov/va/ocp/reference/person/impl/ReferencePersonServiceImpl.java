@@ -15,14 +15,12 @@ import org.springframework.stereotype.Service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixException;
 
 import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.util.Defense;
 import gov.va.ocp.reference.framework.util.ReferenceCacheUtil;
-import gov.va.ocp.reference.partner.person.ws.transfer.ObjectFactory;
 import gov.va.ocp.reference.person.api.ReferencePersonService;
 import gov.va.ocp.reference.person.exception.PersonServiceException;
 import gov.va.ocp.reference.person.model.person.v1.PersonInfoRequest;
@@ -57,12 +55,9 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 
 	@Autowired
 	private CacheManager cacheManager;
-
+	
 	/** Constant for the message when hystrix fallback method is manually invoked */
 	private static final String INVOKE_FALLBACK_MESSAGE = "Could not get data from cache or partner - invoking fallback.";
-
-	/** The Constant PERSON_OBJECT_FACTORY. */
-	protected static final ObjectFactory PERSON_OBJECT_FACTORY = new ObjectFactory();
 
 	/*
 	 * (non-Javadoc)
@@ -77,8 +72,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			key = "#root.methodName + T(gov.va.ocp.reference.framework.util.ReferenceCacheUtil).createKey(#personInfoRequest.participantID)",
 			unless = "T(gov.va.ocp.reference.framework.util.ReferenceCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
-			ignoreExceptions = { IllegalArgumentException.class },
-	        raiseHystrixExceptions = {HystrixException.RUNTIME_EXCEPTION})
+			ignoreExceptions = { IllegalArgumentException.class })
 	public PersonInfoResponse findPersonByParticipantID(final PersonInfoRequest personInfoRequest) {
 
 		// Check for valid input arguments and WS Client reference.
@@ -102,9 +96,6 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			LOGGER.debug("findPersonByParticipantID no cached data found");
 			response = personServiceHelper.findPersonByPid(personInfoRequest);
 		}
-		
-		LOGGER.debug("Post call response: {}", response);
-
 		if (response == null || response.getPersonInfo() == null && !response.hasErrors()) {
 			LOGGER.info("findPersonByParticipantID empty response - throwing PersonServiceException: " + INVOKE_FALLBACK_MESSAGE);
 			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
