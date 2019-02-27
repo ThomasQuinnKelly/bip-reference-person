@@ -21,7 +21,6 @@ import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.util.Defense;
 import gov.va.ocp.reference.framework.util.ReferenceCacheUtil;
-import gov.va.ocp.reference.partner.person.ws.transfer.ObjectFactory;
 import gov.va.ocp.reference.person.api.ReferencePersonService;
 import gov.va.ocp.reference.person.model.person.v1.PersonInfoRequest;
 import gov.va.ocp.reference.person.model.person.v1.PersonInfoResponse;
@@ -56,15 +55,6 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	@Autowired
 	private CacheManager cacheManager;
 
-	/** String Constant NOPERSONFORPTCTID */
-	private static final String NOPERSONFORPTCTID = "NOPERSONFORPTCTID";
-
-	/** String Constant NO_PERSON_FOUND_FOR_PARTICIPANT_ID */
-	private static final String NO_PERSON_FOUND_FOR_PARTICIPANT_ID = "No person found for participantID ";
-
-	/** The Constant PERSON_OBJECT_FACTORY. */
-	protected static final ObjectFactory PERSON_OBJECT_FACTORY = new ObjectFactory();
-
 	/*
 	 * (non-Javadoc)
 	 *
@@ -95,10 +85,6 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 					cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey, PersonInfoResponse.class);
 		} else {
 			response = personServiceHelper.findPersonByPid(personInfoRequest);
-		}
-
-		if (response != null) {
-			response.setDoNotCacheResponse(true);
 		}
 		return response;
 	}

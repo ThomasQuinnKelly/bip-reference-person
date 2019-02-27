@@ -1,18 +1,25 @@
 package gov.va.ocp.reference.person.ws.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import gov.va.ocp.reference.framework.log.ReferenceLogger;
 import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.messages.Message;
+import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientImpl;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
+import gov.va.ocp.reference.partner.person.ws.transfer.ObjectFactory;
 import gov.va.ocp.reference.person.exception.PersonServiceException;
 import gov.va.ocp.reference.person.model.person.v1.PersonInfoRequest;
 import gov.va.ocp.reference.person.model.person.v1.PersonInfoResponse;
 import gov.va.ocp.reference.person.transform.impl.PersonByPid_DomainToPartner;
 import gov.va.ocp.reference.person.transform.impl.PersonByPid_PartnerToDomain;
+import gov.va.ocp.reference.person.utils.StringUtil;
 import gov.va.ocp.reference.person.ws.client.validate.PersonDomainValidator;
 
 /**
@@ -28,6 +35,15 @@ public class PersonServiceHelper {
 
 	/** String to prepend messages for re-thrown exceptions */
 	private static final String THROWSTR = "Rethrowing the following exception:  ";
+
+	/** String Constant NOPERSONFORPTCTID */
+	private static final String NOPERSONFORPTCTID = "NOPERSONFORPTCTID";
+
+	/** String Constant NO_PERSON_FOUND_FOR_PARTICIPANT_ID */
+	private static final String NO_PERSON_FOUND_FOR_PARTICIPANT_ID = "No person found for participantID ";
+
+	/** The Constant PERSON_OBJECT_FACTORY. */
+	protected static final ObjectFactory PERSON_OBJECT_FACTORY = new ObjectFactory();
 
 	/** WS client to run all intent to file operations via SOAP */
 	@Autowired
@@ -60,7 +76,35 @@ public class PersonServiceHelper {
 			throw new PersonServiceException(message, clientException);
 		}
 
-		return partnerResponse == null ? null : personByPidP2D.transform(partnerResponse);
+		PersonInfoResponse domainResponse = personByPidP2D.transform(partnerResponse);
+
+		List<Message> messages = checkPartnerResponse(request.getParticipantID(), partnerResponse);
+		if (messages != null && !messages.isEmpty()) {
+			domainResponse.addMessages(messages);
+		}
+		return domainResponse;
 	}
 
+	/**
+	 * Check to make sure that a response was received, and that a participant ID exists on the partner response.
+	 *
+	 * @param participantID the participant ID
+	 * @param partnerResponse
+	 * @return
+	 */
+	private List<Message> checkPartnerResponse(Long participantID, FindPersonByPtcpntIdResponse partnerResponse) {
+		List<Message> messages = null;
+
+		final String maskedInfo = StringUtil.getMask4(participantID.toString());
+		// Check for null response objects or incorrect PID
+		if (partnerResponse == null || partnerResponse.getPersonDTO() == null
+				|| partnerResponse.getPersonDTO().getPtcpntId() < 1
+				|| participantID != partnerResponse.getPersonDTO().getPtcpntId()) {
+
+			messages = new ArrayList<>();
+			messages.add(new Message(MessageSeverity.ERROR, NOPERSONFORPTCTID,
+					NO_PERSON_FOUND_FOR_PARTICIPANT_ID + maskedInfo));
+		}
+		return messages;
+	}
 }
