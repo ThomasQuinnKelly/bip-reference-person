@@ -34,7 +34,16 @@ src/inttest/resources/config/referenceperson-dev.properties – DEV configuratio
 src/inttest/resources/config/referenceperson-stage.properties – STAGE configuration properties such as URL are specified here.
 
 ## Execution ##
-**Command Line:** Use this command(s) to execute the demo service Functional test. 
+1. In ocp-reference-person/src/main/resources/ocp-reference-person.yml file JWT by default is set to false, enable that to true.  
+ os.reference:
+  security:
+    jwt:
+      enabled: true
+
+2. To execute the functional test in local ocp-reference-person service needs to be up and running.
+
+**Command Line:** Use this command(s) to execute the reference person service Functional test. 
+
 
 Default Local: mvn verify -Pinttest -Dcucumber.options="--tags @DEV"
 
