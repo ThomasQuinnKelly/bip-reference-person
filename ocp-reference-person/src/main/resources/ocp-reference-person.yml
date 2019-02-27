@@ -137,36 +137,41 @@ feign.hystrix.enabled: false
 hystrix:
   # set the hystrix.shareSecurityContext property to true. Doing so will auto configure an Hystrix concurrency strategy 
   # plugin hook who will transfer the SecurityContext from your main thread to the one used by the Hystrix command
-  shareSecurityContext: true
-  command:
-    default:
-      metrics:
-        rollingStats:
-          # This property sets the duration of the statistical rolling window, in milliseconds. 
-          # This is how long Hystrix keeps metrics for the circuit breaker to use and for publishing 
-          # Default Value: 10000
-          timeInMilliseconds: 20000
-        # This property sets the time to wait, in milliseconds, between allowing health snapshots to be taken that calculate 
-        # success and error percentages and affect circuit breaker status. 
-        # Default Value: 500
-        healthSnapshot: 
-          intervalInMilliseconds: 1000
-      circuitBreaker:
-        # This property sets the amount of time, after tripping the circuit, to reject requests 
-        # before allowing attempts again to determine if the circuit should again be closed.
-        # Default Value: 5000
-        sleepWindowInMilliseconds: 10000
-        # This property sets the minimum number of requests in a rolling window that will trip the circuit.
-        # Default Value: 20
-        requestVolumeThreshold: 4
-      execution:
-        isolation:
-          thread:
-            # This property sets the time in milliseconds after which the caller will observe a timeout and 
-            # walk away from the command execution. Hystrix marks the HystrixCommand as a TIMEOUT, and performs fallback 
-            # logic. Note that there is configuration for turning off timeouts per-command, if that is desired (see command.timeout.enabled).
-            # Default Value: 1000
-            timeoutInMilliseconds: 20000
+ shareSecurityContext: true
+ # set the hystrix.wrappers.enabled property to true. Doing so will auto configure an Hystrix concurrency strategy
+ # plugin hook who will transfer the RequestContextHolder from your main thread to the one used by the Hystrix command
+ # CUSTOM property used conditionally to register bean and HystrixPlugins concurrency strategy
+ wrappers.enabled: true
+ command:
+  default:
+    metrics:
+      rollingStats:
+        # This property sets the duration of the statistical rolling window, in milliseconds. 
+        # This is how long Hystrix keeps metrics for the circuit breaker to use and for publishing 
+        # Default Value: 10000
+        timeInMilliseconds: 20000
+      # This property sets the time to wait, in milliseconds, between allowing health snapshots to be taken that calculate 
+      # success and error percentages and affect circuit breaker status. 
+      # Default Value: 500
+      healthSnapshot: 
+        intervalInMilliseconds: 1000
+    circuitBreaker:
+      # This property sets the amount of time, after tripping the circuit, to reject requests 
+      # before allowing attempts again to determine if the circuit should again be closed.
+      # Default Value: 5000
+      sleepWindowInMilliseconds: 10000
+      # This property sets the minimum number of requests in a rolling window that will trip the circuit.
+      # Default Value: 20
+      requestVolumeThreshold: 4
+    execution:
+      isolation:
+        # strategy: SEMAPHORE
+        thread:
+          # This property sets the time in milliseconds after which the caller will observe a timeout and 
+          # walk away from the command execution. Hystrix marks the HystrixCommand as a TIMEOUT, and performs fallback 
+          # logic. Note that there is configuration for turning off timeouts per-command, if that is desired (see command.timeout.enabled).
+          # Default Value: 1000
+          timeoutInMilliseconds: 20000
 ##################################################
 # Sleuth configuration     
 # To skip specific patterns being exported, added few more customs on top of default skip pattern

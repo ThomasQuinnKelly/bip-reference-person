@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixException;
 
 import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
 import gov.va.ocp.reference.framework.messages.Message;
@@ -23,6 +24,7 @@ import gov.va.ocp.reference.framework.util.Defense;
 import gov.va.ocp.reference.framework.util.ReferenceCacheUtil;
 import gov.va.ocp.reference.partner.person.ws.transfer.ObjectFactory;
 import gov.va.ocp.reference.person.api.ReferencePersonService;
+import gov.va.ocp.reference.person.exception.PersonServiceException;
 import gov.va.ocp.reference.person.model.person.v1.PersonInfoRequest;
 import gov.va.ocp.reference.person.model.person.v1.PersonInfoResponse;
 import gov.va.ocp.reference.person.utils.CacheConstants;
@@ -56,11 +58,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	@Autowired
 	private CacheManager cacheManager;
 
-	/** String Constant NOPERSONFORPTCTID */
-	private static final String NOPERSONFORPTCTID = "NOPERSONFORPTCTID";
-
-	/** String Constant NO_PERSON_FOUND_FOR_PARTICIPANT_ID */
-	private static final String NO_PERSON_FOUND_FOR_PARTICIPANT_ID = "No person found for participantID ";
+	/** Constant for the message when hystrix fallback method is manually invoked */
+	private static final String INVOKE_FALLBACK_MESSAGE = "Could not get data from cache or partner - invoking fallback.";
 
 	/** The Constant PERSON_OBJECT_FACTORY. */
 	protected static final ObjectFactory PERSON_OBJECT_FACTORY = new ObjectFactory();
@@ -75,10 +74,11 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 */
 	@Override
 	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE,
-			key = "#root.methodName + T(gov.va.ocp.reference.framework.util.ReferenceCacheUtil).getUserBasedKey()",
+			key = "#root.methodName + T(gov.va.ocp.reference.framework.util.ReferenceCacheUtil).createKey(#personInfoRequest.participantID)",
 			unless = "T(gov.va.ocp.reference.framework.util.ReferenceCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
-			ignoreExceptions = { IllegalArgumentException.class })
+			ignoreExceptions = { IllegalArgumentException.class },
+	        raiseHystrixExceptions = {HystrixException.RUNTIME_EXCEPTION})
 	public PersonInfoResponse findPersonByParticipantID(final PersonInfoRequest personInfoRequest) {
 
 		// Check for valid input arguments and WS Client reference.
@@ -88,17 +88,26 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		String cacheKey = "findPersonByParticipantID" + ReferenceCacheUtil.getUserBasedKey();
 
 		PersonInfoResponse response = null;
-		if (cacheManager != null && cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE) != null
-				&& cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey) != null) {
-			LOGGER.debug("findPersonByParticipantID returning cached data");
-			response =
-					cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey, PersonInfoResponse.class);
-		} else {
+		try {
+			if (cacheManager != null && cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE) != null
+					&& cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey) != null) {
+				LOGGER.debug("findPersonByParticipantID returning cached data");
+				response =
+						cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey, PersonInfoResponse.class);
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+		if (response == null) {
+			LOGGER.debug("findPersonByParticipantID no cached data found");
 			response = personServiceHelper.findPersonByPid(personInfoRequest);
 		}
+		
+		LOGGER.debug("Post call response: {}", response);
 
-		if (response != null) {
-			response.setDoNotCacheResponse(true);
+		if (response == null || response.getPersonInfo() == null && !response.hasErrors()) {
+			LOGGER.info("findPersonByParticipantID empty response - throwing PersonServiceException: " + INVOKE_FALLBACK_MESSAGE);
+			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
 		}
 		return response;
 	}
