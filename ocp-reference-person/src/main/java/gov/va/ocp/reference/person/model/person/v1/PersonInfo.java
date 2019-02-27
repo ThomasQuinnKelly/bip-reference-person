@@ -1,33 +1,42 @@
 package gov.va.ocp.reference.person.model.person.v1;
 
 import gov.va.ocp.reference.framework.transfer.AbstractTransferObject;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  *
  * This class represents the relevant subset of the data returned from the Person Web Service.
  *
  */
+@ApiModel(description = "Model for data contained in the response from the Person Service")
 public class PersonInfo extends AbstractTransferObject {
 
 	/** The class version id. */
 	private static final long serialVersionUID = 5791227842810442936L;
 
 	/** The person's file number. */
+	@ApiModelProperty(value = "The persons file number", example = "796079018")
 	private String fileNumber;
 
 	/** The person's first name. */
+	@ApiModelProperty(value = "The persons first name", example = "RUSSELL")
 	private String firstName;
 
 	/** the person's middle name. */
+	@ApiModelProperty(value = "The persons middle name", example = "BILL")
 	private String middleName;
 
 	/** the person's last name. */
+	@ApiModelProperty(value = "The persons last name", example = "WATSON")
 	private String lastName;
 
 	/** the person's participant id. */
+	@ApiModelProperty(value = "The persons participant ID", example = "13364995")
 	private Long participantId;
 
 	/** the person's social security number. */
+	@ApiModelProperty(value = "The persons SSN", example = "796079018")
 	private String socSecNo;
 
 	/**

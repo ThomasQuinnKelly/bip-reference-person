@@ -15,18 +15,38 @@ import org.springframework.security.core.userdetails.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import gov.va.ocp.reference.framework.transfer.ServiceTransferObjectMarker;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "Model that identifies a single individual used in the security context")
 public class Person extends User implements ServiceTransferObjectMarker {
 
+	@ApiModelProperty(value = "The person's birth date", example = "1978-05-20")
 	private String birthDate;
+	@ApiModelProperty(value = "The person's first name", example = "JANE")
 	private String firstName;
+	@ApiModelProperty(value = "The person's last name", example = "DOE")
 	private String lastName;
+	@ApiModelProperty(value = "The person's middle name", example = "M")
 	private String middleName;
+	@ApiModelProperty(value = "The prefix for the person's full name", example = "Ms")
 	private String prefix;
+	@ApiModelProperty(value = "The suffix for the person's full name", example = "S")
 	private String suffix;
+	@ApiModelProperty(value = "The person's gender", example = "FEMALE")
 	private String gender;
+	@ApiModelProperty(value = "The person's access assurance level", example = "2")
 	private Integer assuranceLevel;
+	@ApiModelProperty(value = "The person's email address", example = "jane.doe@va.gov")
 	private String email;
+	@ApiModelProperty(value = "The MVI correlation IDs list for the person",
+			example = "[\n" +
+					"\"77779102^NI^200M^USVHA^P\",\n"
+					+ "\"912444689^PI^200BRLS^USVBA^A\",\n"
+					+ "\"6666345^PI^200CORP^USVBA^A\",\n"
+					+ "\"1105051936^NI^200DOD^USDOD^A\",\n"
+					+ "\"912444689^SS\"\n"
+					+ "]")
 	private List<String> correlationIds;
 
 	private static final long serialVersionUID = 1L;
