@@ -63,7 +63,8 @@ public class PersonResource implements HealthIndicator, SwaggerResponseMessages 
 	 */
 	@RequestMapping(value = URL_PREFIX + "/pid",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-	@ApiOperation(value = "PID based Person Info from Person Partner Service.", notes = "Will return a person info based on PID.")
+	@ApiOperation(value = "Retrieve person information by PID from Person Service .",
+			notes = "Will return a person info object based on search by PID.")
 	public PersonInfoResponse personByPid(@RequestBody final PersonInfoRequest personInfoRequest) {
 		LOGGER.debug("personByPid() method invoked");
 		return refPersonService.findPersonByParticipantID(personInfoRequest);
