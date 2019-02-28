@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.transfer.AbstractTransferObject;
@@ -45,8 +46,9 @@ public class ServiceResponse extends AbstractTransferObject implements ServiceTr
 	 * @param severity the severity
 	 * @param key the key
 	 * @param text the text
+	 * @param httpStatus the http status
 	 */
-	public final void addMessage(final MessageSeverity severity, final String key, final String text) {
+	public final void addMessage(final MessageSeverity severity, final String key, final String text, final HttpStatusForMessage httpStatus) {
 		if (messages == null) {
 			messages = new LinkedList<>();
 		}
@@ -54,6 +56,7 @@ public class ServiceResponse extends AbstractTransferObject implements ServiceTr
 		message.setSeverity(severity);
 		message.setKey(key);
 		message.setText(text);
+		message.setStatus(httpStatus);
 		messages.add(message);
 	}
 	
@@ -63,8 +66,12 @@ public class ServiceResponse extends AbstractTransferObject implements ServiceTr
 	 * @param severity the severity
 	 * @param key the key
 	 * @param text the text
+	 * @param httpStatus the http status
+	 * @param paramCount the param count
+	 * @param paramNames the param names
+	 * @param paramValues the param values
 	 */
-	public final void addMessage(final MessageSeverity severity, final String key, final String text,
+	public final void addMessage(final MessageSeverity severity, final String key, final String text, final HttpStatusForMessage httpStatus,
 			Integer paramCount, String[] paramNames, String[] paramValues) {
 		if (messages == null) {
 			messages = new LinkedList<>();
@@ -73,6 +80,7 @@ public class ServiceResponse extends AbstractTransferObject implements ServiceTr
 		message.setSeverity(severity);
 		message.setKey(key);
 		message.setText(text);
+		message.setStatus(httpStatus);
 		message.setParamCount(paramCount);
 		message.setParamNames(paramNames);
 		message.setParamValues(paramValues);

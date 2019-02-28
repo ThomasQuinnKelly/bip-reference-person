@@ -18,6 +18,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
+import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.util.Defense;
@@ -84,7 +85,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			PersonDomainValidator.validatePersonInfoRequest(personInfoRequest);
 		} catch (final IllegalArgumentException e) {
 			final PersonInfoResponse personInfoResponse = new PersonInfoResponse();
-			personInfoResponse.addMessage(MessageSeverity.ERROR, HttpStatus.BAD_REQUEST.name(), e.getMessage());
+			personInfoResponse.addMessage(MessageSeverity.ERROR, 
+					HttpStatus.BAD_REQUEST.name(), e.getMessage(), HttpStatusForMessage.BAD_REQUEST);
 			LOGGER.error("Exception raised {}", e);
 			return personInfoResponse;
 		}

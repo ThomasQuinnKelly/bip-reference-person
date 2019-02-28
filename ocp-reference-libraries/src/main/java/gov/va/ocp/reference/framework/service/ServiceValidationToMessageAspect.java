@@ -18,6 +18,7 @@ import org.springframework.core.annotation.Order;
 import gov.va.ocp.reference.framework.audit.AuditLogger;
 import gov.va.ocp.reference.framework.log.ReferenceLogger;
 import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.rest.provider.BaseRestProviderAspect;
@@ -106,7 +107,7 @@ public class ServiceValidationToMessageAspect extends BaseServiceAspect {
 			final Map<String, List<ViolationMessageParts>> messages) {
 		for (final Entry<String, List<ViolationMessageParts>> entry : messages.entrySet()) {
 			for (final ViolationMessageParts fieldError : entry.getValue()) {
-				serviceResponse.addMessage(MessageSeverity.ERROR, fieldError.getNewKey(), fieldError.getText());
+				serviceResponse.addMessage(MessageSeverity.ERROR, fieldError.getNewKey(), fieldError.getText(), HttpStatusForMessage.BAD_REQUEST);
 			}
 		}
 		Collections.sort(serviceResponse.getMessages(), Comparator.comparing(Message::getKey));
