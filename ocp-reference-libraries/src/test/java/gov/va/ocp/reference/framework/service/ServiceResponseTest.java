@@ -49,7 +49,7 @@ public class ServiceResponseTest {
 	public void testAddMessageWithNullMessages() {
 		
 		mockServiceResponse.setMessages(null);
-		mockServiceResponse.addMessage(MessageSeverity.INFO, "InfoKey", "Dummy info text", 
+		mockServiceResponse.addMessage(MessageSeverity.INFO, "InfoKey", "Dummy info text", null,
 				1, new String[] {"pName"},new String[] {"pValue"});
 		assertNotNull(mockServiceResponse.validate(null));
 
@@ -60,7 +60,7 @@ public class ServiceResponseTest {
 	
 	@Test
 	public void testAddMessageWithParams() {
-		mockServiceResponse.addMessage(MessageSeverity.INFO, "InfoKey", "Dummy info text", 
+		mockServiceResponse.addMessage(MessageSeverity.INFO, "InfoKey", "Dummy info text", null,
 				1, new String[] {"pName"},new String[] {"pValue"});
 		assertNotNull(mockServiceResponse.validate(null));
 
@@ -76,7 +76,7 @@ public class ServiceResponseTest {
 
 	@Test
 	public void testAddMessage() {
-		mockServiceResponse.addMessage(MessageSeverity.INFO, "InfoKey", "Dummy info text");
+		mockServiceResponse.addMessage(MessageSeverity.INFO, "InfoKey", "Dummy info text", null);
 		assertNotNull(mockServiceResponse.validate(null));
 
 		assertNotNull(mockServiceResponse.getMessages());

@@ -47,7 +47,7 @@ class TestAuditableService implements AuditableService {
 	@Auditable(event = AuditEvents.REQUEST_RESPONSE, activity = "testActivity")
 	public ServiceResponse annotatedMethod(ServiceRequest request) {
 		ServiceResponse response = new ServiceResponse();
-		response.addMessage(MessageSeverity.INFO, "key", "value");
+		response.addMessage(MessageSeverity.INFO, "key", "value", null);
 		return response;
 	}
 }

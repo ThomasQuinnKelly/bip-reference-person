@@ -1,6 +1,10 @@
 package gov.va.ocp.reference.framework.messages;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import gov.va.ocp.reference.framework.transfer.AbstractTransferObject;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Message is a generic abstraction of a "message" or "notification" which is layer agnostic and can be used to communicate status or
@@ -54,6 +58,8 @@ public abstract class AbstractMessage extends AbstractTransferObject {
 	 * 
 	 * @return String[] the names, in same order as thier respective getParamValues()
 	 */
+	@JsonIgnore
+	@JsonProperty(value = "parameterNames")
 	public String[] getParamNames() {  	// NOSONAR not duplicate
 		return parameterNames;
 	}
@@ -64,6 +70,7 @@ public abstract class AbstractMessage extends AbstractTransferObject {
 	 * 
 	 * @param paramNames the names, in same order as thier respective getParamValues()
 	 */
+	@ApiModelProperty(hidden= true)
 	public void setParamNames(String[] paramNames) {  	// NOSONAR not duplicate
 		this.parameterNames = paramNames;
 	}
@@ -74,6 +81,8 @@ public abstract class AbstractMessage extends AbstractTransferObject {
 	 * 
 	 * @return String[] the values, in same order as their respective getParamNames()
 	 */
+	@JsonIgnore
+	@JsonProperty(value = "parameterValues")
 	public String[] getParamValues() {  	// NOSONAR not duplicate
 		return parameterValues;
 	}
@@ -84,6 +93,7 @@ public abstract class AbstractMessage extends AbstractTransferObject {
 	 * 
 	 * @param paramValues the values, in same order as their respective getParamNames()
 	 */
+	@ApiModelProperty(hidden= true)
 	public void setParamValues(String[] paramValues) { 	// NOSONAR not duplicate
 		this.parameterValues = paramValues;
 	}
@@ -93,6 +103,8 @@ public abstract class AbstractMessage extends AbstractTransferObject {
 	 * 
 	 * @return Integer the number of elements in the arrays
 	 */
+	@JsonIgnore
+	@JsonProperty(value = "parameterCount")
 	public Integer getParamCount() {  	// NOSONAR not duplicate
 		return parameterCount;
 	}
@@ -102,6 +114,7 @@ public abstract class AbstractMessage extends AbstractTransferObject {
 	 * 
 	 * @param paramCount the number of elements in the arrays
 	 */
+	@ApiModelProperty(hidden= true)
 	public void setParamCount(Integer paramCount) {  	// NOSONAR not duplicate
 		this.parameterCount = paramCount;
 	}

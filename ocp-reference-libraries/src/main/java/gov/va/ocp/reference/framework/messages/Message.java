@@ -75,6 +75,22 @@ public class Message extends AbstractMessage {
 		this.key = key;
 		this.text = text;
 	}
+	
+	/**
+	 * Instantiates a new message.
+	 *
+	 * @param severity the severity
+	 * @param key the key
+	 * @param text the text
+	 * @param httpStatus the http status
+	 */
+	public Message(final MessageSeverity severity, final String key, final String text, final HttpStatusForMessage httpStatus) {
+		super();
+		this.severity = severity;
+		this.key = key;
+		this.text = text;
+		this.status = httpStatus;
+	}
 
 	/**
 	 * Instantiates a new message providing only replaceable parameters.
@@ -85,7 +101,6 @@ public class Message extends AbstractMessage {
 	 */
 	public Message(Integer paramCount, String[] paramNames, String[] paramValues) {
 		super(paramCount, paramNames, paramValues);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
