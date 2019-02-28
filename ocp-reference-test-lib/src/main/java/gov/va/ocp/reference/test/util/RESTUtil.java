@@ -1,6 +1,8 @@
 package gov.va.ocp.reference.test.util;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import gov.va.ocp.reference.test.service.RESTConfigService;
 import io.restassured.RestAssured;
+import io.restassured.config.RestAssuredConfig;
 import io.restassured.config.SSLConfig;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -56,10 +59,6 @@ public class RESTUtil {
 	File responseFile = null;
 	PrintStream requestStream = null;
 	Response response = null; // stores response from rest
-
-	public RESTUtil() {
-		configureRestAssured();
-	}
 
 	/**
 	 * Reads file content for a given file resource using URL object.
@@ -106,7 +105,7 @@ public class RESTUtil {
 	 * @return
 	 */
 	public String getResponse(final String serviceURL) {
-		doWithRetry(() -> given().log().all().headers(mapReqHeader).urlEncodingEnabled(false).when().get(serviceURL),
+		doWithRetry(() -> given().config(getRestAssuredConfig()).log().all().headers(mapReqHeader).urlEncodingEnabled(false).when().get(serviceURL),
 				5);
 		LOGGER.info(response.getBody().asString());
 		return response.asString();
@@ -120,7 +119,7 @@ public class RESTUtil {
 	 * @return
 	 */
 	public String deleteResponse(final String serviceURL) {
-		doWithRetry(() -> given().log().all().headers(mapReqHeader).urlEncodingEnabled(false).when().delete(serviceURL),
+		doWithRetry(() -> given().config(getRestAssuredConfig()).log().all().headers(mapReqHeader).urlEncodingEnabled(false).when().delete(serviceURL),
 				5);
 		LOGGER.info(response.getBody().asString());
 		return response.asString();
@@ -134,7 +133,7 @@ public class RESTUtil {
 	 * @return
 	 */
 	public String postResponse(final String serviceURL) {
-		doWithRetry(() -> given().log().all().headers(mapReqHeader).urlEncodingEnabled(false).body(jsonText).when()
+		doWithRetry(() -> given().config(getRestAssuredConfig()).log().all().headers(mapReqHeader).urlEncodingEnabled(false).body(jsonText).when()
 				.post(serviceURL), 5);
 		LOGGER.info(response.getBody().asString());
 		return response.asString();
@@ -143,7 +142,7 @@ public class RESTUtil {
 	/**
 	 * Loads the KeyStore and password in to rest assured API so all the API's are SSL enabled.
 	 */
-	private void configureRestAssured() {
+	private RestAssuredConfig getRestAssuredConfig() {
 		String pathToKeyStore = RESTConfigService.getInstance().getProperty("javax.net.ssl.keyStore", true);
 		if (StringUtils.isBlank(pathToKeyStore)) {
 			RestAssured.useRelaxedHTTPSValidation();
@@ -168,14 +167,14 @@ public class RESTUtil {
 				clientAuthFactory.setHostnameVerifier(hostnameVerifier);
 				config = new SSLConfig().with().sslSocketFactory(clientAuthFactory).and().allowAllHostnames();
 
-				RestAssured.config = RestAssured.config().sslConfig(config);
+				return RestAssured.config().sslConfig(config);
 
 			} catch (Exception e) {
 				LOGGER.error("Issue while configuring certificate ", e);
 
 			}
 		}
-
+		return RestAssured.config();
 	}
 
 	/**
@@ -225,7 +224,7 @@ public class RESTUtil {
 					.headers(mapReqHeader).when().multiPart("file", filePath)
 					.multiPart(SUBMIT_PAYLOAD, SUBMIT_PAYLOAD, submitPayload, "application/json").post(serviceURL);
 		} catch (final Exception ex) {
-
+			LOGGER.error(ex.getMessage(), ex);
 		}
 		return response.asString();
 
@@ -315,7 +314,8 @@ public class RESTUtil {
 	 */
 	public void validateStatusCode(final int intStatusCode) {
 		final int actStatusCode = response.getStatusCode();
-		Assert.assertEquals(intStatusCode, actStatusCode);
+		assertThat(intStatusCode, equalTo(actStatusCode));
+		
 	}
 
 	/**
