@@ -12,6 +12,5 @@ gov.va.ocp.reference.starter.feign.autoconfigure.ReferenceFeignAutoConfiguration
 gov.va.ocp.reference.starter.security.autoconfigure.ReferenceSecurityAutoConfiguration,\
 gov.va.ocp.reference.starter.cache.autoconfigure.ReferenceCacheAutoConfiguration,\
 gov.va.ocp.reference.starter.cache.server.ReferenceEmbeddedRedisServer,\
-gov.va.ocp.reference.starter.swagger.autoconfigure.SwaggerAutoConfiguration
-
-
+gov.va.ocp.reference.starter.swagger.autoconfigure.SwaggerAutoConfiguration,\
+gov.va.ocp.reference.starter.hystrix.autoconfigure.HystrixContextAutoConfiguration

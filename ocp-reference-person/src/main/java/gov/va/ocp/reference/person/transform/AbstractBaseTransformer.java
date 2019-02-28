@@ -10,37 +10,15 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import gov.va.ocp.reference.framework.log.ReferenceLogger;
 import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
-import gov.va.ocp.reference.framework.transfer.PartnerTransferObjectMarker;
-import gov.va.ocp.reference.framework.transfer.ServiceTransferObjectMarker;
 
 /**
- * Transform data between the partner model and the service model.
- * <p>
- * Specifically transforms {@link PartnerTransferObjectMarker} objects to {@link ServiceTransferObjectMarker} objects, and vice versa.
+ * Static methods that are commonly needed for object model transformation.
  *
- * @param P <b>extends PartnerTransferObjectMarker</b> - the partner model object
- * @param S <b>extends ServiceTransferObjectMarker</b> - the domain model object
+ * @author aburkholder
  */
-public abstract class AbstractPartnerTransformer<P extends PartnerTransferObjectMarker, S extends ServiceTransferObjectMarker> {
-
-	/** Constant for the logger for this class */
-	public static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(AbstractPartnerTransformer.class);
-
-	/**
-	 * Transform an {@link PartnerTransferObjectMarker} to an {@link ServiceTransferObjectMarker}
-	 *
-	 * @param toTransform P the PartnerTransferObjectMarker to transform
-	 * @return S the ServiceTransferObjectMarker
-	 */
-	public abstract S transformToService(P toTransform);
-
-	/**
-	 * Transform an {@link ServiceTransferObjectMarker} to an {@link PartnerTransferObjectMarker}
-	 *
-	 * @param toTransform S the ServiceTransferObjectMarker to transform
-	 * @return P the PartnerTransferObjectMarker
-	 */
-	public abstract P transformToPartner(S toTransform);
+public abstract class AbstractBaseTransformer {
+	/** Logger */
+	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(AbstractBaseTransformer.class);
 
 	/**
 	 * Convert XMLGregorianCalendar to java.util.Date

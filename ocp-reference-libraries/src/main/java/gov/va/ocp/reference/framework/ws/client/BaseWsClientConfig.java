@@ -535,7 +535,7 @@ public class BaseWsClientConfig {
 	 */
 	public final Jaxb2Marshaller getMarshaller(final String transferPackage, final Resource[] schemaLocations,
 			final boolean isLogValidationErrors) {
-		Defense.notNull(transferPackage);
+		Defense.notNull(transferPackage, "Marshaller transferPackage cannot be null");
 
 		final Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
 		marshaller.setValidationEventHandler(new JaxbLogAndEatValidationEventHandler(isLogValidationErrors));

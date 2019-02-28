@@ -114,17 +114,22 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 			}
 
 			final Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+			LOGGER.debug("Method: {}", method);
 			final Auditable auditableAnnotation = method.getAnnotation(Auditable.class);
+			LOGGER.debug("Auditable Annotation: {}", auditableAnnotation);
 			AuditEventData auditEventData;
 			if (auditableAnnotation != null) {
 				auditEventData =
 						new AuditEventData(auditableAnnotation.event(), auditableAnnotation.activity(),
 								auditableAnnotation.auditClass());
+				LOGGER.debug("AuditEventData: {}", auditEventData.toString());
 
 				writeRequestInfoAudit(request, auditEventData);
 			}
 
 			response = joinPoint.proceed();
+			
+			LOGGER.debug("Response: {}", response);
 
 			if (auditableAnnotation != null) {
 				auditEventData = new AuditEventData(auditableAnnotation.event(), auditableAnnotation.activity(),
@@ -294,6 +299,8 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 	 * @param auditEventData the auditable annotation
 	 */
 	private void writeRequestInfoAudit(final List<Object> request, final AuditEventData auditEventData) {
+		
+		LOGGER.debug("RequestContextHolder.getRequestAttributes() {}", RequestContextHolder.getRequestAttributes());
 
 		final HttpServletRequest httpServletRequest =
 				((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -338,9 +345,8 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 			responseAuditData.setResponse(response);
 		}
 
-		LOGGER.debug("Invoking asyncLogRequestResponseAspectAuditData");
-
 		if (asyncLogging != null) {
+			LOGGER.debug("Invoking RequestResponseLogSerializer.asyncLogRequestResponseAspectAuditData()");
 			asyncLogging.asyncLogRequestResponseAspectAuditData(auditEventData, responseAuditData, ResponseAuditData.class,
 					messageSeverity, t);
 		}
@@ -355,7 +361,6 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 
 	private void getHttpRequestAuditData(final HttpServletRequest httpServletRequest, final RequestAuditData requestAuditData) {
 		final Map<String, String> headers = new HashMap<>();
-		httpServletRequest.getHeaderNames();
 
 		ArrayList<String> listOfHeaderNames = Collections.list(httpServletRequest.getHeaderNames());
 		populateHeadersMap(httpServletRequest, headers, listOfHeaderNames);
