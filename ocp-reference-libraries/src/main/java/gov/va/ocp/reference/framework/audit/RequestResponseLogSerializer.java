@@ -46,24 +46,28 @@ public class RequestResponseLogSerializer {
 	public void asyncLogRequestResponseAspectAuditData(final AuditEventData auditEventData, final AuditableData auditData,
 			final Class<?> auditDataClass, final MessageSeverity messageSeverity, final Throwable t) {
 
-		String auditDetails;
-		try {
-			mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-			mapper.setDateFormat(new SimpleDateFormat(dateFormat, Locale.getDefault()));
+		String auditDetails = null;
+		if (auditData == null) {
+			auditDetails = "";
+		} else {
+			try {
+				mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+				mapper.setDateFormat(new SimpleDateFormat(dateFormat, Locale.getDefault()));
 
-			mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-			mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-			mapper.disable(SerializationFeature.FAIL_ON_SELF_REFERENCES);
-			mapper.disable(SerializationFeature.FAIL_ON_UNWRAPPED_TYPE_IDENTIFIERS);
+				mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+				mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+				mapper.disable(SerializationFeature.FAIL_ON_SELF_REFERENCES);
+				mapper.disable(SerializationFeature.FAIL_ON_UNWRAPPED_TYPE_IDENTIFIERS);
 
-			mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-			mapper.disable(DeserializationFeature.FAIL_ON_UNRESOLVED_OBJECT_IDS);
-			mapper.disable(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES);
+				mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+				mapper.disable(DeserializationFeature.FAIL_ON_UNRESOLVED_OBJECT_IDS);
+				mapper.disable(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES);
 
-			auditDetails = mapper.writeValueAsString(auditDataClass.cast(auditData));
-		} catch (JsonProcessingException ex) {
-			LOGGER.error("Error occurred on JSON processing, calling custom toString()", ex);
-			auditDetails = auditDataClass.cast(auditData).toString();
+				auditDetails = mapper.writeValueAsString(auditDataClass.cast(auditData));
+			} catch (JsonProcessingException ex) {
+				LOGGER.error("Error occurred on JSON processing, calling custom toString()", ex);
+				auditDetails = auditDataClass.cast(auditData).toString();
+			}
 		}
 
 		if (messageSeverity.equals(MessageSeverity.ERROR) || messageSeverity.equals(MessageSeverity.FATAL)) {

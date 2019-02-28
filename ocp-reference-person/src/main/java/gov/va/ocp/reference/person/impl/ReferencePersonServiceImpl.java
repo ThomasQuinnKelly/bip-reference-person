@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -21,18 +22,14 @@ import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.util.Defense;
 import gov.va.ocp.reference.framework.util.ReferenceCacheUtil;
-import gov.va.ocp.reference.partner.person.ws.client.PersonWsClient;
-import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
-import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
-import gov.va.ocp.reference.partner.person.ws.transfer.ObjectFactory;
-import gov.va.ocp.reference.partner.person.ws.transfer.PersonDTO;
 import gov.va.ocp.reference.person.api.ReferencePersonService;
-import gov.va.ocp.reference.person.model.person.v1.PersonInfo;
+import gov.va.ocp.reference.person.exception.PersonServiceException;
 import gov.va.ocp.reference.person.model.person.v1.PersonInfoRequest;
 import gov.va.ocp.reference.person.model.person.v1.PersonInfoResponse;
 import gov.va.ocp.reference.person.utils.CacheConstants;
 import gov.va.ocp.reference.person.utils.HystrixCommandConstants;
-import gov.va.ocp.reference.person.utils.StringUtil;
+import gov.va.ocp.reference.person.ws.client.PersonServiceHelper;
+import gov.va.ocp.reference.person.ws.client.validate.PersonDomainValidator;
 
 @Service(value = ReferencePersonServiceImpl.BEAN_NAME)
 @Component
@@ -54,21 +51,15 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	/** Bean name constant */
 	public static final String BEAN_NAME = "personServiceImpl";
 
-	/** The person web service client reference. */
+	/** The person web service client helper. */
 	@Autowired
-	private PersonWsClient personWsClient;
+	private PersonServiceHelper personServiceHelper;
 
 	@Autowired
 	private CacheManager cacheManager;
-
-	/** String Constant NOPERSONFORPTCTID */
-	private static final String NOPERSONFORPTCTID = "NOPERSONFORPTCTID";
-
-	/** String Constant NO_PERSON_FOUND_FOR_PARTICIPANT_ID */
-	private static final String NO_PERSON_FOUND_FOR_PARTICIPANT_ID = "No person found for participantID ";
-
-	/** The Constant PERSON_OBJECT_FACTORY. */
-	protected static final ObjectFactory PERSON_OBJECT_FACTORY = new ObjectFactory();
+	
+	/** Constant for the message when hystrix fallback method is manually invoked */
+	private static final String INVOKE_FALLBACK_MESSAGE = "Could not get data from cache or partner - invoking fallback.";
 
 	/*
 	 * (non-Javadoc)
@@ -80,33 +71,45 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 */
 	@Override
 	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE,
-			key = "#root.methodName + T(gov.va.ocp.reference.framework.util.ReferenceCacheUtil).getUserBasedKey()",
+			key = "#root.methodName + T(gov.va.ocp.reference.framework.util.ReferenceCacheUtil).createKey(#personInfoRequest.participantID)",
 			unless = "T(gov.va.ocp.reference.framework.util.ReferenceCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
 			ignoreExceptions = { IllegalArgumentException.class })
 	public PersonInfoResponse findPersonByParticipantID(final PersonInfoRequest personInfoRequest) {
-
-		// Check for valid input arguments and WS Client reference.
-		Defense.notNull(personWsClient, "Unable to proceed with Person Service request. The personWsClient must not be null.");
-		Defense.notNull(personInfoRequest.getParticipantID(), "Invalid argument, pid must not be null.");
-		String cacheKey = "findPersonByParticipantID" + ReferenceCacheUtil.getUserBasedKey();
-
-		if (((cacheManager != null) && (cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE) != null)
-				&& (cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey) != null))) {
-			LOGGER.debug("findPersonByParticipantID returning cached data");
-			return cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey, PersonInfoResponse.class);
-		} else {
-			// Prepare the WS request
-			final FindPersonByPtcpntId findPersonByPtcpntIdRequestElement = createFindPersonByPidRequest(personInfoRequest);
-// TODO
-//			// Invoke the Person Web Service via the WS Client
-//			final JAXBElement<FindPersonByPtcpntIdResponse> findPersonByPtcpntIdResponseElement =
-//					personWsClient.getPersonInfoByPtcpntId(findPersonByPtcpntIdRequestElement);
-//
-//			// Prepare the service response
-//			return createPersonInfoResponse(findPersonByPtcpntIdResponseElement, personInfoRequest.getParticipantID());
-			return null;
+		// Check for WS Client reference.
+		Defense.notNull(personServiceHelper,
+				"Unable to proceed with Person Service request. The personServiceHelper must not be null.");
+		// Check for valid input arguments. If validation fails, throws IllegalArgumentException
+		try {
+			PersonDomainValidator.validatePersonInfoRequest(personInfoRequest);
+		} catch (final IllegalArgumentException e) {
+			final PersonInfoResponse personInfoResponse = new PersonInfoResponse();
+			personInfoResponse.addMessage(MessageSeverity.ERROR, HttpStatus.BAD_REQUEST.name(), e.getMessage());
+			LOGGER.error("Exception raised {}", e);
+			return personInfoResponse;
 		}
+		String cacheKey = "findPersonByParticipantID" + ReferenceCacheUtil.createKey(personInfoRequest.getParticipantID());
+		
+		PersonInfoResponse response = null;
+		try {
+			if (cacheManager != null && cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE) != null
+					&& cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey) != null) {
+				LOGGER.debug("findPersonByParticipantID returning cached data");
+				response =
+						cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey, PersonInfoResponse.class);
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+		if (response == null) {
+			LOGGER.debug("findPersonByParticipantID no cached data found");
+			response = personServiceHelper.findPersonByPid(personInfoRequest);
+		}
+		if (response == null || response.getPersonInfo() == null && !response.hasErrors()) {
+			LOGGER.info("findPersonByParticipantID empty response - throwing PersonServiceException: " + INVOKE_FALLBACK_MESSAGE);
+			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
+		}
+		return response;
 	}
 
 	/**
@@ -119,6 +122,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 */
 	@HystrixCommand(commandKey = "FindPersonByParticipantIDFallBackCommand")
 	public PersonInfoResponse findPersonByParticipantIDFallBack(final PersonInfoRequest personInfoRequest, final Throwable throwable) {
+		LOGGER.info("Hystrix findPersonByParticipantIDFallBack has been activated");
 		final PersonInfoResponse response = new PersonInfoResponse();
 		if (throwable != null) {
 			final String msg = throwable.getMessage();
@@ -127,6 +131,10 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			response.setMessages(messages);
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug(msg);
+			}
+
+			if (response != null) {
+				response.setDoNotCacheResponse(true);
 			}
 			return response;
 		} else {
@@ -152,77 +160,4 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		msg.setText(text);
 		return msg;
 	}
-
-	/**
-	 * @param personInfoRequest The request from the Java Service.
-	 * @return A JAXB element for the WS request
-	 */
-	private FindPersonByPtcpntId createFindPersonByPidRequest(final PersonInfoRequest personInfoRequest) {
-
-		final FindPersonByPtcpntId findPersonByPtcpntId = new FindPersonByPtcpntId();
-		findPersonByPtcpntId.setPtcpntId(personInfoRequest.getParticipantID());
-
-//		TODO
-//		return PERSON_OBJECT_FACTORY.createFindPersonByPtcpntId(findPersonByPtcpntId);
-		return null;
-	}
-
-	/**
-	 * @param findPersonByPtcpntIdResponseElement The response JAXB element
-	 * @param participantID The person's participantID
-	 * @return the person info response
-	 */
-	private PersonInfoResponse createPersonInfoResponse(
-			final FindPersonByPtcpntIdResponse findPersonByPtcpntIdResponseElement, final Long participantID) {
-
-		final PersonInfoResponse personInfoResponse = new PersonInfoResponse();
-		final String maskedInfo = StringUtil.getMask4(participantID.toString());
-		// Check for null xml element
-		if (findPersonByPtcpntIdResponseElement == null) {
-
-			personInfoResponse.addMessage(MessageSeverity.ERROR, NOPERSONFORPTCTID,
-					NO_PERSON_FOUND_FOR_PARTICIPANT_ID + maskedInfo);
-
-		} else {
-			final FindPersonByPtcpntIdResponse findPersonByPtcpntIdResponse = findPersonByPtcpntIdResponseElement;
-			// Check for null response object
-			if (findPersonByPtcpntIdResponse == null) {
-
-				personInfoResponse.addMessage(MessageSeverity.ERROR, NOPERSONFORPTCTID,
-						NO_PERSON_FOUND_FOR_PARTICIPANT_ID + maskedInfo);
-
-			} else {
-				final PersonDTO personDto = findPersonByPtcpntIdResponse.getPersonDTO();
-				// If no DTO was returned, the PID did not match a person.
-				if (personDto == null) {
-
-					personInfoResponse.addMessage(MessageSeverity.ERROR, NOPERSONFORPTCTID,
-							NO_PERSON_FOUND_FOR_PARTICIPANT_ID + maskedInfo);
-
-				} else {
-					// Copy the data of interest to the person info and add it to the service response.
-					final PersonInfo personInfo = createPersonInfo(personDto);
-					personInfoResponse.setPersonInfo(personInfo);
-				}
-			}
-		}
-		personInfoResponse.setDoNotCacheResponse(true);
-		return personInfoResponse;
-	}
-
-	/**
-	 * @param personDto The person DTO
-	 * @return A PersonInfo object containing data from the DTO
-	 */
-	private PersonInfo createPersonInfo(final PersonDTO personDto) {
-		final PersonInfo personInfo = new PersonInfo();
-		personInfo.setFileNumber(personDto.getFileNbr());
-		personInfo.setFirstName(personDto.getFirstNm());
-		personInfo.setMiddleName(personDto.getMiddleNm());
-		personInfo.setLastName(personDto.getLastNm());
-		personInfo.setParticipantId(personDto.getPtcpntId());
-		personInfo.setSocSecNo(personDto.getSsnNbr());
-		return personInfo;
-	}
-
 }

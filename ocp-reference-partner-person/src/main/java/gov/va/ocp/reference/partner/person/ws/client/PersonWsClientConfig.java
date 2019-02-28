@@ -95,10 +95,6 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 		Defense.hasText(password, "Partner password cannot be empty.");
 		Defense.hasText(vaApplicationName, "Partner vaApplicationName cannot be empty.");
 		Defense.hasText(vaStationId, "Station ID cannot be empty.");
-
-		LOGGER.info("Station ID value : " + vaStationId);
-		LOGGER.info("vaApplicationName : " + vaApplicationName);
-
 	}
 
 	/**
@@ -140,8 +136,6 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 */
 	@Bean
 	Wss4jSecurityInterceptor personSecurityInterceptor() {
-		LOGGER.debug("Station ID value : " + vaStationId);
-		LOGGER.debug("vaApplicationName : " + vaApplicationName);
 		return getVAServiceWss4jSecurityInterceptor(username, password, vaApplicationName, vaStationId);
 	}
 

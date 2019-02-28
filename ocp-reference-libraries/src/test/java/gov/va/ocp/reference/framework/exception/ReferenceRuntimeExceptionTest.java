@@ -9,12 +9,9 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-
 public class ReferenceRuntimeExceptionTest {
 
 	private static final String SERVER_NAME_PROPERTY = "server.name";
-	private static String originalServerName;
 
 	@Before
 	public void setUp() {
@@ -23,7 +20,6 @@ public class ReferenceRuntimeExceptionTest {
 
 	@BeforeClass
 	public static void setUpClass() {
-		originalServerName = System.getProperty(SERVER_NAME_PROPERTY);
 		System.setProperty(SERVER_NAME_PROPERTY, "Test Server");
 	}
 

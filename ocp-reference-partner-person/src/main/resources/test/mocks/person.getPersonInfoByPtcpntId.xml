@@ -1,4 +1,4 @@
-<ns2:findPersonBySSNResponse
+<ns2:findPersonByPtcpntIdResponse
 	xmlns:ns2="http://person.services.gov/">
 	<PersonDTO>
 		<brthdyDt>1961-09-02T00:00:00-05:00</brthdyDt>
@@ -24,5 +24,4 @@
 		<termnlDigitNbr>18</termnlDigitNbr>
 		<vetInd>Y</vetInd>
 	</PersonDTO>
-</ns2:findPersonBySSNResponse>
-
+</ns2:findPersonByPtcpntIdResponse>
