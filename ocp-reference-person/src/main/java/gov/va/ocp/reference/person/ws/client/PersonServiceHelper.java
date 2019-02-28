@@ -64,16 +64,6 @@ public class PersonServiceHelper {
 	 * @return PersonInfoResponse domain representation of the partner response
 	 */
 	public PersonInfoResponse findPersonByPid(PersonInfoRequest request) {
-		// If validation fails, throws IllegalArgumentException
-		try {
-			PersonDomainValidator.validatePersonInfoRequest(request);
-		} catch (final IllegalArgumentException e) {
-			final PersonInfoResponse personInfoResponse = new PersonInfoResponse();
-			personInfoResponse.addMessage(MessageSeverity.ERROR, HttpStatus.BAD_REQUEST.name(), e.getMessage());
-			LOGGER.error("Exception raised {}", e);
-			return personInfoResponse;
-		}
-
 
 		FindPersonByPtcpntId partnerRequest = personByPidD2P.transform(request);
 

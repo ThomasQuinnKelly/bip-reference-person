@@ -81,7 +81,8 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 
 		// TODO
 		if (request.getClass().isAssignableFrom(FindPersonByPtcpntId.class)) {
-			mockFilename = getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE);
+			final String paramPID = String.valueOf(((FindPersonByPtcpntId) request).getPtcpntId());
+			mockFilename = getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE, paramPID);
 
 		} else {
 			throw new PersonWsClientException(
@@ -102,24 +103,25 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	 * If any of these checks fails, the fileNamePattern is returned with the trailing ".{0}" removed.
 	 *
 	 * @param fileNamePattern - the filename, or if param needs replacing, the pattern
-	 * @param replaceableParam - null or the param replacement value
+	 * @param paramPID - null or the param replacement value
 	 * @return String a filename
 	 */
-	private String getFileName(final String fileNamePattern) {
+	private String getFileName(final String fileNamePattern, final String paramPID) {
 		Defense.notNull(fileNamePattern, "fileNamePattern cannot be null");
 		String fileName = fileNamePattern;
 		final PersonTraits personTraits = SecurityUtils.getPersonTraits();
 
-		if (personTraits != null
+		if (StringUtils.isNotBlank(paramPID) && fileName.contains("{")) {
+			fileName = MessageFormat.format(fileName, paramPID);
+		} else if (personTraits != null
 				&& StringUtils.isNotBlank(personTraits.getPid())
 				&& fileName.contains("{")) {
 			fileName = MessageFormat.format(fileName, personTraits.getPid());
-			LOGGER.warn("Could not retrieve PersonTraits from SecurityContext. Defaulting to MOCK response " + fileName);
 		} else {
 			if (fileName.contains("{")) {
 				fileName = fileName.replace(".{0}", "");
+				LOGGER.warn("Could not retrieve PersonTraits from SecurityContext. Defaulting to MOCK response " + fileName);
 			}
-
 		}
 		return fileName;
 	}

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ import gov.va.ocp.reference.person.model.person.v1.PersonInfoResponse;
 import gov.va.ocp.reference.person.utils.CacheConstants;
 import gov.va.ocp.reference.person.utils.HystrixCommandConstants;
 import gov.va.ocp.reference.person.ws.client.PersonServiceHelper;
+import gov.va.ocp.reference.person.ws.client.validate.PersonDomainValidator;
 
 @Service(value = ReferencePersonServiceImpl.BEAN_NAME)
 @Component
@@ -74,13 +76,20 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	@HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
 			ignoreExceptions = { IllegalArgumentException.class })
 	public PersonInfoResponse findPersonByParticipantID(final PersonInfoRequest personInfoRequest) {
-
-		// Check for valid input arguments and WS Client reference.
+		// Check for WS Client reference.
 		Defense.notNull(personServiceHelper,
 				"Unable to proceed with Person Service request. The personServiceHelper must not be null.");
-		Defense.notNull(personInfoRequest.getParticipantID(), "Invalid argument, pid must not be null.");
-		String cacheKey = "findPersonByParticipantID" + ReferenceCacheUtil.getUserBasedKey();
-
+		// Check for valid input arguments. If validation fails, throws IllegalArgumentException
+		try {
+			PersonDomainValidator.validatePersonInfoRequest(personInfoRequest);
+		} catch (final IllegalArgumentException e) {
+			final PersonInfoResponse personInfoResponse = new PersonInfoResponse();
+			personInfoResponse.addMessage(MessageSeverity.ERROR, HttpStatus.BAD_REQUEST.name(), e.getMessage());
+			LOGGER.error("Exception raised {}", e);
+			return personInfoResponse;
+		}
+		String cacheKey = "findPersonByParticipantID" + ReferenceCacheUtil.createKey(personInfoRequest.getParticipantID());
+		
 		PersonInfoResponse response = null;
 		try {
 			if (cacheManager != null && cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE) != null
