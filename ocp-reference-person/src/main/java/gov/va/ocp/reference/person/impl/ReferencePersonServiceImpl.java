@@ -58,7 +58,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 
 	@Autowired
 	private CacheManager cacheManager;
-	
+
 	/** Constant for the message when hystrix fallback method is manually invoked */
 	private static final String INVOKE_FALLBACK_MESSAGE = "Could not get data from cache or partner - invoking fallback.";
 
@@ -85,20 +85,21 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			PersonDomainValidator.validatePersonInfoRequest(personInfoRequest);
 		} catch (final IllegalArgumentException e) {
 			final PersonInfoResponse personInfoResponse = new PersonInfoResponse();
-			personInfoResponse.addMessage(MessageSeverity.ERROR, 
+			personInfoResponse.addMessage(MessageSeverity.ERROR,
 					HttpStatus.BAD_REQUEST.name(), e.getMessage(), HttpStatusForMessage.BAD_REQUEST);
 			LOGGER.error("Exception raised {}", e);
 			return personInfoResponse;
 		}
 		String cacheKey = "findPersonByParticipantID" + ReferenceCacheUtil.createKey(personInfoRequest.getParticipantID());
-		
+
 		PersonInfoResponse response = null;
 		try {
 			if (cacheManager != null && cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE) != null
 					&& cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey) != null) {
 				LOGGER.debug("findPersonByParticipantID returning cached data");
 				response =
-						cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey, PersonInfoResponse.class);
+						cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey,
+								PersonInfoResponse.class);
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
@@ -109,6 +110,11 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		}
 		if (response == null || response.getPersonInfo() == null && !response.hasErrors()) {
 			LOGGER.info("findPersonByParticipantID empty response - throwing PersonServiceException: " + INVOKE_FALLBACK_MESSAGE);
+			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
+		}
+		if (response.getPersonInfo().getParticipantId() != personInfoRequest.getParticipantID()) {
+			LOGGER.info("findPersonByParticipantID response has different PID than the request - throwing PersonServiceException: "
+					+ INVOKE_FALLBACK_MESSAGE);
 			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
 		}
 		return response;
