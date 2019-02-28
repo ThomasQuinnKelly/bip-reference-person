@@ -1,5 +1,7 @@
 package gov.va.ocp.reference.framework.messages;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 /**
  * Enumeration of HTTP status codes.
  *
@@ -498,6 +500,7 @@ public enum HttpStatusForMessage {
 	 * @return the enum constant with the specified numeric value
 	 * @throws IllegalArgumentException if this enum has no constant for the specified numeric value
 	 */
+	@JsonCreator // This is the factory method and must be static
 	public static HttpStatusForMessage valueOf(final int statusCode) {
 		for (HttpStatusForMessage status : values()) {
 			if (status.statusCodeValue == statusCode) {
