@@ -290,7 +290,7 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 			final AuditEventData auditEventData) {
 		LOGGER.error("RestProviderHttpResponseAspect encountered uncaught exception in REST endpoint.", referenceRuntimeException);
 		final ServiceResponse serviceResponse = new ServiceResponse();
-		serviceResponse.addMessage(MessageSeverity.FATAL, "UNEXPECTED_ERROR", 
+		serviceResponse.addMessage(MessageSeverity.FATAL, HttpStatusForMessage.INTERNAL_SERVER_ERROR.getReasonPhrase(), 
 				referenceRuntimeException.getMessage(), HttpStatusForMessage.INTERNAL_SERVER_ERROR);
 		final StringBuilder sb = new StringBuilder();
 		sb.append("Error Message: ").append(referenceRuntimeException);
