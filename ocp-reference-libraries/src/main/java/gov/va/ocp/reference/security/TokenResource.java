@@ -28,7 +28,7 @@ public class TokenResource implements SwaggerResponseMessages {
 			+ "CorrelationIds may be null or an empty array if the target API does not require it. "
 			+ "Otherwise, correlationIds must be the list as retrieved from MVI:\n"
 			+ "<table style=\"table-layout:auto;width:700px;text-align:left;background-color:#efefef;\">"
-			+ "<tr><th>Common ID Name</th><th>ID #</th><th>Type</th><th>Source</th><th>Issuer</th><th>Status</th><th </tr>"
+			+ "<tr><th>Common ID Name</th><th>Example ID</th><th>Type</th><th>Source</th><th>Issuer</th><th>Status</th><th </tr>"
 			+ "<tr><td>Participant ID (PID)</td><td>12345678</td><td>PI</td><td>200CORP</td><td>USVBA</td><td>A</td></tr>"
 			+ "<tr><td>File Number</td><td>123456789</td><td>PI</td><td>200BRLS</td><td>USVBA</td><td>A</td></tr>"
 			+ "<tr><td>ICN</td><td>1234567890V123456</td><td>NI</td><td>200M</td><td>USVHA</td><td>A</td></tr>"
