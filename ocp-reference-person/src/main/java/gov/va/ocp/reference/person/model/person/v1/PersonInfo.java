@@ -16,27 +16,27 @@ public class PersonInfo extends AbstractTransferObject {
 	private static final long serialVersionUID = 5791227842810442936L;
 
 	/** The person's file number. */
-	@ApiModelProperty(value = "The persons file number", example = "796079018")
+	@ApiModelProperty(value = "The persons file number", example = "912444689")
 	private String fileNumber;
 
 	/** The person's first name. */
-	@ApiModelProperty(value = "The persons first name", example = "RUSSELL")
+	@ApiModelProperty(value = "The persons first name", example = "JANE")
 	private String firstName;
 
 	/** the person's middle name. */
-	@ApiModelProperty(value = "The persons middle name", example = "BILL")
+	@ApiModelProperty(value = "The persons middle name", example = "M")
 	private String middleName;
 
 	/** the person's last name. */
-	@ApiModelProperty(value = "The persons last name", example = "WATSON")
+	@ApiModelProperty(value = "The persons last name", example = "DOE")
 	private String lastName;
 
 	/** the person's participant id. */
-	@ApiModelProperty(value = "The persons participant ID", example = "13364995")
+	@ApiModelProperty(value = "The persons participant ID", example = "6666345")
 	private Long participantId;
 
 	/** the person's social security number. */
-	@ApiModelProperty(value = "The persons SSN", example = "796079018")
+	@ApiModelProperty(value = "The persons SSN", example = "912444689")
 	private String socSecNo;
 
 	/**
