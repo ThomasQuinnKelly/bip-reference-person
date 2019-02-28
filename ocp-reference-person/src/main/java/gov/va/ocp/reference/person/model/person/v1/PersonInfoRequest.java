@@ -17,7 +17,7 @@ public class PersonInfoRequest extends ServiceRequest {
 
 	/** A String representing a social security number. */
 	@ApiModelProperty(value = "The Participant ID of the person for whom to retrieve data", required = true,
-			example = "13364995")
+			example = "6666345")
 	private Long participantID;
 
 	/**

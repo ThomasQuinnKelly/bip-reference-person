@@ -13,12 +13,6 @@ import gov.va.ocp.reference.person.transform.AbstractPartnerToDomain;
  */
 public class PersonByPid_PartnerToDomain extends AbstractPartnerToDomain<FindPersonByPtcpntIdResponse, PersonInfoResponse> {
 
-	/** String Constant NOPERSONFORPTCTID */
-	private static final String NOPERSONFORPTCTID = "NOPERSONFORPTCTID";
-
-	/** String Constant NO_PERSON_FOUND_FOR_PARTICIPANT_ID */
-	private static final String NO_PERSON_FOUND_FOR_PARTICIPANT_ID = "No person found for participantID ";
-
 	/** The Constant PERSON_OBJECT_FACTORY. */
 	protected static final ObjectFactory PERSON_OBJECT_FACTORY = new ObjectFactory();
 
