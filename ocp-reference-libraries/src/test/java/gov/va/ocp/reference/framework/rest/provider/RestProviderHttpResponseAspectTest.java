@@ -37,9 +37,6 @@ import gov.va.ocp.reference.framework.log.ReferenceLogger;
 import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.framework.rest.provider.MessageSeverityMatchRule;
-import gov.va.ocp.reference.framework.rest.provider.MessagesToHttpStatusRulesEngine;
-import gov.va.ocp.reference.framework.rest.provider.RestProviderHttpResponseAspect;
 import gov.va.ocp.reference.framework.service.ServiceRequest;
 import gov.va.ocp.reference.framework.service.ServiceResponse;
 
@@ -90,7 +87,7 @@ public class RestProviderHttpResponseAspectTest extends AbstractBaseLogTester {
 			Mockito.lenient().when(proceedingJoinPoint.getSignature()).thenReturn(mockSignature);
 			Mockito.lenient().when(mockSignature.getMethod()).thenReturn(myMethod());
 
-			final Message msg = new Message(MessageSeverity.FATAL, "FatalKey", "Fatal Message");
+			final Message msg = new Message(MessageSeverity.FATAL, "FatalKey", "Fatal Message", null);
 			detailedMsg.add(msg);
 			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenReturn(responseEntity);
 			Mockito.lenient().when(responseEntity.getBody()).thenReturn(serviceResponse);
