@@ -13,7 +13,7 @@ import cucumber.api.testng.AbstractTestNGCucumberTests;
 @CucumberOptions(strict = false, plugin = { "pretty",
 		"html:target/site/cucumber-pretty", "json:target/site/cucumber.json" }, 
 		features = {"src/inttest/resources/gov/va/referenceperson/feature"},
-		glue = { "gov.va.ocp.reference.service.steps" },monochrome = true)
+		glue = { "gov.va.ocp.reference.service.steps" })
 public class ReferencePersonRunner extends AbstractTestNGCucumberTests {
 
 	final Logger LOGGER = LoggerFactory.getLogger(ReferencePersonRunner.class);
