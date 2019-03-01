@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import gov.va.ocp.reference.framework.log.OcpLogger;
 import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
-import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientImpl;
@@ -28,11 +28,11 @@ import gov.va.ocp.reference.person.utils.StringUtil;
  *
  * @author aburkholder
  */
-@Component(PersonServiceHelper.BEAN_NAME)
-public class PersonServiceHelper {
+@Component(PersonPartnerHelper.BEAN_NAME)
+public class PersonPartnerHelper {
 	public static final String BEAN_NAME = "personServiceHelper";
 	/** Logger */
-	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(PersonServiceHelper.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(PersonPartnerHelper.class);
 
 	/** String to prepend messages for re-thrown exceptions */
 	private static final String THROWSTR = "Rethrowing the following exception:  ";
@@ -77,15 +77,18 @@ public class PersonServiceHelper {
 		}
 
 		domainResponse = personByPidP2D.transform(partnerResponse);
-		
-		LOGGER.debug("PersonByPidDomainResponse: {}", (domainResponse == null ? "" : ToStringBuilder.reflectionToString(domainResponse)));
-		LOGGER.debug("FindPersonByPtcpntIdResponse: {}", (partnerResponse == null ? "" : ToStringBuilder.reflectionToString(partnerResponse)));
+
+		LOGGER.debug("PersonByPidDomainResponse: {}",
+				domainResponse == null ? "" : ToStringBuilder.reflectionToString(domainResponse));
+		LOGGER.debug("FindPersonByPtcpntIdResponse: {}",
+				partnerResponse == null ? "" : ToStringBuilder.reflectionToString(partnerResponse));
 
 		List<Message> messages = checkPartnerResponse(request.getParticipantID(), partnerResponse);
 		if (messages != null && !messages.isEmpty()) {
 			domainResponse.addMessages(messages);
 		}
-		LOGGER.debug("PersonByPidDomainResponse after addMessages: {}", (domainResponse == null ? "" : ToStringBuilder.reflectionToString(domainResponse)));
+		LOGGER.debug("PersonByPidDomainResponse after addMessages: {}",
+				domainResponse == null ? "" : ToStringBuilder.reflectionToString(domainResponse));
 		return domainResponse;
 	}
 
@@ -107,7 +110,7 @@ public class PersonServiceHelper {
 
 			messages = new ArrayList<>();
 			messages.add(new Message(MessageSeverity.ERROR, NOPERSONFORPTCTID,
-					NO_PERSON_FOUND_FOR_PARTICIPANT_ID + maskedInfo, HttpStatusForMessage.BAD_REQUEST));
+					NO_PERSON_FOUND_FOR_PARTICIPANT_ID + maskedInfo, HttpStatus.BAD_REQUEST));
 		}
 		return messages;
 	}

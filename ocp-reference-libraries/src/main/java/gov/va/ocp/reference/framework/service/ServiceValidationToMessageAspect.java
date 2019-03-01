@@ -14,11 +14,11 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 
 import gov.va.ocp.reference.framework.audit.AuditLogger;
 import gov.va.ocp.reference.framework.log.OcpLogger;
 import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
-import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.rest.provider.BaseRestProviderAspect;
@@ -107,7 +107,7 @@ public class ServiceValidationToMessageAspect extends BaseServiceAspect {
 			final Map<String, List<ViolationMessageParts>> messages) {
 		for (final Entry<String, List<ViolationMessageParts>> entry : messages.entrySet()) {
 			for (final ViolationMessageParts fieldError : entry.getValue()) {
-				domainResponse.addMessage(MessageSeverity.ERROR, fieldError.getNewKey(), fieldError.getText(), HttpStatusForMessage.BAD_REQUEST);
+				domainResponse.addMessage(MessageSeverity.ERROR, fieldError.getNewKey(), fieldError.getText(), HttpStatus.BAD_REQUEST);
 			}
 		}
 		Collections.sort(domainResponse.getMessages(), Comparator.comparing(Message::getKey));
