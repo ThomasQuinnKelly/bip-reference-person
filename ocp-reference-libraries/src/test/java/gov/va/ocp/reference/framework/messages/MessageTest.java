@@ -33,14 +33,13 @@ public class MessageTest {
 		assertEquals("TextMsg", message.getText());
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testParamsConstructor() throws Exception {
 		Message message = new Message(MessageSeverity.WARN, "UnitTestKey", "TextMsg", null,
 				1, new String[] { "0" }, new String[] { "1" });
 		assertEquals(new Integer(1), message.getParamCount());
-		assertEquals(new String[] { "0" }, message.getParamNames());
-		assertEquals(new String[] { "1" }, message.getParamValues());
+		assertArrayEquals(new String[] { "0" }, message.getParamNames());
+		assertArrayEquals(new String[] { "1" }, message.getParamValues());
 
 		message.setParamCount(2);
 		message.setParamNames(new String[] { "0" });

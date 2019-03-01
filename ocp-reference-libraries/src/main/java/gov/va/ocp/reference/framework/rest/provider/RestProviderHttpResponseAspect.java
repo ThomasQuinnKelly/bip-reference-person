@@ -37,13 +37,13 @@ import gov.va.ocp.reference.framework.audit.RequestAuditData;
 import gov.va.ocp.reference.framework.audit.RequestResponseLogSerializer;
 import gov.va.ocp.reference.framework.audit.ResponseAuditData;
 import gov.va.ocp.reference.framework.constants.AnnotationConstants;
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.ocp.reference.framework.log.ReferenceBanner;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.reference.framework.log.OcpBanner;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.framework.service.ServiceResponse;
+import gov.va.ocp.reference.framework.service.DomainResponse;
 import gov.va.ocp.reference.framework.util.SanitizationUtil;
 
 /**
@@ -61,7 +61,7 @@ import gov.va.ocp.reference.framework.util.SanitizationUtil;
 public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 
 	/** The Constant LOGGER. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(RestProviderHttpResponseAspect.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(RestProviderHttpResponseAspect.class);
 
 	private static final int NUMBER_OF_BYTES = 1024;
 
@@ -138,7 +138,7 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 				writeResponseAudit(response, auditEventData, MessageSeverity.INFO, null);
 			}
 		} catch (Throwable e) {
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
+			LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 					"Error while executing logAnnotatedMethodRequestResponse around auditableExecution", e);
 		}
 		return response;
@@ -161,7 +161,7 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 
 		Object responseObject = null;
 		List<Object> requestObject = null;
-		ServiceResponse serviceResponse = null;
+		DomainResponse domainResponse = null;
 		AuditEventData auditEventData = null;
 		boolean returnTypeIsServiceResponse = false;
 		HttpServletResponse response = null;
@@ -192,17 +192,17 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 				LOGGER.debug("Response: {}", responseObject);
 			}
 			if (responseObject == null) {
-				serviceResponse = new ServiceResponse();
-			} else if (responseObject instanceof ServiceResponse) {
-				serviceResponse = (ServiceResponse) responseObject;
+				domainResponse = new DomainResponse();
+			} else if (responseObject instanceof DomainResponse) {
+				domainResponse = (DomainResponse) responseObject;
 			} else {
-				serviceResponse = ((ResponseEntity<ServiceResponse>) responseObject).getBody();
+				domainResponse = ((ResponseEntity<DomainResponse>) responseObject).getBody();
 			}
-			if (serviceResponse == null) {
-				serviceResponse = new ServiceResponse();
+			if (domainResponse == null) {
+				domainResponse = new DomainResponse();
 			}
-			LOGGER.debug("ServiceResponse: {}", serviceResponse);
-			final HttpStatus ruleStatus = rulesEngine.messagesToHttpStatus(serviceResponse.getMessages());
+			LOGGER.debug("DomainResponse: {}", domainResponse);
+			final HttpStatus ruleStatus = rulesEngine.messagesToHttpStatus(domainResponse.getMessages());
 			LOGGER.debug("HttpStatus: {}", ruleStatus);
 			
 			auditEventData = new AuditEventData(AuditEvents.REST_RESPONSE, method.getName(), method.getDeclaringClass().getName());
@@ -213,47 +213,47 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 
 				if (returnTypeIsServiceResponse) {
 					response.setStatus(ruleStatus.value());
-					return serviceResponse;
+					return domainResponse;
 				} else {
-					return new ResponseEntity<>(serviceResponse, ruleStatus);
+					return new ResponseEntity<>(domainResponse, ruleStatus);
 				}
 			} else {
 				writeResponseAudit(responseObject, auditEventData, MessageSeverity.INFO, null);
 			}
-		} catch (final ReferenceRuntimeException referenceRuntimeException) {
+		} catch (final OcpRuntimeException ocpRuntimeException) {
 			Object returnObj = null;
-			LOGGER.error("referenceRuntimeException : {}", referenceRuntimeException);
-			LOGGER.error("referenceRuntimeException getCause: {}", referenceRuntimeException.getCause());
-			LOGGER.error("referenceRuntimeException getMessage: {}", referenceRuntimeException.getMessage());
-			LOGGER.error("referenceRuntimeException getLocalizedMessage: {}", referenceRuntimeException.getLocalizedMessage());
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
+			LOGGER.error("referenceRuntimeException : {}", ocpRuntimeException);
+			LOGGER.error("referenceRuntimeException getCause: {}", ocpRuntimeException.getCause());
+			LOGGER.error("referenceRuntimeException getMessage: {}", ocpRuntimeException.getMessage());
+			LOGGER.error("referenceRuntimeException getLocalizedMessage: {}", ocpRuntimeException.getLocalizedMessage());
+			LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 					"Error while executing RestProviderHttpResponseAspect.aroundAdvice around restController",
-					referenceRuntimeException);
+					ocpRuntimeException);
 			try {
-				responseObject = writeAuditError(referenceRuntimeException, auditEventData);
+				responseObject = writeAuditError(ocpRuntimeException, auditEventData);
 				if (response != null) {
 					response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 				}
 				returnObj = getReturnResponse(returnTypeIsServiceResponse, responseObject);
 			} catch (Throwable e) { // NOSONAR intentionally catching throwable
-				LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
-						"Throwable occured while attempting to writeAuditError for ReferenceRuntimeException.", e);
+				LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
+						"Throwable occured while attempting to writeAuditError for OcpRuntimeException.", e);
 
 			}
 			return returnObj;
 		} catch (final Throwable throwable) { // NOSONAR intentionally catching throwable
 			Object returnObj = null;
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
+			LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 					"Throwable while executing RestProviderHttpResponseAspect.aroundAdvice around restController", throwable);
 			try {
-				final ReferenceRuntimeException referenceRuntimeException = new ReferenceRuntimeException(throwable);
-				responseObject = writeAuditError(referenceRuntimeException, auditEventData);
+				final OcpRuntimeException ocpRuntimeException = new OcpRuntimeException(throwable);
+				responseObject = writeAuditError(ocpRuntimeException, auditEventData);
 				if (response != null) {
 					response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 				}
 				returnObj = getReturnResponse(returnTypeIsServiceResponse, responseObject);
 			} catch (Throwable e) { // NOSONAR intentionally catching throwable
-				LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
+				LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 						"Throwable occured while attempting to writeAuditError for Throwable.", e);
 			}
 			return returnObj;
@@ -273,7 +273,7 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 	@SuppressWarnings("unchecked")
 	private Object getReturnResponse(final boolean returnTypeIsServiceResponse, final Object responseObject) {
 		if (returnTypeIsServiceResponse) {
-			return ((ResponseEntity<ServiceResponse>) responseObject).getBody();
+			return ((ResponseEntity<DomainResponse>) responseObject).getBody();
 		} else {
 			return responseObject;
 		}
@@ -282,20 +282,20 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 	/**
 	 * Write into Audit when exceptions occur
 	 *
-	 * @param referenceRuntimeException
+	 * @param ocpRuntimeException
 	 * @param auditEventData
 	 * @return
 	 */
-	private ResponseEntity<ServiceResponse> writeAuditError(final ReferenceRuntimeException referenceRuntimeException,
+	private ResponseEntity<DomainResponse> writeAuditError(final OcpRuntimeException ocpRuntimeException,
 			final AuditEventData auditEventData) {
-		LOGGER.error("RestProviderHttpResponseAspect encountered uncaught exception in REST endpoint.", referenceRuntimeException);
-		final ServiceResponse serviceResponse = new ServiceResponse();
-		serviceResponse.addMessage(MessageSeverity.FATAL, HttpStatusForMessage.INTERNAL_SERVER_ERROR.getReasonPhrase(), 
-				referenceRuntimeException.getMessage(), HttpStatusForMessage.INTERNAL_SERVER_ERROR);
+		LOGGER.error("RestProviderHttpResponseAspect encountered uncaught exception in REST endpoint.", ocpRuntimeException);
+		final DomainResponse domainResponse = new DomainResponse();
+		domainResponse.addMessage(MessageSeverity.FATAL, HttpStatusForMessage.INTERNAL_SERVER_ERROR.getReasonPhrase(), 
+				ocpRuntimeException.getMessage(), HttpStatusForMessage.INTERNAL_SERVER_ERROR);
 		final StringBuilder sb = new StringBuilder();
-		sb.append("Error Message: ").append(referenceRuntimeException);
-		AuditLogger.error(auditEventData, sb.toString(), referenceRuntimeException);
-		return new ResponseEntity<>(serviceResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		sb.append("Error Message: ").append(ocpRuntimeException);
+		AuditLogger.error(auditEventData, sb.toString(), ocpRuntimeException);
+		return new ResponseEntity<>(domainResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	/**
@@ -390,7 +390,7 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 					final Map<String, String> partHeaders = new HashMap<>();
 					populateHeadersMap(part, partHeaders, part.getHeaderNames());
 					inputstream = part.getInputStream();
-					// NOSONAR if (inputstream.available() > gov.va.ocp.reference.framework.log.ReferenceBaseLogger.MAX_MSG_LENGTH) {
+					// NOSONAR if (inputstream.available() > gov.va.ocp.reference.framework.log.OcpBaseLogger.MAX_MSG_LENGTH) {
 					// NOSONAR inputstream.close();
 					// NOSONAR inputstream = partTooBigMessage;
 					// NOSONAR }
@@ -401,7 +401,7 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 					// NOSONAR IOUtils.closeQuietly(partTooBigMessage);
 				}
 			} catch (final Exception ex) {
-				LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
+				LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 						"Error occurred while reading the upload file. {}", ex);
 
 			} finally {
@@ -409,7 +409,7 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 					try {
 						inputstream.close();
 					} catch (IOException e) {
-						LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
+						LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 								"Error occurred while closing the upload file. {}", e);
 					}
 				}

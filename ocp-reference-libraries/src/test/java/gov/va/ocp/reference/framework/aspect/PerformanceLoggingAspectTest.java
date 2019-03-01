@@ -22,15 +22,15 @@ import org.slf4j.event.Level;
 
 import gov.va.ocp.reference.framework.AbstractBaseLogTester;
 import gov.va.ocp.reference.framework.aspect.PerformanceLoggingAspect;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
+import gov.va.ocp.reference.framework.log.OcpLogger;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PerformanceLoggingAspectTest extends AbstractBaseLogTester {
 
-	/** Underlying logger implementation of ReferenceLogger */
-	private ReferenceLogger AspectLoggingLOG = super.getLogger(PerformanceLoggingAspect.class);
-	/** Underlying logger implementation of ReferenceLogger */
-	private ReferenceLogger AspectLoggingTestLOG = super.getLogger(PerformanceLoggingAspectTest.class);
+	/** Underlying logger implementation of OcpLogger */
+	private OcpLogger AspectLoggingLOG = super.getLogger(PerformanceLoggingAspect.class);
+	/** Underlying logger implementation of OcpLogger */
+	private OcpLogger AspectLoggingTestLOG = super.getLogger(PerformanceLoggingAspectTest.class);
 
 	@Mock
 	private ProceedingJoinPoint proceedingJoinPoint;

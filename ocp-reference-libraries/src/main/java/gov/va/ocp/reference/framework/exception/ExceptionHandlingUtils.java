@@ -3,8 +3,8 @@ package gov.va.ocp.reference.framework.exception;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 /**
  * Contains utility ops for logging and handling exceptions consistently. Primarily for usage in interceptors which
@@ -46,8 +46,8 @@ public final class ExceptionHandlingUtils {
 	 */
 	public static void logException(final String catcher, final Method method, final Object[] args,
 			final Throwable throwable) {
-		final ReferenceLogger errorLogger =
-				ReferenceLoggerFactory.getLogger(method.getDeclaringClass().getName() + LOG_EXCEPTION_DOT + method.getName()
+		final OcpLogger errorLogger =
+				OcpLoggerFactory.getLogger(method.getDeclaringClass().getName() + LOG_EXCEPTION_DOT + method.getName()
 						+ LOG_EXCEPTION_UNDERSCORE + throwable.getClass().getName());
 		final String errorMessage =
 				throwable.getClass().getName() + " thrown by " + method.getDeclaringClass().getName()

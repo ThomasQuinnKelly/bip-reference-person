@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.security.jwt.JwtTokenService;
 
 /**
@@ -19,7 +19,7 @@ import gov.va.ocp.reference.security.jwt.JwtTokenService;
  */
 public class TokenFeignRequestInterceptor implements RequestInterceptor {
 
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(TokenFeignRequestInterceptor.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(TokenFeignRequestInterceptor.class);
 
 	@Autowired
 	private JwtTokenService tokenService;

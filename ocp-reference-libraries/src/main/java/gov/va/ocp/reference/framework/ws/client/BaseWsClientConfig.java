@@ -41,10 +41,10 @@ import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 
 import gov.va.ocp.reference.framework.constants.AnnotationConstants;
 import gov.va.ocp.reference.framework.exception.InterceptingExceptionTranslator;
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
 import gov.va.ocp.reference.framework.log.PerformanceLogMethodInterceptor;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.security.VAServiceWss4jSecurityInterceptor;
 import gov.va.ocp.reference.framework.util.Defense;
 import gov.va.ocp.reference.framework.ws.client.remote.RemoteServiceCallInterceptor;
@@ -58,7 +58,7 @@ import gov.va.ocp.reference.framework.ws.client.remote.RemoteServiceCallIntercep
 public class BaseWsClientConfig {
 
 	/** Logger for this class */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(BaseWsClientConfig.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(BaseWsClientConfig.class);
 
 	/** Java's tmpdir property */
 	protected static final String JAVA_IO_TMPDIR = "java.io.tmpdir";
@@ -450,7 +450,7 @@ public class BaseWsClientConfig {
 					| UnrecoverableKeyException e) {
 				String msg = "Could not establish SSL context due to " + e.getClass().getSimpleName() + ": " + e.getMessage();
 				LOGGER.error(msg, e);
-				throw new ReferenceRuntimeException(msg, e);
+				throw new OcpRuntimeException(msg, e);
 			}
 		}
 	}

@@ -2,7 +2,7 @@ package gov.va.os.reference.starter.cache.autoconfigure;
 
 import org.junit.Test;
 
-import gov.va.ocp.reference.starter.cache.autoconfigure.ReferenceCacheProperties;
+import gov.va.ocp.reference.starter.cache.autoconfigure.OcpCacheProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,23 +15,23 @@ public class ReferenceCachePropertiesTest {
 
 	@Test
 	public void testGetters() {
-		ReferenceCacheProperties referenceCacheProperties = new ReferenceCacheProperties();
-		assertNull(referenceCacheProperties.getExpires());
-		assertEquals(new Long(86400L), referenceCacheProperties.getDefaultExpires());
+		OcpCacheProperties ocpCacheProperties = new OcpCacheProperties();
+		assertNull(ocpCacheProperties.getExpires());
+		assertEquals(new Long(86400L), ocpCacheProperties.getDefaultExpires());
 	}
 
 	@Test
 	public void testSetters() {
-		ReferenceCacheProperties referenceCacheProperties = new ReferenceCacheProperties();
-		List<ReferenceCacheProperties.RedisExpires> listRedisExpires = new ArrayList<>();
-		ReferenceCacheProperties.RedisExpires redisExpires = new ReferenceCacheProperties.RedisExpires();
+		OcpCacheProperties ocpCacheProperties = new OcpCacheProperties();
+		List<OcpCacheProperties.RedisExpires> listRedisExpires = new ArrayList<>();
+		OcpCacheProperties.RedisExpires redisExpires = new OcpCacheProperties.RedisExpires();
 		redisExpires.setName("methodcachename_projectname_projectversion");
 		redisExpires.setTtl(86400L);
 		listRedisExpires.add(0, redisExpires);
-		referenceCacheProperties.setExpires(listRedisExpires);
-		referenceCacheProperties.setDefaultExpires(500L);
-		assertTrue(!referenceCacheProperties.getExpires().isEmpty());
-		assertTrue(Long.valueOf(86400L).equals(referenceCacheProperties.getExpires().get(0).getTtl()));
-		assertEquals(new Long(500L), referenceCacheProperties.getDefaultExpires());
+		ocpCacheProperties.setExpires(listRedisExpires);
+		ocpCacheProperties.setDefaultExpires(500L);
+		assertTrue(!ocpCacheProperties.getExpires().isEmpty());
+		assertTrue(Long.valueOf(86400L).equals(ocpCacheProperties.getExpires().get(0).getTtl()));
+		assertEquals(new Long(500L), ocpCacheProperties.getDefaultExpires());
 	}
 }

@@ -30,11 +30,11 @@ public class BaseServiceAspect {
 	 *
 	 * These are methods which are
 	 * (1) public
-	 * (2) return a ServiceResponse
+	 * (2) return a DomainResponse
 	 *
-	 * @See gov.va.ocp.reference.framework.service.ServiceResponse
+	 * @See gov.va.ocp.reference.framework.service.DomainResponse
 	 */
-	@Pointcut("execution(public gov.va.ocp.reference.framework.service.ServiceResponse+ *(..))")
+	@Pointcut("execution(public gov.va.ocp.reference.framework.service.DomainResponse+ *(..))")
 	protected static final void publicStandardServiceMethod() {
 		// Do Nothing
 	}

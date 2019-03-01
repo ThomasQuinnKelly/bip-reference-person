@@ -22,7 +22,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import gov.va.ocp.reference.framework.config.ReferenceCommonSpringProfiles;
+import gov.va.ocp.reference.framework.config.OcpCommonSpringProfiles;
 import gov.va.ocp.reference.framework.security.PersonTraits;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientConfig;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientImpl;
@@ -49,7 +49,7 @@ import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdRespo
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners(inheritListeners = false, listeners = { DependencyInjectionTestExecutionListener.class,
 		DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class })
-@ActiveProfiles({ ReferenceCommonSpringProfiles.PROFILE_REMOTE_CLIENT_SIMULATORS })
+@ActiveProfiles({ OcpCommonSpringProfiles.PROFILE_REMOTE_CLIENT_SIMULATORS })
 @ContextConfiguration(inheritLocations = false, classes = { PartnerMockFrameworkTestConfig.class,
 		PersonWsClientConfig.class })
 public class PersonWsClientImplTest extends AbstractPersonTest {

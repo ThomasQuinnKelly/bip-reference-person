@@ -19,14 +19,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.event.Level;
 
 import gov.va.ocp.reference.framework.exception.ExceptionToExceptionTranslationHandler;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.service.ServiceExceptionHandlerAspect;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceExceptionHandlerAspectTest {
 
-	private ReferenceLogger logger = ReferenceLoggerFactory.getLogger(ServiceExceptionHandlerAspect.class);
+	private OcpLogger logger = OcpLoggerFactory.getLogger(ServiceExceptionHandlerAspect.class);
 
 	@Mock
 	private JoinPoint joinPoint;

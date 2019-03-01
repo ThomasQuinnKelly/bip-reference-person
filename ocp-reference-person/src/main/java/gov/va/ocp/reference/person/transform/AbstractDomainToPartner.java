@@ -1,20 +1,20 @@
 package gov.va.ocp.reference.person.transform;
 
 import gov.va.ocp.reference.framework.transfer.PartnerTransferObjectMarker;
-import gov.va.ocp.reference.framework.transfer.ServiceTransferObjectMarker;
+import gov.va.ocp.reference.framework.transfer.DomainTransferObjectMarker;
 
 /**
- * The contract for transforming a domain {@link ServiceTransferObjectMarker} object to a partner
+ * The contract for transforming a domain {@link DomainTransferObjectMarker} object to a partner
  * {@link PartnerTransferObjectMarker} object.
  * <p>
  * Implementations should declare the generic parameters with the specific classes involved in the transformation.
  *
  * @author aburkholder
  *
- * @param &lt;D extends ServiceTransferObjectMarker&gt; the domain object type
+ * @param &lt;D extends DomainTransferObjectMarker&gt; the domain object type
  * @param &lt;P extends PartnerTransferObjectMarker&gt; the partner object type
  */
-public abstract class AbstractDomainToPartner<D extends ServiceTransferObjectMarker, P extends PartnerTransferObjectMarker>
+public abstract class AbstractDomainToPartner<D extends DomainTransferObjectMarker, P extends PartnerTransferObjectMarker>
 		extends AbstractBaseTransformer {
 
 	/**

@@ -10,8 +10,8 @@ import java.util.Locale;
 
 import javax.xml.bind.DatatypeConverter;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 /**
  * The Class DateAdapter converts from Java date to/from JAXB XML
@@ -19,7 +19,7 @@ import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
 public final class DateAdapter {
 
 	/** The Constant LOGGER. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(DateAdapter.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(DateAdapter.class);
 
 	/** The Constant DATE_TIME_FORMAT. */
 	private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";

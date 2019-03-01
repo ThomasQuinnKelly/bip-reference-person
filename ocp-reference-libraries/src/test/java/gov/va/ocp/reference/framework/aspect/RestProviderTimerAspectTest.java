@@ -17,16 +17,16 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.event.Level;
 
 import gov.va.ocp.reference.framework.AbstractBaseLogTester;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
+import gov.va.ocp.reference.framework.log.OcpLogger;
 import gov.va.ocp.reference.framework.rest.provider.RestProviderTimerAspect;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestProviderTimerAspectTest extends AbstractBaseLogTester {
 
-	/** Underlying implementation of ReferenceLogger */
-	private ReferenceLogger AspectLoggingLOG = super.getLogger(RestProviderTimerAspectTest.class);
-	/** Underlying implementation of ReferenceLogger */
-	private ReferenceLogger AspectLoggingTestLOG = super.getLogger(RestProviderTimerAspectTest.class);
+	/** Underlying implementation of OcpLogger */
+	private OcpLogger AspectLoggingLOG = super.getLogger(RestProviderTimerAspectTest.class);
+	/** Underlying implementation of OcpLogger */
+	private OcpLogger AspectLoggingTestLOG = super.getLogger(RestProviderTimerAspectTest.class);
 
 	@Mock
 	private ProceedingJoinPoint proceedingJoinPoint;

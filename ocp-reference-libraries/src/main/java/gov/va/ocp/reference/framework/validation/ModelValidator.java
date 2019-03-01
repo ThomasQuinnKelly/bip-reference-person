@@ -20,8 +20,8 @@ import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.ClassPathResource;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.util.Defense;
 
 /**
@@ -35,7 +35,7 @@ import gov.va.ocp.reference.framework.util.Defense;
 public class ModelValidator implements Serializable {
 	private static final long serialVersionUID = -6019704406389010935L;
 
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(ModelValidator.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(ModelValidator.class);
 
 	private static final String DEFAULT_RESOURCE_BUNDLE = "ValidationMessages";
 

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import gov.va.ocp.reference.starter.cache.server.ReferenceEmbeddedRedisServer;
+import gov.va.ocp.reference.starter.cache.server.OcpEmbeddedRedisServer;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -24,7 +24,7 @@ import redis.clients.jedis.JedisPool;
 public class ReferenceEmbeddedRedisServerTest {
 
 	@Autowired
-	ReferenceEmbeddedRedisServer referenceEmbeddedServer;
+	OcpEmbeddedRedisServer referenceEmbeddedServer;
 
 	@Before
 	public void setUp() {

@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import gov.va.ocp.reference.framework.exception.ExceptionToExceptionTranslationHandler;
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
 import gov.va.ocp.reference.framework.service.ServiceException;
 
 /**
@@ -37,19 +37,19 @@ public class ExceptionToExceptionTranslationHandler_UnitTest {
 			handler.handleViaTranslation(getMethodToUseInTests(), null, runtimeException);
 			Assert.fail("expected exception");
 		} catch (Throwable throwable) {
-			Assert.assertTrue(throwable instanceof ReferenceRuntimeException);
+			Assert.assertTrue(throwable instanceof OcpRuntimeException);
 			Assert.assertEquals(runtimeException, throwable.getCause());
 		}
 
 		// asserts the default custom type isn't wrapped
-		ReferenceRuntimeException referenceRuntimeException =
-				new ReferenceRuntimeException("ReferenceRuntimeException on purpose for unit test");
+		OcpRuntimeException ocpRuntimeException =
+				new OcpRuntimeException("OcpRuntimeException on purpose for unit test");
 		try {
-			handler.handleViaTranslation(getMethodToUseInTests(), null, referenceRuntimeException);
+			handler.handleViaTranslation(getMethodToUseInTests(), null, ocpRuntimeException);
 			Assert.fail("expected exception");
 		} catch (Throwable throwable) {
-			Assert.assertTrue(throwable instanceof ReferenceRuntimeException);
-			Assert.assertEquals(referenceRuntimeException, throwable);
+			Assert.assertTrue(throwable instanceof OcpRuntimeException);
+			Assert.assertEquals(ocpRuntimeException, throwable);
 			Assert.assertNull(throwable.getCause());
 		}
 

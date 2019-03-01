@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.Resource;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 /**
  * Abstract base class for Spring configuration of the YAML files
@@ -33,7 +33,7 @@ public class BaseYamlConfig {
 	}
 
 	/** logger for this class. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(BaseYamlConfig.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(BaseYamlConfig.class);
 
 	/**
 	 * protected utility class constructor.

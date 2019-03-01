@@ -24,8 +24,8 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import gov.va.ocp.reference.framework.audit.AuditEventData;
 import gov.va.ocp.reference.framework.audit.AuditEvents;
 import gov.va.ocp.reference.framework.audit.AuditLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 
@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 	private JwtAuthenticationProperties jwtAuthenticationProperties;
 
-	private static final ReferenceLogger LOG = ReferenceLoggerFactory.getLogger(JwtAuthenticationFilter.class);
+	private static final OcpLogger LOG = OcpLoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
 	/**
 	 * Create the filter.

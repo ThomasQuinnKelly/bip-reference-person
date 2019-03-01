@@ -39,8 +39,8 @@ import gov.va.ocp.reference.framework.audit.AuditEvents;
 import gov.va.ocp.reference.framework.audit.RequestAuditData;
 import gov.va.ocp.reference.framework.audit.RequestResponseLogSerializer;
 import gov.va.ocp.reference.framework.audit.ResponseAuditData;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 
 @RunWith(SpringRunner.class)
@@ -70,7 +70,7 @@ public class RequestResponseLogSerializerTest {
 	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() throws Exception {
-		ReferenceLoggerFactory.getLogger(ReferenceLogger.ROOT_LOGGER_NAME).getLoggerBoundImpl().addAppender(mockAppender);
+		OcpLoggerFactory.getLogger(OcpLogger.ROOT_LOGGER_NAME).getLoggerBoundImpl().addAppender(mockAppender);
 
 		requestAuditData.setRequest(Arrays.asList("Request"));
 		requestAuditData.setMethod("GET");
@@ -88,7 +88,7 @@ public class RequestResponseLogSerializerTest {
 	@SuppressWarnings("unchecked")
 	@After
 	public void teardown() {
-		ReferenceLoggerFactory.getLogger(ReferenceLogger.ROOT_LOGGER_NAME).getLoggerBoundImpl().detachAppender(mockAppender);
+		OcpLoggerFactory.getLogger(OcpLogger.ROOT_LOGGER_NAME).getLoggerBoundImpl().detachAppender(mockAppender);
 	}
 
 	@SuppressWarnings("unchecked")

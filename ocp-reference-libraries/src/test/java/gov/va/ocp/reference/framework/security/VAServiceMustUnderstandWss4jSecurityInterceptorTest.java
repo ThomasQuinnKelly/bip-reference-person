@@ -29,14 +29,14 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import gov.va.ocp.reference.framework.config.BaseYamlConfig;
-import gov.va.ocp.reference.framework.config.ReferenceCommonSpringProfiles;
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
+import gov.va.ocp.reference.framework.config.OcpCommonSpringProfiles;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
 import gov.va.ocp.reference.framework.security.VAServiceMustUnderstandWss4jSecurityInterceptor;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners(inheritListeners = false, listeners = { DependencyInjectionTestExecutionListener.class,
 		DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class })
-@ActiveProfiles({ ReferenceCommonSpringProfiles.PROFILE_REMOTE_CLIENT_SIMULATORS })
+@ActiveProfiles({ OcpCommonSpringProfiles.PROFILE_REMOTE_CLIENT_SIMULATORS })
 @ContextConfiguration(inheritLocations = false, classes = { BaseYamlConfig.class })
 public class VAServiceMustUnderstandWss4jSecurityInterceptorTest {
 
@@ -94,7 +94,7 @@ public class VAServiceMustUnderstandWss4jSecurityInterceptorTest {
 
 		try {
 			interceptorSpy.secureMessage(sm, messageContextMock);
-		} catch (ReferenceRuntimeException e) {
+		} catch (OcpRuntimeException e) {
 			assertTrue((e.getCause() instanceof WSSecurityException) && e.getCause().getMessage().equals("Testing"));
 		}
 

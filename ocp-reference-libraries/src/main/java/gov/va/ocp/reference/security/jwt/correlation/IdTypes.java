@@ -1,8 +1,8 @@
 package gov.va.ocp.reference.security.jwt.correlation;
 
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 public enum IdTypes {
 	/** The type of correlation id for national authorities */
@@ -12,7 +12,7 @@ public enum IdTypes {
 	/** The pnidType (currently the only one) associated with the PNID field value */
 	SOCIAL("SS");
 
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(IdTypes.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(IdTypes.class);
 
 	/** The arbitrary string value of the enumeration */
 	private String type;
@@ -41,7 +41,7 @@ public enum IdTypes {
 	 *
 	 * @param stringValue the string value
 	 * @return IdTypes - the enumeration
-	 * @throws ReferenceRuntimeException if no match of enumeration values
+	 * @throws OcpRuntimeException if no match of enumeration values
 	 */
 	public static IdTypes fromValue(final String stringValue) {
 		for (IdTypes s : IdTypes.values()) {
@@ -51,6 +51,6 @@ public enum IdTypes {
 		}
 		String msg = "IdType {} does not exist: " + stringValue;
 		LOGGER.error(msg);
-		throw new ReferenceRuntimeException(msg);
+		throw new OcpRuntimeException(msg);
 	}
 }
