@@ -27,10 +27,10 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import gov.va.ocp.reference.framework.constants.AnnotationConstants;
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.ocp.reference.framework.log.ReferenceBanner;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.reference.framework.log.OcpBanner;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 /**
  * A Wss4j2 Security Interceptor to add a SAML assertion to the secure message header.
@@ -38,7 +38,7 @@ import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
 public class VAServiceSAMLWss4jSecurityInterceptor extends Wss4jSecurityInterceptor {
 
 	/** The Constant LOGGER. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(VAServiceSAMLWss4jSecurityInterceptor.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(VAServiceSAMLWss4jSecurityInterceptor.class);
 
 	/** The Constant ERROR_SAML_ASSERTION. */
 	private static final String ERROR_SAML_ASSERTION = "Error while attempting to convert SAML assertion string to element.";
@@ -88,7 +88,7 @@ public class VAServiceSAMLWss4jSecurityInterceptor extends Wss4jSecurityIntercep
 
 		} catch (final WSSecurityException e) {
 			LOGGER.error("Error while attempting to insert SAML Assertion into message.", e);
-			throw new ReferenceRuntimeException(e);
+			throw new OcpRuntimeException(e);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class VAServiceSAMLWss4jSecurityInterceptor extends Wss4jSecurityIntercep
 				: new ByteArrayInputStream(getSamlFile().getBytes())) {
 			clientAssertion = IOUtils.toString(input, "UTF-8");
 		} catch (final Exception e) {
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+			LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
 					"Unable to read SAML assertion from file." + getSamlFile(), e);
 			return retVal;
 		}
@@ -126,7 +126,7 @@ public class VAServiceSAMLWss4jSecurityInterceptor extends Wss4jSecurityIntercep
 			retVal = doc.getDocumentElement();
 
 		} catch (final ParserConfigurationException | SAXException | IOException e) {
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+			LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
 					ERROR_SAML_ASSERTION, e);
 		}
 

@@ -14,12 +14,12 @@ import org.springframework.security.core.userdetails.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import gov.va.ocp.reference.framework.transfer.ServiceTransferObjectMarker;
+import gov.va.ocp.reference.framework.transfer.DomainTransferObjectMarker;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "Model that identifies a single individual used in the security context")
-public class Person extends User implements ServiceTransferObjectMarker {
+public class Person extends User implements DomainTransferObjectMarker {
 
 	@ApiModelProperty(value = "The person's birth date", example = "1978-05-20")
 	private String birthDate;

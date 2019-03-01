@@ -4,16 +4,16 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.security.PersonTraits;
 
 /**
  * Parse values found in an array of Correlation IDs onto the PersonTraits object by way of a Map of Strings.
  */
 public class CorrelationIdsParser {
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(CorrelationIdsParser.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(CorrelationIdsParser.class);
 
 	/** The count of elements in the CorrelationIds array that indicates it does not contain SS */
 	private static final int ELEMENT_MAX_COUNT = 5;
@@ -44,7 +44,7 @@ public class CorrelationIdsParser {
 	 *
 	 * @param list - of correlation id srings
 	 * @param personTraits - the object to update with IDs from the list of correlation ids
-	 * @throws ReferenceRuntimeException if some problem with the correlation ids
+	 * @throws OcpRuntimeException if some problem with the correlation ids
 	 */
 	public static void parseCorrelationIds(final List<String> list, final PersonTraits personTraits) {
 		if ((list != null) && !list.isEmpty()) {
@@ -58,14 +58,14 @@ public class CorrelationIdsParser {
 	 * Process the token and populate the map with values.
 	 *
 	 * @param tokenId
-	 * @throws ReferenceRuntimeException if some problem with the correlation ids
+	 * @throws OcpRuntimeException if some problem with the correlation ids
 	 */
 	private static void processToken(final String token, final PersonTraits personTraits) {
 		// split a single correlation id into its component parts
 		if (StringUtils.isBlank(token)) {
 			String msg = "Cannot process blank correlation id";
 			LOGGER.error(msg);
-			throw new ReferenceRuntimeException(msg);
+			throw new OcpRuntimeException(msg);
 		}
 		final String[] tokens = token.split("\\^");
 
@@ -89,7 +89,7 @@ public class CorrelationIdsParser {
 			String msg = "Invalid number of elements {} in correlation id {}, should be " + ELEMENT_MAX_COUNT
 					+ " or " + ELEMENT_SS_COUNT + tokens.length + ", " + token;
 			LOGGER.error(msg);
-			throw new ReferenceRuntimeException(msg);
+			throw new OcpRuntimeException(msg);
 		}
 	}
 

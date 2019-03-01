@@ -5,8 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 /**
  * The base class for Web Service client simulations, containing utility operations, etc. that are likely reusable across such
@@ -19,7 +19,7 @@ public class BaseWsClientSimulator {
 	private final static String CHARSET_UTF8 = "UTF-8";
 
 	/** The Constant LOGGER. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(BaseWsClientSimulator.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(BaseWsClientSimulator.class);
 
 	/**
 	 * This is not an abstract class, however it is a base class that is not to be instantiated. In this case, it's probably better to

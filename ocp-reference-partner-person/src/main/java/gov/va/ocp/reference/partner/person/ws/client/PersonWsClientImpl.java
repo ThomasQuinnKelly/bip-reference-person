@@ -9,8 +9,8 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 
 import gov.va.ocp.reference.framework.audit.AuditEvents;
 import gov.va.ocp.reference.framework.audit.Auditable;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.util.Defense;
 import gov.va.ocp.reference.framework.ws.client.BaseWsClientImpl;
 import gov.va.ocp.reference.framework.ws.client.remote.RemoteServiceCall;
@@ -25,7 +25,7 @@ import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdRespo
 @Component(PersonWsClientImpl.BEAN_NAME)
 public class PersonWsClientImpl extends BaseWsClientImpl implements PersonWsClient {
 	/** Logger */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(PersonWsClientImpl.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(PersonWsClientImpl.class);
 
 	/** A constant representing the Spring Bean name. */
 	public static final String BEAN_NAME = "personWsClient";

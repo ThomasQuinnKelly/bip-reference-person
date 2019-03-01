@@ -7,8 +7,8 @@ import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.messages.Message;
 
 /**
@@ -21,7 +21,7 @@ import gov.va.ocp.reference.framework.messages.Message;
 public final class MessagesToHttpStatusRulesEngine {
 
 	/** The Constant LOGGER. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(MessagesToHttpStatusRulesEngine.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(MessagesToHttpStatusRulesEngine.class);
 
 	/** The Constant NUMBER_OF_MILLIS_N_A_SECOND. */
 	private static final int NUMBER_OF_MILLIS_N_A_SECOND = 1000;

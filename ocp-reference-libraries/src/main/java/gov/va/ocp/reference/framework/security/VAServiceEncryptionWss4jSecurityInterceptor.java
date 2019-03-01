@@ -9,9 +9,9 @@ import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.soap.SoapMessage;
 import org.w3c.dom.Document;
 
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 /**
  * A Wss4j2 Security Interceptor to encrypt secure message header and body.
@@ -39,7 +39,7 @@ import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
 public abstract class VAServiceEncryptionWss4jSecurityInterceptor extends AbstractWss4jSecurityInterceptor {
 
 	/** The Constant LOGGER. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(VAServiceEncryptionWss4jSecurityInterceptor.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(VAServiceEncryptionWss4jSecurityInterceptor.class);
 
 	/*
 	 * (non-Javadoc)
@@ -72,7 +72,7 @@ public abstract class VAServiceEncryptionWss4jSecurityInterceptor extends Abstra
 			soapMessage.setDocument(doc);
 		} catch (final WSSecurityException e) {
 			LOGGER.error("failed to encrypt ", e);
-			throw new ReferenceRuntimeException(e);
+			throw new OcpRuntimeException(e);
 		}
 	}
 

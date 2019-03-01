@@ -18,8 +18,8 @@ import org.slf4j.event.Level;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import gov.va.ocp.reference.framework.exception.ExceptionHandlingUtils;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 @RunWith(SpringRunner.class)
 public class ExceptionHandlingUtilsTest {
@@ -32,7 +32,7 @@ public class ExceptionHandlingUtilsTest {
 	@Captor
 	private ArgumentCaptor<ch.qos.logback.classic.spi.LoggingEvent> captorLoggingEvent;
 
-	ReferenceLogger logger = ReferenceLoggerFactory.getLogger(ExceptionHandlingUtilsTest.class);
+	OcpLogger logger = OcpLoggerFactory.getLogger(ExceptionHandlingUtilsTest.class);
 
 	@SuppressWarnings("unchecked")
 	@Before
@@ -72,7 +72,7 @@ public class ExceptionHandlingUtilsTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testLoggingWarnOff() throws Exception {
-		final ReferenceLogger logger = ReferenceLoggerFactory.getLogger(ExceptionHandlingUtilsTest.class);
+		final OcpLogger logger = OcpLoggerFactory.getLogger(ExceptionHandlingUtilsTest.class);
 		Level originalLevel = logger.getLevel();
 		logger.setLevel(Level.ERROR);
 

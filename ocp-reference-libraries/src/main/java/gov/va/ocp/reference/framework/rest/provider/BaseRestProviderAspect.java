@@ -38,11 +38,11 @@ public class BaseRestProviderAspect {
 	 * <p>
 	 * (1) are rest controllers (see that pointcut)
 	 * (2) the method is public
-	 * (3) the method returns org.springframework.http.ResponseEntity<gov.va.ocp.reference.framework.service.ServiceResponse+>
+	 * (3) the method returns org.springframework.http.ResponseEntity<gov.va.ocp.reference.framework.service.DomainResponse+>
 	 * <p>
 	 * Ensure you follow that pattern to make use of this standard pointcut.
 	 */
-	@Pointcut("execution(public org.springframework.http.ResponseEntity<gov.va.ocp.reference.framework.service.ServiceResponse+> *(..)) || execution(public gov.va.ocp.reference.framework.service.ServiceResponse+ *(..))")
+	@Pointcut("execution(public org.springframework.http.ResponseEntity<gov.va.ocp.reference.framework.service.DomainResponse+> *(..)) || execution(public gov.va.ocp.reference.framework.service.DomainResponse+ *(..))")
 	protected static final void publicServiceResponseRestMethod() {
 		// Do nothing.
 	}

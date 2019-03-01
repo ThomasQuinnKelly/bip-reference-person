@@ -1,7 +1,6 @@
 package gov.va.ocp.reference.framework.messages;
 
-
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,7 +33,7 @@ public abstract class AbstractMessage extends AbstractTransferObject {
 	private String[] parameterValues; // NOSONAR cannot be final
 	
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-	private LocalDateTime timestamp;
+	private Date timestamp; // NOSONAR cannot be final
 
 	/**
 	 * Construct a message providing only replaceable parameters.
@@ -49,7 +48,7 @@ public abstract class AbstractMessage extends AbstractTransferObject {
 		this.parameterCount = paramCount;
 		this.parameterNames = paramNames;
 		this.parameterValues = paramValues;
-		this.timestamp = LocalDateTime.now();
+		this.timestamp =  new Date();
 	}
 
 	/**
@@ -58,7 +57,7 @@ public abstract class AbstractMessage extends AbstractTransferObject {
 	// NOSONAR not duplicate
 	public AbstractMessage() {
 		super();
-		this.timestamp = LocalDateTime.now();
+		this.timestamp =  new Date();
 	}
 	
 	/**
@@ -129,20 +128,20 @@ public abstract class AbstractMessage extends AbstractTransferObject {
 	}
 	
 	/**
-	 * Gets the timestamp.
+	 * Gets the timestamp to be part of message payload.
 	 *
 	 * @return the timestamp
 	 */
-	public LocalDateTime getTimestamp() {
+	public Date getTimestamp() {
 		return timestamp;
 	}
 
 	/**
-	 * Sets the timestamp.
+	 * Sets the timestamp for the message payload.
 	 *
 	 * @param timestamp the new timestamp
 	 */
-	public void setTimestamp(LocalDateTime timestamp) {
+	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 

@@ -9,8 +9,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.security.PersonTraits;
 
 /**
@@ -19,12 +19,12 @@ import gov.va.ocp.reference.framework.security.PersonTraits;
 public class JwtAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
 	/** Constant for the logger for this class */
-	private static final ReferenceLogger REFERENCE_LOGGER = ReferenceLoggerFactory.getLogger(JwtAuthenticationProvider.class);
+	private static final OcpLogger REFERENCE_LOGGER = OcpLoggerFactory.getLogger(JwtAuthenticationProvider.class);
 
 	/** parses the token into a set of security "claims" contained in the token */
 	JwtParser parser;
 
-	@Value("${os.reference.security.jwt.validation.required-parameters:}")
+	@Value("${ocp.security.jwt.validation.required-parameters:}")
 	private String[] jwtTokenRequiredParameterList;
 
 	/**

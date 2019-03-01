@@ -13,14 +13,14 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import gov.va.ocp.reference.framework.rest.client.resttemplate.RestClientTemplate;
-import gov.va.ocp.reference.framework.service.ServiceResponse;
+import gov.va.ocp.reference.framework.service.DomainResponse;
 
 public class RestClientTemplateTest {
 
 	private static final String DUMMY_ENDPOINT = "https://jsonplaceholder.typicode.com/posts/1";
-	private ParameterizedTypeReference<ServiceResponse> responseType = new ParameterizedTypeReference<ServiceResponse>() {
+	private ParameterizedTypeReference<DomainResponse> responseType = new ParameterizedTypeReference<DomainResponse>() {
 	};
-	private ResponseEntity<ServiceResponse> responseEntity;
+	private ResponseEntity<DomainResponse> responseEntity;
 	private RestClientTemplate restClientTemplate;
 	private AnnotationConfigWebApplicationContext context;
 
@@ -54,11 +54,11 @@ public class RestClientTemplateTest {
 		}
 	}
 
-	public ResponseEntity<ServiceResponse> getResponseEntity() {
+	public ResponseEntity<DomainResponse> getResponseEntity() {
 		return responseEntity;
 	}
 
-	public void setResponseEntity(ResponseEntity<ServiceResponse> responseEntity) {
+	public void setResponseEntity(ResponseEntity<DomainResponse> responseEntity) {
 		this.responseEntity = responseEntity;
 	}
 }

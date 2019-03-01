@@ -1,8 +1,8 @@
 package gov.va.ocp.reference.security.jwt.correlation;
 
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 public enum Issuers {
 
@@ -13,7 +13,7 @@ public enum Issuers {
 	/** The DOD assigning authority */
 	USDOD("USDOD");
 
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(Issuers.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(Issuers.class);
 
 	/** The arbitrary string value of the enumeration */
 	private String issuer;
@@ -42,7 +42,7 @@ public enum Issuers {
 	 *
 	 * @param stringValue the string value
 	 * @return Issuers - the enumeration
-	 * @throws ReferenceRuntimeException if no match of enumeration values
+	 * @throws OcpRuntimeException if no match of enumeration values
 	 */
 	public static Issuers fromValue(final String stringValue) {
 		for (Issuers s : Issuers.values()) {
@@ -52,7 +52,7 @@ public enum Issuers {
 		}
 		String msg = "Issuer {} does not exist: " + stringValue;
 		LOGGER.error(msg);
-		throw new ReferenceRuntimeException(msg);
+		throw new OcpRuntimeException(msg);
 	}
 
 }

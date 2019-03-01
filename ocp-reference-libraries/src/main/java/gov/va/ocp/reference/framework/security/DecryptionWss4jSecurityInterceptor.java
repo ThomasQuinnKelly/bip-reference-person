@@ -8,9 +8,9 @@ import org.slf4j.event.Level;
 import org.springframework.ws.soap.security.wss4j2.callback.KeyStoreCallbackHandler;
 
 import gov.va.ocp.reference.framework.constants.AnnotationConstants;
-import gov.va.ocp.reference.framework.log.ReferenceBanner;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpBanner;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 /**
  * A Wss4j2 Security Interceptor to encrypt secure message header and body.
@@ -37,7 +37,7 @@ import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
  */
 public abstract class DecryptionWss4jSecurityInterceptor extends AbstractWss4jSecurityInterceptor {
 
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(DecryptionWss4jSecurityInterceptor.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(DecryptionWss4jSecurityInterceptor.class);
 
 	public DecryptionWss4jSecurityInterceptor() {
 		try {
@@ -45,7 +45,7 @@ public abstract class DecryptionWss4jSecurityInterceptor extends AbstractWss4jSe
 			setValidationDecryptionCrypto(crypto);
 			setValidationSignatureCrypto(crypto);
 		} catch (WSSecurityException e) {
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+			LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
 					"Error: Decryption Validation Crypto Factory Bean" + e.getMessage(), e);
 
 		}

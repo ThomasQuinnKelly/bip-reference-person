@@ -11,9 +11,9 @@ import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 /**
  * A Wss4j2 Security Interceptor to remove "mustUnderstand" attributes from the envelope namespaces in the message header.
@@ -21,7 +21,7 @@ import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
 public class VAServiceMustUnderstandWss4jSecurityInterceptor extends Wss4jSecurityInterceptor {
 
 	/** The Constant LOGGER. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(VAServiceMustUnderstandWss4jSecurityInterceptor.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(VAServiceMustUnderstandWss4jSecurityInterceptor.class);
 
 	/** The Constant MUST_UNDERSTAND_ATTR. */
 	private static final String MUST_UNDERSTAND_ATTR = "mustUnderstand";
@@ -58,7 +58,7 @@ public class VAServiceMustUnderstandWss4jSecurityInterceptor extends Wss4jSecuri
 			}
 		} catch (final WSSecurityException e) { // NOSONAR no action to take
 			LOGGER.error(e.getMessage()); // NOSONAR no action to take
-			throw new ReferenceRuntimeException(e);
+			throw new OcpRuntimeException(e);
 		}
 
 		soapMessage.setDocument(doc);

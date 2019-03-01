@@ -3,8 +3,8 @@ package gov.va.ocp.reference.framework.audit;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.util.SanitizationUtil;
 
 /**
@@ -12,7 +12,7 @@ import gov.va.ocp.reference.framework.util.SanitizationUtil;
  */
 public class AuditLogger {
 
-	static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(AuditLogger.class);
+	static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(AuditLogger.class);
 
 	/** Replacement for {@code null} parameters to the MDC entries that cannot be null or empty */
 	private static final String UNKNOWN = "Unknown";

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.classmate.TypeResolver;
 
-import gov.va.ocp.reference.framework.service.ServiceResponse;
+import gov.va.ocp.reference.framework.service.DomainResponse;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.annotations.ApiIgnore;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -40,7 +40,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableConfigurationProperties(SwaggerProperties.class)
 @EnableSwagger2
-@ConditionalOnProperty(prefix = "os.reference.swagger", name = "enabled", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "ocp.swagger", name = "enabled", matchIfMissing = true)
 @Import({ BeanValidatorPluginsConfiguration.class })
 public class SwaggerAutoConfiguration {
 
@@ -49,7 +49,7 @@ public class SwaggerAutoConfiguration {
 	private static final String MESSAGE_400 = "There was an error encountered processing the Request.  Response will contain a  \"messages\" element that will provide further information on the error.  This request shouldn\'t be retried until corrected.";
 	private static final String MESSAGE_500 = "There was an error encountered processing the Request.  Response will contain a  \"messages\" element that will provide further information on the error.  Please retry.  If problem persists, please contact support with a copy of the Response.";
 	private static final String AUTHORIZATION = "Authorization";
-	private static final String SERVICE_RESPONSE = "ServiceResponse";
+	private static final String SERVICE_RESPONSE = "DomainResponse";
 
 	@Autowired
 	private SwaggerProperties swaggerProperties;
@@ -66,7 +66,7 @@ public class SwaggerAutoConfiguration {
 				.apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
 				.build()
 				.ignoredParameterTypes(ApiIgnore.class)
-				.additionalModels(typeResolver.resolve(ServiceResponse.class))
+				.additionalModels(typeResolver.resolve(DomainResponse.class))
 				.globalResponseMessage(RequestMethod.GET, globalResponseMessages())
 				.globalResponseMessage(RequestMethod.POST, globalResponseMessages())
 				.globalResponseMessage(RequestMethod.DELETE, globalResponseMessages())

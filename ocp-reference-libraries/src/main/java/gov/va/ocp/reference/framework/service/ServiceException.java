@@ -1,14 +1,14 @@
 package gov.va.ocp.reference.framework.service;
 
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
 
 /**
  * Root hierarchy of exceptions which indicates there was an exception/error in the Service tier
  *
- * @see gov.va.ocp.reference.framework.exception.ReferenceRuntimeException
+ * @see gov.va.ocp.reference.framework.exception.OcpRuntimeException
  * @author jshrader
  */
-public class ServiceException extends ReferenceRuntimeException {
+public class ServiceException extends OcpRuntimeException {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -6590361959617339905L;

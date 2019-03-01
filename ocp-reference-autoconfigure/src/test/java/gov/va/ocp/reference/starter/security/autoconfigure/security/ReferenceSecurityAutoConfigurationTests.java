@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFact
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-import gov.va.ocp.reference.starter.security.autoconfigure.ReferenceSecurityAutoConfiguration;
+import gov.va.ocp.reference.starter.security.autoconfigure.OcpSecurityAutoConfiguration;
 
 import static org.junit.Assert.*;
 
@@ -28,7 +28,7 @@ public class ReferenceSecurityAutoConfigurationTests {
     @Test
     public void testWebConfiguration() throws Exception {
         context = new AnnotationConfigWebApplicationContext();
-        context.register(SecurityAutoConfiguration.class, EmbeddedWebServerFactoryCustomizerAutoConfiguration.class, ReferenceSecurityAutoConfiguration.class);
+        context.register(SecurityAutoConfiguration.class, EmbeddedWebServerFactoryCustomizerAutoConfiguration.class, OcpSecurityAutoConfiguration.class);
         context.refresh();
         assertNotNull(context);
         assertEquals(4, this.context.getBean(FilterChainProxy.class).getFilterChains().size());
