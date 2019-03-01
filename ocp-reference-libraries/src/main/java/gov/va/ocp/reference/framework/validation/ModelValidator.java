@@ -41,7 +41,7 @@ public class ModelValidator implements Serializable {
 
 	private static final String BOOTSTRAP_YML = "bootstrap.yml";
 
-	private static final String ASCENT_VALIDATION_RESOURCE_PROP = "os.reference.validation.messages.user-resource-bundle";
+	private static final String OCP_VALIDATION_RESOURCE_PROP = "ocp.reference.validation.messages.user-resource-bundle";
 
 	/** The factory. */
 	private transient ValidatorFactory factory;
@@ -75,11 +75,11 @@ public class ModelValidator implements Serializable {
 			YamlPropertiesFactoryBean factoryLocal = new YamlPropertiesFactoryBean();
 			factoryLocal.setResources(new ClassPathResource(BOOTSTRAP_YML));
 			Properties props = factoryLocal.getObject();
-			return props.getProperty(ASCENT_VALIDATION_RESOURCE_PROP);
+			return props.getProperty(OCP_VALIDATION_RESOURCE_PROP);
 
 		} catch (Exception e) {
 			LOGGER.error("Failed to read bootstrap.yml to get "
-					+ "os.reference.validation.messages.user-resource-bundle :" + e.getMessage());
+					+ "ocp.reference.validation.messages.user-resource-bundle :" + e.getMessage());
 			return null;
 		}
 	}

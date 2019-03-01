@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.rest.person.client;
+package gov.va.ocp.reference.person.rest.client;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;

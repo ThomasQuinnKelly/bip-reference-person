@@ -1,14 +1,29 @@
 package gov.va.ocp.reference.starter.rest.autoconfigure;
 
-import java.time.Duration;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.config.ConnectionConfig;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.protocol.HttpContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import gov.va.ocp.reference.framework.rest.client.exception.ResponseEntityErrorHandler;
 import gov.va.ocp.reference.framework.rest.client.resttemplate.RestClientTemplate;
 import gov.va.ocp.reference.framework.rest.provider.RestProviderHttpResponseAspect;
 import gov.va.ocp.reference.framework.rest.provider.RestProviderTimerAspect;
@@ -18,13 +33,30 @@ import gov.va.ocp.reference.framework.util.Defense;
  * A collection of spring beans used for REST server and/or client operations.
  *
  * Created by rthota on 8/24/17.
+ * @author akulkarni
  */
 @Configuration
 public class OcpRestAutoConfiguration {
 
-	@Value("${os.reference.rest.client.connection-timeout:20000}")
+	private static final Logger LOGGER = LoggerFactory.getLogger(OcpRestAutoConfiguration.class);
+
+	@Value("${ocp.rest.client.connectionTimeout:20000}")
 	private String connectionTimeout;
 
+	@Value("${ocp.rest.client.readTimeout:30000}")
+	private String readTimeout;
+
+	@Value("${ocp.rest.client.maxTotalPool:10}")
+	private String maxTotalPool;
+
+	@Value("${ocp.rest.client.defaultMaxPerRoutePool:5}")
+	private String defaultMaxPerRoutePool;
+
+	@Value("${ocp.rest.client.validateAfterInactivityPool:10000}")
+	private String validateAfterInactivityPool;
+
+	@Value("${ocp.rest.client.connectionBufferSize:4128}")
+	private String connectionBufferSize;
 	/**
 	 * Aspect bean of the {@link RestProviderHttpResponseAspect}
 	 * (currently executed around auditables and REST controllers).
@@ -50,11 +82,12 @@ public class OcpRestAutoConfiguration {
 	}
 
 	/**
-	 * Configure timeouts for the RestTemplate that will be built.
+	 * Http components client http request factory.
 	 *
-	 * @param restTemplateBuilder the RestTemplateBuilder to configure
+	 * @return the http components client http request factory
 	 */
-	private RestTemplateBuilder configureCommon(RestTemplateBuilder restTemplateBuilder) {
+	@Bean
+	public HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory() {
 		int connTimeoutValue = 0;
 		try {
 			connTimeoutValue = Integer.valueOf(connectionTimeout);
@@ -64,11 +97,34 @@ public class OcpRestAutoConfiguration {
 		Defense.state(connTimeoutValue > 0,
 				"Invalid settings: Connection Timeout value must be greater than zero.\n"
 						+ "  - Ensure spring scan directive includes gov.va.ocp.reference.framework.rest.client.resttemplate;\n"
-						+ "  - Application property must be set to non-zero positive integer value: os.reference.rest.client.connection-timeout {} "
+						+ "  - Application property must be set to non-zero positive integer value: ocp.rest.client.connection-timeout {} "
 						+ connectionTimeout + ".");
 
-		restTemplateBuilder.setConnectTimeout(Duration.ofMillis(connTimeoutValue)); // milliseconds
-		return restTemplateBuilder;
+		ConnectionConfig connectionConfig = ConnectionConfig.custom()
+				.setBufferSize(Integer.valueOf(connectionBufferSize))
+				.build();
+		HttpClientBuilder clientBuilder = HttpClients.custom();
+		PoolingHttpClientConnectionManager poolingConnectionManager = new PoolingHttpClientConnectionManager();
+		poolingConnectionManager.setMaxTotal(Integer.valueOf(maxTotalPool));
+		poolingConnectionManager.setDefaultMaxPerRoute(Integer.valueOf(defaultMaxPerRoutePool));
+		poolingConnectionManager.setValidateAfterInactivity(Integer.valueOf(validateAfterInactivityPool));
+
+		clientBuilder.setConnectionManager(poolingConnectionManager);
+		clientBuilder.setDefaultConnectionConfig(connectionConfig);
+		clientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler(3, true, new ArrayList<>()) {
+			@Override
+			public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
+				LOGGER.info("Retry request, execution count: {}, exception: {}", executionCount, exception);
+				return super.retryRequest(exception, executionCount, context);
+			}
+
+		});
+		
+		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory =
+				new HttpComponentsClientHttpRequestFactory(clientBuilder.build());
+		clientHttpRequestFactory.setConnectTimeout(connTimeoutValue);
+		clientHttpRequestFactory.setReadTimeout(Integer.valueOf(readTimeout));
+		return clientHttpRequestFactory;
 	}
 
 	/**
@@ -89,11 +145,20 @@ public class OcpRestAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public RestClientTemplate restClientTemplate() {
-		RestTemplateBuilder builder = new RestTemplateBuilder();
-		builder = configureCommon(builder);
-		// add intercepter
-		builder = builder.interceptors(tokenClientHttpRequestInterceptor());
-		return new RestClientTemplate(builder.build());
+		RestTemplate restTemplate = new RestTemplate(httpComponentsClientHttpRequestFactory());
+		List<ClientHttpRequestInterceptor> interceptors = new ArrayList<ClientHttpRequestInterceptor>();
+		interceptors.add(tokenClientHttpRequestInterceptor());
+		restTemplate.setInterceptors(interceptors);
+		restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(httpComponentsClientHttpRequestFactory()));
+		restTemplate.getMessageConverters().stream().filter(StringHttpMessageConverter.class::isInstance).map(StringHttpMessageConverter.class::cast).forEach(a -> {
+			a.setWriteAcceptCharset(false);
+			a.setDefaultCharset(StandardCharsets.UTF_8);
+		});
+		// create error handler
+		ResponseEntityErrorHandler errorHandler = new ResponseEntityErrorHandler();
+		errorHandler.setMessageConverters(restTemplate.getMessageConverters());
+		restTemplate.setErrorHandler(errorHandler);
+		return new RestClientTemplate(restTemplate);
 	}
 
 	/**

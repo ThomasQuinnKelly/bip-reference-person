@@ -1,4 +1,4 @@
-package gov.va.os.reference.starter.cache.autoconfigure;
+package gov.va.ocp.reference.starter.cache.autoconfigure;
 
 import org.junit.Test;
 

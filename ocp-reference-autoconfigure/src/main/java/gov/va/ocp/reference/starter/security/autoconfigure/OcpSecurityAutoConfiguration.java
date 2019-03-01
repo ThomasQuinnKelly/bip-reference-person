@@ -40,7 +40,7 @@ public class OcpSecurityAutoConfiguration {
 	 * Adapter for JWT
 	 */
 	@Configuration
-	@ConditionalOnProperty(prefix = "os.reference.security.jwt", name = "enabled", matchIfMissing = true)
+	@ConditionalOnProperty(prefix = "ocp.security.jwt", name = "enabled", matchIfMissing = true)
 	@Order(JwtAuthenticationProperties.AUTH_ORDER)
 	protected static class JwtWebSecurityConfigurerAdapter
 			extends WebSecurityConfigurerAdapter {
@@ -87,7 +87,7 @@ public class OcpSecurityAutoConfiguration {
 	 * Adapter that only processes URLs specified in the filter
 	 */
 	@Configuration
-	@ConditionalOnProperty(prefix = "os.reference.security.jwt", name = "enabled", havingValue = "false")
+	@ConditionalOnProperty(prefix = "ocp.security.jwt", name = "enabled", havingValue = "false")
 	@Order(JwtAuthenticationProperties.AUTH_ORDER)
 	protected static class JwtNoWebSecurityConfigurerAdapter
 			extends WebSecurityConfigurerAdapter {
@@ -150,7 +150,7 @@ public class OcpSecurityAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	@ConditionalOnExpression("${os.reference.security.jwt.enabled:true} && ${os.reference.security.jwt.generate.enabled:true}")
+	@ConditionalOnExpression("${ocp.security.jwt.enabled:true} && ${ocp.security.jwt.generate.enabled:true}")
 	public TokenResource tokenResource() {
 		return new TokenResource();
 	}

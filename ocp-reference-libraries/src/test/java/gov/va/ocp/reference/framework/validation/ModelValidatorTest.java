@@ -44,7 +44,7 @@ public class ModelValidatorTest {
 		MockitoAnnotations.initMocks(this);
 		Properties props = new Properties();
 		factoryYaml.setResources(new ClassPathResource("bootstrap.yml"));
-		props.setProperty("os.reference.validation.messages.user-resource-bundle", "LibFileManagerMessages");
+		props.setProperty("ocp.reference.validation.messages.user-resource-bundle", "LibFileManagerMessages");
 		when(factoryYaml.getObject()).thenReturn(props);
 
 	}

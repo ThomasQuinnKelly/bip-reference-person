@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.rest.person.client;
+package gov.va.ocp.reference.person.rest.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;

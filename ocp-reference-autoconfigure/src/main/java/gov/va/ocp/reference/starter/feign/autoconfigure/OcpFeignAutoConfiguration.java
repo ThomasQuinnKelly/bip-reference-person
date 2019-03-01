@@ -31,7 +31,7 @@ public class OcpFeignAutoConfiguration {
 
 	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(OcpFeignAutoConfiguration.class);
 
-	@Value("${os.reference.rest.client.connection-timeout:20000}")
+	@Value("${ocp.rest.client.connectionTimeout:20000}")
 	private String connectionTimeout;
 
 	private String groupKey = "defaultGroup";
@@ -84,7 +84,7 @@ public class OcpFeignAutoConfiguration {
 		Defense.state(connTimeoutValue > 0,
 				"Invalid settings: Connection Timeout value must be greater than zero.\n"
 						+ "  - Ensure spring scan directive includes gov.va.ocp.reference.framework.rest.client.resttemplate;\n"
-						+ "  - Application property must be set to non-zero positive integer values for os.reference.rest.client.connection-timeout {} "
+						+ "  - Application property must be set to non-zero positive integer values for ocp.rest.client.connectionTimeout {} "
 						+ connectionTimeout + ".");
 		final int connTimeoutValueFinal = connTimeoutValue;
 

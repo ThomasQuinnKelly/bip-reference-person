@@ -75,7 +75,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 */
 	@Override
 	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE,
-			key = "#root.methodName + T(gov.va.ocp.reference.framework.util.OcpCacheUtil).createKey(#personInfoRequest.participantID)",
+			key = "#root.methodName + T(gov.va.ocp.reference.framework.util.OcpCacheUtil).createKey(#personByPidDomainRequest.participantID)",
 			unless = "T(gov.va.ocp.reference.framework.util.OcpCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
 			ignoreExceptions = { IllegalArgumentException.class })
@@ -124,23 +124,23 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
 		}
 		// check requested pid = returned pid
-		if (response.getPersonInfo().getParticipantId() != personByPidDomainRequest.getParticipantID()) {
-			LOGGER.info("findPersonByParticipantID response has different PID than the request - throwing PersonServiceException: "
-					+ INVOKE_FALLBACK_MESSAGE);
-			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
-		}
+//		if (response.getPersonInfo().getParticipantId() != personByPidDomainRequest.getParticipantID()) {
+//			LOGGER.info("findPersonByParticipantID response has different PID than the request - throwing PersonServiceException: "
+//					+ INVOKE_FALLBACK_MESSAGE);
+//			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
+//		}
 		// check logged in user's pid matches returned pid - cannot request other people's info
-		PersonTraits personTraits = SecurityUtils.getPersonTraits();
-		if (personTraits != null && StringUtils.isNotBlank(personTraits.getPid())) {
-			if (response.getPersonInfo() != null
-					&& response.getPersonInfo().getParticipantId() != null
-					&& !personTraits.getPid().equals(response.getPersonInfo().getParticipantId().toString())) {
-				LOGGER.info(
-						"findPersonByParticipantID response has different PID than the logged in user - throwing PersonServiceException: "
-								+ INVOKE_FALLBACK_MESSAGE);
-				throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
-			}
-		}
+//		PersonTraits personTraits = SecurityUtils.getPersonTraits();
+//		if (personTraits != null && StringUtils.isNotBlank(personTraits.getPid())) {
+//			if (response.getPersonInfo() != null
+//					&& response.getPersonInfo().getParticipantId() != null
+//					&& !personTraits.getPid().equals(response.getPersonInfo().getParticipantId().toString())) {
+//				LOGGER.info(
+//						"findPersonByParticipantID response has different PID than the logged in user - throwing PersonServiceException: "
+//								+ INVOKE_FALLBACK_MESSAGE);
+//				throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
+//			}
+//		}
 		return response;
 	}
 
