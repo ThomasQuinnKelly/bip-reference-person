@@ -14,6 +14,7 @@ import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 @FeignClient(value = "${spring.application.name}",
 url="${ocp-reference-person.ribbon.listOfServers:}",
 name = "${spring.application.name}",
+fallbackFactory = FeignPersonClientFallbackFactory.class,
 configuration = ReferenceServiceFeignConfig.class)
 public interface FeignPersonClient { // NOSONAR not a functional interface
 
