@@ -58,7 +58,7 @@ public class DomainResponse extends AbstractTransferObject implements DomainTran
 		message.setSeverity(severity);
 		message.setKey(key);
 		message.setText(text);
-		message.setStatus(httpStatus);
+		message.setHttpStatus(httpStatus);
 		messages.add(message);
 	}
 
@@ -85,7 +85,7 @@ public class DomainResponse extends AbstractTransferObject implements DomainTran
 		message.setSeverity(severity);
 		message.setKey(key);
 		message.setText(text);
-		message.setStatus(httpStatus);
+		message.setHttpStatus(httpStatus);
 		message.setParamCount(paramCount);
 		message.setParamNames(paramNames);
 		message.setParamValues(paramValues);

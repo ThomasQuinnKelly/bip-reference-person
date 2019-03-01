@@ -53,7 +53,7 @@ public class MessageTest {
 		assertEquals(new Integer(1), message.getParamCount());
 		assertArrayEquals(new String[] { "0" }, message.getParamNames());
 		assertArrayEquals(new String[] { "1" }, message.getParamValues());
-		assertNull(message.getStatusString());
+		assertNull(message.getHttpStatus());
 	}
 
 	@Test
@@ -80,9 +80,9 @@ public class MessageTest {
 	@Test
 	public void testSetStatus() throws Exception {
 		Message message1 = new Message(MessageSeverity.INFO, "UnitTestKey", "TextMsg", null);
-		message1.setStatus(HttpStatus.BAD_REQUEST);
-		assertTrue(message1.getStatusEnum() == HttpStatus.BAD_REQUEST);
-		assertNotNull(message1.getStatusString());
+		message1.setHttpStatus(HttpStatus.BAD_REQUEST);
+		assertTrue(message1.getHttpStatus() == HttpStatus.BAD_REQUEST);
+		assertNotNull(message1.getStatus());
 	}
 
 	@Test

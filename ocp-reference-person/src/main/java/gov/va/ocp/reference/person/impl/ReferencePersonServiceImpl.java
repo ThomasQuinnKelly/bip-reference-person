@@ -106,6 +106,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 				response =
 						cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey,
 								PersonByPidDomainResponse.class);
+				return response;
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

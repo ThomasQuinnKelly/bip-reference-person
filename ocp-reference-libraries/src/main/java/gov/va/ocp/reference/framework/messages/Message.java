@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.http.HttpStatus;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -36,8 +37,11 @@ public class Message extends AbstractMessage {
 	/** The message. */
 	private String text;
 
-	/** The Http status. */
-	private HttpStatus status;
+	private String status;
+	
+	@JsonIgnore
+	/** The Http status enum. */
+	private HttpStatus httpStatus;
 
 	/** The message severity. */
 	@XmlElement(required = true)
@@ -64,7 +68,7 @@ public class Message extends AbstractMessage {
 		this.severity = severity;
 		this.key = key;
 		this.text = text;
-		this.status = httpStatus;
+		this.httpStatus = httpStatus;
 	}
 
 	/**
@@ -89,13 +93,13 @@ public class Message extends AbstractMessage {
 	 * @param paramNames the names, in same order as thier respective getParamValues
 	 * @param paramValues the values, in same order as their respective getParamNames
 	 */
-	public Message(final MessageSeverity severity, final String key, final String text, HttpStatus status,
+	public Message(final MessageSeverity severity, final String key, final String text, HttpStatus httpStatus,
 			Integer paramCount, String[] paramNames, String[] paramValues) {
 		super(paramCount, paramNames, paramValues);
 		this.severity = severity;
 		this.key = key;
 		this.text = text;
-		this.status = status;
+		this.httpStatus = httpStatus;
 	}
 
 	/**
@@ -122,10 +126,12 @@ public class Message extends AbstractMessage {
 	 * @return the HttpStatus
 	 */
 	@JsonProperty("status")
-	public String getStatusString() {
+	@JsonCreator
+	public String getStatus() {
 		// Since this method is used by introspection based serialisation, it would need to return the status code number instead of
 		// the default (enum name), which is why the toString() method is used
-		return status == null ? null : status.toString();
+		status = (httpStatus == null ? null : String.valueOf(httpStatus.value()));
+		return status;
 	}
 
 	/**
@@ -134,8 +140,9 @@ public class Message extends AbstractMessage {
 	 * @return the HttpStatus
 	 */
 	@JsonIgnore
-	public HttpStatus getStatusEnum() {
-		return status;
+	@JsonProperty(value = "httpStatus")
+	public HttpStatus getHttpStatus() {
+		return httpStatus;
 	}
 
 	/**
@@ -143,8 +150,8 @@ public class Message extends AbstractMessage {
 	 *
 	 * @param key the new HttpStatus
 	 */
-	public void setStatus(final HttpStatus status) {
-		this.status = status;
+	public void setHttpStatus(final HttpStatus httpStatus) {
+		this.httpStatus = httpStatus;
 	}
 
 	/**
