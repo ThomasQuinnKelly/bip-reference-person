@@ -34,13 +34,19 @@ public class PersonResource implements HealthIndicator, SwaggerResponseMessages 
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PersonResource.class);
 
+	/** The service layer API contract for processing personByPid() requests */
 	@Autowired
 	@Qualifier("IMPL")
 	ReferencePersonService refPersonService;
 
+	/** The root path to this resource */
 	public static final String URL_PREFIX = "/api/v1/persons";
 
-	// NOSONAR TODO make this method a REST call to test this endpoint is up and running
+	/**
+	 * A REST call to test this endpoint is up and running.
+	 *
+	 * @see org.springframework.boot.actuate.health.HealthIndicator#health()
+	 */
 	@Override
 	@RequestMapping(value = URL_PREFIX + "/health", method = RequestMethod.GET)
 	@ApiOperation(value = "A health check of this endpoint",
@@ -53,9 +59,14 @@ public class PersonResource implements HealthIndicator, SwaggerResponseMessages 
 	}
 
 	/**
+	 * Search for Person Information by their participant ID.
+	 * <p>
 	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two return types.
+	 * <br/>
 	 * 1) An object derived from ServiceResponse. For Ex: PersonInfoResponse as returned below.
+	 * <br/>
 	 * 2) An object derived from ServiceResponse wrapped inside ResponseEntity.
+	 * <br/>
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
 	 * @param personInfoRequest the person info request

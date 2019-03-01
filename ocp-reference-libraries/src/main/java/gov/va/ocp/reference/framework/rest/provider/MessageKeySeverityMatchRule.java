@@ -41,8 +41,19 @@ public final class MessageKeySeverityMatchRule implements MessagesToHttpStatusRu
 	 */
 	@Override
 	public HttpStatus eval(final Set<Message> messagesToEval) {
-		if (messagesToEval.contains(messageToMatch)) {
+		if (messagesToEval != null && messagesToEval.contains(messageToMatch)) {
 			return httpStatus;
+		}
+		if (messagesToEval != null) {
+			for (final Message message : messagesToEval) {
+				if (messageToMatch.getSeverity()!=null && 
+					messageToMatch.getSeverity().equals(message.getSeverity()) && 
+					messageToMatch.getKey()!= null &&
+					messageToMatch.getKey().equals(message.getKey())) 
+				{
+					return httpStatus;
+				}
+			}
 		}
 		return null;
 	}

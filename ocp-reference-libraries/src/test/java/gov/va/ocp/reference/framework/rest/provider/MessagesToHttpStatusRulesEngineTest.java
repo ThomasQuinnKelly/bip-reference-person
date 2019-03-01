@@ -1,5 +1,16 @@
 package gov.va.ocp.reference.framework.rest.provider;
 
+import static gov.va.ocp.reference.framework.rest.provider.MessagesToHttpStatusRulesEngine.evalMessagesAgainstRules;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,20 +19,6 @@ import org.springframework.http.HttpStatus;
 import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.framework.rest.provider.MessageKeySeverityMatchRule;
-import gov.va.ocp.reference.framework.rest.provider.MessagesToHttpStatusRule;
-import gov.va.ocp.reference.framework.rest.provider.MessagesToHttpStatusRulesEngine;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
-import static gov.va.ocp.reference.framework.rest.provider.MessagesToHttpStatusRulesEngine.evalMessagesAgainstRules;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class MessagesToHttpStatusRulesEngineTest {
 
@@ -31,7 +28,7 @@ public class MessagesToHttpStatusRulesEngineTest {
 	@Before
 	public void setUp() throws Exception {
 		messagesToHttpStatusRulesEngine = new MessagesToHttpStatusRulesEngine();
-		Message errMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text");
+		Message errMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text", null);
 		messagesInResponse.add(errMessage);
 	}
 
@@ -42,7 +39,7 @@ public class MessagesToHttpStatusRulesEngineTest {
 
 	@Test
 	public void testMessagesToHttpStatus() {
-		Message errMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text");
+		Message errMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text", null);
 		MessageKeySeverityMatchRule errorRule = new MessageKeySeverityMatchRule(errMessage, HttpStatus.UNAUTHORIZED);
 		messagesToHttpStatusRulesEngine.addRule(errorRule);
 		assertEquals(HttpStatus.UNAUTHORIZED, messagesToHttpStatusRulesEngine.messagesToHttpStatus(messagesInResponse));
@@ -60,7 +57,7 @@ public class MessagesToHttpStatusRulesEngineTest {
 		Message message = new Message();
 		message.setStatus(HttpStatusForMessage.INTERNAL_SERVER_ERROR);
 
-		Message errMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text");
+		Message errMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text", null);
 		MessageKeySeverityMatchRule errorRule = new MessageKeySeverityMatchRule(errMessage, HttpStatus.UNAUTHORIZED);
 		Set<MessagesToHttpStatusRule> setOfRules = new LinkedHashSet<MessagesToHttpStatusRule>();
 		setOfRules.add(errorRule);
@@ -74,7 +71,7 @@ public class MessagesToHttpStatusRulesEngineTest {
 		Message message = new Message();
 		message.setStatus(HttpStatusForMessage.BAD_REQUEST);
 
-		Message errMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text");
+		Message errMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text", null);
 		MessageKeySeverityMatchRule errorRule = new MessageKeySeverityMatchRule(errMessage, HttpStatus.UNAUTHORIZED);
 		Set<MessagesToHttpStatusRule> setOfRules = new LinkedHashSet<MessagesToHttpStatusRule>();
 		setOfRules.add(errorRule);
@@ -90,7 +87,7 @@ public class MessagesToHttpStatusRulesEngineTest {
 		Message message2 = new Message();
 		message2.setStatus(HttpStatusForMessage.BAD_REQUEST);
 
-		Message errMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text");
+		Message errMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text", null);
 		MessageKeySeverityMatchRule errorRule = new MessageKeySeverityMatchRule(errMessage, HttpStatus.UNAUTHORIZED);
 		Set<MessagesToHttpStatusRule> setOfRules = new LinkedHashSet<MessagesToHttpStatusRule>();
 		setOfRules.add(errorRule);

@@ -10,14 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gov.va.ocp.reference.framework.messages.Message;
-import gov.va.ocp.reference.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.framework.service.ServiceResponse;
-import gov.va.ocp.reference.framework.validation.ViolationMessageParts;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import gov.va.ocp.reference.framework.messages.Message;
+import gov.va.ocp.reference.framework.messages.MessageSeverity;
+import gov.va.ocp.reference.framework.validation.ViolationMessageParts;
 
 public class ServiceResponseTest {
 
@@ -27,14 +26,14 @@ public class ServiceResponseTest {
 	Message warnMessage;
 	Message errorMessage;
 	Message fatalMessage;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		mockServiceResponse = new ServiceResponse();
-		infoMessage = new Message(MessageSeverity.INFO, "InfoKey", "Dummy info text");
-		warnMessage = new Message(MessageSeverity.WARN, "WarnKey", "Dummy warning text");
-		errorMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Dummy error text");
-		fatalMessage = new Message(MessageSeverity.FATAL, "FatalKey", "Dummy fatal text");
+		infoMessage = new Message(MessageSeverity.INFO, "InfoKey", "Dummy info text", null);
+		warnMessage = new Message(MessageSeverity.WARN, "WarnKey", "Dummy warning text", null);
+		errorMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Dummy error text", null);
+		fatalMessage = new Message(MessageSeverity.FATAL, "FatalKey", "Dummy fatal text", null);
 		addTestMessages();
 	}
 
@@ -44,31 +43,31 @@ public class ServiceResponseTest {
 		testMessages.add(errorMessage);
 		testMessages.add(fatalMessage);
 	}
-	
+
 	@Test
 	public void testAddMessageWithNullMessages() {
-		
+
 		mockServiceResponse.setMessages(null);
-		mockServiceResponse.addMessage(MessageSeverity.INFO, "InfoKey", "Dummy info text", 
-				1, new String[] {"pName"},new String[] {"pValue"});
+		mockServiceResponse.addMessage(MessageSeverity.INFO, "InfoKey", "Dummy info text", null,
+				1, new String[] { "pName" }, new String[] { "pValue" });
 		assertNotNull(mockServiceResponse.validate(null));
 
 		assertNotNull(mockServiceResponse.getMessages());
-		assertEquals(1,mockServiceResponse.getMessages().size());
-		
+		assertEquals(1, mockServiceResponse.getMessages().size());
+
 	}
-	
+
 	@Test
 	public void testAddMessageWithParams() {
-		mockServiceResponse.addMessage(MessageSeverity.INFO, "InfoKey", "Dummy info text", 
-				1, new String[] {"pName"},new String[] {"pValue"});
+		mockServiceResponse.addMessage(MessageSeverity.INFO, "InfoKey", "Dummy info text", null,
+				1, new String[] { "pName" }, new String[] { "pValue" });
 		assertNotNull(mockServiceResponse.validate(null));
 
 		assertNotNull(mockServiceResponse.getMessages());
-		assertEquals(1,mockServiceResponse.getMessages().size());
-		
+		assertEquals(1, mockServiceResponse.getMessages().size());
+
 	}
-	
+
 	@After
 	public void tearDown() throws Exception {
 		testMessages.clear();
@@ -76,12 +75,12 @@ public class ServiceResponseTest {
 
 	@Test
 	public void testAddMessage() {
-		mockServiceResponse.addMessage(MessageSeverity.INFO, "InfoKey", "Dummy info text");
+		mockServiceResponse.addMessage(MessageSeverity.INFO, "InfoKey", "Dummy info text", null);
 		assertNotNull(mockServiceResponse.validate(null));
 
 		assertNotNull(mockServiceResponse.getMessages());
-		assertEquals(1,mockServiceResponse.getMessages().size());
-		
+		assertEquals(1, mockServiceResponse.getMessages().size());
+
 	}
 
 	@Test
@@ -90,14 +89,14 @@ public class ServiceResponseTest {
 		assertNotNull(mockServiceResponse.getMessages());
 		Map<String, List<ViolationMessageParts>> messages = new HashMap<>();
 		assertNotNull(mockServiceResponse.validate(messages));
-		assertEquals(4,mockServiceResponse.getMessages().size());
+		assertEquals(4, mockServiceResponse.getMessages().size());
 	}
 
 	@Test
 	public void testGetMessages() {
 		mockServiceResponse.addMessages(testMessages);
 		assertNotNull(mockServiceResponse.getMessages());
-		assertEquals(4,mockServiceResponse.getMessages().size());		
+		assertEquals(4, mockServiceResponse.getMessages().size());
 	}
 
 	@Test
@@ -108,7 +107,7 @@ public class ServiceResponseTest {
 		serviceResponseForEqualsTest.setMessages(testMessages);
 		assertTrue(mockServiceResponse.equals(serviceResponseForEqualsTest));
 		assertNotNull(mockServiceResponse.getMessages());
-		assertEquals(4,mockServiceResponse.getMessages().size());
+		assertEquals(4, mockServiceResponse.getMessages().size());
 	}
 
 	@Test

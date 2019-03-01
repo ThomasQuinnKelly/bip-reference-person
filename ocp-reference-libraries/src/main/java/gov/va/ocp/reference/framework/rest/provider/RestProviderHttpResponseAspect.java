@@ -41,6 +41,7 @@ import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
 import gov.va.ocp.reference.framework.log.ReferenceBanner;
 import gov.va.ocp.reference.framework.log.ReferenceLogger;
 import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.service.ServiceResponse;
 import gov.va.ocp.reference.framework.util.SanitizationUtil;
@@ -221,6 +222,10 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 			}
 		} catch (final ReferenceRuntimeException referenceRuntimeException) {
 			Object returnObj = null;
+			LOGGER.error("referenceRuntimeException : {}", referenceRuntimeException);
+			LOGGER.error("referenceRuntimeException getCause: {}", referenceRuntimeException.getCause());
+			LOGGER.error("referenceRuntimeException getMessage: {}", referenceRuntimeException.getMessage());
+			LOGGER.error("referenceRuntimeException getLocalizedMessage: {}", referenceRuntimeException.getLocalizedMessage());
 			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 					"Error while executing RestProviderHttpResponseAspect.aroundAdvice around restController",
 					referenceRuntimeException);
@@ -285,7 +290,8 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 			final AuditEventData auditEventData) {
 		LOGGER.error("RestProviderHttpResponseAspect encountered uncaught exception in REST endpoint.", referenceRuntimeException);
 		final ServiceResponse serviceResponse = new ServiceResponse();
-		serviceResponse.addMessage(MessageSeverity.FATAL, "UNEXPECTED_ERROR", referenceRuntimeException.getMessage());
+		serviceResponse.addMessage(MessageSeverity.FATAL, HttpStatusForMessage.INTERNAL_SERVER_ERROR.getReasonPhrase(), 
+				referenceRuntimeException.getMessage(), HttpStatusForMessage.INTERNAL_SERVER_ERROR);
 		final StringBuilder sb = new StringBuilder();
 		sb.append("Error Message: ").append(referenceRuntimeException);
 		AuditLogger.error(auditEventData, sb.toString(), referenceRuntimeException);

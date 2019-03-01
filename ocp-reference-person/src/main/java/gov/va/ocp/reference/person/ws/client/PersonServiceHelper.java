@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import gov.va.ocp.reference.framework.log.ReferenceLogger;
 import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientImpl;
@@ -22,7 +22,6 @@ import gov.va.ocp.reference.person.model.person.v1.PersonInfoResponse;
 import gov.va.ocp.reference.person.transform.impl.PersonByPid_DomainToPartner;
 import gov.va.ocp.reference.person.transform.impl.PersonByPid_PartnerToDomain;
 import gov.va.ocp.reference.person.utils.StringUtil;
-import gov.va.ocp.reference.person.ws.client.validate.PersonDomainValidator;
 
 /**
  * Make external calls to the partner using the partner client.
@@ -108,7 +107,7 @@ public class PersonServiceHelper {
 
 			messages = new ArrayList<>();
 			messages.add(new Message(MessageSeverity.ERROR, NOPERSONFORPTCTID,
-					NO_PERSON_FOUND_FOR_PARTICIPANT_ID + maskedInfo));
+					NO_PERSON_FOUND_FOR_PARTICIPANT_ID + maskedInfo, HttpStatusForMessage.BAD_REQUEST));
 		}
 		return messages;
 	}

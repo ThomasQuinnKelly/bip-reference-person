@@ -5,12 +5,11 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.transfer.AbstractTransferObject;
 import gov.va.ocp.reference.framework.transfer.ServiceTransferObjectMarker;
-
-
 
 /**
  * A base Response object capable of representing the payload of a service response.
@@ -40,13 +39,17 @@ public class ServiceResponse extends AbstractTransferObject implements ServiceTr
 	}
 
 	/**
-	 * Adds the message.
+	 * Adds a {@link Message} to the messages list on the response.
+	 * <p>
+	 * Messages made with this constructor CANNOT be used in a JSR303 context.
 	 *
-	 * @param severity the severity
-	 * @param key the key
-	 * @param text the text
+	 * @param severity the severity of the message
+	 * @param key the key "code word" for support calls
+	 * @param text the text of the message
+	 * @param httpStatus the http status associated with the message
 	 */
-	public final void addMessage(final MessageSeverity severity, final String key, final String text) {
+	public final void addMessage(final MessageSeverity severity, final String key, final String text,
+			final HttpStatusForMessage httpStatus) {
 		if (messages == null) {
 			messages = new LinkedList<>();
 		}
@@ -54,17 +57,25 @@ public class ServiceResponse extends AbstractTransferObject implements ServiceTr
 		message.setSeverity(severity);
 		message.setKey(key);
 		message.setText(text);
+		message.setStatus(httpStatus);
 		messages.add(message);
 	}
-	
+
 	/**
-	 * Adds the message.
+	 * Adds a {@link Message} to the messages list on the response.
+	 * <p>
+	 * Messages made with this constructor CAN be used in a JSR303 context.
 	 *
-	 * @param severity the severity
-	 * @param key the key
-	 * @param text the text
+	 * @param severity the severity of the message
+	 * @param key the key "code word" for support calls
+	 * @param text the text of the message
+	 * @param httpStatus the http status associated with the message
+	 * @param paramCount the number of replaceable parameters in the message
+	 * @param paramNames the names of the replaceable parameters in the message
+	 * @param paramValues the values of the replaceable parameters in the message
 	 */
 	public final void addMessage(final MessageSeverity severity, final String key, final String text,
+			final HttpStatusForMessage httpStatus,
 			Integer paramCount, String[] paramNames, String[] paramValues) {
 		if (messages == null) {
 			messages = new LinkedList<>();
@@ -73,6 +84,7 @@ public class ServiceResponse extends AbstractTransferObject implements ServiceTr
 		message.setSeverity(severity);
 		message.setKey(key);
 		message.setText(text);
+		message.setStatus(httpStatus);
 		message.setParamCount(paramCount);
 		message.setParamNames(paramNames);
 		message.setParamValues(paramValues);

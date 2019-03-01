@@ -20,6 +20,7 @@ public interface FeignPersonClient { // NOSONAR not a functional interface
 
 	@RequestMapping(value = PersonResource.URL_PREFIX + "/pid", 
 			method = RequestMethod.POST,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	PersonInfoResponse personByPid(@RequestBody PersonInfoRequest personInfoRequest);
 }
