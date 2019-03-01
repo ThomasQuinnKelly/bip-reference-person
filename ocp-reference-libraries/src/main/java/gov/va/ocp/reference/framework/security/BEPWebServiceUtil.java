@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.util.Defense;
 import gov.va.ocp.reference.framework.util.HashGenerator;
 
@@ -29,7 +29,7 @@ public final class BEPWebServiceUtil {
 	public static final int EXTERNALUID_LENGTH = 39;
 
 	/** The Constant LOGGER. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(BEPWebServiceUtil.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(BEPWebServiceUtil.class);
 
 	/**
 	 * Private constructor to prevent instantiation.

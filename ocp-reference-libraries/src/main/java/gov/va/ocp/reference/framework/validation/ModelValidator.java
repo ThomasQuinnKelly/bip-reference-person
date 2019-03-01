@@ -20,8 +20,8 @@ import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.ClassPathResource;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.util.Defense;
 
 /**
@@ -35,13 +35,13 @@ import gov.va.ocp.reference.framework.util.Defense;
 public class ModelValidator implements Serializable {
 	private static final long serialVersionUID = -6019704406389010935L;
 
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(ModelValidator.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(ModelValidator.class);
 
 	private static final String DEFAULT_RESOURCE_BUNDLE = "ValidationMessages";
 
 	private static final String BOOTSTRAP_YML = "bootstrap.yml";
 
-	private static final String ASCENT_VALIDATION_RESOURCE_PROP = "os.reference.validation.messages.user-resource-bundle";
+	private static final String OCP_VALIDATION_RESOURCE_PROP = "ocp.reference.validation.messages.user-resource-bundle";
 
 	/** The factory. */
 	private transient ValidatorFactory factory;
@@ -75,11 +75,11 @@ public class ModelValidator implements Serializable {
 			YamlPropertiesFactoryBean factoryLocal = new YamlPropertiesFactoryBean();
 			factoryLocal.setResources(new ClassPathResource(BOOTSTRAP_YML));
 			Properties props = factoryLocal.getObject();
-			return props.getProperty(ASCENT_VALIDATION_RESOURCE_PROP);
+			return props.getProperty(OCP_VALIDATION_RESOURCE_PROP);
 
 		} catch (Exception e) {
 			LOGGER.error("Failed to read bootstrap.yml to get "
-					+ "os.reference.validation.messages.user-resource-bundle :" + e.getMessage());
+					+ "ocp.reference.validation.messages.user-resource-bundle :" + e.getMessage());
 			return null;
 		}
 	}

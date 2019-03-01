@@ -32,28 +32,28 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import gov.va.ocp.reference.framework.AbstractBaseLogTester;
 import gov.va.ocp.reference.framework.audit.AuditEvents;
 import gov.va.ocp.reference.framework.audit.Auditable;
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.reference.framework.log.OcpLogger;
 import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.framework.service.ServiceRequest;
-import gov.va.ocp.reference.framework.service.ServiceResponse;
+import gov.va.ocp.reference.framework.service.DomainRequest;
+import gov.va.ocp.reference.framework.service.DomainResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestProviderHttpResponseAspectTest extends AbstractBaseLogTester {
 
-	private final ReferenceLogger restProviderLog = super.getLogger(RestProviderHttpResponseAspect.class);
+	private final OcpLogger restProviderLog = super.getLogger(RestProviderHttpResponseAspect.class);
 
 	private RestProviderHttpResponseAspect restProviderHttpResponseAspect;
 	@Mock
 	private ProceedingJoinPoint proceedingJoinPoint;
 
 	@Mock
-	private ResponseEntity<ServiceResponse> responseEntity;
+	private ResponseEntity<DomainResponse> responseEntity;
 
 	@Mock
-	private ServiceResponse serviceResponse;
+	private DomainResponse domainResponse;
 
 	@Mock
 	private MethodSignature mockSignature;
@@ -90,8 +90,8 @@ public class RestProviderHttpResponseAspectTest extends AbstractBaseLogTester {
 			final Message msg = new Message(MessageSeverity.FATAL, "FatalKey", "Fatal Message", null);
 			detailedMsg.add(msg);
 			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenReturn(responseEntity);
-			Mockito.lenient().when(responseEntity.getBody()).thenReturn(serviceResponse);
-			Mockito.lenient().when(serviceResponse.getMessages()).thenReturn(detailedMsg);
+			Mockito.lenient().when(responseEntity.getBody()).thenReturn(domainResponse);
+			Mockito.lenient().when(domainResponse.getMessages()).thenReturn(detailedMsg);
 		} catch (final Throwable e) {
 
 		}
@@ -118,7 +118,7 @@ public class RestProviderHttpResponseAspectTest extends AbstractBaseLogTester {
 		restProviderHttpResponseAspect = new RestProviderHttpResponseAspect();
 		Object returnObject = null;
 		try {
-			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenReturn(serviceResponse);
+			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenReturn(domainResponse);
 			Mockito.lenient().when(proceedingJoinPoint.getSignature()).thenReturn(mockSignature);
 			Mockito.lenient().when(mockSignature.getMethod()).thenReturn(myMethod());
 			Mockito.lenient().when(proceedingJoinPoint.getTarget()).thenReturn(new TestClass());
@@ -145,7 +145,7 @@ public class RestProviderHttpResponseAspectTest extends AbstractBaseLogTester {
 		restProviderHttpResponseAspect = new RestProviderHttpResponseAspect();
 		Object returnObject = null;
 		try {
-			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenReturn(serviceResponse);
+			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenReturn(domainResponse);
 			Mockito.lenient().when(proceedingJoinPoint.getSignature()).thenReturn(mockSignature);
 			Mockito.lenient().when(mockSignature.getMethod()).thenReturn(myMethod());
 			Mockito.lenient().when(proceedingJoinPoint.getTarget()).thenReturn(new TestClass());
@@ -162,7 +162,7 @@ public class RestProviderHttpResponseAspectTest extends AbstractBaseLogTester {
 		restProviderHttpResponseAspect = new RestProviderHttpResponseAspect();
 		Object returnObject = null;
 		try {
-			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenReturn(serviceResponse);
+			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenReturn(domainResponse);
 			Mockito.lenient().when(proceedingJoinPoint.getSignature()).thenReturn(mockSignature);
 			Mockito.lenient().when(mockSignature.getMethod()).thenReturn(myMethod());
 			Mockito.lenient().when(proceedingJoinPoint.getTarget()).thenReturn(new TestClass());
@@ -179,7 +179,7 @@ public class RestProviderHttpResponseAspectTest extends AbstractBaseLogTester {
 		restProviderHttpResponseAspect = new RestProviderHttpResponseAspect();
 		Object returnObject = null;
 		try {
-			final ServiceResponse serviceResp = new ServiceResponse();
+			final DomainResponse serviceResp = new DomainResponse();
 			serviceResp.addMessage(MessageSeverity.FATAL, "Test KEY", "Test Error", HttpStatusForMessage.INTERNAL_SERVER_ERROR);
 			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenReturn(serviceResp);
 			Mockito.lenient().when(proceedingJoinPoint.getSignature()).thenReturn(mockSignature);
@@ -222,7 +222,7 @@ public class RestProviderHttpResponseAspectTest extends AbstractBaseLogTester {
 		restProviderHttpResponseAspect = new RestProviderHttpResponseAspect();
 		Object returnObject = null;
 		try {
-			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenThrow(new ReferenceRuntimeException());
+			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenThrow(new OcpRuntimeException());
 			Mockito.lenient().when(proceedingJoinPoint.getSignature()).thenReturn(mockSignature);
 			Mockito.lenient().when(mockSignature.getMethod()).thenReturn(myMethod());
 			Mockito.lenient().when(proceedingJoinPoint.getTarget()).thenReturn(new TestClass());
@@ -231,7 +231,7 @@ public class RestProviderHttpResponseAspectTest extends AbstractBaseLogTester {
 		} catch (final Throwable throwable) {
 
 		}
-		assertTrue(((ServiceResponse) returnObject).getMessages().size() > 0);
+		assertTrue(((DomainResponse) returnObject).getMessages().size() > 0);
 	}
 
 	@Test
@@ -252,14 +252,14 @@ public class RestProviderHttpResponseAspectTest extends AbstractBaseLogTester {
 
 		}
 
-		assertTrue(((ServiceResponse) returnObject).getMessages().size() > 0);
+		assertTrue(((DomainResponse) returnObject).getMessages().size() > 0);
 	}
 
 	@Test
 	public void testAnnotatedMethodRequestResponse() {
 		Object obj;
 		try {
-			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenReturn(serviceResponse);
+			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenReturn(domainResponse);
 			Mockito.lenient().when(proceedingJoinPoint.getSignature()).thenReturn(mockSignature);
 			Mockito.lenient().when(mockSignature.getMethod()).thenReturn(myAnnotatedMethod());
 			Mockito.lenient().when(proceedingJoinPoint.getTarget()).thenReturn(new TestClass());
@@ -310,7 +310,7 @@ public class RestProviderHttpResponseAspectTest extends AbstractBaseLogTester {
 		try {
 			method = aspect.getClass().getDeclaredMethod("getReturnResponse", boolean.class, Object.class);
 			method.setAccessible(true);
-			retval = method.invoke(aspect, Boolean.TRUE, new ResponseEntity<ServiceResponse>(HttpStatus.valueOf(200)));
+			retval = method.invoke(aspect, Boolean.TRUE, new ResponseEntity<DomainResponse>(HttpStatus.valueOf(200)));
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
 			e.printStackTrace();
@@ -351,7 +351,7 @@ public class RestProviderHttpResponseAspectTest extends AbstractBaseLogTester {
 	}
 }
 
-class TestServiceRequest extends ServiceRequest {
+class TestServiceRequest extends DomainRequest {
 	/**
 	 * serialVersionUID
 	 */

@@ -3,8 +3,8 @@ package gov.va.ocp.reference.framework.ws.client;
 import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.ValidationEventHandler;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 /**
  * This custom ValidationEventHandler will not fail validations, rather will log and eat the validation
@@ -17,7 +17,7 @@ import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
 public class JaxbLogAndEatValidationEventHandler implements ValidationEventHandler {
 
 	/** logger for this class. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(JaxbLogAndEatValidationEventHandler.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(JaxbLogAndEatValidationEventHandler.class);
 
 	/** The Constant LOG_DESCRIPTION. */
 	private static final String LOG_DESCRIPTION = "SCHEMA VALIDATION ERROR: ";

@@ -17,9 +17,9 @@ import org.springframework.xml.transform.ResourceSource;
 import org.springframework.xml.transform.StringResult;
 import org.springframework.xml.transform.StringSource;
 
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.transfer.PartnerTransferObjectMarker;
 import gov.va.ocp.reference.framework.util.Defense;
 
@@ -36,7 +36,7 @@ import gov.va.ocp.reference.framework.util.Defense;
  * @author aburkholder
  */
 public abstract class AbstractRemoteServiceCallMock implements RemoteServiceCall {
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(AbstractRemoteServiceCallMock.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(AbstractRemoteServiceCallMock.class);
 
 	/** Constant for the filename template for mocked files */
 	public static final String MOCK_FILENAME_TEMPLATE = "test/mocks/{0}.xml";
@@ -179,7 +179,7 @@ public abstract class AbstractRemoteServiceCallMock implements RemoteServiceCall
 		try {
 			resource = new ResourceSource(new ClassPathResource(MessageFormat.format(MOCK_FILENAME_TEMPLATE, key)));
 		} catch (final IOException e) {
-			throw new ReferenceRuntimeException("Could not read mock XML file '" + MessageFormat.format(MOCK_FILENAME_TEMPLATE, key)
+			throw new OcpRuntimeException("Could not read mock XML file '" + MessageFormat.format(MOCK_FILENAME_TEMPLATE, key)
 					+ "' using key '" + key + "'. Please make sure this response file exists in the main/resources directory.", e);
 		}
 		return resource;

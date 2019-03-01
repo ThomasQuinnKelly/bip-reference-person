@@ -21,8 +21,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import gov.va.ocp.reference.framework.service.ServiceRequest;
-import gov.va.ocp.reference.framework.service.ServiceResponse;
+import gov.va.ocp.reference.framework.service.DomainRequest;
+import gov.va.ocp.reference.framework.service.DomainResponse;
 import gov.va.ocp.reference.framework.service.ServiceValidationToMessageAspect;
 import gov.va.ocp.reference.framework.validation.ViolationMessageParts;
 
@@ -33,10 +33,10 @@ public class ServiceValidationToMessageAspectTest {
 	private ProceedingJoinPoint proceedingJoinPoint;
 	
 	@Mock
-	private ServiceRequest mockServiceRequest;
+	private DomainRequest mockServiceRequest;
 	
 	@Mock
-	private ServiceResponse mockServiceResponse;	
+	private DomainResponse mockServiceResponse;	
 	
     @Mock
     private MethodSignature signature;
@@ -81,7 +81,7 @@ public class ServiceValidationToMessageAspectTest {
 	public void testAroundAdvice() {
 		try{
 			assertNotNull(mockServiceValidationToMessageAspect.aroundAdvice(proceedingJoinPoint));
-			assertNull(((ServiceResponse)mockServiceValidationToMessageAspect.aroundAdvice(proceedingJoinPoint)).getMessages());
+			assertNull(((DomainResponse)mockServiceValidationToMessageAspect.aroundAdvice(proceedingJoinPoint)).getMessages());
 			
 		}catch(Throwable throwable) {
 			
@@ -104,7 +104,7 @@ public class ServiceValidationToMessageAspectTest {
 	@Test
 	public void testAroundAdviceForException() {
 		try{
-			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenReturn(new ServiceRequest());
+			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenReturn(new DomainRequest());
 			assertNotNull(mockServiceValidationToMessageAspect.aroundAdvice(proceedingJoinPoint));
 
 			
@@ -126,7 +126,7 @@ public class ServiceValidationToMessageAspectTest {
         return getClass().getDeclaredMethod("someResponseMethod",String.class);
     }
 
-    public ServiceResponse someResponseMethod(String simpleParam) {
-        return new ServiceResponse();
+    public DomainResponse someResponseMethod(String simpleParam) {
+        return new DomainResponse();
     } 	
 }

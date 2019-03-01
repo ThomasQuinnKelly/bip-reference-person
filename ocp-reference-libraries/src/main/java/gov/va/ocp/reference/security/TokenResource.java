@@ -39,7 +39,7 @@ public class TokenResource implements SwaggerResponseMessages {
 	@Autowired
 	private JwtAuthenticationProperties jwtAuthenticationProperties;
 
-	@Value("${os.reference.security.jwt.validation.required-parameters:}")
+	@Value("${ocp.security.jwt.validation.required-parameters:}")
 	private String[] jwtTokenRequiredParameterList;
 
 	@RequestMapping(value = "/token", method = RequestMethod.POST, consumes = { "application/json" })

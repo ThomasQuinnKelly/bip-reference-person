@@ -7,14 +7,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.slf4j.event.Level;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 public abstract class AbstractBaseLogTester {
 
 	private TestAppender testAppender = new TestAppender();
 
-	private List<ReferenceLogger> loggers = new ArrayList<ReferenceLogger>();
+	private List<OcpLogger> loggers = new ArrayList<OcpLogger>();
 
 	/**
 	 * <p>
@@ -45,13 +45,13 @@ public abstract class AbstractBaseLogTester {
 	 * @param clazz the Class for which the logger was created
 	 * @return the associated logger, or {@code null}
 	 */
-	protected ReferenceLogger getLogger(Class<?> clazz) {
+	protected OcpLogger getLogger(Class<?> clazz) {
 		if (loggers == null) {
-			loggers = new ArrayList<ReferenceLogger>();
+			loggers = new ArrayList<OcpLogger>();
 		}
 
-		ReferenceLogger logger = null;
-		for (ReferenceLogger l : loggers) {
+		OcpLogger logger = null;
+		for (OcpLogger l : loggers) {
 			if (clazz.getName().equals(l.getName())) {
 				logger = l;
 				logger.setLevel(Level.DEBUG);
@@ -59,7 +59,7 @@ public abstract class AbstractBaseLogTester {
 			}
 		}
 		if (logger == null) {
-			logger = ReferenceLoggerFactory.getLogger(clazz);
+			logger = OcpLoggerFactory.getLogger(clazz);
 			logger.setLevel(Level.DEBUG);
 			loggers.add(logger);
 		}
@@ -77,7 +77,7 @@ public abstract class AbstractBaseLogTester {
 		testAppender.clear();
 		// clean up loggers
 		if (loggers != null && loggers.size() > 0) {
-			for (ReferenceLogger logger : loggers) {
+			for (OcpLogger logger : loggers) {
 				logger.setLevel(Level.ERROR);
 				logger.getLoggerBoundImpl().detachAndStopAllAppenders();
 			}

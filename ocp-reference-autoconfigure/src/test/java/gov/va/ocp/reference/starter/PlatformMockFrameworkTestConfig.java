@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 
 import gov.va.ocp.reference.framework.config.BaseYamlConfig;
-import gov.va.ocp.reference.framework.config.ReferenceCommonSpringProfiles;
+import gov.va.ocp.reference.framework.config.OcpCommonSpringProfiles;
 
 /**
  * Fake Spring configuration used to test the partner mock framework classes
@@ -14,7 +14,7 @@ import gov.va.ocp.reference.framework.config.ReferenceCommonSpringProfiles;
  * @author akulkarni
  */
 @Configuration
-@Profile(ReferenceCommonSpringProfiles.PROFILE_REMOTE_CLIENT_SIMULATORS)
+@Profile(OcpCommonSpringProfiles.PROFILE_REMOTE_CLIENT_SIMULATORS)
 public class PlatformMockFrameworkTestConfig extends BaseYamlConfig
 {
 

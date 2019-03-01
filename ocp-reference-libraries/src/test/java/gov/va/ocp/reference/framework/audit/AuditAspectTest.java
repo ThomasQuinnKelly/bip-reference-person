@@ -17,8 +17,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import gov.va.ocp.reference.framework.audit.AuditEvents;
 import gov.va.ocp.reference.framework.audit.Auditable;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.framework.service.ServiceRequest;
-import gov.va.ocp.reference.framework.service.ServiceResponse;
+import gov.va.ocp.reference.framework.service.DomainRequest;
+import gov.va.ocp.reference.framework.service.DomainResponse;
 
 /**
  * Created by vgadda on 8/17/17.
@@ -45,18 +45,18 @@ class TestAuditableService implements AuditableService {
 
 	@Override
 	@Auditable(event = AuditEvents.REQUEST_RESPONSE, activity = "testActivity")
-	public ServiceResponse annotatedMethod(ServiceRequest request) {
-		ServiceResponse response = new ServiceResponse();
+	public DomainResponse annotatedMethod(DomainRequest request) {
+		DomainResponse response = new DomainResponse();
 		response.addMessage(MessageSeverity.INFO, "key", "value", null);
 		return response;
 	}
 }
 
 interface AuditableService {
-	ServiceResponse annotatedMethod(ServiceRequest request);
+	DomainResponse annotatedMethod(DomainRequest request);
 }
 
-class AuditServiceRequest extends ServiceRequest {
+class AuditServiceRequest extends DomainRequest {
 	/**
 	 *
 	 */

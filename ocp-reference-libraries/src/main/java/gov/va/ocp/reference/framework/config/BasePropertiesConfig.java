@@ -5,9 +5,9 @@ import javax.annotation.PostConstruct;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
-import gov.va.ocp.reference.framework.properties.ReferencePropertySourcesPlaceholderConfigurer;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
+import gov.va.ocp.reference.framework.properties.OcpPropertySourcesPlaceholderConfigurer;
 
 /**
  * Abstract baseclass for Spring configuration of the properties files
@@ -31,7 +31,7 @@ public class BasePropertiesConfig {
 	}
 
 	/** logger for this class. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(BasePropertiesConfig.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(BasePropertiesConfig.class);
 
 	/** The Constant CLASSPATH_PREFIX. */
 	public static final String CLASSPATH_PREFIX = "classpath:/";
@@ -58,7 +58,7 @@ public class BasePropertiesConfig {
 	 */
 	@Bean(name = "properties")
 	static PropertySourcesPlaceholderConfigurer properties() {
-		return new ReferencePropertySourcesPlaceholderConfigurer();
+		return new OcpPropertySourcesPlaceholderConfigurer();
 	}
 
 }

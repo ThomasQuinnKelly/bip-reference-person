@@ -172,6 +172,11 @@
 				<artifactId>commons-logging</artifactId>
 				<version>${commons-logging.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				 <version>4.5.7</version>
+			</dependency>
 			<!-- 3rd party for ascii art enhanced logging -->
 			<dependency>
 				<groupId>com.github.lalyos</groupId>

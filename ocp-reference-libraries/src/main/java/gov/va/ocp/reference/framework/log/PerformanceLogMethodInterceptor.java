@@ -66,7 +66,7 @@ public class PerformanceLogMethodInterceptor implements MethodInterceptor {
 	 */
 	@Override
 	public final Object invoke(final MethodInvocation methodInvocation) throws Throwable {
-		final ReferenceLogger methodLog = ReferenceLoggerFactory.getLogger(methodInvocation.getMethod().getDeclaringClass());
+		final OcpLogger methodLog = OcpLoggerFactory.getLogger(methodInvocation.getMethod().getDeclaringClass());
 
 		// only log entry at the debug level
 		if (methodLog.isDebugEnabled()) {

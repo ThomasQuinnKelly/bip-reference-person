@@ -5,12 +5,12 @@ import java.lang.reflect.Method;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 public class PerformanceLoggingAspect {
 
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(PerformanceLoggingAspect.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(PerformanceLoggingAspect.class);
 
 	/** number of milliseconds in a second */
 	private static final int NUMBER_OF_MILLIS_N_A_SECOND = 1000;
@@ -48,11 +48,11 @@ public class PerformanceLoggingAspect {
 
 		Object returnObject = null;
 		Method method = null;
-		ReferenceLogger methodLog = null;
+		OcpLogger methodLog = null;
 		final long startTime = System.currentTimeMillis();
 		try {
 			method = ((MethodSignature) joinPoint.getStaticPart().getSignature()).getMethod();
-			methodLog = ReferenceLoggerFactory.getLogger(method.getDeclaringClass());
+			methodLog = OcpLoggerFactory.getLogger(method.getDeclaringClass());
 
 			// only log entry at the debug level
 			if (methodLog.isDebugEnabled()) {

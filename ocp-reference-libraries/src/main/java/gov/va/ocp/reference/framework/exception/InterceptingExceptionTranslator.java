@@ -8,9 +8,9 @@ import org.slf4j.event.Level;
 import org.springframework.aop.ThrowsAdvice;
 
 import gov.va.ocp.reference.framework.constants.AnnotationConstants;
-import gov.va.ocp.reference.framework.log.ReferenceBanner;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpBanner;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 /**
  * This is a configurable interceptor which will catch and translate one exception type into another. This is useful if
@@ -27,7 +27,7 @@ import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
 public class InterceptingExceptionTranslator implements ThrowsAdvice {
 
 	/** logger for this class. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(InterceptingExceptionTranslator.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(InterceptingExceptionTranslator.class);
 
 	/**
 	 * A map to tell us what keys to handle and convert into more specific exception types.
@@ -80,14 +80,14 @@ public class InterceptingExceptionTranslator implements ThrowsAdvice {
 		} catch (final InstantiationException e) {
 			InterceptingExceptionTranslator.LOGGER.error(
 					"InstantiationException likely configuration error, review log/configuration to troubleshoot", e);
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+			LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
 					"InstantiationException likely configuration error, review log/configuration to troubleshoot", e);
 
 
 		} catch (final IllegalAccessException e) {
 			InterceptingExceptionTranslator.LOGGER.error(
 					"IllegalAccessException likely configuration error, review log/configuration to troubleshoot", e);
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
+			LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR), 
 					"InstantiationException likely configuration error, review log/configuration to troubleshoot", e);
 
 		}

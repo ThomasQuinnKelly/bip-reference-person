@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * The values assigned to members in this class are defaults,
  * and are typically overridden in yml and spring configuration.
  */
-@ConfigurationProperties(prefix = "os.reference.security.jwt")
+@ConfigurationProperties(prefix = "ocp.security.jwt")
 public class JwtAuthenticationProperties {
 	private boolean enabled = true;
 	private String header = "Authorization";

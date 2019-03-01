@@ -1,6 +1,6 @@
 package gov.va.ocp.reference.framework.audit;
 
-import static gov.va.ocp.reference.framework.log.ReferenceBaseLogger.MAX_TOTAL_LOG_LEN;
+import static gov.va.ocp.reference.framework.log.OcpBaseLogger.MAX_TOTAL_LOG_LEN;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
@@ -34,9 +34,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 import gov.va.ocp.reference.framework.audit.AuditEventData;
 import gov.va.ocp.reference.framework.audit.AuditEvents;
 import gov.va.ocp.reference.framework.audit.AuditLogger;
-import gov.va.ocp.reference.framework.log.ReferenceBaseLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpBaseLogger;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.security.PersonTraits;
 
 /**
@@ -60,7 +60,7 @@ public class AuditLoggerTest {
 	// It's not quite necessary but it also shows you how it can be done
 	@Before
 	public void setup() {
-		ReferenceLoggerFactory.getLogger(ReferenceLogger.ROOT_LOGGER_NAME).getLoggerBoundImpl().addAppender(mockAppender);
+		OcpLoggerFactory.getLogger(OcpLogger.ROOT_LOGGER_NAME).getLoggerBoundImpl().addAppender(mockAppender);
 	}
 
 	// Always have this teardown otherwise we can stuff up our expectations.
@@ -69,7 +69,7 @@ public class AuditLoggerTest {
 	@SuppressWarnings("unchecked")
 	@After
 	public void teardown() {
-		ReferenceLoggerFactory.getLogger(ReferenceLogger.ROOT_LOGGER_NAME).getLoggerBoundImpl().detachAppender(mockAppender);
+		OcpLoggerFactory.getLogger(OcpLogger.ROOT_LOGGER_NAME).getLoggerBoundImpl().detachAppender(mockAppender);
 		SecurityContextHolder.clearContext();
 	}
 
@@ -275,20 +275,20 @@ public class AuditLoggerTest {
 		String stackTrace = null;
 		int messageLength = message == null ? 0 : message.length();
 		int stackTraceLength = 0;
-		int mdcReserveLength = gov.va.ocp.reference.framework.log.ReferenceBaseLogger.MDC_RESERVE_LENGTH;
+		int mdcReserveLength = gov.va.ocp.reference.framework.log.OcpBaseLogger.MDC_RESERVE_LENGTH;
 
 		int captureCount = 0;
 
-		ReferenceBaseLogger logger = ReferenceLoggerFactory.getLogger(ReferenceLogger.ROOT_LOGGER_NAME);
+		OcpBaseLogger logger = OcpLoggerFactory.getLogger(OcpLogger.ROOT_LOGGER_NAME);
 		if (mdcReserveLength + messageLength + stackTraceLength > MAX_TOTAL_LOG_LEN) {
-			if (messageLength >= gov.va.ocp.reference.framework.log.ReferenceBaseLogger.MAX_MSG_LENGTH) {
+			if (messageLength >= gov.va.ocp.reference.framework.log.OcpBaseLogger.MAX_MSG_LENGTH) {
 				String[] splitMessages = ReflectionTestUtils.invokeMethod(logger, "splitMessages", message);
 				captureCount = splitMessages.length;
 			} else {
 				captureCount = 1;
 			}
 
-			if (stackTraceLength >= gov.va.ocp.reference.framework.log.ReferenceBaseLogger.MAX_STACK_TRACE_TEXT_LENGTH) {
+			if (stackTraceLength >= gov.va.ocp.reference.framework.log.OcpBaseLogger.MAX_STACK_TRACE_TEXT_LENGTH) {
 				String[] splitstackTrace = ReflectionTestUtils.invokeMethod(logger, "splitStackTraceText", stackTrace);
 				captureCount = captureCount + splitstackTrace.length;
 			} else if (stackTraceLength != 0) {
