@@ -32,10 +32,10 @@ Feature: PID based Person Info from Person Partner Service.
     Examples: 
       | Veteran           | tokenrequestfile               | ServiceURL          | RequestFile         | Text                                           |
       | dev-janedoe       | dev/janedoetoken.request       | /api/v1/persons/pid | dev/invalid.request | No person found for participantID 12           |
-      | dev-russellwatson | dev/russellwatsontoken.request | /api/v1/persons/pid | dev/null.request    | PersonInfoRequest.participantID cannot be null |
+      | dev-russellwatson | dev/russellwatsontoken.request | /api/v1/persons/pid | dev/null.request    | PersonByPidDomainRequest.participantID cannot be null |
 
     @VA
     Examples: 
       | Veteran          | tokenrequestfile              | ServiceURL          | RequestFile        | Text                                           |
       | va-janedoe       | va/janedoetoken.request       | /api/v1/persons/pid | va/invalid.request | No person found for participantID 12           |
-      | va-russellwatson | va/russellwatsontoken.request | /api/v1/persons/pid | va/null.request    | PersonInfoRequest.participantID cannot be null |
+      | va-russellwatson | va/russellwatsontoken.request | /api/v1/persons/pid | va/null.request    | PersonByPidDomainRequest.participantID cannot be null |
