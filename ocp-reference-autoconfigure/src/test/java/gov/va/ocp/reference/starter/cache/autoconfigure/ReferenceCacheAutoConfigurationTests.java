@@ -1,4 +1,4 @@
-package gov.va.os.reference.starter.cache.autoconfigure;
+package gov.va.ocp.reference.starter.cache.autoconfigure;
 
 import static org.junit.Assert.assertNotNull;
 

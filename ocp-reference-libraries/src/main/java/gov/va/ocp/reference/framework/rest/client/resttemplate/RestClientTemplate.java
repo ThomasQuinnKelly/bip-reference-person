@@ -58,4 +58,19 @@ public class RestClientTemplate {
 	public <T> ResponseEntity<T> executeURL(String url, HttpMethod methodType, HttpEntity<?> requestEntity, ParameterizedTypeReference<T> responseType) {
 		return this.restTemplate.exchange(url, methodType, requestEntity, responseType);
 	}
+	
+
+	/**
+	 * Post for entity.
+	 *
+	 * @param <T> the generic type
+	 * @param url the url
+	 * @param methodType the method type
+	 * @param requestEntity the request entity
+	 * @param responseType the response type
+	 * @return the response entity
+	 */
+	public <T> ResponseEntity<T> postForEntity(String url, HttpEntity<?> requestEntity, Class<T> responseType) {
+		return this.restTemplate.postForEntity(url, requestEntity, responseType);
+	}
 }

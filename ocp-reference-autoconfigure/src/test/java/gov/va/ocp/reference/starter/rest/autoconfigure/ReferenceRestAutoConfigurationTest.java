@@ -37,7 +37,7 @@ public class ReferenceRestAutoConfigurationTest {
 	public void setup() {
 		context = new AnnotationConfigWebApplicationContext();
 		TestPropertyValues.of("feign.hystrix.enabled=true").applyTo(context);;
-		TestPropertyValues.of("os.reference.rest.client.connection-timeout=" + CONNECTION_TIMEOUT).applyTo(context);;
+		TestPropertyValues.of("ocp.rest.client.connectionTimeout=" + CONNECTION_TIMEOUT).applyTo(context);;
 		context.register(JacksonAutoConfiguration.class, SecurityAutoConfiguration.class, EmbeddedWebServerFactoryCustomizerAutoConfiguration.class,
 				ReferenceSecurityAutoConfiguration.class,
 				ReferenceAuditAutoConfiguration.class, ReferenceRestAutoConfiguration.class,
@@ -60,7 +60,7 @@ public class ReferenceRestAutoConfigurationTest {
 
 	@Test
 	public void testConfiguration_Broken() {
-		TestPropertyValues.of("os.reference.rest.client.connection-timeout=BLAHBLAH").applyTo(context);
+		TestPropertyValues.of("ocp.rest.client.connectionTimeout=BLAHBLAH").applyTo(context);
 
 		try {
 			context.refresh();
@@ -69,7 +69,7 @@ public class ReferenceRestAutoConfigurationTest {
 		} catch (Exception e) {
 			assertTrue(BeansException.class.isAssignableFrom(e.getClass()));
 		} finally {
-			TestPropertyValues.of("os.reference.rest.client.connection-timeout=" + CONNECTION_TIMEOUT).applyTo(context);;
+			TestPropertyValues.of("ocp.rest.client.connectionTimeout=" + CONNECTION_TIMEOUT).applyTo(context);;
 			context.refresh();
 			referenceRestAutoConfiguration = context.getBean(ReferenceRestAutoConfiguration.class);
 			assertNotNull(referenceRestAutoConfiguration);

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import gov.va.ocp.reference.framework.log.ReferenceLogger;
 import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
 
-@ConfigurationProperties(prefix = "reference.cache")
+@ConfigurationProperties(prefix = "ocp.cache")
 @Configuration
 public class ReferenceCacheProperties {
 

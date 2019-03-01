@@ -40,7 +40,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableConfigurationProperties(SwaggerProperties.class)
 @EnableSwagger2
-@ConditionalOnProperty(prefix = "os.reference.swagger", name = "enabled", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "ocp.swagger", name = "enabled", matchIfMissing = true)
 @Import({ BeanValidatorPluginsConfiguration.class })
 public class SwaggerAutoConfiguration {
 

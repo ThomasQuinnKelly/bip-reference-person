@@ -4,8 +4,8 @@ os-reference-partner.ws.client.endpoint: http://localhost:9736/testEndPoint
 #*********************************************************************
 # Apache Trusted Crypto Configuration Security files
 #*********************************************************************
-os.reference.security.crypto.provider: org.apache.ws.security.components.crypto.Merlin
-os.reference.security.crypto.keystore.type: jks
-os.reference.security.crypto.keystore.alias: ebn_vbms_cert
-os.reference.security.crypto.keystore.password: changeit
-os.reference.security.crypto.keystore.keystore:  /encryption/EFolderService/vbmsKeystore.jks
+ocp.reference.security.crypto.provider: org.apache.ws.security.components.crypto.Merlin
+ocp.reference.security.crypto.keystore.type: jks
+ocp.reference.security.crypto.keystore.alias: ebn_vbms_cert
+ocp.reference.security.crypto.keystore.password: changeit
+ocp.reference.security.crypto.keystore.keystore:  /encryption/EFolderService/vbmsKeystore.jks

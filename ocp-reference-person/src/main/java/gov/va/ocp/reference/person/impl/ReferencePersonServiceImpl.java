@@ -3,7 +3,6 @@ package gov.va.ocp.reference.person.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,6 @@ import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
 import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.framework.security.PersonTraits;
-import gov.va.ocp.reference.framework.security.SecurityUtils;
 import gov.va.ocp.reference.framework.util.Defense;
 import gov.va.ocp.reference.framework.util.ReferenceCacheUtil;
 import gov.va.ocp.reference.person.api.ReferencePersonService;
@@ -116,31 +113,24 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		}
 
 		/* TODO below checks belong in business validation, not in this class */
-
+		
 		// check if errors or fatals returned
 		if (response == null || response.getPersonInfo() == null
 				&& !response.hasErrors() && !response.hasFatals()) {
 			LOGGER.info("findPersonByParticipantID empty response - throwing PersonServiceException: " + INVOKE_FALLBACK_MESSAGE);
 			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
 		}
-		// check requested pid = returned pid
-		if (response.getPersonInfo().getParticipantId() != personInfoRequest.getParticipantID()) {
-			LOGGER.info("findPersonByParticipantID response has different PID than the request - throwing PersonServiceException: "
-					+ INVOKE_FALLBACK_MESSAGE);
-			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
-		}
-		// check logged in user's pid matches returned pid - cannot request other people's info
-		PersonTraits personTraits = SecurityUtils.getPersonTraits();
-		if (personTraits != null && StringUtils.isNotBlank(personTraits.getPid())) {
-			if (response.getPersonInfo() != null
-					&& response.getPersonInfo().getParticipantId() != null
-					&& !personTraits.getPid().equals(response.getPersonInfo().getParticipantId().toString())) {
-				LOGGER.info(
-						"findPersonByParticipantID response has different PID than the logged in user - throwing PersonServiceException: "
-								+ INVOKE_FALLBACK_MESSAGE);
-				throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
-			}
-		}
+//		// check logged in user's pid matches returned pid - cannot request other people's info
+//		PersonTraits personTraits = SecurityUtils.getPersonTraits();
+//		if (personTraits != null && StringUtils.isNotBlank(personTraits.getPid())) {
+//			if (response.getPersonInfo() != null
+//					&& response.getPersonInfo().getParticipantId() != null
+//					&& !personTraits.getPid().equals(String.valueOf(response.getPersonInfo().getParticipantId()))) {
+//				final String message = "findPersonByParticipantID response has different PID than the logged in user: ";
+//				LOGGER.error(message + INVOKE_FALLBACK_MESSAGE);
+//				throw new PersonServiceException(message + INVOKE_FALLBACK_MESSAGE);
+//			}
+//		}
 		return response;
 	}
 

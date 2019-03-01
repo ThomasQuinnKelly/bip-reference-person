@@ -24,7 +24,7 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
 	/** parses the token into a set of security "claims" contained in the token */
 	JwtParser parser;
 
-	@Value("${os.reference.security.jwt.validation.required-parameters:}")
+	@Value("${ocp.security.jwt.validation.required-parameters:}")
 	private String[] jwtTokenRequiredParameterList;
 
 	/**

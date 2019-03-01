@@ -6,20 +6,20 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Created by vgadda on 8/3/17.
  */
 
-@ConfigurationProperties(prefix = "os.reference.swagger")
+@ConfigurationProperties(prefix = "ocp.swagger")
 public class SwaggerProperties {
 
 	private boolean enabled = true;
 
-	private String securePaths = "[Api secure paths via os.reference.swagger.securePaths]";
+	private String securePaths = "[Api secure paths via ocp.swagger.securePaths]";
 
-	private String groupName = "[Api Group Name via os.reference.swagger.groupName]";
+	private String groupName = "[Api Group Name via ocp.swagger.groupName]";
 
-	private String title = "[Api title via 'os.reference.swagger.title']";
+	private String title = "[Api title via 'ocp.swagger.title']";
 
-	private String description = "[Api description via 'os.reference.swagger.description']";
+	private String description = "[Api description via 'ocp.swagger.description']";
 
-	private String version = "[Api version via 'os.reference.swagger.version']";
+	private String version = "[Api version via 'ocp.swagger.version']";
 
 	public boolean isEnabled() {
 		return enabled;
