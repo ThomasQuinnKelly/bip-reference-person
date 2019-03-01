@@ -18,13 +18,13 @@ import org.slf4j.event.Level;
 
 import gov.va.ocp.reference.framework.AbstractBaseLogTester;
 import gov.va.ocp.reference.framework.log.PerformanceLogMethodInterceptor;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
+import gov.va.ocp.reference.framework.log.OcpLogger;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PerformanceLogMethodInterceptorTest extends AbstractBaseLogTester {
 
-	/** The underlying logger of ReferenceLogger */
-	private ReferenceLogger LOG = super.getLogger(PerformanceLogMethodInterceptorTest.class);
+	/** The underlying logger of OcpLogger */
+	private OcpLogger LOG = super.getLogger(PerformanceLogMethodInterceptorTest.class);
 
 	@Mock
 	MethodInvocation invocation;

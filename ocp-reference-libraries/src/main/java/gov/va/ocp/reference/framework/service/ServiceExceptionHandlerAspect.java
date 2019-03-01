@@ -9,9 +9,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 
 import gov.va.ocp.reference.framework.exception.ExceptionToExceptionTranslationHandler;
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.util.Defense;
 
 /**
@@ -26,7 +26,7 @@ import gov.va.ocp.reference.framework.util.Defense;
 @Aspect
 public class ServiceExceptionHandlerAspect extends BaseServiceAspect {
 
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(ServiceExceptionHandlerAspect.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(ServiceExceptionHandlerAspect.class);
 
 	private ExceptionToExceptionTranslationHandler exceptionToExceptionTranslator;
 
@@ -35,9 +35,9 @@ public class ServiceExceptionHandlerAspect extends BaseServiceAspect {
 	 * Explicitly declare this bean and use the other constructor(s) to customize the translator.
 	 */
 	public ServiceExceptionHandlerAspect() {
-		// this to prevent double wrapping of ReferenceRuntimeException
+		// this to prevent double wrapping of OcpRuntimeException
 		final Set<Class<? extends Throwable>> exclusionSet = new HashSet<>();
-		exclusionSet.add(ReferenceRuntimeException.class);
+		exclusionSet.add(OcpRuntimeException.class);
 		exclusionSet.add(IllegalArgumentException.class);
 		this.exceptionToExceptionTranslator = new ExceptionToExceptionTranslationHandler(
 				null, exclusionSet, ServiceException.class);

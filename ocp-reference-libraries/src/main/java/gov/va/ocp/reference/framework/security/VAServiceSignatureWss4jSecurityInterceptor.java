@@ -19,9 +19,9 @@ import org.springframework.ws.soap.SoapMessage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 /**
  * A Wss4j2 Security Interceptor to digitally sign a soap message.
@@ -49,7 +49,7 @@ import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
 public abstract class VAServiceSignatureWss4jSecurityInterceptor extends AbstractWss4jSecurityInterceptor {
 
 	/** The Constant LOGGER. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(VAServiceSignatureWss4jSecurityInterceptor.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(VAServiceSignatureWss4jSecurityInterceptor.class);
 	private static final String SIGN = " sign {} ";
 
 	/**
@@ -113,7 +113,7 @@ public abstract class VAServiceSignatureWss4jSecurityInterceptor extends Abstrac
 
 		} catch (final WSSecurityException e) {
 			LOGGER.error("failed encryption ", e);
-			throw new ReferenceRuntimeException(e);
+			throw new OcpRuntimeException(e);
 		}
 	}
 

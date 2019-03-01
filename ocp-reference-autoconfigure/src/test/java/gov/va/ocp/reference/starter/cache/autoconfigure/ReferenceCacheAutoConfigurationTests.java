@@ -15,7 +15,7 @@ import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import gov.va.ocp.reference.starter.cache.autoconfigure.ReferenceCacheAutoConfiguration;
+import gov.va.ocp.reference.starter.cache.autoconfigure.OcpCacheAutoConfiguration;
 
 /**
  * Created by vgadda on 8/11/17.
@@ -42,7 +42,7 @@ public class ReferenceCacheAutoConfigurationTests {
 	public void testReferenceCacheConfiguration() throws Exception {
 		context = new AnnotationConfigApplicationContext();
 		TestPropertyValues.of("spring.cache.type=redis").applyTo(context);
-		context.register(RedisAutoConfiguration.class, ReferenceCacheAutoConfiguration.class);
+		context.register(RedisAutoConfiguration.class, OcpCacheAutoConfiguration.class);
 		context.refresh();
 		assertNotNull(context);
 		CacheManager cacheManager = context.getBean(CacheManager.class);
@@ -53,7 +53,7 @@ public class ReferenceCacheAutoConfigurationTests {
 	public void testReferenceCacheConfigurationKeyGenerator() throws Exception {
 		context = new AnnotationConfigApplicationContext();
 		TestPropertyValues.of("spring.cache.type=redis").applyTo(context);
-		context.register(RedisAutoConfiguration.class, ReferenceCacheAutoConfiguration.class);
+		context.register(RedisAutoConfiguration.class, OcpCacheAutoConfiguration.class);
 		context.refresh();
 		assertNotNull(context);
 		KeyGenerator keyGenerator = context.getBean(KeyGenerator.class);
@@ -65,24 +65,24 @@ public class ReferenceCacheAutoConfigurationTests {
 	public void testCacheGetError() throws Exception {
 		context = new AnnotationConfigApplicationContext();
 		TestPropertyValues.of("spring.cache.type=redis").applyTo(context);
-		context.register(RedisAutoConfiguration.class, ReferenceCacheAutoConfiguration.class);
+		context.register(RedisAutoConfiguration.class, OcpCacheAutoConfiguration.class);
 		context.refresh();
 		assertNotNull(context);
 
-		ReferenceCacheAutoConfiguration referenceCacheAutoConfiguration = context.getBean(ReferenceCacheAutoConfiguration.class);
-		referenceCacheAutoConfiguration.errorHandler().handleCacheGetError(new RuntimeException("Test Message"), mockCache, "TestKey");
+		OcpCacheAutoConfiguration ocpCacheAutoConfiguration = context.getBean(OcpCacheAutoConfiguration.class);
+		ocpCacheAutoConfiguration.errorHandler().handleCacheGetError(new RuntimeException("Test Message"), mockCache, "TestKey");
 	}
 
 	@Test
 	public void testCachePutError() throws Exception {
 		context = new AnnotationConfigApplicationContext();
 		TestPropertyValues.of("spring.cache.type=redis").applyTo(context);
-		context.register(RedisAutoConfiguration.class, ReferenceCacheAutoConfiguration.class);
+		context.register(RedisAutoConfiguration.class, OcpCacheAutoConfiguration.class);
 		context.refresh();
 		assertNotNull(context);
 
-		ReferenceCacheAutoConfiguration referenceCacheAutoConfiguration = context.getBean(ReferenceCacheAutoConfiguration.class);
-		referenceCacheAutoConfiguration.errorHandler().handleCachePutError(new RuntimeException("Test Message"), mockCache, "TestKey",
+		OcpCacheAutoConfiguration ocpCacheAutoConfiguration = context.getBean(OcpCacheAutoConfiguration.class);
+		ocpCacheAutoConfiguration.errorHandler().handleCachePutError(new RuntimeException("Test Message"), mockCache, "TestKey",
 				"TestValue");
 	}
 
@@ -90,24 +90,24 @@ public class ReferenceCacheAutoConfigurationTests {
 	public void testCacheEvictError() throws Exception {
 		context = new AnnotationConfigApplicationContext();
 		TestPropertyValues.of("spring.cache.type=redis").applyTo(context);
-		context.register(RedisAutoConfiguration.class, ReferenceCacheAutoConfiguration.class);
+		context.register(RedisAutoConfiguration.class, OcpCacheAutoConfiguration.class);
 		context.refresh();
 		assertNotNull(context);
 
-		ReferenceCacheAutoConfiguration referenceCacheAutoConfiguration = context.getBean(ReferenceCacheAutoConfiguration.class);
-		referenceCacheAutoConfiguration.errorHandler().handleCacheEvictError(new RuntimeException("Test Message"), mockCache, "TestKey");
+		OcpCacheAutoConfiguration ocpCacheAutoConfiguration = context.getBean(OcpCacheAutoConfiguration.class);
+		ocpCacheAutoConfiguration.errorHandler().handleCacheEvictError(new RuntimeException("Test Message"), mockCache, "TestKey");
 	}
 
 	@Test
 	public void testCacheClearError() throws Exception {
 		context = new AnnotationConfigApplicationContext();
 		TestPropertyValues.of("spring.cache.type=redis").applyTo(context);
-		context.register(RedisAutoConfiguration.class, ReferenceCacheAutoConfiguration.class);
+		context.register(RedisAutoConfiguration.class, OcpCacheAutoConfiguration.class);
 		context.refresh();
 		assertNotNull(context);
 
-		ReferenceCacheAutoConfiguration referenceCacheAutoConfiguration = context.getBean(ReferenceCacheAutoConfiguration.class);
-		referenceCacheAutoConfiguration.errorHandler().handleCacheClearError(new RuntimeException("Test Message"), mockCache);
+		OcpCacheAutoConfiguration ocpCacheAutoConfiguration = context.getBean(OcpCacheAutoConfiguration.class);
+		ocpCacheAutoConfiguration.errorHandler().handleCacheClearError(new RuntimeException("Test Message"), mockCache);
 	}
 
 	public Method myMethod() throws NoSuchMethodException {

@@ -7,8 +7,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
@@ -17,8 +17,8 @@ import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
 import gov.va.ocp.reference.partner.person.ws.transfer.ObjectFactory;
 import gov.va.ocp.reference.person.exception.PersonServiceException;
-import gov.va.ocp.reference.person.model.person.v1.PersonInfoRequest;
-import gov.va.ocp.reference.person.model.person.v1.PersonInfoResponse;
+import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
+import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 import gov.va.ocp.reference.person.transform.impl.PersonByPid_DomainToPartner;
 import gov.va.ocp.reference.person.transform.impl.PersonByPid_PartnerToDomain;
 import gov.va.ocp.reference.person.utils.StringUtil;
@@ -32,7 +32,7 @@ import gov.va.ocp.reference.person.utils.StringUtil;
 public class PersonServiceHelper {
 	public static final String BEAN_NAME = "personServiceHelper";
 	/** Logger */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(PersonServiceHelper.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(PersonServiceHelper.class);
 
 	/** String to prepend messages for re-thrown exceptions */
 	private static final String THROWSTR = "Rethrowing the following exception:  ";
@@ -59,15 +59,15 @@ public class PersonServiceHelper {
 	/**
 	 * Make the partner call to find person information by participant id.
 	 *
-	 * @param request the {@link PersonInfoRequest} from the domain
-	 * @return PersonInfoResponse domain representation of the partner response
+	 * @param request the {@link PersonByPidDomainRequest} from the domain
+	 * @return PersonByPidDomainResponse domain representation of the partner response
 	 */
-	public PersonInfoResponse findPersonByPid(PersonInfoRequest request) {
+	public PersonByPidDomainResponse findPersonByPid(PersonByPidDomainRequest request) {
 
 		FindPersonByPtcpntId partnerRequest = personByPidD2P.transform(request);
 
 		FindPersonByPtcpntIdResponse partnerResponse = null;
-		PersonInfoResponse domainResponse = null;
+		PersonByPidDomainResponse domainResponse = null;
 		try {
 			partnerResponse = personWsClient.getPersonInfoByPtcpntId(partnerRequest);
 		} catch (final Exception clientException) {
@@ -78,14 +78,14 @@ public class PersonServiceHelper {
 
 		domainResponse = personByPidP2D.transform(partnerResponse);
 		
-		LOGGER.debug("PersonInfoResponse: {}", (domainResponse == null ? "" : ToStringBuilder.reflectionToString(domainResponse)));
+		LOGGER.debug("PersonByPidDomainResponse: {}", (domainResponse == null ? "" : ToStringBuilder.reflectionToString(domainResponse)));
 		LOGGER.debug("FindPersonByPtcpntIdResponse: {}", (partnerResponse == null ? "" : ToStringBuilder.reflectionToString(partnerResponse)));
 
 		List<Message> messages = checkPartnerResponse(request.getParticipantID(), partnerResponse);
 		if (messages != null && !messages.isEmpty()) {
 			domainResponse.addMessages(messages);
 		}
-		LOGGER.debug("PersonInfoResponse after addMessages: {}", (domainResponse == null ? "" : ToStringBuilder.reflectionToString(domainResponse)));
+		LOGGER.debug("PersonByPidDomainResponse after addMessages: {}", (domainResponse == null ? "" : ToStringBuilder.reflectionToString(domainResponse)));
 		return domainResponse;
 	}
 

@@ -2,7 +2,7 @@ package gov.va.ocp.reference.framework.rest.client.exception;
 
 import org.springframework.http.ResponseEntity;
 
-import gov.va.ocp.reference.framework.service.ServiceResponse;
+import gov.va.ocp.reference.framework.service.DomainResponse;
 
 /**
  * Exception Class for REST Template calls for ServiceResponse
@@ -14,14 +14,14 @@ public class ResponseEntityErrorException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
 	/** The error response. */
-	private ResponseEntity<ServiceResponse> errorResponse;
+	private ResponseEntity<DomainResponse> errorResponse;
 	
 	/**
 	 * Instantiates a new response entity error exception.
 	 *
 	 * @param errorResponse the error response
 	 */
-	public ResponseEntityErrorException(ResponseEntity<ServiceResponse> errorResponse) {
+	public ResponseEntityErrorException(ResponseEntity<DomainResponse> errorResponse) {
 	     this.errorResponse = errorResponse;
 	}
 	  
@@ -30,7 +30,7 @@ public class ResponseEntityErrorException extends RuntimeException {
   	 *
   	 * @return the error response
   	 */
-  	public ResponseEntity<ServiceResponse> getErrorResponse() {
+  	public ResponseEntity<DomainResponse> getErrorResponse() {
 	      return errorResponse;
 	  }
 	}

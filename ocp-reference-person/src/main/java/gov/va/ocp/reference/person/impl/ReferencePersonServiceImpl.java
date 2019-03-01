@@ -3,6 +3,7 @@ package gov.va.ocp.reference.person.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +18,18 @@ import org.springframework.stereotype.Service;
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
 import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
+import gov.va.ocp.reference.framework.security.PersonTraits;
+import gov.va.ocp.reference.framework.security.SecurityUtils;
 import gov.va.ocp.reference.framework.util.Defense;
-import gov.va.ocp.reference.framework.util.ReferenceCacheUtil;
+import gov.va.ocp.reference.framework.util.OcpCacheUtil;
 import gov.va.ocp.reference.person.api.ReferencePersonService;
 import gov.va.ocp.reference.person.exception.PersonServiceException;
-import gov.va.ocp.reference.person.model.person.v1.PersonInfoRequest;
-import gov.va.ocp.reference.person.model.person.v1.PersonInfoResponse;
+import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
+import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 import gov.va.ocp.reference.person.utils.CacheConstants;
 import gov.va.ocp.reference.person.utils.HystrixCommandConstants;
 import gov.va.ocp.reference.person.ws.client.PersonServiceHelper;
@@ -72,35 +75,35 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 */
 	@Override
 	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE,
-			key = "#root.methodName + T(gov.va.ocp.reference.framework.util.ReferenceCacheUtil).createKey(#personInfoRequest.participantID)",
-			unless = "T(gov.va.ocp.reference.framework.util.ReferenceCacheUtil).checkResultConditions(#result)")
+			key = "#root.methodName + T(gov.va.ocp.reference.framework.util.OcpCacheUtil).createKey(#personByPidDomainRequest.participantID)",
+			unless = "T(gov.va.ocp.reference.framework.util.OcpCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
 			ignoreExceptions = { IllegalArgumentException.class })
-	public PersonInfoResponse findPersonByParticipantID(final PersonInfoRequest personInfoRequest) {
+	public PersonByPidDomainResponse findPersonByParticipantID(final PersonByPidDomainRequest personByPidDomainRequest) {
 		// Check for WS Client reference.
 		Defense.notNull(personServiceHelper,
 				"Unable to proceed with Person Service request. The personServiceHelper must not be null.");
 		// Check for valid input arguments. If validation fails, throws IllegalArgumentException
 		try {
-			PersonDomainValidator.validatePersonInfoRequest(personInfoRequest);
+			PersonDomainValidator.validatePersonInfoRequest(personByPidDomainRequest);
 		} catch (final IllegalArgumentException e) {
-			final PersonInfoResponse personInfoResponse = new PersonInfoResponse();
-			personInfoResponse.addMessage(MessageSeverity.ERROR,
+			final PersonByPidDomainResponse personByPidDomainResponse = new PersonByPidDomainResponse();
+			personByPidDomainResponse.addMessage(MessageSeverity.ERROR,
 					HttpStatus.BAD_REQUEST.name(), e.getMessage(), HttpStatusForMessage.BAD_REQUEST);
 			LOGGER.error("Exception raised {}", e);
-			return personInfoResponse;
+			return personByPidDomainResponse;
 		}
-		String cacheKey = "findPersonByParticipantID" + ReferenceCacheUtil.createKey(personInfoRequest.getParticipantID());
+		String cacheKey = "findPersonByParticipantID" + OcpCacheUtil.createKey(personByPidDomainRequest.getParticipantID());
 
 		// try from cache
-		PersonInfoResponse response = null;
+		PersonByPidDomainResponse response = null;
 		try {
 			if (cacheManager != null && cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE) != null
 					&& cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey) != null) {
 				LOGGER.debug("findPersonByParticipantID returning cached data");
 				response =
 						cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey,
-								PersonInfoResponse.class);
+								PersonByPidDomainResponse.class);
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
@@ -109,26 +112,33 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		// try from partner
 		if (response == null) {
 			LOGGER.debug("findPersonByParticipantID no cached data found");
-			response = personServiceHelper.findPersonByPid(personInfoRequest);
+			response = personServiceHelper.findPersonByPid(personByPidDomainRequest);
 		}
 
 		/* TODO below checks belong in business validation, not in this class */
-		
+
 		// check if errors or fatals returned
 		if (response == null || response.getPersonInfo() == null
 				&& !response.hasErrors() && !response.hasFatals()) {
 			LOGGER.info("findPersonByParticipantID empty response - throwing PersonServiceException: " + INVOKE_FALLBACK_MESSAGE);
 			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
 		}
-//		// check logged in user's pid matches returned pid - cannot request other people's info
+		// check requested pid = returned pid
+//		if (response.getPersonInfo().getParticipantId() != personByPidDomainRequest.getParticipantID()) {
+//			LOGGER.info("findPersonByParticipantID response has different PID than the request - throwing PersonServiceException: "
+//					+ INVOKE_FALLBACK_MESSAGE);
+//			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
+//		}
+		// check logged in user's pid matches returned pid - cannot request other people's info
 //		PersonTraits personTraits = SecurityUtils.getPersonTraits();
 //		if (personTraits != null && StringUtils.isNotBlank(personTraits.getPid())) {
 //			if (response.getPersonInfo() != null
 //					&& response.getPersonInfo().getParticipantId() != null
-//					&& !personTraits.getPid().equals(String.valueOf(response.getPersonInfo().getParticipantId()))) {
-//				final String message = "findPersonByParticipantID response has different PID than the logged in user: ";
-//				LOGGER.error(message + INVOKE_FALLBACK_MESSAGE);
-//				throw new PersonServiceException(message + INVOKE_FALLBACK_MESSAGE);
+//					&& !personTraits.getPid().equals(response.getPersonInfo().getParticipantId().toString())) {
+//				LOGGER.info(
+//						"findPersonByParticipantID response has different PID than the logged in user - throwing PersonServiceException: "
+//								+ INVOKE_FALLBACK_MESSAGE);
+//				throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
 //			}
 //		}
 		return response;
@@ -138,14 +148,14 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 * Hystrix Fallback Method Which is Triggered When there Is An Unexpected Exception
 	 * in findPersonByParticipantID method.
 	 *
-	 * @param personInfoRequest The request from the Java Service.
+	 * @param personByPidDomainRequest The request from the Java Service.
 	 * @param throwable the throwable
 	 * @return A JAXB element for the WS request
 	 */
 	@HystrixCommand(commandKey = "FindPersonByParticipantIDFallBackCommand")
-	public PersonInfoResponse findPersonByParticipantIDFallBack(final PersonInfoRequest personInfoRequest, final Throwable throwable) {
+	public PersonByPidDomainResponse findPersonByParticipantIDFallBack(final PersonByPidDomainRequest personByPidDomainRequest, final Throwable throwable) {
 		LOGGER.info("Hystrix findPersonByParticipantIDFallBack has been activated");
-		final PersonInfoResponse response = new PersonInfoResponse();
+		final PersonByPidDomainResponse response = new PersonByPidDomainResponse();
 		if (throwable != null) {
 			final String msg = throwable.getMessage();
 			final List<Message> messages = new ArrayList<>();
@@ -162,8 +172,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		} else {
 			LOGGER.error(
 					"findPersonByParticipantIDFallBack No Throwable Exception and No Cached Data. Just Raise Runtime Exception {}",
-					personInfoRequest);
-			throw new ReferenceRuntimeException("There was a problem processing your request.");
+					personByPidDomainRequest);
+			throw new OcpRuntimeException("There was a problem processing your request.");
 		}
 	}
 

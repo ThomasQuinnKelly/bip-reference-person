@@ -7,9 +7,9 @@ import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.soap.SoapMessage;
 import org.w3c.dom.Document;
 
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 /**
  * A Wss4j2 Security Interceptor to add a timestamp and time-to-live to a soap message.
@@ -19,7 +19,7 @@ public abstract class VAServiceTimeStampWss4jSecurityInterceptor extends Abstrac
 	private static final String TIMESTAMP = "Timestamp";
 
 	/** The Constant LOGGER. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(VAServiceTimeStampWss4jSecurityInterceptor.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(VAServiceTimeStampWss4jSecurityInterceptor.class);
 
 	/** The time stamp. */
 	private String timeStampTtl;
@@ -56,7 +56,7 @@ public abstract class VAServiceTimeStampWss4jSecurityInterceptor extends Abstrac
 
 		} catch (final WSSecurityException e) {
 			LOGGER.error("failed encryption ", e);
-			throw new ReferenceRuntimeException(e);
+			throw new OcpRuntimeException(e);
 		}
 
 	}

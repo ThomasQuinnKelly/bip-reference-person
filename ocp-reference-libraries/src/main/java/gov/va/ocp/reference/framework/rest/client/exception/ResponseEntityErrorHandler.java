@@ -10,7 +10,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.client.HttpMessageConverterExtractor;
 import org.springframework.web.client.ResponseErrorHandler;
 
-import gov.va.ocp.reference.framework.service.ServiceResponse;
+import gov.va.ocp.reference.framework.service.DomainResponse;
 
 /**
  * Error handler for RestTemplate to determine whether a particular response has an error or not.
@@ -45,9 +45,9 @@ public class ResponseEntityErrorHandler implements ResponseErrorHandler {
   	 */
   	@Override
 	  public void handleError(ClientHttpResponse response) throws IOException {
-	    HttpMessageConverterExtractor<ServiceResponse> errorMessageExtractor =
-	      new HttpMessageConverterExtractor<ServiceResponse>(ServiceResponse.class, messageConverters);
-	    ServiceResponse errorObject = errorMessageExtractor.extractData(response);
+	    HttpMessageConverterExtractor<DomainResponse> errorMessageExtractor =
+	      new HttpMessageConverterExtractor<DomainResponse>(DomainResponse.class, messageConverters);
+	    DomainResponse errorObject = errorMessageExtractor.extractData(response);
 	   throw new ResponseEntityErrorException(ResponseEntity.status(response.getRawStatusCode()).headers(response.getHeaders()).body(errorObject));
 	  }
 

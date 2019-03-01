@@ -7,8 +7,8 @@ import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.messages.Message;
 
 /**
@@ -21,7 +21,7 @@ import gov.va.ocp.reference.framework.messages.Message;
 public final class MessagesToHttpStatusRulesEngine {
 
 	/** The Constant LOGGER. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(MessagesToHttpStatusRulesEngine.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(MessagesToHttpStatusRulesEngine.class);
 
 	/** The Constant NUMBER_OF_MILLIS_N_A_SECOND. */
 	private static final int NUMBER_OF_MILLIS_N_A_SECOND = 1000;
@@ -50,14 +50,14 @@ public final class MessagesToHttpStatusRulesEngine {
 		}
 
 		HttpStatus returnResponse = null;
-		if ((messagesInResponse != null) && !messagesInResponse.isEmpty() && !rules.isEmpty()) {
+		if (messagesInResponse != null && !messagesInResponse.isEmpty() && !rules.isEmpty()) {
 			returnResponse = evalMessagesAgainstRules(messagesInResponse, rules);
 		}
 
 		if (LOGGER.isDebugEnabled()) {
 			final long elapsedTime = System.currentTimeMillis() - startTime;
-			LOGGER.info("Rules engine execution time: " + (elapsedTime / NUMBER_OF_MILLIS_N_A_SECOND) + DOT
-					+ (elapsedTime % NUMBER_OF_MILLIS_N_A_SECOND) + SECS);
+			LOGGER.info("Rules engine execution time: " + elapsedTime / NUMBER_OF_MILLIS_N_A_SECOND + DOT
+					+ elapsedTime % NUMBER_OF_MILLIS_N_A_SECOND + SECS);
 		}
 
 		return returnResponse;
@@ -77,10 +77,10 @@ public final class MessagesToHttpStatusRulesEngine {
 		boolean has4xxErrors = false;
 		for (final Message message : messagesInResponse) {
 			// check if any message has a 500 error status
-			has5xxErrors = has5xxErrors || (message.getStatusEnum() == null) ? false : message.getStatusEnum().is5xxServerError();
-			has4xxErrors = has4xxErrors || (message.getStatusEnum() == null) ? false : message.getStatusEnum().is4xxClientError();
+			has5xxErrors = has5xxErrors || message.getStatusEnum() == null ? false : message.getStatusEnum().is5xxServerError();
+			has4xxErrors = has4xxErrors || message.getStatusEnum() == null ? false : message.getStatusEnum().is4xxClientError();
 			// convert current messages into Set of Message objects for quicker matching
-			messagesToEval.add(new Message(message.getSeverity(), message.getKey()));
+			messagesToEval.add(new Message(message.getSeverity(), message.getKey(), message.getText(), message.getStatusEnum()));
 		}
 		// if the resopnse messages have 4xx and 5xx, send 400 error
 		if (has5xxErrors && has4xxErrors) {

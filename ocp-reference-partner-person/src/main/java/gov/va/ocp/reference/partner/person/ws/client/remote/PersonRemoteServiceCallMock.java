@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
-import gov.va.ocp.reference.framework.config.ReferenceCommonSpringProfiles;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.config.OcpCommonSpringProfiles;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.security.PersonTraits;
 import gov.va.ocp.reference.framework.security.SecurityUtils;
 import gov.va.ocp.reference.framework.transfer.PartnerTransferObjectMarker;
@@ -25,11 +25,11 @@ import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
  * {@link AbstractRemoteServiceCallMock} for mocking the remote client under the
  * simulators spring profile.
  */
-@Profile(ReferenceCommonSpringProfiles.PROFILE_REMOTE_CLIENT_SIMULATORS)
+@Profile(OcpCommonSpringProfiles.PROFILE_REMOTE_CLIENT_SIMULATORS)
 @Component(PersonRemoteServiceCallImpl.BEAN_NAME) // intentionally using the IMPL name
 public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	/** Logger */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(PersonRemoteServiceCallMock.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(PersonRemoteServiceCallMock.class);
 
 	/** error message if request is null */
 	static final String ERROR_NULL_REQUEST = "getKeyForMockResponse request parameter cannot be null.";

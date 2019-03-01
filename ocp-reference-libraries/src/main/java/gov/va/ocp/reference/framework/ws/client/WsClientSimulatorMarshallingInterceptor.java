@@ -19,9 +19,9 @@ import org.slf4j.event.Level;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 import gov.va.ocp.reference.framework.constants.AnnotationConstants;
-import gov.va.ocp.reference.framework.log.ReferenceBanner;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpBanner;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.util.Defense;
 
 /**
@@ -36,7 +36,7 @@ public class WsClientSimulatorMarshallingInterceptor implements
 		MethodInterceptor {
 
 	/** The Constant LOGGER. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(WsClientSimulatorMarshallingInterceptor.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(WsClientSimulatorMarshallingInterceptor.class);
 
 	/** Error message constant */
 	private static final String XML_ROOT_ERROR =
@@ -215,7 +215,7 @@ public class WsClientSimulatorMarshallingInterceptor implements
 					objectToMarshal = createMethod.invoke(objectFactory, obj);
 				} catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException
 						| InvocationTargetException methodEx) {
-					LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
+					LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 							methodEx.getMessage(), methodEx);
 					LOGGER.info(methodEx.getMessage(), methodEx);
 					LOGGER.warn(obj.getClass().getName() + XML_ROOT_ERROR);
@@ -232,14 +232,14 @@ public class WsClientSimulatorMarshallingInterceptor implements
 				ret = outputStream.toString();
 			}
 		} catch (Exception ex) {
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
+			LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 					ex.getMessage(), ex);
 		} finally {
 			if (outputStream != null) {
 				try {
 					outputStream.close();
 				} catch (IOException ioe) {
-					LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
+					LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 							ioe.getMessage(), ioe);
 				}
 			}

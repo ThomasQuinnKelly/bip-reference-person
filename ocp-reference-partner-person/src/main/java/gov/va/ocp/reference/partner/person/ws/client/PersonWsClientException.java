@@ -1,13 +1,13 @@
 package gov.va.ocp.reference.partner.person.ws.client;
 
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
 
 /**
  * This class represents the unique exception that can be thrown
  * by the PersonWsClient.
  *
  */
-public class PersonWsClientException extends ReferenceRuntimeException {
+public class PersonWsClientException extends OcpRuntimeException {
 
 	/** The serialVersionUID */
 	private static final long serialVersionUID = 406968015972994683L;

@@ -20,27 +20,26 @@ public class MessageTest {
 
 	@Test
 	public void testSeverityKeyConstructor() throws Exception {
-		Message message = new Message(MessageSeverity.ERROR, "UnitTestKey");
+		Message message = new Message(MessageSeverity.ERROR, "UnitTestKey", "Message text", HttpStatusForMessage.BAD_REQUEST);
 		assertEquals(MessageSeverity.ERROR, message.getSeverity());
 		assertEquals("UnitTestKey", message.getKey());
 	}
 
 	@Test
 	public void testSeverityKeyTextConstructor() throws Exception {
-		Message message = new Message(MessageSeverity.WARN, "UnitTestKey", "TextMsg");
+		Message message = new Message(MessageSeverity.WARN, "UnitTestKey", "TextMsg", null);
 		assertEquals(MessageSeverity.WARN, message.getSeverity());
 		assertEquals("UnitTestKey", message.getKey());
 		assertEquals("TextMsg", message.getText());
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testParamsConstructor() throws Exception {
-		Message message = new Message(MessageSeverity.WARN, "UnitTestKey", "TextMsg",
+		Message message = new Message(MessageSeverity.WARN, "UnitTestKey", "TextMsg", null,
 				1, new String[] { "0" }, new String[] { "1" });
 		assertEquals(new Integer(1), message.getParamCount());
-		assertEquals(new String[] { "0" }, message.getParamNames());
-		assertEquals(new String[] { "1" }, message.getParamValues());
+		assertArrayEquals(new String[] { "0" }, message.getParamNames());
+		assertArrayEquals(new String[] { "1" }, message.getParamValues());
 
 		message.setParamCount(2);
 		message.setParamNames(new String[] { "0" });
@@ -58,7 +57,7 @@ public class MessageTest {
 
 	@Test
 	public void testSetters() throws Exception {
-		Message message = new Message(MessageSeverity.WARN, "UnitTestKey", "TextMsg");
+		Message message = new Message(MessageSeverity.WARN, "UnitTestKey", "TextMsg", null);
 		assertEquals(MessageSeverity.WARN, message.getSeverity());
 		assertEquals("UnitTestKey", message.getKey());
 		assertEquals("TextMsg", message.getText());
@@ -72,14 +71,14 @@ public class MessageTest {
 
 	@Test
 	public void testEquals() throws Exception {
-		Message message1 = new Message(MessageSeverity.INFO, "UnitTestKey", "TextMsg");
-		Message message2 = new Message(MessageSeverity.INFO, "UnitTestKey", "Not included in equals determination");
+		Message message1 = new Message(MessageSeverity.INFO, "UnitTestKey", "TextMsg", null);
+		Message message2 = new Message(MessageSeverity.INFO, "UnitTestKey", "Not included in equals determination", null);
 		assertTrue(message1.equals(message2));
 	}
 
 	@Test
 	public void testSetStatus() throws Exception {
-		Message message1 = new Message(MessageSeverity.INFO, "UnitTestKey", "TextMsg");
+		Message message1 = new Message(MessageSeverity.INFO, "UnitTestKey", "TextMsg", null);
 		message1.setStatus(HttpStatusForMessage.BAD_REQUEST);
 		assertTrue(message1.getStatusEnum() == HttpStatusForMessage.BAD_REQUEST);
 		assertNotNull(message1.getStatusString());

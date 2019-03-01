@@ -18,7 +18,7 @@ import gov.va.ocp.reference.framework.messages.MessageSeverity;
 public class HttpLoggingUtils {
 	public static final String UNABLE_TO_LOG_HTTP_MESSAGE_TEXT = "Unable to log HTTP message.";
 
-	public static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(HttpLoggingUtils.class);
+	public static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(HttpLoggingUtils.class);
 
 	private static final String NEW_LINE = System.getProperty("line.separator");
 

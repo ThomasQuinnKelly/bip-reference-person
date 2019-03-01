@@ -27,7 +27,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.ClassPathResource;
 
-import gov.va.ocp.reference.framework.service.ServiceRequest;
+import gov.va.ocp.reference.framework.service.DomainRequest;
 import gov.va.ocp.reference.framework.validation.ModelValidator;
 import gov.va.ocp.reference.framework.validation.ViolationMessageParts;
 import gov.va.ocp.reference.framework.validation.ModelValidator.Modes;
@@ -197,11 +197,11 @@ public class ModelValidatorTest {
 
 }
 
-class TestRequest extends ServiceRequest {
+class TestRequest extends DomainRequest {
 	private static final long serialVersionUID = 469530062192402379L;
 }
 
-class TestPojo extends ServiceRequest {
+class TestPojo extends DomainRequest {
 	private static final long serialVersionUID = -1516814834657122327L;
 
 	@NotNull

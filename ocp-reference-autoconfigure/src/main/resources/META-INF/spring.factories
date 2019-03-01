@@ -4,13 +4,13 @@ gov.va.ocp.reference.starter.vault.bootstrap.VaultForConsulBootstrapConfiguratio
 
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-gov.va.ocp.reference.starter.service.autoconfigure.ReferenceServiceAutoConfiguration,\
-gov.va.ocp.reference.starter.rest.autoconfigure.ReferenceRestAutoConfiguration,\
-gov.va.ocp.reference.starter.audit.autoconfigure.ReferenceAuditAutoConfiguration,\
-gov.va.ocp.reference.starter.modelvalidator.autoconfigure.ReferenceModelValidatorAutoConfiguration,\
-gov.va.ocp.reference.starter.feign.autoconfigure.ReferenceFeignAutoConfiguration,\
-gov.va.ocp.reference.starter.security.autoconfigure.ReferenceSecurityAutoConfiguration,\
-gov.va.ocp.reference.starter.cache.autoconfigure.ReferenceCacheAutoConfiguration,\
-gov.va.ocp.reference.starter.cache.server.ReferenceEmbeddedRedisServer,\
+gov.va.ocp.reference.starter.service.autoconfigure.OcpServiceAutoConfiguration,\
+gov.va.ocp.reference.starter.rest.autoconfigure.OcpRestAutoConfiguration,\
+gov.va.ocp.reference.starter.audit.autoconfigure.OcpAuditAutoConfiguration,\
+gov.va.ocp.reference.starter.modelvalidator.autoconfigure.OcpModelValidatorAutoConfiguration,\
+gov.va.ocp.reference.starter.feign.autoconfigure.OcpFeignAutoConfiguration,\
+gov.va.ocp.reference.starter.security.autoconfigure.OcpSecurityAutoConfiguration,\
+gov.va.ocp.reference.starter.cache.autoconfigure.OcpCacheAutoConfiguration,\
+gov.va.ocp.reference.starter.cache.server.OcpEmbeddedRedisServer,\
 gov.va.ocp.reference.starter.swagger.autoconfigure.SwaggerAutoConfiguration,\
 gov.va.ocp.reference.starter.hystrix.autoconfigure.HystrixContextAutoConfiguration

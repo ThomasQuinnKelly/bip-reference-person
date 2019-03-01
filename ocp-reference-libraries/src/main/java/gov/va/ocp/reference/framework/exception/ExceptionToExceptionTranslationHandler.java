@@ -8,9 +8,9 @@ import java.util.Set;
 import org.slf4j.event.Level;
 
 import gov.va.ocp.reference.framework.constants.AnnotationConstants;
-import gov.va.ocp.reference.framework.log.ReferenceBanner;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpBanner;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 /**
  * The Class ExceptionToExceptionTranslationHandler is an exception handler that does a translation to a
@@ -23,7 +23,7 @@ import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
 public class ExceptionToExceptionTranslationHandler {
 
 	/** logger for this class. */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(ExceptionToExceptionTranslationHandler.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(ExceptionToExceptionTranslationHandler.class);
 
 	/**
 	 * A map to tell us what keys to handle and convert into more desired exception types.
@@ -61,7 +61,7 @@ public class ExceptionToExceptionTranslationHandler {
 
 		// create reasonable default exception type as our top most runtime exception if none was specified
 		if (defaultExceptionType == null) {
-			this.defaultExceptionType = ReferenceRuntimeException.class;
+			this.defaultExceptionType = OcpRuntimeException.class;
 		} else {
 			this.defaultExceptionType = defaultExceptionType;
 		}
@@ -128,11 +128,11 @@ public class ExceptionToExceptionTranslationHandler {
 			}
 
 		} catch (final InstantiationException e) {
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
+			LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 					"InstantiationException likely configuration error, review log/configuration to troubleshoot", e);
 
 		} catch (final IllegalAccessException e) {
-			LOGGER.error(ReferenceBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
+			LOGGER.error(OcpBanner.newBanner(AnnotationConstants.INTERCEPTOR_EXCEPTION, Level.ERROR),
 					"IllegalAccessException likely configuration error, review log/configuration to troubleshoot", e);
 		}
 	}

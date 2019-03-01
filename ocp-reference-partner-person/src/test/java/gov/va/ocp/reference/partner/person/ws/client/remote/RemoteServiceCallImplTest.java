@@ -36,7 +36,7 @@ import org.springframework.xml.transform.ResourceSource;
 import org.springframework.xml.transform.StringResult;
 import org.springframework.xml.transform.StringSource;
 
-import gov.va.ocp.reference.framework.config.ReferenceCommonSpringProfiles;
+import gov.va.ocp.reference.framework.config.OcpCommonSpringProfiles;
 import gov.va.ocp.reference.framework.transfer.PartnerTransferObjectMarker;
 import gov.va.ocp.reference.framework.util.Defense;
 import gov.va.ocp.reference.partner.person.ws.client.AbstractPersonTest;
@@ -48,7 +48,7 @@ import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners(inheritListeners = false, listeners = { DependencyInjectionTestExecutionListener.class,
 		DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class })
-@ActiveProfiles({ ReferenceCommonSpringProfiles.PROFILE_REMOTE_CLIENT_SIMULATORS })
+@ActiveProfiles({ OcpCommonSpringProfiles.PROFILE_REMOTE_CLIENT_SIMULATORS })
 @ContextConfiguration(inheritLocations = false, classes = { PartnerMockFrameworkTestConfig.class, PersonWsClientConfig.class })
 public class RemoteServiceCallImplTest extends AbstractPersonTest {
 

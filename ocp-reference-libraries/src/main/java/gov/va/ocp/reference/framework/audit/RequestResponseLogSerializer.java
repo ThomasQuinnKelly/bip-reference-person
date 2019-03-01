@@ -14,8 +14,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 
 /**
@@ -26,7 +26,7 @@ import gov.va.ocp.reference.framework.messages.MessageSeverity;
 @Component
 public class RequestResponseLogSerializer {
 
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(RequestResponseLogSerializer.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(RequestResponseLogSerializer.class);
 
 	ObjectMapper mapper = new ObjectMapper();
 

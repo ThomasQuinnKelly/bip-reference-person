@@ -53,36 +53,10 @@ public class Message extends AbstractMessage {
 	/**
 	 * Instantiates a new message.
 	 *
-	 * @param severity the severity
-	 * @param key the key
-	 */
-	public Message(final MessageSeverity severity, final String key) {
-		super();
-		this.severity = severity;
-		this.key = key;
-	}
-
-	/**
-	 * Instantiates a new message.
-	 *
-	 * @param severity the severity
-	 * @param key the key
-	 * @param text the text
-	 */
-	public Message(final MessageSeverity severity, final String key, final String text) {
-		super();
-		this.severity = severity;
-		this.key = key;
-		this.text = text;
-	}
-	
-	/**
-	 * Instantiates a new message.
-	 *
-	 * @param severity the severity
-	 * @param key the key
-	 * @param text the text
-	 * @param httpStatus the http status
+	 * @param severity the severity for the cause of the message
+	 * @param key the key representing the "error code" for the message
+	 * @param text the text of the message
+	 * @param httpStatus the http status associated with the cause of the message
 	 */
 	public Message(final MessageSeverity severity, final String key, final String text, final HttpStatusForMessage httpStatus) {
 		super();
@@ -93,8 +67,8 @@ public class Message extends AbstractMessage {
 	}
 
 	/**
-	 * Instantiates a new message providing only replaceable parameters.
-	 * 
+	 * Instantiates a new message providing only replaceable parameters for the message text.
+	 *
 	 * @param paramCount the number of elements in the name and value arrays
 	 * @param paramNames the names, in same order as thier respective getParamValues
 	 * @param paramValues the values, in same order as their respective getParamNames
@@ -104,21 +78,23 @@ public class Message extends AbstractMessage {
 	}
 
 	/**
-	 * Instantiates a new message.
+	 * Instantiates a new message, populating all available fields.
 	 *
-	 * @param severity
-	 * @param key
-	 * @param text
+	 * @param severity the severity for the cause of the message
+	 * @param key the key representing the "error code" for the message
+	 * @param text the text of the message
+	 * @param httpStatus the http status associated with the cause of the message
 	 * @param paramCount the number of elements in the name and value arrays
 	 * @param paramNames the names, in same order as thier respective getParamValues
 	 * @param paramValues the values, in same order as their respective getParamNames
 	 */
-	public Message(final MessageSeverity severity, final String key, final String text,
+	public Message(final MessageSeverity severity, final String key, final String text, HttpStatusForMessage status,
 			Integer paramCount, String[] paramNames, String[] paramValues) {
 		super(paramCount, paramNames, paramValues);
 		this.severity = severity;
 		this.key = key;
 		this.text = text;
+		this.status = status;
 	}
 
 	/**

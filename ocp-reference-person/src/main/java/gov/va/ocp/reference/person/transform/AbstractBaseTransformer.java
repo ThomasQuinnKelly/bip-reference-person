@@ -8,8 +8,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 /**
  * Static methods that are commonly needed for object model transformation.
@@ -18,7 +18,7 @@ import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
  */
 public abstract class AbstractBaseTransformer {
 	/** Logger */
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(AbstractBaseTransformer.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(AbstractBaseTransformer.class);
 
 	/**
 	 * Convert XMLGregorianCalendar to java.util.Date

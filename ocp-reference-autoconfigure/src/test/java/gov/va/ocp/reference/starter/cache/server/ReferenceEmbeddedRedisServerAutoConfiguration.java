@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import gov.va.ocp.reference.starter.cache.autoconfigure.ReferenceCacheProperties;
-import gov.va.ocp.reference.starter.cache.autoconfigure.ReferenceCacheProperties.RedisConfig;
-import gov.va.ocp.reference.starter.cache.server.ReferenceEmbeddedRedisServer;
+import gov.va.ocp.reference.starter.cache.autoconfigure.OcpCacheProperties;
+import gov.va.ocp.reference.starter.cache.autoconfigure.OcpCacheProperties.RedisConfig;
+import gov.va.ocp.reference.starter.cache.server.OcpEmbeddedRedisServer;
 
 /**
  * 
@@ -20,18 +20,18 @@ public class ReferenceEmbeddedRedisServerAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public ReferenceEmbeddedRedisServer referenceEmbeddedRedisServer() {
-		return new ReferenceEmbeddedRedisServer();
+	public OcpEmbeddedRedisServer ocpEmbeddedRedisServer() {
+		return new OcpEmbeddedRedisServer();
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
-	public ReferenceCacheProperties referenceCacheProperties() {
-		ReferenceCacheProperties referenceCacheProperties = new ReferenceCacheProperties();
-		referenceCacheProperties.setRedisConfig(new RedisConfig());
-		referenceCacheProperties.getRedisConfig().setHost("localhost");
-		referenceCacheProperties.setExpires(new ArrayList<>());
-		referenceCacheProperties.setDefaultExpires(500L);
-		return referenceCacheProperties;
+	public OcpCacheProperties ocpCacheProperties() {
+		OcpCacheProperties ocpCacheProperties = new OcpCacheProperties();
+		ocpCacheProperties.setRedisConfig(new RedisConfig());
+		ocpCacheProperties.getRedisConfig().setHost("localhost");
+		ocpCacheProperties.setExpires(new ArrayList<>());
+		ocpCacheProperties.setDefaultExpires(500L);
+		return ocpCacheProperties;
 	}
 }

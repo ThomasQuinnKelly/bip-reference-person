@@ -1,8 +1,8 @@
 package gov.va.ocp.reference.security.jwt.correlation;
 
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 
 public enum Sources {
 	/** The ICN assigning facility (VHA) */
@@ -14,7 +14,7 @@ public enum Sources {
 	/** The CORP facility */
 	CORP("200CORP");
 
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(Sources.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(Sources.class);
 
 	/** The arbitrary string value of the enumeration */
 	private String source;
@@ -43,7 +43,7 @@ public enum Sources {
 	 *
 	 * @param stringValue the string value
 	 * @return Sources - the enumeration
-	 * @throws ReferenceRuntimeException if no match of enumeration values
+	 * @throws OcpRuntimeException if no match of enumeration values
 	 */
 	public static Sources fromValue(final String stringValue) {
 		for (Sources s : Sources.values()) {
@@ -53,6 +53,6 @@ public enum Sources {
 		}
 		String msg = "Source {} does not exist: " + stringValue;
 		LOGGER.error(msg);
-		throw new ReferenceRuntimeException(msg);
+		throw new OcpRuntimeException(msg);
 	}
 }

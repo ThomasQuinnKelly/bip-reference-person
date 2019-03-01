@@ -1,14 +1,19 @@
 package gov.va.ocp.reference.person.api;
 
-import gov.va.ocp.reference.person.model.person.v1.PersonInfoRequest;
-import gov.va.ocp.reference.person.model.person.v1.PersonInfoResponse;
+import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
+import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 
+/**
+ * The contract interface for the Person service
+ *
+ * @author aburkholder
+ */
 public interface ReferencePersonService {
 	/**
-	 * Gets the person info.
+	 * Searches for the person info by their Participant ID.
 	 *
-	 * @param personInfoRequest A PersonInfoRequest instance
-	 * @return A PersonInfoResponse instance
+	 * @param personByPidDomainRequest A PersonByPidDomainRequest instance
+	 * @return A PersonByPidDomainResponse instance
 	 */
-	PersonInfoResponse findPersonByParticipantID(PersonInfoRequest personInfoRequest);
+	PersonByPidDomainResponse findPersonByParticipantID(PersonByPidDomainRequest personByPidDomainRequest);
 }

@@ -9,8 +9,8 @@ import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.security.jwt.JwtTokenService;
 
 /**
@@ -22,7 +22,7 @@ import gov.va.ocp.reference.security.jwt.JwtTokenService;
  */
 public class TokenClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(TokenClientHttpRequestInterceptor.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(TokenClientHttpRequestInterceptor.class);
 
 	@Autowired
 	private JwtTokenService tokenService;

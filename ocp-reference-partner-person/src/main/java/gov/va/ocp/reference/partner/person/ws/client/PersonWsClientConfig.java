@@ -16,8 +16,8 @@ import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 
 import gov.va.ocp.reference.framework.exception.InterceptingExceptionTranslator;
 import gov.va.ocp.reference.framework.log.PerformanceLogMethodInterceptor;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.util.Defense;
 import gov.va.ocp.reference.framework.ws.client.BaseWsClientConfig;
 import gov.va.ocp.reference.framework.ws.client.remote.RemoteServiceCallInterceptor;
@@ -33,7 +33,7 @@ import gov.va.ocp.reference.framework.ws.client.remote.RemoteServiceCallIntercep
 public class PersonWsClientConfig extends BaseWsClientConfig {
 
 	/** The logger for this class */
-	public static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(PersonWsClientConfig.class);
+	public static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(PersonWsClientConfig.class);
 
 	/** The package name for data transfer objects. */
 	private static final String TRANSFER_PACKAGE = "gov.va.ocp.reference.partner.person.ws.transfer";

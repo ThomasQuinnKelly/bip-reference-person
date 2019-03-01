@@ -14,25 +14,25 @@ import org.slf4j.event.Level;
 
 import gov.va.ocp.reference.framework.AbstractBaseLogTester;
 import gov.va.ocp.reference.framework.exception.InterceptingExceptionTranslator;
-import gov.va.ocp.reference.framework.exception.ReferenceRuntimeException;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
+import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.reference.framework.log.OcpLogger;
 
 public class InterceptingExceptionTranslatorTest extends AbstractBaseLogTester {
 
 	@Rule
 	public ExpectedException exceptions = ExpectedException.none();
 
-	/** Underlying logger implementation of ReferenceLogger */
-	private ReferenceLogger LOG = super.getLogger(InterceptingExceptionTranslator.class);
+	/** Underlying logger implementation of OcpLogger */
+	private OcpLogger LOG = super.getLogger(InterceptingExceptionTranslator.class);
 
 	@Test
 	public void testReferenceRunTimeExceptionDefault() throws Exception {
 		InterceptingExceptionTranslator interceptingExceptionTranslator = new InterceptingExceptionTranslator();
-		interceptingExceptionTranslator.setDefaultExceptionType(ReferenceRuntimeException.class);
+		interceptingExceptionTranslator.setDefaultExceptionType(OcpRuntimeException.class);
 
 		Throwable throwable = new Throwable("Cause Unit Test");
 
-		exceptions.expect(ReferenceRuntimeException.class);
+		exceptions.expect(OcpRuntimeException.class);
 //		exceptions.expectMessage((String) null);
 		exceptions.expectCause(Matchers.<Throwable> equalTo(throwable));
 
@@ -66,7 +66,7 @@ public class InterceptingExceptionTranslatorTest extends AbstractBaseLogTester {
 		interceptingExceptionTranslator.setDefaultExceptionType(RuntimeException.class);
 
 		Map<String, Class<? extends RuntimeException>> exceptionMap = new HashMap<>();
-		exceptionMap.put("ReferenceRuntimeException", RuntimeException.class);
+		exceptionMap.put("OcpRuntimeException", RuntimeException.class);
 		interceptingExceptionTranslator.setExceptionMap(exceptionMap);
 
 		Set<String> exclusion = new HashSet<>();
@@ -112,13 +112,13 @@ public class InterceptingExceptionTranslatorTest extends AbstractBaseLogTester {
 		InterceptingExceptionTranslator interceptingExceptionTranslator = new InterceptingExceptionTranslator();
 		interceptingExceptionTranslator.setDefaultExceptionType(RuntimeException.class);
 		Map<String, Class<? extends RuntimeException>> exceptionMap = new HashMap<>();
-		exceptionMap.put("java.lang.RuntimeException", ReferenceRuntimeException.class);
+		exceptionMap.put("java.lang.RuntimeException", OcpRuntimeException.class);
 
 		interceptingExceptionTranslator.setExceptionMap(exceptionMap);
 
 		Throwable throwable = new RuntimeException("Cause Unit Test");
 
-		exceptions.expect(ReferenceRuntimeException.class);
+		exceptions.expect(OcpRuntimeException.class);
 		exceptions.expectCause(Matchers.<Throwable> equalTo(throwable));
 
 		interceptingExceptionTranslator.afterThrowing(this.getClass().getMethod("testResolvableException"), null, null, throwable);

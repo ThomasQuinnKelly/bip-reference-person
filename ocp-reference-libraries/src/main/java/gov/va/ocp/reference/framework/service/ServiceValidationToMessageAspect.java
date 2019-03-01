@@ -16,8 +16,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 
 import gov.va.ocp.reference.framework.audit.AuditLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLogger;
-import gov.va.ocp.reference.framework.log.ReferenceLoggerFactory;
+import gov.va.ocp.reference.framework.log.OcpLogger;
+import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
@@ -31,10 +31,10 @@ import gov.va.ocp.reference.framework.validation.ViolationMessageParts;
  *
  * Standard service operations which are validatable are those which are...
  * (1) public
- * (2) return a ServiceResponse and
+ * (2) return a DomainResponse and
  * (3) have a single input that is of the type Validatable.
  *
- * @See gov.va.ocp.reference.framework.service.ServiceResponse
+ * @See gov.va.ocp.reference.framework.service.DomainResponse
  * @see gov.va.ocp.reference.framework.validation.Validatable
  *
  * @author jshrader
@@ -43,7 +43,7 @@ import gov.va.ocp.reference.framework.validation.ViolationMessageParts;
 @Order(-9998)
 public class ServiceValidationToMessageAspect extends BaseServiceAspect {
 
-	private static final ReferenceLogger LOGGER = ReferenceLoggerFactory.getLogger(ServiceValidationToMessageAspect.class);
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(ServiceValidationToMessageAspect.class);
 
 	/**
 	 * Around advice for{@link BaseServiceAspect#serviceImpl()} pointcut.
@@ -58,7 +58,7 @@ public class ServiceValidationToMessageAspect extends BaseServiceAspect {
 	@Around("publicStandardServiceMethod() && serviceImpl()")
 	public Object aroundAdvice(final ProceedingJoinPoint joinPoint) throws Throwable {
 
-		ServiceResponse serviceResponse = null;
+		DomainResponse domainResponse = null;
 
 		try {
 			if (LOGGER.isDebugEnabled()) {
@@ -79,11 +79,11 @@ public class ServiceValidationToMessageAspect extends BaseServiceAspect {
 
 			if (joinPoint.getArgs().length > 0) {
 				final MethodSignature methodSignature = (MethodSignature) joinPoint.getStaticPart().getSignature();
-				serviceResponse = validateRequest(methodSignature, serviceRequest, messages);
+				domainResponse = validateRequest(methodSignature, serviceRequest, messages);
 			}
 
-			if (serviceResponse == null) {
-				serviceResponse = (ServiceResponse) joinPoint.proceed();
+			if (domainResponse == null) {
+				domainResponse = (DomainResponse) joinPoint.proceed();
 			}
 		} catch (final Throwable throwable) {
 			LOGGER.error("ServiceValidationToMessageAspect encountered " + throwable.getClass().getName()
@@ -93,24 +93,24 @@ public class ServiceValidationToMessageAspect extends BaseServiceAspect {
 			LOGGER.debug("ServiceValidationToMessageAspect after method was called.");
 		}
 
-		return serviceResponse;
+		return domainResponse;
 
 	}
 
 	/**
 	 * Convert map to messages. This is exposed so services can call directly if they desire.
 	 *
-	 * @param serviceResponse the service response
+	 * @param domainResponse the service response
 	 * @param messages the messages
 	 */
-	protected static void convertMapToMessages(final ServiceResponse serviceResponse,
+	protected static void convertMapToMessages(final DomainResponse domainResponse,
 			final Map<String, List<ViolationMessageParts>> messages) {
 		for (final Entry<String, List<ViolationMessageParts>> entry : messages.entrySet()) {
 			for (final ViolationMessageParts fieldError : entry.getValue()) {
-				serviceResponse.addMessage(MessageSeverity.ERROR, fieldError.getNewKey(), fieldError.getText(), HttpStatusForMessage.BAD_REQUEST);
+				domainResponse.addMessage(MessageSeverity.ERROR, fieldError.getNewKey(), fieldError.getText(), HttpStatusForMessage.BAD_REQUEST);
 			}
 		}
-		Collections.sort(serviceResponse.getMessages(), Comparator.comparing(Message::getKey));
+		Collections.sort(domainResponse.getMessages(), Comparator.comparing(Message::getKey));
 	}
 
 	/**
@@ -123,21 +123,21 @@ public class ServiceValidationToMessageAspect extends BaseServiceAspect {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	private ServiceResponse validateRequest(MethodSignature methodSignature, List<Object> serviceRequest,
+	private DomainResponse validateRequest(MethodSignature methodSignature, List<Object> serviceRequest,
 			Map<String, List<ViolationMessageParts>> messages)
 			throws InstantiationException, IllegalAccessException {
-		ServiceResponse serviceResponse = null;
+		DomainResponse domainResponse = null;
 		for (final Object objValidatable : serviceRequest) {
 			if (objValidatable != null && objValidatable instanceof Validatable) {
 				((Validatable) objValidatable).validate(messages);
 			}
 		}
 		if (!messages.isEmpty()) {
-			serviceResponse = (ServiceResponse) methodSignature.getMethod().getReturnType().newInstance();
-			convertMapToMessages(serviceResponse, messages);
+			domainResponse = (DomainResponse) methodSignature.getMethod().getReturnType().newInstance();
+			convertMapToMessages(domainResponse, messages);
 			AuditLogger.error(BaseRestProviderAspect.getDefaultAuditableInstance(methodSignature.getMethod()),
-					serviceResponse.getMessages().stream().map(Message::toString).reduce("", String::concat), null);
+					domainResponse.getMessages().stream().map(Message::toString).reduce("", String::concat), null);
 		}
-		return serviceResponse;
+		return domainResponse;
 	}
 }
