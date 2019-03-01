@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 
-import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 
@@ -39,14 +38,14 @@ public class MessageKeySeverityMatchRuleTest {
 
 	@Test
 	public void testEval() {
-		Message messageToMatch = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text", HttpStatusForMessage.UNAUTHORIZED);
+		Message messageToMatch = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text", HttpStatus.UNAUTHORIZED);
 		messageKeySeverityMatchRule = new MessageKeySeverityMatchRule(messageToMatch, HttpStatus.UNAUTHORIZED);
 		assertEquals(HttpStatus.UNAUTHORIZED, messageKeySeverityMatchRule.eval(messagesToEval));
 	}
 
 	@Test
 	public void testToString() {
-		Message messageToMatch = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text", HttpStatusForMessage.UNAUTHORIZED);
+		Message messageToMatch = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text", HttpStatus.UNAUTHORIZED);
 		messageKeySeverityMatchRule = new MessageKeySeverityMatchRule(messageToMatch, HttpStatus.UNAUTHORIZED);
 		assertNotNull(messageKeySeverityMatchRule.toString());
 	}

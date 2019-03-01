@@ -16,7 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 
-import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 
@@ -55,7 +54,7 @@ public class MessagesToHttpStatusRulesEngineTest {
 	@Test
 	public void testEvalMessagesAgainstRulesFor5xxErrors() throws Exception {
 		Message message = new Message();
-		message.setStatus(HttpStatusForMessage.INTERNAL_SERVER_ERROR);
+		message.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 
 		Message errMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text", null);
 		MessageKeySeverityMatchRule errorRule = new MessageKeySeverityMatchRule(errMessage, HttpStatus.UNAUTHORIZED);
@@ -69,7 +68,7 @@ public class MessagesToHttpStatusRulesEngineTest {
 	@Test
 	public void testEvalMessagesAgainstRulesFor4xxErrors() throws Exception {
 		Message message = new Message();
-		message.setStatus(HttpStatusForMessage.BAD_REQUEST);
+		message.setHttpStatus(HttpStatus.BAD_REQUEST);
 
 		Message errMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text", null);
 		MessageKeySeverityMatchRule errorRule = new MessageKeySeverityMatchRule(errMessage, HttpStatus.UNAUTHORIZED);
@@ -82,10 +81,10 @@ public class MessagesToHttpStatusRulesEngineTest {
 	@Test
 	public void testEvalMessagesAgainstRulesFor5xxAnd4xxErrors() throws Exception {
 		Message message1 = new Message();
-		message1.setStatus(HttpStatusForMessage.INTERNAL_SERVER_ERROR);
+		message1.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 
 		Message message2 = new Message();
-		message2.setStatus(HttpStatusForMessage.BAD_REQUEST);
+		message2.setHttpStatus(HttpStatus.BAD_REQUEST);
 
 		Message errMessage = new Message(MessageSeverity.ERROR, "ErrorKey", "Error Text", null);
 		MessageKeySeverityMatchRule errorRule = new MessageKeySeverityMatchRule(errMessage, HttpStatus.UNAUTHORIZED);

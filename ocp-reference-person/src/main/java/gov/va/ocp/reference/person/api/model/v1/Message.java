@@ -7,7 +7,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.transfer.ProviderTransferObjectMarker;
 
@@ -49,7 +48,7 @@ public class Message implements ProviderTransferObjectMarker {
 	 * <br/>
 	 * Key <b>must</b> match a key from ???? properties, as declared in {@link ????} swagger constants class.
 	 * <br/>
-	 * HttpStatus <b>must</b> match an int value contained in the {@link HttpStatusForMessage} enum.
+	 * HttpStatus <b>must</b> match an int value contained in the {@link HttpStatus} enum.
 	 *
 	 * @param severity the severity for the cause of the message
 	 * @param key the key representing the "error code" for the message
