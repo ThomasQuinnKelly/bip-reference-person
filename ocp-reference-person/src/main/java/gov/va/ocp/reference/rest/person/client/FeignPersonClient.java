@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import gov.va.ocp.reference.api.person.provider.PersonResource;
+import gov.va.ocp.reference.person.api.provider.PersonResource;
 import gov.va.ocp.reference.person.config.ReferenceServiceFeignConfig;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;

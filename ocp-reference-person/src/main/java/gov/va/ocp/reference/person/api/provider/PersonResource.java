@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.api.person.provider;
+package gov.va.ocp.reference.person.api.provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

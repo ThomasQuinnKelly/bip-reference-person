@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.va.ocp.reference.api.person.provider.PersonResource;
 import gov.va.ocp.reference.framework.rest.client.resttemplate.RestClientTemplate;
 import gov.va.ocp.reference.framework.swagger.SwaggerResponseMessages;
+import gov.va.ocp.reference.person.api.provider.PersonResource;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 import gov.va.ocp.reference.rest.person.client.FeignPersonClient;
