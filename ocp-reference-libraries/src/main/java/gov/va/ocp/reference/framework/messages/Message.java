@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -36,7 +37,7 @@ public class Message extends AbstractMessage {
 	private String text;
 
 	/** The Http status. */
-	private HttpStatusForMessage status;
+	private HttpStatus status;
 
 	/** The message severity. */
 	@XmlElement(required = true)
@@ -58,7 +59,7 @@ public class Message extends AbstractMessage {
 	 * @param text the text of the message
 	 * @param httpStatus the http status associated with the cause of the message
 	 */
-	public Message(final MessageSeverity severity, final String key, final String text, final HttpStatusForMessage httpStatus) {
+	public Message(final MessageSeverity severity, final String key, final String text, final HttpStatus httpStatus) {
 		super();
 		this.severity = severity;
 		this.key = key;
@@ -88,7 +89,7 @@ public class Message extends AbstractMessage {
 	 * @param paramNames the names, in same order as thier respective getParamValues
 	 * @param paramValues the values, in same order as their respective getParamNames
 	 */
-	public Message(final MessageSeverity severity, final String key, final String text, HttpStatusForMessage status,
+	public Message(final MessageSeverity severity, final String key, final String text, HttpStatus status,
 			Integer paramCount, String[] paramNames, String[] paramValues) {
 		super(paramCount, paramNames, paramValues);
 		this.severity = severity;
@@ -133,7 +134,7 @@ public class Message extends AbstractMessage {
 	 * @return the HttpStatus
 	 */
 	@JsonIgnore
-	public HttpStatusForMessage getStatusEnum() {
+	public HttpStatus getStatusEnum() {
 		return status;
 	}
 
@@ -142,7 +143,7 @@ public class Message extends AbstractMessage {
 	 *
 	 * @param key the new HttpStatus
 	 */
-	public void setStatus(final HttpStatusForMessage status) {
+	public void setStatus(final HttpStatus status) {
 		this.status = status;
 	}
 

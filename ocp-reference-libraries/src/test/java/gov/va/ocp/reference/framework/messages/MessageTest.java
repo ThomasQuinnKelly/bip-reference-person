@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.springframework.http.HttpStatus;
 
 public class MessageTest {
 
@@ -20,7 +21,7 @@ public class MessageTest {
 
 	@Test
 	public void testSeverityKeyConstructor() throws Exception {
-		Message message = new Message(MessageSeverity.ERROR, "UnitTestKey", "Message text", HttpStatusForMessage.BAD_REQUEST);
+		Message message = new Message(MessageSeverity.ERROR, "UnitTestKey", "Message text", HttpStatus.BAD_REQUEST);
 		assertEquals(MessageSeverity.ERROR, message.getSeverity());
 		assertEquals("UnitTestKey", message.getKey());
 	}
@@ -79,8 +80,8 @@ public class MessageTest {
 	@Test
 	public void testSetStatus() throws Exception {
 		Message message1 = new Message(MessageSeverity.INFO, "UnitTestKey", "TextMsg", null);
-		message1.setStatus(HttpStatusForMessage.BAD_REQUEST);
-		assertTrue(message1.getStatusEnum() == HttpStatusForMessage.BAD_REQUEST);
+		message1.setStatus(HttpStatus.BAD_REQUEST);
+		assertTrue(message1.getStatusEnum() == HttpStatus.BAD_REQUEST);
 		assertNotNull(message1.getStatusString());
 	}
 

@@ -34,7 +34,6 @@ import gov.va.ocp.reference.framework.audit.AuditEvents;
 import gov.va.ocp.reference.framework.audit.Auditable;
 import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
 import gov.va.ocp.reference.framework.log.OcpLogger;
-import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.service.DomainRequest;
@@ -180,7 +179,7 @@ public class RestProviderHttpResponseAspectTest extends AbstractBaseLogTester {
 		Object returnObject = null;
 		try {
 			final DomainResponse serviceResp = new DomainResponse();
-			serviceResp.addMessage(MessageSeverity.FATAL, "Test KEY", "Test Error", HttpStatusForMessage.INTERNAL_SERVER_ERROR);
+			serviceResp.addMessage(MessageSeverity.FATAL, "Test KEY", "Test Error", HttpStatus.INTERNAL_SERVER_ERROR);
 			Mockito.lenient().when(proceedingJoinPoint.proceed()).thenReturn(serviceResp);
 			Mockito.lenient().when(proceedingJoinPoint.getSignature()).thenReturn(mockSignature);
 			Mockito.lenient().when(mockSignature.getMethod()).thenReturn(myMethod());

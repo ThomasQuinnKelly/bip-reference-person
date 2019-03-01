@@ -3,9 +3,10 @@ package gov.va.ocp.reference.framework.service;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.transfer.AbstractTransferObject;
@@ -49,7 +50,7 @@ public class DomainResponse extends AbstractTransferObject implements DomainTran
 	 * @param httpStatus the http status associated with the message
 	 */
 	public final void addMessage(final MessageSeverity severity, final String key, final String text,
-			final HttpStatusForMessage httpStatus) {
+			final HttpStatus httpStatus) {
 		if (messages == null) {
 			messages = new LinkedList<>();
 		}
@@ -75,7 +76,7 @@ public class DomainResponse extends AbstractTransferObject implements DomainTran
 	 * @param paramValues the values of the replaceable parameters in the message
 	 */
 	public final void addMessage(final MessageSeverity severity, final String key, final String text,
-			final HttpStatusForMessage httpStatus,
+			final HttpStatus httpStatus,
 			Integer paramCount, String[] paramNames, String[] paramValues) {
 		if (messages == null) {
 			messages = new LinkedList<>();
