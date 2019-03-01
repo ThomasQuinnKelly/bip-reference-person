@@ -36,6 +36,10 @@ public class JsonUtil {
 		return JsonPath.with(json).get(path);
 	}
 
+	public static final Integer getInt(final String json, final String path) {
+		return JsonPath.with(json).get(path);
+	}
+
 	public static final Map<String, Object> getMap(final String json, final String path) {
 		return JsonPath.with(json).get(path);
 	}

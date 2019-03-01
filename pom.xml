@@ -21,8 +21,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 		<module>ocp-reference-autoconfigure</module>
 		<module>ocp-reference-partner-person</module>
 		<module>ocp-reference-person</module>
+		<module>ocp-reference-inttest</module>
+		
 	<!--<module>os-reference-spring-boot-document-service</module>
-		<module>os-reference-spring-boot-service-inttest</module>
+	
 		<module>os-reference-spring-boot-service-perftest</module> -->
 	</modules>
 
