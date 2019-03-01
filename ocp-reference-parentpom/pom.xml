@@ -572,9 +572,10 @@
 							<skip>${skipITs}</skip>
 							<projectName>${project.artifactId}</projectName>
 							<outputDirectory>${project.build.directory}/site/cucumber-reports
-							</outputDirectory>
-							<cucumberOutput>${project.build.directory}/cucumber.json
-							</cucumberOutput>
+								</outputDirectory>
+								<inputDirectory>${project.build.directory}/site
+								</inputDirectory>
+								<jsonFiles>**/*.json</jsonFiles>
 							<skippedFails>true</skippedFails>
 							<enableFlashCharts>false</enableFlashCharts>
 							<buildNumber>${project.version}</buildNumber>

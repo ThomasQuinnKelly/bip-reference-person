@@ -1,6 +1,8 @@
 package gov.va.ocp.reference.test.util;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,7 +14,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.KeyStore;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -24,15 +25,13 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
-import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gov.va.ocp.reference.test.service.RESTConfigService;
 import io.restassured.RestAssured;
+import io.restassured.config.RestAssuredConfig;
 import io.restassured.config.SSLConfig;
-import io.restassured.path.json.JsonPath;
-import io.restassured.path.xml.XmlPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
@@ -60,10 +59,6 @@ public class RESTUtil {
 	PrintStream requestStream = null;
 	Response response = null; // stores response from rest
 
-	public RESTUtil() {
-		configureRestAssured();
-	}
-
 	/**
 	 * Reads file content for a given file resource using URL object.
 	 *
@@ -76,9 +71,9 @@ public class RESTUtil {
 			mapReqHeader = mapHeader;
 			if (strRequestFile != null) {
 				LOGGER.info("Request File {}", strRequestFile);
-				final URL urlFilePath = RESTUtil.class.getClassLoader().getResource("Request/" + strRequestFile);
+				final URL urlFilePath = RESTUtil.class.getClassLoader().getResource("request/" + strRequestFile);
 				if (urlFilePath == null) {
-					LOGGER.error("Requested File Doesn't Exist: {}", "Request/" + strRequestFile);
+					LOGGER.error("Requested File Doesn't Exist: {}", "request/" + strRequestFile);
 				} else {
 					requestFile = new File(urlFilePath.toURI());
 					// Note - Enhance the code so if Header.Accept is xml, then it
@@ -109,7 +104,7 @@ public class RESTUtil {
 	 * @return
 	 */
 	public String getResponse(final String serviceURL) {
-		doWithRetry(() -> given().log().all().headers(mapReqHeader).urlEncodingEnabled(false).when().get(serviceURL),
+		doWithRetry(() -> given().config(getRestAssuredConfig()).log().all().headers(mapReqHeader).urlEncodingEnabled(false).when().get(serviceURL),
 				5);
 		LOGGER.info(response.getBody().asString());
 		return response.asString();
@@ -123,7 +118,7 @@ public class RESTUtil {
 	 * @return
 	 */
 	public String deleteResponse(final String serviceURL) {
-		doWithRetry(() -> given().log().all().headers(mapReqHeader).urlEncodingEnabled(false).when().delete(serviceURL),
+		doWithRetry(() -> given().config(getRestAssuredConfig()).log().all().headers(mapReqHeader).urlEncodingEnabled(false).when().delete(serviceURL),
 				5);
 		LOGGER.info(response.getBody().asString());
 		return response.asString();
@@ -137,7 +132,7 @@ public class RESTUtil {
 	 * @return
 	 */
 	public String postResponse(final String serviceURL) {
-		doWithRetry(() -> given().log().all().headers(mapReqHeader).urlEncodingEnabled(false).body(jsonText).when()
+		doWithRetry(() -> given().config(getRestAssuredConfig()).log().all().headers(mapReqHeader).urlEncodingEnabled(false).body(jsonText).when()
 				.post(serviceURL), 5);
 		LOGGER.info(response.getBody().asString());
 		return response.asString();
@@ -146,7 +141,7 @@ public class RESTUtil {
 	/**
 	 * Loads the KeyStore and password in to rest assured API so all the API's are SSL enabled.
 	 */
-	private void configureRestAssured() {
+	private RestAssuredConfig getRestAssuredConfig() {
 		String pathToKeyStore = RESTConfigService.getInstance().getProperty("javax.net.ssl.keyStore", true);
 		if (StringUtils.isBlank(pathToKeyStore)) {
 			RestAssured.useRelaxedHTTPSValidation();
@@ -171,14 +166,14 @@ public class RESTUtil {
 				clientAuthFactory.setHostnameVerifier(hostnameVerifier);
 				config = new SSLConfig().with().sslSocketFactory(clientAuthFactory).and().allowAllHostnames();
 
-				RestAssured.config = RestAssured.config().sslConfig(config);
+				return RestAssured.config().sslConfig(config);
 
 			} catch (Exception e) {
 				LOGGER.error("Issue while configuring certificate ", e);
 
 			}
 		}
-
+		return RestAssured.config();
 	}
 
 	/**
@@ -228,7 +223,7 @@ public class RESTUtil {
 					.headers(mapReqHeader).when().multiPart("file", filePath)
 					.multiPart(SUBMIT_PAYLOAD, SUBMIT_PAYLOAD, submitPayload, "application/json").post(serviceURL);
 		} catch (final Exception ex) {
-
+			LOGGER.error(ex.getMessage(), ex);
 		}
 		return response.asString();
 
@@ -249,117 +244,6 @@ public class RESTUtil {
 		return response.asString();
 	}
 
-	/**
-	 * Parses JSON object for a given key and match with given expected value.
-	 *
-	 * @param json
-	 * @param strRoot
-	 * @param strField
-	 * @param strExpectedValue
-	 * @return
-	 */
-	public String parseJSON(final String json, final String strRoot, final String strField,
-			final String strExpectedValue) {
-		String strResult = null;
-		final JsonPath jsonPath = new JsonPath(json).setRoot(strRoot);
-		final List<String> lstField = jsonPath.get(strField);
-		if (lstField.contains(strExpectedValue)) {
-			strResult = lstField.toString();
-			LOGGER.info("Passed:Field=" + strField + " matched the expected value=" + strExpectedValue);
-		} else {
-			strResult = lstField.toString();
-			LOGGER.info("Failed:Field=" + strField + " expected value=" + strExpectedValue + " and actual value="
-					+ lstField.toString());
-		}
-		return strResult;
-	}
-
-	/**
-	 * Parses json object for a given key and returns the match value.
-	 *
-	 * @param json
-	 * @param strField
-	 * @return
-	 */
-	public String parseJSON(final String json, final String strField) {
-		String strResult = null;
-		try {
-			final JsonPath jsonPath = new JsonPath(json);
-			strResult = jsonPath.get(strField).toString();
-		} catch (final Exception ex) {
-			LOGGER.error(ex.getMessage(), ex);
-		}
-		return strResult;
-	}
-
-	/**
-	 * Parse JSON object at root level and returns the final JSON.
-	 *
-	 * @param json
-	 * @param strRoot
-	 * @return
-	 */
-	public String parseJSONroot(final String json, final String strRoot) {
-		String strResult = null;
-		strResult = new JsonPath(json).get(strRoot).toString();
-
-		return strResult;
-	}
-
-	/**
-	 * Parse XML object for a given key and match with given expected value.
-	 *
-	 * @param xml
-	 * @param strFieldName
-	 * @param strExpectedValue
-	 * @return
-	 */
-	public String parseXML(final String xml, final String strFieldName, final String strExpectedValue) {
-		String strResult = null;
-
-		final XmlPath xmlPath = new XmlPath(xml);
-		final String strField = xmlPath.get(strFieldName).toString();
-		if (strField.contains(strExpectedValue)) {
-			strResult = strField;
-
-		}
-		return strResult;
-	}
-
-	/**
-	 * Parse XML object for a given key and returns the match value.
-	 *
-	 * @param xml
-	 * @param strFieldName
-	 * @return
-	 */
-	public String parseXML(final String xml, final String strFieldName) {
-		final XmlPath xmlPath = new XmlPath(xml);
-		return xmlPath.get(strFieldName).toString();
-
-	}
-
-	/**
-	 * Parse XML object for a given key and match with given expected value.
-	 *
-	 * @param xml
-	 * @param strRoot
-	 * @param strFieldName
-	 * @param strExpectedValue
-	 * @return
-	 */
-	public String parseXML(final String xml, final String strRoot, final String strFieldName,
-			final String strExpectedValue) {
-		String strResult = null;
-
-		final XmlPath xmlPath = new XmlPath(xml).setRoot(strRoot);
-
-		final String strField = xmlPath.get(strFieldName);
-		if (strField.contains(strExpectedValue)) {
-			strResult = strField;
-		}
-		return strResult;
-	}
 
 	/**
 	 * Formats the XML in pretty format.
@@ -394,9 +278,9 @@ public class RESTUtil {
 		String strExpectedResponse = null;
 		try {
 			LOGGER.info("Response File: {}", filename);
-			final URL urlFilePath = RESTUtil.class.getClassLoader().getResource("Response/" + filename);
+			final URL urlFilePath = RESTUtil.class.getClassLoader().getResource("response/" + filename);
 			if (urlFilePath == null) {
-				LOGGER.error("Requested File Doesn't Exist: {}", "Response/" + filename);
+				LOGGER.error("Requested File Doesn't Exist: {}", "response/" + filename);
 			} else {
 				final File strFilePath = new File(urlFilePath.toURI());
 				strExpectedResponse = FileUtils.readFileToString(strFilePath, "ASCII");
@@ -429,7 +313,8 @@ public class RESTUtil {
 	 */
 	public void validateStatusCode(final int intStatusCode) {
 		final int actStatusCode = response.getStatusCode();
-		Assert.assertEquals(intStatusCode, actStatusCode);
+		assertThat(intStatusCode, equalTo(actStatusCode));
+		
 	}
 
 	/**
