@@ -41,7 +41,6 @@ import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
 import gov.va.ocp.reference.framework.log.OcpBanner;
 import gov.va.ocp.reference.framework.log.OcpLogger;
 import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
-import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.service.DomainResponse;
 import gov.va.ocp.reference.framework.util.SanitizationUtil;
@@ -129,7 +128,7 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 			}
 
 			response = joinPoint.proceed();
-			
+
 			LOGGER.debug("Response: {}", response);
 
 			if (auditableAnnotation != null) {
@@ -154,7 +153,7 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 	@SuppressWarnings({ "unchecked", "squid:MethodCyclomaticComplexity" })
 	@Around("!@annotation(gov.va.ocp.reference.framework.audit.Auditable) && restController() && publicServiceResponseRestMethod()")
 	public Object aroundAdvice(final ProceedingJoinPoint joinPoint) throws Throwable {
-		
+
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("RestProviderHttpResponseAspect executing around method:" + joinPoint.toLongString());
 		}
@@ -165,11 +164,11 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 		AuditEventData auditEventData = null;
 		boolean returnTypeIsServiceResponse = false;
 		HttpServletResponse response = null;
-		
+
 		if (joinPoint.getArgs().length > 0) {
 			requestObject = Arrays.asList(joinPoint.getArgs());
 		}
-		
+
 		try {
 			Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
 			response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
@@ -204,7 +203,7 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 			LOGGER.debug("DomainResponse: {}", domainResponse);
 			final HttpStatus ruleStatus = rulesEngine.messagesToHttpStatus(domainResponse.getMessages());
 			LOGGER.debug("HttpStatus: {}", ruleStatus);
-			
+
 			auditEventData = new AuditEventData(AuditEvents.REST_RESPONSE, method.getName(), method.getDeclaringClass().getName());
 			if (ruleStatus != null && (HttpStatus.Series.valueOf(ruleStatus.value()) == HttpStatus.Series.SERVER_ERROR
 					|| HttpStatus.Series.valueOf(ruleStatus.value()) == HttpStatus.Series.CLIENT_ERROR)) {
@@ -290,8 +289,8 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 			final AuditEventData auditEventData) {
 		LOGGER.error("RestProviderHttpResponseAspect encountered uncaught exception in REST endpoint.", ocpRuntimeException);
 		final DomainResponse domainResponse = new DomainResponse();
-		domainResponse.addMessage(MessageSeverity.FATAL, HttpStatusForMessage.INTERNAL_SERVER_ERROR.getReasonPhrase(), 
-				ocpRuntimeException.getMessage(), HttpStatusForMessage.INTERNAL_SERVER_ERROR);
+		domainResponse.addMessage(MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+				ocpRuntimeException.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		final StringBuilder sb = new StringBuilder();
 		sb.append("Error Message: ").append(ocpRuntimeException);
 		AuditLogger.error(auditEventData, sb.toString(), ocpRuntimeException);
@@ -305,7 +304,7 @@ public class RestProviderHttpResponseAspect extends BaseRestProviderAspect {
 	 * @param auditEventData the auditable annotation
 	 */
 	private void writeRequestInfoAudit(final List<Object> request, final AuditEventData auditEventData) {
-		
+
 		LOGGER.debug("RequestContextHolder.getRequestAttributes() {}", RequestContextHolder.getRequestAttributes());
 
 		final HttpServletRequest httpServletRequest =

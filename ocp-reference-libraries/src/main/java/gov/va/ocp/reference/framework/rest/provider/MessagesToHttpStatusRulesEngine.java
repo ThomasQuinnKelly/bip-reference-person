@@ -77,10 +77,10 @@ public final class MessagesToHttpStatusRulesEngine {
 		boolean has4xxErrors = false;
 		for (final Message message : messagesInResponse) {
 			// check if any message has a 500 error status
-			has5xxErrors = has5xxErrors || message.getStatusEnum() == null ? false : message.getStatusEnum().is5xxServerError();
-			has4xxErrors = has4xxErrors || message.getStatusEnum() == null ? false : message.getStatusEnum().is4xxClientError();
+			has5xxErrors = has5xxErrors || message.getHttpStatus() == null ? false : message.getHttpStatus().is5xxServerError();
+			has4xxErrors = has4xxErrors || message.getHttpStatus() == null ? false : message.getHttpStatus().is4xxClientError();
 			// convert current messages into Set of Message objects for quicker matching
-			messagesToEval.add(new Message(message.getSeverity(), message.getKey(), message.getText(), message.getStatusEnum()));
+			messagesToEval.add(new Message(message.getSeverity(), message.getKey(), message.getText(), message.getHttpStatus()));
 		}
 		// if the resopnse messages have 4xx and 5xx, send 400 error
 		if (has5xxErrors && has4xxErrors) {

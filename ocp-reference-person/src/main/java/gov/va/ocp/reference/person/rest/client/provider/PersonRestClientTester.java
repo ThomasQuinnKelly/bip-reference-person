@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.rest.client.exception.ResponseEntityErrorException;
 import gov.va.ocp.reference.framework.rest.client.resttemplate.RestClientTemplate;
@@ -55,19 +54,20 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 	@ApiOperation(value = "An endpoint which uses a REST client using RestTemplate to call the remote echo operation.")
 	@RequestMapping(value = URL_PREFIX + "/callPersonByPidUsingRestTemplate", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PersonByPidDomainResponse> callPersonByPidUsingRestTemplate(@RequestBody final PersonByPidDomainRequest personByPidDomainRequest) {
+	public ResponseEntity<PersonByPidDomainResponse>
+			callPersonByPidUsingRestTemplate(@RequestBody final PersonByPidDomainRequest personByPidDomainRequest) {
 		// invoke the service using classic REST Template from Spring, but load balanced through Consul
 		HttpEntity<PersonByPidDomainRequest> requestEntity = new HttpEntity<>(personByPidDomainRequest);
 		ResponseEntity<PersonByPidDomainResponse> exchange = null;
 		try {
 			exchange =
-				personUsageRestTemplate.executeURL("http://localhost:8080" + PersonResource.URL_PREFIX + "/pid",
-						HttpMethod.POST, requestEntity, new ParameterizedTypeReference<PersonByPidDomainResponse>() {
-						});
+					personUsageRestTemplate.executeURL("http://localhost:8080" + PersonResource.URL_PREFIX + "/pid",
+							HttpMethod.POST, requestEntity, new ParameterizedTypeReference<PersonByPidDomainResponse>() {
+							});
 		} catch (ResponseEntityErrorException e) {
 			LOGGER.error("ResponseEntityErrorHandler: {}", e);
-			DomainResponse serviceResponse = e.getErrorResponse() == null ? new DomainResponse(): e.getErrorResponse().getBody();
-			LOGGER.error("ServiceResponse: {}", serviceResponse == null? "": serviceResponse.toString());
+			DomainResponse serviceResponse = e.getErrorResponse() == null ? new DomainResponse() : e.getErrorResponse().getBody();
+			LOGGER.error("ServiceResponse: {}", serviceResponse == null ? "" : serviceResponse.toString());
 			PersonByPidDomainResponse personInfoResponse = new PersonByPidDomainResponse();
 			personInfoResponse.addMessages(serviceResponse.getMessages());
 			LOGGER.error("PersonInfoResponse: {}", personInfoResponse.toString());
@@ -86,7 +86,8 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 	@ApiOperation(value = "An endpoint which uses a REST client using Feign to call the remote person by pid operation.")
 	@RequestMapping(value = URL_PREFIX + "/callPersonByPidUsingFeignClient", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PersonByPidDomainResponse> callPersonByPidUsingFeignClient(@RequestBody final PersonByPidDomainRequest personByPidDomainRequest) {
+	public ResponseEntity<PersonByPidDomainResponse>
+			callPersonByPidUsingFeignClient(@RequestBody final PersonByPidDomainRequest personByPidDomainRequest) {
 
 		// use this in case of feign hystrix to test fallback handler invocation
 		// NOSONAR ConfigurationManager.getConfigInstance().setProperty("hystrix.command.default.circuitBreaker.forceOpen", "true");
@@ -96,8 +97,8 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 		} catch (Exception e) {
 			LOGGER.error("Exception: {}", e);
 			personByPidDomainResponse = new PersonByPidDomainResponse();
-			personByPidDomainResponse.addMessage(MessageSeverity.FATAL, HttpStatusForMessage.INTERNAL_SERVER_ERROR.getReasonPhrase(), 
-					e.getMessage(), HttpStatusForMessage.INTERNAL_SERVER_ERROR);
+			personByPidDomainResponse.addMessage(MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+					e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 			LOGGER.error("PersonInfoResponse: {}", personByPidDomainResponse.toString());
 			return new ResponseEntity<>(personByPidDomainResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
