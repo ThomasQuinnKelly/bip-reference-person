@@ -1,5 +1,7 @@
 package gov.va.ocp.reference.person.rest.client;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +12,7 @@ import com.netflix.hystrix.exception.HystrixTimeoutException;
 import feign.hystrix.FallbackFactory;
 import gov.va.ocp.reference.framework.exception.OcpFeignRuntimeException;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
+import gov.va.ocp.reference.person.api.model.v1.Message;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 
@@ -46,7 +49,10 @@ public class FeignPersonClientFallbackFactory implements FallbackFactory<FeignPe
 		        	OcpFeignRuntimeException exception = ((OcpFeignRuntimeException)cause);
 		        	PersonByPidDomainResponse response = new PersonByPidDomainResponse();
 		        	response.setDoNotCacheResponse(true);
-		        	response.setMessages(exception.getDomainResponse().getMessages());
+					response.addMessage(MessageSeverity.FATAL, 
+							exception.getKey(),
+							exception.getText(), 
+							HttpStatus.SERVICE_UNAVAILABLE);
 		            return response;
 		        }
 				
@@ -61,8 +67,10 @@ public class FeignPersonClientFallbackFactory implements FallbackFactory<FeignPe
                
                 PersonByPidDomainResponse response = new PersonByPidDomainResponse();
 				response.setDoNotCacheResponse(true);
-				response.addMessage(MessageSeverity.FATAL, HttpStatus.SERVICE_UNAVAILABLE.getReasonPhrase(),
-					message, HttpStatus.SERVICE_UNAVAILABLE);
+				response.addMessage(MessageSeverity.FATAL, 
+									HttpStatus.SERVICE_UNAVAILABLE.getReasonPhrase(),
+									message, 
+									HttpStatus.SERVICE_UNAVAILABLE);
 				return response;
 				
 			}

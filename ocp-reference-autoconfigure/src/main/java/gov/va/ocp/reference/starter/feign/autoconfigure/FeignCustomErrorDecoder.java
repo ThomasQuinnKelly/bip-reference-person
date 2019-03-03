@@ -2,17 +2,12 @@ package gov.va.ocp.reference.starter.feign.autoconfigure;
 
 import java.io.IOException;
 import java.io.Reader;
-
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import gov.va.ocp.reference.framework.exception.OcpFeignRuntimeException;
-import gov.va.ocp.reference.framework.messages.HttpStatusForMessage;
-import gov.va.ocp.reference.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.framework.service.DomainResponse;
 
 public class FeignCustomErrorDecoder implements ErrorDecoder {
 
@@ -36,20 +31,17 @@ public class FeignCustomErrorDecoder implements ErrorDecoder {
 				 return defaultErrorDecoder.decode(methodKey, response);
 			}
 
-        	DomainResponse domainResponse = new DomainResponse();
-        	domainResponse.setDoNotCacheResponse(true);
-        	//domainResponse.addMessage(messageObject.getString("severity"), messageObject.getString("key"), 
-        	//		messageObject.getString("text"), messageObject.getString("status"));
         	try {
                 JSONObject messageObjects = new JSONObject(strBuffer.toString());
                 JSONArray jsonarray = messageObjects.getJSONArray("messages");
                 JSONObject messageObject = jsonarray.getJSONObject(0);
-				domainResponse.addMessage(MessageSeverity.FATAL, messageObject.getString("key"), 
-				    		messageObject.getString("text"), HttpStatusForMessage.SERVICE_UNAVAILABLE);
+                return new OcpFeignRuntimeException(messageObject.getString("key"), messageObject.getString("text"),
+                		messageObject.getString("status"), messageObject.getString("severity"));
+		
 			} catch (JSONException e) {
 				return defaultErrorDecoder.decode(methodKey, response);
 			}
-            return new OcpFeignRuntimeException(domainResponse);
+           
         }
         return defaultErrorDecoder.decode(methodKey, response);
     }

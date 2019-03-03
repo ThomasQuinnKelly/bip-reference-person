@@ -1,7 +1,5 @@
 package gov.va.ocp.reference.framework.exception;
 
-import gov.va.ocp.reference.framework.service.DomainResponse;
-
 /**
  * Custom extension of RuntimeException so that we can raise this for exceptions we have no intention
  * of handling and need to raise but for some reason cannot raise
@@ -14,66 +12,60 @@ public class OcpFeignRuntimeException extends RuntimeException {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 2598842813684506356L;
 
-	/** Server name exception occurred on */
-	public static final String SERVER_NAME = System.getProperty("server.name");
-	
-	private DomainResponse domainResponse;
-	
-	public DomainResponse getDomainResponse() {
-		return domainResponse;
+   
+	/** The key. */
+	private String key;
+
+	/** The message. */
+	private String text;
+
+	/** The Http status. */
+	private String status;
+
+	/** The message severity. */
+	private String severity;
+
+	public String getKey() {
+		return key;
 	}
 
-	public void setDomainResponse(DomainResponse domainResponse) {
-		this.domainResponse = domainResponse;
+	public void setKey(String key) {
+		this.key = key;
 	}
 
-	
-	public OcpFeignRuntimeException(DomainResponse domainResponse) {
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getSeverity() {
+		return severity;
+	}
+
+	public void setSeverity(String severity) {
+		this.severity = severity;
+	}
+
+	public OcpFeignRuntimeException(String key, String text, String status, String severity) {
 		super();
-		this.domainResponse = domainResponse;
+		this.key = key;
+		this.text = text;
+		this.status = status;
+		this.severity = severity;
 	}
+	
+	
 
-	/**
-	 * Instantiates a new exception.
-	 */
-	public OcpFeignRuntimeException() {
-		super();
-	}
 
-	/**
-	 * Instantiates a new service exception.
-	 *
-	 * @param message the message
-	 * @param cause the cause
-	 */
-	public OcpFeignRuntimeException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
-
-	/**
-	 * Instantiates a new service exception.
-	 *
-	 * @param message the message
-	 */
-	public OcpFeignRuntimeException(final String message) {
-		super(message);
-	}
-
-	/**
-	 * Instantiates a new service exception.
-	 *
-	 * @param cause the cause
-	 */
-	public OcpFeignRuntimeException(final Throwable cause) {
-		super(cause);
-	}
-
-	/**
-	 * Gets the server name.
-	 *
-	 * @return the server name
-	 */
-	public final String getServerName() {
-		return SERVER_NAME;
-	}
 }
