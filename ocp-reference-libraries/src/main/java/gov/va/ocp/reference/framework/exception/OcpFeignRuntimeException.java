@@ -16,6 +16,22 @@ public class OcpFeignRuntimeException extends RuntimeException {
 
 	/** Server name exception occurred on */
 	public static final String SERVER_NAME = System.getProperty("server.name");
+	
+	private DomainResponse domainResponse;
+	
+	public DomainResponse getDomainResponse() {
+		return domainResponse;
+	}
+
+	public void setDomainResponse(DomainResponse domainResponse) {
+		this.domainResponse = domainResponse;
+	}
+
+	
+	public OcpFeignRuntimeException(DomainResponse domainResponse) {
+		super();
+		this.domainResponse = domainResponse;
+	}
 
 	/**
 	 * Instantiates a new exception.
