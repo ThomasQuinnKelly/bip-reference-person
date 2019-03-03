@@ -1,7 +1,5 @@
 package gov.va.ocp.reference.person.rest.client;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +10,6 @@ import com.netflix.hystrix.exception.HystrixTimeoutException;
 import feign.hystrix.FallbackFactory;
 import gov.va.ocp.reference.framework.exception.OcpFeignRuntimeException;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.person.api.model.v1.Message;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 
