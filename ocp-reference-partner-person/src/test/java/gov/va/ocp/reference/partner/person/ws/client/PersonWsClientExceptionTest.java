@@ -23,6 +23,7 @@ public class PersonWsClientExceptionTest {
 	@Test
 	public void testPersonWsClientExceptionStringThrowable() {
 		testException = new PersonWsClientException(TEST_MESSAGE, TEST_CAUSE);
+		assertNotNull(testException);
 		assertEquals(TEST_MESSAGE, testException.getMessage());
 		assertEquals(TEST_CAUSE, testException.getCause());
 	}
@@ -30,12 +31,14 @@ public class PersonWsClientExceptionTest {
 	@Test
 	public void testPersonWsClientExceptionString() {
 		testException = new PersonWsClientException(TEST_MESSAGE);
+		assertNotNull(testException);
 		assertEquals(TEST_MESSAGE, testException.getMessage());
 	}
 
 	@Test
 	public void testPersonWsClientExceptionThrowable() {
 		testException = new PersonWsClientException(TEST_CAUSE);
+		assertNotNull(testException);
 		assertEquals(TEST_CAUSE, testException.getCause());
 	}
 
