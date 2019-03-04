@@ -46,10 +46,10 @@ public class FeignPersonClientFallbackFactory implements FallbackFactory<FeignPe
 		        	OcpFeignRuntimeException exception = ((OcpFeignRuntimeException)cause);
 		        	PersonByPidDomainResponse response = new PersonByPidDomainResponse();
 		        	response.setDoNotCacheResponse(true);
-					response.addMessage(MessageSeverity.FATAL, 
+					response.addMessage(MessageSeverity.ERROR, 
 							exception.getKey(),
 							exception.getText(), 
-							HttpStatus.SERVICE_UNAVAILABLE);
+							HttpStatus.valueOf(Integer.valueOf(exception.getStatus())));
 		            return response;
 		        }
 				
