@@ -64,10 +64,12 @@ public class PersonPartnerHelper {
 	 */
 	public PersonByPidDomainResponse findPersonByPid(PersonByPidDomainRequest request) {
 
+		// transform from domain model to partner model
 		FindPersonByPtcpntId partnerRequest = personByPidD2P.transform(request);
 
 		FindPersonByPtcpntIdResponse partnerResponse = null;
 		PersonByPidDomainResponse domainResponse = null;
+		// call the partner
 		try {
 			partnerResponse = personWsClient.getPersonInfoByPtcpntId(partnerRequest);
 		} catch (final Exception clientException) {
@@ -76,6 +78,7 @@ public class PersonPartnerHelper {
 			throw new PersonServiceException(message, clientException);
 		}
 
+		// transform from partner model to domain model
 		domainResponse = personByPidP2D.transform(partnerResponse);
 
 		LOGGER.debug("PersonByPidDomainResponse: {}",

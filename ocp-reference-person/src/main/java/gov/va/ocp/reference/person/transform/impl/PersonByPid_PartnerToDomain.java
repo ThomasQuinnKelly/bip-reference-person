@@ -2,12 +2,12 @@ package gov.va.ocp.reference.person.transform.impl;
 
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
 import gov.va.ocp.reference.partner.person.ws.transfer.ObjectFactory;
-import gov.va.ocp.reference.person.model.PersonInfoDomain;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
+import gov.va.ocp.reference.person.model.PersonInfoDomain;
 import gov.va.ocp.reference.person.transform.AbstractPartnerToDomain;
 
 /**
- * Transform a partner client {@link FindPersonByPtcpntIdResponse} object to a domain {@link PersonByPidDomainResponse} object.
+ * Transform a Partner client {@link FindPersonByPtcpntIdResponse} object to a service Domain {@link PersonByPidDomainResponse} object.
  *
  * @author aburkholder
  */
@@ -17,7 +17,7 @@ public class PersonByPid_PartnerToDomain extends AbstractPartnerToDomain<FindPer
 	protected static final ObjectFactory PERSON_OBJECT_FACTORY = new ObjectFactory();
 
 	/**
-	 * Transform a partner {@link FindPersonByPtcpntIdResponse} into a domain {@link PersonByPidDomainResponse} object.
+	 * Transform a Partner {@link FindPersonByPtcpntIdResponse} into a service Domain {@link PersonByPidDomainResponse} object.
 	 * <p>
 	 * {@inheritDoc AbstractPartnerToDomain}
 	 */

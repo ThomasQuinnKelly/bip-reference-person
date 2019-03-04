@@ -1,25 +1,37 @@
 package gov.va.ocp.reference.person.transform.impl;
 
-import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
-import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
-import gov.va.ocp.reference.person.transform.AbstractDomainToPartner;
+import gov.va.ocp.reference.person.api.model.v1.PersonInfo;
+import gov.va.ocp.reference.person.api.model.v1.PersonInfoResponse;
+import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
+import gov.va.ocp.reference.person.transform.AbstractDomainToProvider;
 
 /**
- * Transform a domain {@link PersonByPidDomainRequest} object to a provider {@link FindPersonByPtcpntId} object.
+ * Transform a service Domain {@link PersonByPidDomainResponse} into a REST Provider {@link PersonInfoResponse} object.
  *
  * @author aburkholder
  */
-public class PersonByPid_DomainToProvider extends AbstractDomainToPartner<PersonByPidDomainRequest, FindPersonByPtcpntId> {
+public class PersonByPid_DomainToProvider extends AbstractDomainToProvider<PersonByPidDomainResponse, PersonInfoResponse> {
 
 	/**
-	 * Transform a domain {@libnk PersonByPidDomainRequest} into a provider {@link FindPersonByPtcpntId} request.
+	 * Transform a service Domain {@link PersonByPidDomainResponse} into a REST Provider {@link PersonInfoResponse} object.
 	 * <p>
 	 * {@inheritDoc AbstractDomainToProvider}
 	 */
 	@Override
-	public FindPersonByPtcpntId transform(PersonByPidDomainRequest domainObject) {
-		FindPersonByPtcpntId providerObject = new FindPersonByPtcpntId();
-		providerObject.setPtcpntId(domainObject.getParticipantID());
+	public PersonInfoResponse transform(PersonByPidDomainResponse domainObject) {
+		PersonInfoResponse providerObject = new PersonInfoResponse();
+
+		PersonInfo providerData = new PersonInfo();
+		if (domainObject != null) {
+			providerData.setFileNumber(domainObject.getPersonInfo().getFileNumber());
+			providerData.setFirstName(domainObject.getPersonInfo().getFirstName());
+			providerData.setLastName(domainObject.getPersonInfo().getLastName());
+			providerData.setMiddleName(domainObject.getPersonInfo().getMiddleName());
+			providerData.setParticipantId(domainObject.getPersonInfo().getParticipantId());
+			providerData.setSocSecNo(domainObject.getPersonInfo().getSocSecNo());
+		}
+
+		providerObject.setPersonInfo(providerData);
 		return providerObject;
 	}
 

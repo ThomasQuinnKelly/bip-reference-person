@@ -82,6 +82,7 @@ public class ServiceValidationToMessageAspect extends BaseServiceAspect {
 				domainResponse = validateRequest(methodSignature, serviceRequest, messages);
 			}
 
+			// proceed with the actual method
 			if (domainResponse == null) {
 				domainResponse = (DomainResponse) joinPoint.proceed();
 			}

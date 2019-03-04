@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 @ApiModel(description = "Model for data to request PersonInfoDomain from the Person Service")
-public class PersonInfoRequest implements ProviderTransferObjectMarker { // extends DomainRequest {
+public class PersonInfoRequest implements ProviderTransferObjectMarker {
 	public static final String MODEL_NAME = PersonInfoRequest.class.getSimpleName();
 
 	/** A String representing a social security number. */
