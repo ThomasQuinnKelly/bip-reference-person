@@ -30,11 +30,11 @@ services:
       - vault-config
 
   consul:
-    image: consul
+    image: bip/consul
+    build:
+      context: ./local-dev/consul
     ports:
       - "8500:8500"
-    volumes: 
-      - "./local-dev/consul/acl.json:/consul/config/acl.json"
     networks:
       - bip
 
