@@ -85,7 +85,7 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 	 */
 	@ApiOperation(value = "An endpoint which uses a REST client using Feign to call the remote person by pid operation.")
 	@RequestMapping(value = URL_PREFIX + "/callPersonByPidUsingFeignClient", method = RequestMethod.POST,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PersonByPidDomainResponse>
 			callPersonByPidUsingFeignClient(@RequestBody final PersonByPidDomainRequest personByPidDomainRequest) {
 
