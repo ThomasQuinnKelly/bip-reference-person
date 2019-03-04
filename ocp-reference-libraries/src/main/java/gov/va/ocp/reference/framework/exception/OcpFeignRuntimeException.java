@@ -5,14 +5,14 @@ package gov.va.ocp.reference.framework.exception;
  * of handling and need to raise but for some reason cannot raise
  * java's RuntimeException or allow the original exception to simply propagate.
  *
- * @author jshrader
+ * @author
  */
 public class OcpFeignRuntimeException extends RuntimeException {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 2598842813684506356L;
 
-   
+
 	/** The key. */
 	private String key;
 
@@ -64,8 +64,8 @@ public class OcpFeignRuntimeException extends RuntimeException {
 		this.status = status;
 		this.severity = severity;
 	}
-	
-	
+
+
 
 
 }

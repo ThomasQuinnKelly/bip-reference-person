@@ -11,6 +11,9 @@ import gov.va.ocp.reference.person.config.ReferenceServiceFeignConfig;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 
+/**
+ * The Interface FeignPersonClient.
+ */
 @FeignClient(value = "${spring.application.name}",
 url="${ocp-reference-person.ribbon.listOfServers:}",
 name = "${spring.application.name}",
@@ -19,7 +22,13 @@ configuration = ReferenceServiceFeignConfig.class)
 public interface FeignPersonClient { // NOSONAR not a functional interface
 
 
-	@RequestMapping(value = PersonResource.URL_PREFIX + "/pid", 
+	/**
+  * Person by pid.
+  *
+  * @param personByPidDomainRequest the person by pid domain request
+  * @return the person by pid domain response
+  */
+ @RequestMapping(value = PersonResource.URL_PREFIX + "/pid", 
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)

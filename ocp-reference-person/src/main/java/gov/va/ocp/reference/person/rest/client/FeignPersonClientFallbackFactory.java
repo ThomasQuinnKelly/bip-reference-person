@@ -39,9 +39,6 @@ public class FeignPersonClientFallbackFactory implements FallbackFactory<FeignPe
 		        }else if (cause instanceof HystrixTimeoutException ) {
 		            message = "HystrixTimeoutException: " + message;
 		            
-		        }else if (cause instanceof HystrixTimeoutException ) {
-		            message = "HystrixTimeoutException: " + message;
-		            
 		        }else if (cause instanceof OcpFeignRuntimeException ) {
 		        	OcpFeignRuntimeException exception = ((OcpFeignRuntimeException)cause);
 		        	PersonByPidDomainResponse response = new PersonByPidDomainResponse();
