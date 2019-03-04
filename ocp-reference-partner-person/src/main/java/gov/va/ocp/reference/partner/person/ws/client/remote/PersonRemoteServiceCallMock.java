@@ -21,9 +21,8 @@ import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientException;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 
 /**
- * Implements the {@link RemoteServiceCall} interface, and extends
- * {@link AbstractRemoteServiceCallMock} for mocking the remote client under the
- * simulators spring profile.
+ * Implements the {@link RemoteServiceCall} interface, and extends {@link AbstractRemoteServiceCallMock} for mocking the remote client
+ * under the simulators spring profile.
  */
 @Profile(OcpCommonSpringProfiles.PROFILE_REMOTE_CLIENT_SIMULATORS)
 @Component(PersonRemoteServiceCallImpl.BEAN_NAME) // intentionally using the IMPL name
@@ -36,9 +35,8 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 
 	// TODO
 	/** Error message prefix if request type is not handled in getKeyForMockResponse(..) */
-	static final String ERROR_UNHANDLED_REQUEST_TYPE =
-			PersonRemoteServiceCallMock.class.getSimpleName()
-					+ ".getKeyForMockResponse(..) does not have a file naming block for requests of type ";
+	static final String ERROR_UNHANDLED_REQUEST_TYPE = PersonRemoteServiceCallMock.class.getSimpleName()
+			+ ".getKeyForMockResponse(..) does not have a file naming block for requests of type ";
 
 	/*
 	 * Below: Constants for mock XML file names
@@ -94,11 +92,10 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	}
 
 	/**
-	 * Get filename from a pattern.
-	 * It is assumed the pattern will always be in the form of <tt>servicename.operation[.{0}]</tt>.
+	 * Get filename from a pattern. It is assumed the pattern will always be in the form of <tt>servicename.operation[.{0}]</tt>.
 	 * <p>
-	 * Determining replaceable params looks for "{" in the fileNamePattern,
-	 * and requires the security PersonTraits to be populated correctly.
+	 * Determining replaceable params looks for "{" in the fileNamePattern, and requires the security PersonTraits to be populated
+	 * correctly.
 	 * <p>
 	 * If any of these checks fails, the fileNamePattern is returned with the trailing ".{0}" removed.
 	 *
@@ -106,16 +103,14 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	 * @param paramPID - null or the param replacement value
 	 * @return String a filename
 	 */
-	private String getFileName(final String fileNamePattern, final String paramPID) {
+	static String getFileName(final String fileNamePattern, final String paramPID) {
 		Defense.notNull(fileNamePattern, "fileNamePattern cannot be null");
 		String fileName = fileNamePattern;
 		final PersonTraits personTraits = SecurityUtils.getPersonTraits();
 
 		if (StringUtils.isNotBlank(paramPID) && fileName.contains("{")) {
 			fileName = MessageFormat.format(fileName, paramPID);
-		} else if (personTraits != null
-				&& StringUtils.isNotBlank(personTraits.getPid())
-				&& fileName.contains("{")) {
+		} else if ((personTraits != null) && StringUtils.isNotBlank(personTraits.getPid()) && fileName.contains("{")) {
 			fileName = MessageFormat.format(fileName, personTraits.getPid());
 		} else {
 			if (fileName.contains("{")) {

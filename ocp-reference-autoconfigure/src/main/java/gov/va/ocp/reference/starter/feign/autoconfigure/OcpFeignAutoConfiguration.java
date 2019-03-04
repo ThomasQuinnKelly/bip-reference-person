@@ -53,6 +53,15 @@ public class OcpFeignAutoConfiguration {
 	public void setGroupKey(final String groupKey) {
 		this.groupKey = groupKey;
 	}
+	
+	/**
+	 * Custom Feign Error Decoder
+	 * @return
+	 */
+	@Bean
+	public FeignCustomErrorDecoder feignCustomErrorDecoder() {
+	  return new FeignCustomErrorDecoder();
+	}
 
 	/**
 	 * A bean that eliminates the need to use the {@code @FeignClient(name="groupKey", url="commandKey")}

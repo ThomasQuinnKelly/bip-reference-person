@@ -1,6 +1,7 @@
 package gov.va.ocp.reference.partner.person.ws.client.remote;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -23,6 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -37,8 +42,10 @@ import org.springframework.xml.transform.StringResult;
 import org.springframework.xml.transform.StringSource;
 
 import gov.va.ocp.reference.framework.config.OcpCommonSpringProfiles;
+import gov.va.ocp.reference.framework.security.PersonTraits;
 import gov.va.ocp.reference.framework.transfer.PartnerTransferObjectMarker;
 import gov.va.ocp.reference.framework.util.Defense;
+import gov.va.ocp.reference.framework.ws.client.remote.RemoteServiceCall;
 import gov.va.ocp.reference.partner.person.ws.client.AbstractPersonTest;
 import gov.va.ocp.reference.partner.person.ws.client.PartnerMockFrameworkTestConfig;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientConfig;
@@ -48,14 +55,17 @@ import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners(inheritListeners = false, listeners = { DependencyInjectionTestExecutionListener.class,
 		DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class })
-@ActiveProfiles({ OcpCommonSpringProfiles.PROFILE_REMOTE_CLIENT_SIMULATORS })
+@ActiveProfiles({ OcpCommonSpringProfiles.PROFILE_REMOTE_CLIENT_IMPLS })
 @ContextConfiguration(inheritLocations = false, classes = { PartnerMockFrameworkTestConfig.class, PersonWsClientConfig.class })
 public class RemoteServiceCallImplTest extends AbstractPersonTest {
 
 	private static final String MOCKS_PATH = "test/mocks/";
 
-	/** Specifically the IMPL class for the RemoteServiceCall interface */
-	private final PersonRemoteServiceCallImpl callPartnerService = new PersonRemoteServiceCallImpl();
+	private static final String PARTICIPANTID_FOR_MOCK_DATA = "13364995";
+
+	// Autowire the IMPL class for the RemoteServiceCall interface declared by the current @ActiveProfiles
+	@Autowired
+	private RemoteServiceCall callPartnerService;
 
 	private MockWebServiceServer mockWebServicesServer;
 
@@ -74,25 +84,27 @@ public class RemoteServiceCallImplTest extends AbstractPersonTest {
 		assertNotNull("FAIL axiomWebServiceTemplate cannot be null.", axiomWebServiceTemplate);
 		assertNotNull("FAIL callPartnerService cannot be null.", callPartnerService);
 
+		assertTrue(callPartnerService instanceof PersonRemoteServiceCallImpl);
 		mockWebServicesServer = MockWebServiceServer.createServer(axiomWebServiceTemplate);
 		assertNotNull("FAIL mockWebServicesServer cannot be null.", mockWebServicesServer);
 	}
 
 	@Test
 	public void testCallRemoteService() {
-		// call the impl declared by the current @ActiveProfiles
-
-		// TODO add PersonTraits to security context here?
+		PersonTraits personTraits = new PersonTraits("user", "password", AuthorityUtils.createAuthorityList("ROLE_TEST"));
+		personTraits.setPid(PARTICIPANTID_FOR_MOCK_DATA);
+		Authentication auth =
+				new UsernamePasswordAuthenticationToken(personTraits, personTraits.getPassword(), personTraits.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(auth);
 
 		final FindPersonByPtcpntId request = super.makeFindPersonByPtcpntIdRequest();
 		final Source requestPayload =
 				marshalMockRequest((Jaxb2Marshaller) axiomWebServiceTemplate.getMarshaller(), request, request.getClass());
 		final Source responsePayload =
-				readMockResponseByKey(PersonRemoteServiceCallMock.MOCK_FINDPERSONBYPTCPNTID_RESPONSE, "13364995");
+				readMockResponseByKey(PersonRemoteServiceCallMock.MOCK_FINDPERSONBYPTCPNTID_RESPONSE, PARTICIPANTID_FOR_MOCK_DATA);
 
 		mockWebServicesServer.expect(payload(requestPayload)).andRespond(withPayload(responsePayload));
 
-		/* attempt to call partner will ALWAYS fail - test for specific exception classes */
 		try {
 			callPartnerService.callRemoteService(axiomWebServiceTemplate, request, FindPersonByPtcpntId.class);
 
@@ -122,7 +134,7 @@ public class RemoteServiceCallImplTest extends AbstractPersonTest {
 	}
 
 	/**
-	 * Exact copy of the
+	 * Exact copy of the request
 	 *
 	 * @param marshaller
 	 * @param request
@@ -150,8 +162,7 @@ public class RemoteServiceCallImplTest extends AbstractPersonTest {
 		String filename = MOCKS_PATH + MessageFormat.format(filenamePattern, replaceableParam) + ".xml";
 		ResourceSource resource = null;
 		try {
-			resource = new ResourceSource(
-					new ClassPathResource(filename));
+			resource = new ResourceSource(new ClassPathResource(filename));
 		} catch (final IOException e) {
 			throw new PersonWsClientException("Could not read mock XML file '" + filename
 					+ "'. Please make sure this response file exists in the main/resources directory.", e);
