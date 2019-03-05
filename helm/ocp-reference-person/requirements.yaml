@@ -1,8 +1,0 @@
-# dependencies:
-#   - name: consul
-#     repository: hhttps://github.com/hashicorp/consul-helm
-#     version: 0.6.0
-#     condition: consul.enabled,global.consul.enabled
-#     tags:
-#       - discovery
-#       - config
