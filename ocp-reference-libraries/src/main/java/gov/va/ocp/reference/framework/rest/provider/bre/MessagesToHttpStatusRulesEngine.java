@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.framework.rest.provider;
+package gov.va.ocp.reference.framework.rest.provider.bre;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import gov.va.ocp.reference.framework.log.OcpLogger;
 import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.messages.Message;
+import gov.va.ocp.reference.framework.rest.provider.bre.rules.MessagesToHttpStatusRule;
 
 /**
  * The Class MessagesToHttpStatusRulesEngine is a rather simple rules engine to evaluate Message objects and translate them into

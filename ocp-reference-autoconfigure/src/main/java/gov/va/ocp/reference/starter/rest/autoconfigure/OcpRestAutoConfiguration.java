@@ -25,8 +25,8 @@ import org.springframework.web.client.RestTemplate;
 
 import gov.va.ocp.reference.framework.rest.client.exception.ResponseEntityErrorHandler;
 import gov.va.ocp.reference.framework.rest.client.resttemplate.RestClientTemplate;
-import gov.va.ocp.reference.framework.rest.provider.RestProviderHttpResponseAspect;
-import gov.va.ocp.reference.framework.rest.provider.RestProviderTimerAspect;
+import gov.va.ocp.reference.framework.rest.provider.aspect.RestProviderHttpResponseAspect;
+import gov.va.ocp.reference.framework.rest.provider.aspect.RestProviderTimerAspect;
 import gov.va.ocp.reference.framework.util.Defense;
 
 /**

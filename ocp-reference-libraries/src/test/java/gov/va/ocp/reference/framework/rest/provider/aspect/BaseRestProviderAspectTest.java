@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.framework.rest.provider;
+package gov.va.ocp.reference.framework.rest.provider.aspect;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,7 +16,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import gov.va.ocp.reference.framework.audit.AuditEventData;
 import gov.va.ocp.reference.framework.audit.AuditEvents;
-import gov.va.ocp.reference.framework.rest.provider.BaseRestProviderAspect;
+import gov.va.ocp.reference.framework.rest.provider.aspect.BaseRestProviderAspect;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BaseRestProviderAspectTest {

@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.framework.rest.provider;
+package gov.va.ocp.reference.framework.rest.provider.aspect;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,6 +42,8 @@ import gov.va.ocp.reference.framework.log.OcpBanner;
 import gov.va.ocp.reference.framework.log.OcpLogger;
 import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
+import gov.va.ocp.reference.framework.rest.provider.bre.MessagesToHttpStatusRulesEngine;
+import gov.va.ocp.reference.framework.rest.provider.bre.rules.MessageSeverityMatchRule;
 import gov.va.ocp.reference.framework.service.DomainResponse;
 import gov.va.ocp.reference.framework.util.SanitizationUtil;
 
@@ -53,7 +55,7 @@ import gov.va.ocp.reference.framework.util.SanitizationUtil;
  * Ensure you follow that pattern to make use of this standard aspect.
  *
  * @author akulkarni
- * @see gov.va.ocp.reference.framework.rest.provider.BaseRestProviderAspect
+ * @see gov.va.ocp.reference.framework.rest.provider.aspect.BaseRestProviderAspect
  */
 @Aspect
 @Order(-9998)

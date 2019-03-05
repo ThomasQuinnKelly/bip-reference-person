@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.framework.service;
+package gov.va.ocp.reference.framework.service.aspect;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +21,8 @@ import gov.va.ocp.reference.framework.log.OcpLogger;
 import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.framework.rest.provider.BaseRestProviderAspect;
+import gov.va.ocp.reference.framework.rest.provider.aspect.BaseRestProviderAspect;
+import gov.va.ocp.reference.framework.service.DomainResponse;
 import gov.va.ocp.reference.framework.validation.Validatable;
 import gov.va.ocp.reference.framework.validation.ViolationMessageParts;
 
