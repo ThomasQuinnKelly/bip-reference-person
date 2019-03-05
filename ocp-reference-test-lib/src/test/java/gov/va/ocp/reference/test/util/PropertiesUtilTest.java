@@ -14,10 +14,17 @@ public class PropertiesUtilTest {
 	@Test
 	public void testreadFile_Success() {
 		
-		final URL urlConfigFile = PropertiesUtilTest.class.getClassLoader().getResource("test.properties");
+		final URL urlConfigFile = PropertiesUtilTest.class.getClassLoader().getResource("test-properties.properties");
 		Properties properties = PropertiesUtil.readFile(urlConfigFile);
 		assertThat("reference", equalTo(properties.get("project")));
 	}
+  public void testreadEmptyFile_Success() {
+		
+		final URL urlConfigFile = PropertiesUtilTest.class.getClassLoader().getResource("empty-properties.properties");
+		Properties properties = PropertiesUtil.readFile(urlConfigFile);
+		assertThat(true, equalTo(properties.isEmpty()));
+	}
+
 
 	@Test (expected = NullPointerException.class)
 	public void testreadFile_failure() {
