@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import gov.va.ocp.reference.framework.messages.MessageSeverity;
+import gov.va.ocp.framework.messages.MessageSeverity;
 
 public class Message {
 
@@ -140,7 +140,7 @@ public class Message {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see gov.va.ocp.reference.framework.transfer.AbstractTransferObject#equals(java.lang.Object)
+	 * @see gov.va.ocp.framework.transfer.AbstractTransferObject#equals(java.lang.Object)
 	 */
 	@Override
 	public final boolean equals(final Object obj) {
@@ -150,7 +150,7 @@ public class Message {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see gov.va.ocp.reference.framework.transfer.AbstractTransferObject#hashCode()
+	 * @see gov.va.ocp.framework.transfer.AbstractTransferObject#hashCode()
 	 */
 	@Override
 	public final int hashCode() {

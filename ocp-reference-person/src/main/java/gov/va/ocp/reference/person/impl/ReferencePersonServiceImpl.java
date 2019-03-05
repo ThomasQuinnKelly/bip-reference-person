@@ -20,13 +20,13 @@ import org.springframework.stereotype.Service;
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
-import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
-import gov.va.ocp.reference.framework.messages.Message;
-import gov.va.ocp.reference.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.framework.security.PersonTraits;
-import gov.va.ocp.reference.framework.security.SecurityUtils;
-import gov.va.ocp.reference.framework.util.Defense;
-import gov.va.ocp.reference.framework.util.OcpCacheUtil;
+import gov.va.ocp.framework.exception.OcpRuntimeException;
+import gov.va.ocp.framework.messages.Message;
+import gov.va.ocp.framework.messages.MessageSeverity;
+import gov.va.ocp.framework.security.PersonTraits;
+import gov.va.ocp.framework.security.SecurityUtils;
+import gov.va.ocp.framework.util.Defense;
+import gov.va.ocp.framework.util.OcpCacheUtil;
 import gov.va.ocp.reference.person.api.ReferencePersonService;
 import gov.va.ocp.reference.person.exception.PersonServiceException;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
@@ -88,8 +88,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 */
 	@Override
 	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE,
-			key = "#root.methodName + T(gov.va.ocp.reference.framework.util.OcpCacheUtil).createKey(#personByPidDomainRequest.participantID)",
-			unless = "T(gov.va.ocp.reference.framework.util.OcpCacheUtil).checkResultConditions(#result)")
+			key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).createKey(#personByPidDomainRequest.participantID)",
+			unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
 			ignoreExceptions = { IllegalArgumentException.class })
 	public PersonByPidDomainResponse findPersonByParticipantID(final PersonByPidDomainRequest personByPidDomainRequest) {

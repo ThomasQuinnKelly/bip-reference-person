@@ -1,4 +1,7 @@
 mavenGitflowPipeline {
-    applicationName = 'ocp-reference-person'
-    dockerContext = 'ocp-reference-person'
+    dockerBuilds = [
+        'ocp-reference-person': 'ocp-reference-person',
+        'consul': 'local-dev/consul',
+        'vault-config': 'local-dev/vault-config'
+    ]
 }

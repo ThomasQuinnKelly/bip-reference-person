@@ -1,6 +1,6 @@
 package gov.va.ocp.reference.person.model;
 
-import gov.va.ocp.reference.framework.service.DomainRequest;
+import gov.va.ocp.framework.service.DomainRequest;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
