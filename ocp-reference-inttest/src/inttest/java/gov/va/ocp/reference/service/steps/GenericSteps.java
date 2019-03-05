@@ -1,9 +1,5 @@
 package gov.va.ocp.reference.service.steps;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,12 +34,6 @@ public class GenericSteps {
 		handler.validateStatusCode(httpCode);
 	}
 
-	/*
-	 * @And("^the response should be same as \"(.*?)\"$") public void
-	 * responseShouldBe(final String responseFile) throws Throwable {
-	 * LOGGER.info("responseFile {}", responseFile);
-	 * assertThat(handler.compareExpectedResponseWithActual(responseFile),
-	 * is(true)); }
-	 */
+	
 
 }

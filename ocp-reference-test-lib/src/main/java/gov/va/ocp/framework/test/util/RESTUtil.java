@@ -313,7 +313,7 @@ public class RESTUtil {
 	 */
 	public void validateStatusCode(final int intStatusCode) {
 		final int actStatusCode = response.getStatusCode();
-		assertThat(intStatusCode, equalTo(actStatusCode));
+		assertThat(actStatusCode, equalTo(intStatusCode));
 		
 	}
 
