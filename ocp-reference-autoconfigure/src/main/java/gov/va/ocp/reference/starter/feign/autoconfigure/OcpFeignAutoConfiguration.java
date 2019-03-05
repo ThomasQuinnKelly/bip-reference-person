@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
@@ -15,6 +16,7 @@ import com.netflix.hystrix.HystrixCommandProperties;
 
 import feign.Feign;
 import feign.Logger;
+import feign.Request;
 import feign.hystrix.HystrixFeign;
 import feign.hystrix.SetterFactory;
 import gov.va.ocp.reference.framework.log.OcpLogger;
@@ -115,6 +117,20 @@ public class OcpFeignAutoConfiguration {
 
 		return HystrixFeign.builder().setterFactory(commandKeyIsRequestLine).requestInterceptor(tokenFeignRequestInterceptor());
 	}
+	
+	/**
+	 * Request options.
+	 *
+	 * @param env the env
+	 * @return the request. options
+	 */
+	@Bean
+    Request.Options requestOptions(ConfigurableEnvironment env){
+        int ribbonReadTimeout = env.getProperty("ribbon.ReadTimeout", int.class, 6000);
+        int ribbonConnectionTimeout = env.getProperty("ribbon.ConnectTimeout", int.class, 3000);
+
+        return new Request.Options(ribbonConnectionTimeout, ribbonReadTimeout);
+    }
 	
 	/**
 	 * Feign logger level.
