@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.test.util;
+package gov.va.ocp.framework.test.util;
 
 import java.util.Map;
 

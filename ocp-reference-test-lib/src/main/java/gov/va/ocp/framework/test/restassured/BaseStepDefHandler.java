@@ -1,10 +1,10 @@
-package gov.va.ocp.reference.test.restassured;
+package gov.va.ocp.framework.test.restassured;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import gov.va.ocp.reference.test.service.RESTConfigService;
-import gov.va.ocp.reference.test.util.RESTUtil;
+import gov.va.ocp.framework.test.service.RESTConfigService;
+import gov.va.ocp.framework.test.util.RESTUtil;
 /**
  * Handler object that extends BaseStepDef to handle rest based api call. Step definition class inject this object thru constructor.
  *

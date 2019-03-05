@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.test.util;
+package gov.va.ocp.framework.test.util;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 import org.junit.Before;
 import org.junit.Test;
 
-import gov.va.ocp.reference.test.service.RESTConfigService;
+import gov.va.ocp.framework.test.service.RESTConfigService;
 
 public class RESTConfigServiceTest {
 	

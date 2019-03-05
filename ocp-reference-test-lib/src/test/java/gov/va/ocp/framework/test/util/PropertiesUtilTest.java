@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.test.util;
+package gov.va.ocp.framework.test.util;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -7,6 +7,8 @@ import java.net.URL;
 import java.util.Properties;
 
 import org.junit.Test;
+
+import gov.va.ocp.framework.test.util.PropertiesUtil;
 
 public class PropertiesUtilTest {
 

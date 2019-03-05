@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.test.restassured;
+package gov.va.ocp.framework.test.restassured;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cucumber.api.Scenario;
-import gov.va.ocp.reference.test.service.BearerTokenService;
-import gov.va.ocp.reference.test.service.RESTConfigService;
-import gov.va.ocp.reference.test.util.RESTUtil;
+import gov.va.ocp.framework.test.service.BearerTokenService;
+import gov.va.ocp.framework.test.service.RESTConfigService;
+import gov.va.ocp.framework.test.util.RESTUtil;
 
 /**
  * Base class for all step definition.
