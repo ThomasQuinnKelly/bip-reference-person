@@ -84,7 +84,7 @@ public class BaseRestProviderAspectTest {
 		AuditEventData result = BaseRestProviderAspect.getDefaultAuditableInstance(method);
 		assertEquals(expResult, result.getEvent());
 		assertEquals("someMethod", result.getActivity());
-		assertEquals("gov.va.ocp.reference.framework.rest.provider.BaseRestProviderAspectTest", result.getAuditClass());
+		assertEquals("gov.va.ocp.reference.framework.rest.provider.aspect.BaseRestProviderAspectTest", result.getAuditClass());
 
 	}
 
