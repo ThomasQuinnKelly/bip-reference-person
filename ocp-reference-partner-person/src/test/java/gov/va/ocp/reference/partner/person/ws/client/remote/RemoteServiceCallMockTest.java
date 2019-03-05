@@ -24,8 +24,8 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
-import gov.va.ocp.reference.framework.config.OcpCommonSpringProfiles;
-import gov.va.ocp.reference.framework.security.PersonTraits;
+import gov.va.ocp.framework.config.OcpCommonSpringProfiles;
+import gov.va.ocp.framework.security.PersonTraits;
 import gov.va.ocp.reference.partner.person.ws.client.AbstractPersonTest;
 import gov.va.ocp.reference.partner.person.ws.client.PartnerMockFrameworkTestConfig;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientConfig;

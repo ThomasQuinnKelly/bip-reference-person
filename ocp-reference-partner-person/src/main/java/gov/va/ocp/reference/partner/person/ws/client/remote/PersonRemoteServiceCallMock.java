@@ -8,15 +8,15 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
-import gov.va.ocp.reference.framework.config.OcpCommonSpringProfiles;
-import gov.va.ocp.reference.framework.log.OcpLogger;
-import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
-import gov.va.ocp.reference.framework.security.PersonTraits;
-import gov.va.ocp.reference.framework.security.SecurityUtils;
-import gov.va.ocp.reference.framework.transfer.PartnerTransferObjectMarker;
-import gov.va.ocp.reference.framework.util.Defense;
-import gov.va.ocp.reference.framework.ws.client.remote.AbstractRemoteServiceCallMock;
-import gov.va.ocp.reference.framework.ws.client.remote.RemoteServiceCall;
+import gov.va.ocp.framework.config.OcpCommonSpringProfiles;
+import gov.va.ocp.framework.log.OcpLogger;
+import gov.va.ocp.framework.log.OcpLoggerFactory;
+import gov.va.ocp.framework.security.PersonTraits;
+import gov.va.ocp.framework.security.SecurityUtils;
+import gov.va.ocp.framework.transfer.PartnerTransferObjectMarker;
+import gov.va.ocp.framework.util.Defense;
+import gov.va.ocp.framework.ws.client.remote.AbstractRemoteServiceCallMock;
+import gov.va.ocp.framework.ws.client.remote.RemoteServiceCall;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientException;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 
@@ -48,8 +48,8 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see gov.va.ocp.reference.framework.ws.client.remote.RemoteServiceCall#callRemoteService( org.springframework.ws.client.core.
-	 * WebServiceTemplate, gov.va.ocp.reference.framework.transfer.PartnerTransferObjectMarker, java.lang.Class)
+	 * @see gov.va.ocp.framework.ws.client.remote.RemoteServiceCall#callRemoteService( org.springframework.ws.client.core.
+	 * WebServiceTemplate, gov.va.ocp.framework.transfer.PartnerTransferObjectMarker, java.lang.Class)
 	 */
 	@Override
 	public PartnerTransferObjectMarker callRemoteService(final WebServiceTemplate webserviceTemplate,
@@ -68,8 +68,8 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see gov.va.ocp.reference.framework.ws.client.remote.AbstractRemoteServiceCallMock#
-	 * getKeyForMockResponse(gov.va.ocp.reference.framework.transfer. PartnerTransferObjectMarker)
+	 * @see gov.va.ocp.framework.ws.client.remote.AbstractRemoteServiceCallMock#
+	 * getKeyForMockResponse(gov.va.ocp.framework.transfer. PartnerTransferObjectMarker)
 	 */
 	@Override
 	protected String getKeyForMockResponse(final PartnerTransferObjectMarker request) {

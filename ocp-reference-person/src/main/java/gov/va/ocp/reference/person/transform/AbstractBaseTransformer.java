@@ -8,8 +8,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import gov.va.ocp.reference.framework.log.OcpLogger;
-import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
+import gov.va.ocp.framework.log.OcpLogger;
+import gov.va.ocp.framework.log.OcpLoggerFactory;
 
 /**
  * Static methods that are commonly needed for object model transformation.
