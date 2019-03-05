@@ -23,7 +23,7 @@ public class DomainRequest extends AbstractTransferObject implements DomainTrans
 	/**
 	 * Instantiates a new rest request.
 	 */
-	protected DomainRequest() {
+	public DomainRequest() {
 		super();
 	}
 

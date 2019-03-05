@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import gov.va.ocp.reference.framework.AbstractBaseLogTester;
-import gov.va.ocp.reference.framework.service.ServiceTimerAspect;
+import gov.va.ocp.reference.framework.service.aspect.ServiceTimerAspect;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceTimerAspectTest extends AbstractBaseLogTester {

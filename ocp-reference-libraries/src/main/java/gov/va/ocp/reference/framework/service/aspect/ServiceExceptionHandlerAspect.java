@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.framework.service;
+package gov.va.ocp.reference.framework.service.aspect;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +12,7 @@ import gov.va.ocp.reference.framework.exception.ExceptionToExceptionTranslationH
 import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
 import gov.va.ocp.reference.framework.log.OcpLogger;
 import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
+import gov.va.ocp.reference.framework.service.ServiceException;
 import gov.va.ocp.reference.framework.util.Defense;
 
 /**

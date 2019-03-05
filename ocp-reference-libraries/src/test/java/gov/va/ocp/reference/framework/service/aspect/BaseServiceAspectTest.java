@@ -1,8 +1,8 @@
-package gov.va.ocp.reference.framework.service;
+package gov.va.ocp.reference.framework.service.aspect;
 
 import org.junit.Test;
 
-import gov.va.ocp.reference.framework.service.BaseServiceAspect;
+import gov.va.ocp.reference.framework.service.aspect.BaseServiceAspect;
 
 public class BaseServiceAspectTest {
 

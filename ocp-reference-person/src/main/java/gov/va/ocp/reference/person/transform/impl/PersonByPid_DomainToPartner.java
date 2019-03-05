@@ -5,14 +5,14 @@ import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.transform.AbstractDomainToPartner;
 
 /**
- * Transform a domain {@link PersonByPidDomainRequest} object to a partner {@link FindPersonByPtcpntId} object.
+ * Transform a service Domain {@link PersonByPidDomainRequest} object to a Partner client {@link FindPersonByPtcpntId} requets object.
  *
  * @author aburkholder
  */
 public class PersonByPid_DomainToPartner extends AbstractDomainToPartner<PersonByPidDomainRequest, FindPersonByPtcpntId> {
 
 	/**
-	 * Transform a domain {@libnk PersonByPidDomainRequest} into a partner {@link FindPersonByPtcpntId} request.
+	 * Transform a service Domain {@link PersonByPidDomainRequest} into a Partner client {@link FindPersonByPtcpntId} request object.
 	 * <p>
 	 * {@inheritDoc AbstractDomainToPartner}
 	 */

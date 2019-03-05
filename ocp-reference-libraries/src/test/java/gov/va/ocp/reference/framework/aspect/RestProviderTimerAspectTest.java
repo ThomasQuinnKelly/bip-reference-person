@@ -18,7 +18,7 @@ import org.slf4j.event.Level;
 
 import gov.va.ocp.reference.framework.AbstractBaseLogTester;
 import gov.va.ocp.reference.framework.log.OcpLogger;
-import gov.va.ocp.reference.framework.rest.provider.RestProviderTimerAspect;
+import gov.va.ocp.reference.framework.rest.provider.aspect.RestProviderTimerAspect;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestProviderTimerAspectTest extends AbstractBaseLogTester {

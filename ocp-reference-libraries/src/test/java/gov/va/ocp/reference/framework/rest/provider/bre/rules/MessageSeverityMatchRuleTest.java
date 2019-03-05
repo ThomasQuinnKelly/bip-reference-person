@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.framework.rest.provider;
+package gov.va.ocp.reference.framework.rest.provider.bre.rules;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
+import gov.va.ocp.reference.framework.rest.provider.bre.rules.MessageSeverityMatchRule;
 
 public class MessageSeverityMatchRuleTest {
 

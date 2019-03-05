@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import gov.va.ocp.reference.framework.service.ServiceExceptionHandlerAspect;
-import gov.va.ocp.reference.framework.service.ServiceTimerAspect;
-import gov.va.ocp.reference.framework.service.ServiceValidationToMessageAspect;
+import gov.va.ocp.reference.framework.service.aspect.ServiceExceptionHandlerAspect;
+import gov.va.ocp.reference.framework.service.aspect.ServiceTimerAspect;
+import gov.va.ocp.reference.framework.service.aspect.ServiceValidationToMessageAspect;
 
 
 /**
