@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.framework.aspect;
+package gov.va.ocp.reference.framework.service.aspect;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -14,19 +14,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.slf4j.event.Level;
 
 import gov.va.ocp.reference.framework.AbstractBaseLogTester;
-import gov.va.ocp.reference.framework.log.OcpLogger;
-import gov.va.ocp.reference.framework.rest.provider.aspect.RestProviderTimerAspect;
+import gov.va.ocp.reference.framework.service.aspect.ServiceTimerAspect;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RestProviderTimerAspectTest extends AbstractBaseLogTester {
-
-	/** Underlying implementation of OcpLogger */
-	private OcpLogger AspectLoggingLOG = super.getLogger(RestProviderTimerAspectTest.class);
-	/** Underlying implementation of OcpLogger */
-	private OcpLogger AspectLoggingTestLOG = super.getLogger(RestProviderTimerAspectTest.class);
+public class ServiceTimerAspectTest extends AbstractBaseLogTester {
 
 	@Mock
 	private ProceedingJoinPoint proceedingJoinPoint;
@@ -49,20 +42,18 @@ public class RestProviderTimerAspectTest extends AbstractBaseLogTester {
 	@Override
 	@After
 	public void tearDown() {
-		AspectLoggingLOG.setLevel(Level.DEBUG);
-		AspectLoggingTestLOG.setLevel(Level.DEBUG);
 	}
 
 	@Test
 	public void testAroundAdviceDebugOn() throws Throwable {
 		super.getAppender().clear();
 
-		RestProviderTimerAspect restProviderTimerAspect = new RestProviderTimerAspect();
-		restProviderTimerAspect.aroundAdvice(proceedingJoinPoint);
+		ServiceTimerAspect serviceTimerAspect = new ServiceTimerAspect();
+		serviceTimerAspect.aroundAdvice(proceedingJoinPoint);
 
 		assertEquals("PerformanceLoggingAspect executing around method:ProceedingJoinPointLongString",
 				super.getAppender().get(0).getMessage());
-		assertEquals("enter [RestProviderTimerAspectTest.someMethod]", super.getAppender().get(1).getMessage());
+		assertEquals("enter [ServiceTimerAspectTest.someMethod]", super.getAppender().get(1).getMessage());
 		assertEquals("PerformanceLoggingAspect after method was called.", super.getAppender().get(2).getMessage());
 		assertEquals(ch.qos.logback.classic.Level.INFO, super.getAppender().get(3).getLevel());
 	}
