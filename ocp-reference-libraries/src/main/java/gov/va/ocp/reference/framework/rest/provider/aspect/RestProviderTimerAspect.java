@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.framework.rest.provider;
+package gov.va.ocp.reference.framework.rest.provider.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

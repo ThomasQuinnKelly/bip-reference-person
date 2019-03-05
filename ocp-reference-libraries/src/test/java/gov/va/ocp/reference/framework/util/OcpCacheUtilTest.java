@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import gov.va.ocp.reference.framework.security.PersonTraits;
 import gov.va.ocp.reference.framework.service.DomainResponse;
-import gov.va.ocp.reference.framework.util.OcpCacheUtil;
 
 public class OcpCacheUtilTest {
 

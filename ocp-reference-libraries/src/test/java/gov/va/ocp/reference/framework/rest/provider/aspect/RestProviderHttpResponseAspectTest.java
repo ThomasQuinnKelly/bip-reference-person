@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.framework.rest.provider;
+package gov.va.ocp.reference.framework.rest.provider.aspect;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -36,6 +36,8 @@ import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
 import gov.va.ocp.reference.framework.log.OcpLogger;
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
+import gov.va.ocp.reference.framework.rest.provider.bre.MessagesToHttpStatusRulesEngine;
+import gov.va.ocp.reference.framework.rest.provider.bre.rules.MessageSeverityMatchRule;
 import gov.va.ocp.reference.framework.service.DomainRequest;
 import gov.va.ocp.reference.framework.service.DomainResponse;
 

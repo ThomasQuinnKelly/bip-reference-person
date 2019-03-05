@@ -8,9 +8,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.framework.transfer.ProviderTransferObjectMarker;
 
-public class Message implements ProviderTransferObjectMarker {
+public class Message {
 
 	/** The Constant serialVersionUID. */
 

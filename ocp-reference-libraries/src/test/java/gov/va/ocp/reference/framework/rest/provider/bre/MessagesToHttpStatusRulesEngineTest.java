@@ -1,6 +1,5 @@
-package gov.va.ocp.reference.framework.rest.provider;
+package gov.va.ocp.reference.framework.rest.provider.bre;
 
-import static gov.va.ocp.reference.framework.rest.provider.MessagesToHttpStatusRulesEngine.evalMessagesAgainstRules;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -18,6 +17,8 @@ import org.springframework.http.HttpStatus;
 
 import gov.va.ocp.reference.framework.messages.Message;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
+import gov.va.ocp.reference.framework.rest.provider.bre.rules.MessageKeySeverityMatchRule;
+import gov.va.ocp.reference.framework.rest.provider.bre.rules.MessagesToHttpStatusRule;
 
 public class MessagesToHttpStatusRulesEngineTest {
 
@@ -62,7 +63,8 @@ public class MessagesToHttpStatusRulesEngineTest {
 		setOfRules.add(errorRule);
 
 		assertTrue(HttpStatus.INTERNAL_SERVER_ERROR
-				.equals(evalMessagesAgainstRules(Arrays.asList(new Message[] { message }), setOfRules)));
+				.equals(MessagesToHttpStatusRulesEngine.evalMessagesAgainstRules(Arrays.asList(new Message[] { message }),
+						setOfRules)));
 	}
 
 	@Test
@@ -75,7 +77,8 @@ public class MessagesToHttpStatusRulesEngineTest {
 		Set<MessagesToHttpStatusRule> setOfRules = new LinkedHashSet<MessagesToHttpStatusRule>();
 		setOfRules.add(errorRule);
 
-		assertTrue(HttpStatus.BAD_REQUEST.equals(evalMessagesAgainstRules(Arrays.asList(new Message[] { message }), setOfRules)));
+		assertTrue(HttpStatus.BAD_REQUEST.equals(
+				MessagesToHttpStatusRulesEngine.evalMessagesAgainstRules(Arrays.asList(new Message[] { message }), setOfRules)));
 	}
 
 	@Test
@@ -92,7 +95,8 @@ public class MessagesToHttpStatusRulesEngineTest {
 		setOfRules.add(errorRule);
 
 		assertTrue(HttpStatus.BAD_REQUEST
-				.equals(evalMessagesAgainstRules(Arrays.asList(new Message[] { message1, message2 }), setOfRules)));
+				.equals(MessagesToHttpStatusRulesEngine.evalMessagesAgainstRules(Arrays.asList(new Message[] { message1, message2 }),
+						setOfRules)));
 	}
 
 }

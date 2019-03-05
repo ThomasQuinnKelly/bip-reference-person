@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.framework.service;
+package gov.va.ocp.reference.framework.service.aspect;
 
 import org.aspectj.lang.annotation.Pointcut;
 

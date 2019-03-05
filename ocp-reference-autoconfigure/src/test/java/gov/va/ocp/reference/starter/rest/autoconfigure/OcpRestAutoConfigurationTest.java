@@ -16,7 +16,7 @@ import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-import gov.va.ocp.reference.framework.rest.provider.RestProviderHttpResponseAspect;
+import gov.va.ocp.reference.framework.rest.provider.aspect.RestProviderHttpResponseAspect;
 import gov.va.ocp.reference.starter.audit.autoconfigure.OcpAuditAutoConfiguration;
 import gov.va.ocp.reference.starter.rest.autoconfigure.OcpRestAutoConfiguration;
 import gov.va.ocp.reference.starter.security.autoconfigure.OcpSecurityAutoConfiguration;

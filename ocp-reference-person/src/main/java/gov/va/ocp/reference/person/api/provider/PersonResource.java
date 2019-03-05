@@ -1,5 +1,7 @@
 package gov.va.ocp.reference.person.api.provider;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.va.ocp.reference.framework.swagger.SwaggerResponseMessages;
+import gov.va.ocp.reference.framework.util.Defense;
 import gov.va.ocp.reference.person.api.ReferencePersonService;
-import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
-import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
+import gov.va.ocp.reference.person.api.model.v1.PersonInfoRequest;
+import gov.va.ocp.reference.person.api.model.v1.PersonInfoResponse;
+import gov.va.ocp.reference.person.transform.impl.PersonByPid_DomainToProvider;
+import gov.va.ocp.reference.person.transform.impl.PersonByPid_ProviderToDomain;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -36,11 +41,21 @@ public class PersonResource implements HealthIndicator, SwaggerResponseMessages 
 
 	/** The service layer API contract for processing personByPid() requests */
 	@Autowired
-	@Qualifier("IMPL")
+	@Qualifier("PERSON_SERVICE_IMPL")
 	ReferencePersonService refPersonService;
+
+	PersonByPid_ProviderToDomain personByPidProvider2Domain = new PersonByPid_ProviderToDomain();
+	PersonByPid_DomainToProvider personByPidDomain2Provider = new PersonByPid_DomainToProvider();
 
 	/** The root path to this resource */
 	public static final String URL_PREFIX = "/api/v1/persons";
+
+	@PostConstruct
+	public void postConstruct() {
+		Defense.notNull(refPersonService);
+		Defense.notNull(personByPidProvider2Domain);
+		Defense.notNull(personByPidDomain2Provider);
+	}
 
 	/**
 	 * A REST call to test this endpoint is up and running.
@@ -76,9 +91,12 @@ public class PersonResource implements HealthIndicator, SwaggerResponseMessages 
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	@ApiOperation(value = "Retrieve person information by PID from Person Service .",
 			notes = "Will return a person info object based on search by PID.")
-	public PersonByPidDomainResponse personByPid(@RequestBody final PersonByPidDomainRequest personByPidDomainRequest) {
+	public PersonInfoResponse personByPid(@RequestBody final PersonInfoRequest personInfoRequest) {
 		LOGGER.debug("personByPid() method invoked");
-		return refPersonService.findPersonByParticipantID(personByPidDomainRequest);
+
+		return personByPidDomain2Provider.transform(
+				refPersonService.findPersonByParticipantID(
+						personByPidProvider2Domain.transform(personInfoRequest)));
 	}
 
 	/**

@@ -75,6 +75,7 @@
 
 		<!-- testing - unit / integratino / performance -->
 		<mockito-core.version>2.24.5</mockito-core.version>
+		<maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>		
 		<surefire-junit47.version>2.22.0</surefire-junit47.version>
 		<maven-cucumber-reporting.version>4.4.0</maven-cucumber-reporting.version>
 		<jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
@@ -83,7 +84,6 @@
 		<testng.version>6.14.3</testng.version>
 		<cucumber.version>1.2.5</cucumber.version>
 		<rest-assured.version>3.3.0</rest-assured.version>
-		
 
 		<!-- application plugins -->
 		<spring-cloud-dependencies.version>Greenwich.RELEASE</spring-cloud-dependencies.version>
@@ -299,7 +299,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M1</version>
+				<version>${maven-surefire-plugin.version}</version>
 				<configuration>
 					<skipTests>${skipTests}</skipTests>
 				</configuration>

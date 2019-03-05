@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.framework.service;
+package gov.va.ocp.reference.framework.service.aspect;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
@@ -21,7 +21,7 @@ import org.slf4j.event.Level;
 import gov.va.ocp.reference.framework.exception.ExceptionToExceptionTranslationHandler;
 import gov.va.ocp.reference.framework.log.OcpLogger;
 import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
-import gov.va.ocp.reference.framework.service.ServiceExceptionHandlerAspect;
+import gov.va.ocp.reference.framework.service.aspect.ServiceExceptionHandlerAspect;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ServiceExceptionHandlerAspectTest {

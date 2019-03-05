@@ -78,7 +78,7 @@ logging:
     gov.va.ocp.reference.framework.ws.client: DEBUG
     gov.va.ocp.reference.partner: DEBUG
     gov.va.ocp.reference.person.rest.client.feign.FeignPersonClient: INFO
-    gov.va.ocp.reference: INFO
+    gov.va.ocp.reference: DEBUG
     com.ecwid.consul: INFO
     org.springframework.cloud.openfeign: INFO
     org.springframework.security.web: INFO
@@ -93,6 +93,7 @@ logging:
     org.springframework.cache: INFO 
     org.apache.http.impl.client: INFO
     org.springframework.retry: INFO
+    sun.net.www.protocol: INFO
     feign: INFO
 ##################################################
 # Ribbon timeout, server refresh interval, retry
@@ -138,10 +139,10 @@ hystrix:
       # This property sets the amount of time, after tripping the circuit, to reject requests 
       # before allowing attempts again to determine if the circuit should again be closed.
       # Default Value: 5000
-      sleepWindowInMilliseconds: 10000
+      sleepWindowInMilliseconds: 5000
       # This property sets the minimum number of requests in a rolling window that will trip the circuit.
       # Default Value: 20
-      requestVolumeThreshold: 4
+      requestVolumeThreshold: 20
     execution:
       isolation:
         # strategy: SEMAPHORE
