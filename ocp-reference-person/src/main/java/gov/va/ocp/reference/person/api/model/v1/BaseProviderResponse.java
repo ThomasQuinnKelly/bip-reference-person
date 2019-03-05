@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
-import gov.va.ocp.reference.framework.messages.MessageSeverity;
+import gov.va.ocp.framework.messages.MessageSeverity;
 
 public class BaseProviderResponse {
 

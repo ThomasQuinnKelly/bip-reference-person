@@ -1,6 +1,6 @@
 package gov.va.ocp.reference.partner.person.ws.client;
 
-import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.framework.exception.OcpRuntimeException;
 
 /**
  * This class represents the unique exception that can be thrown

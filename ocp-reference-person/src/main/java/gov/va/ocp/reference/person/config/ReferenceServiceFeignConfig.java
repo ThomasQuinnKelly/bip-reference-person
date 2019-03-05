@@ -2,8 +2,8 @@ package gov.va.ocp.reference.person.config;
 
 import org.springframework.context.annotation.Configuration;
 
-import gov.va.ocp.reference.person.utils.HystrixCommandConstants;
-import gov.va.ocp.reference.starter.feign.autoconfigure.OcpFeignAutoConfiguration;;
+import gov.va.ocp.framework.feign.autoconfigure.OcpFeignAutoConfiguration;
+import gov.va.ocp.reference.person.utils.HystrixCommandConstants;;
 
 @Configuration
 public class ReferenceServiceFeignConfig extends OcpFeignAutoConfiguration {

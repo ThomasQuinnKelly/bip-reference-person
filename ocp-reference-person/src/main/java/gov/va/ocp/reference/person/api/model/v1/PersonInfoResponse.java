@@ -1,6 +1,6 @@
 package gov.va.ocp.reference.person.api.model.v1;
 
-import gov.va.ocp.reference.framework.transfer.ProviderTransferObjectMarker;
+import gov.va.ocp.framework.transfer.ProviderTransferObjectMarker;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 

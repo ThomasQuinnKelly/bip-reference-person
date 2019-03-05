@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.va.ocp.reference.framework.swagger.SwaggerResponseMessages;
-import gov.va.ocp.reference.framework.util.Defense;
+import gov.va.ocp.framework.swagger.SwaggerResponseMessages;
+import gov.va.ocp.framework.util.Defense;
 import gov.va.ocp.reference.person.api.ReferencePersonService;
 import gov.va.ocp.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.ocp.reference.person.api.model.v1.PersonInfoResponse;

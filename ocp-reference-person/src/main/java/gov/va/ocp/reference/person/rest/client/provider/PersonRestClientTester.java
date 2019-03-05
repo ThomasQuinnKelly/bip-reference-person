@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.va.ocp.reference.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.framework.rest.client.exception.ResponseEntityErrorException;
-import gov.va.ocp.reference.framework.rest.client.resttemplate.RestClientTemplate;
-import gov.va.ocp.reference.framework.service.DomainResponse;
-import gov.va.ocp.reference.framework.swagger.SwaggerResponseMessages;
+import gov.va.ocp.framework.messages.MessageSeverity;
+import gov.va.ocp.framework.rest.client.exception.ResponseEntityErrorException;
+import gov.va.ocp.framework.rest.client.resttemplate.RestClientTemplate;
+import gov.va.ocp.framework.service.DomainResponse;
+import gov.va.ocp.framework.swagger.SwaggerResponseMessages;
 import gov.va.ocp.reference.person.api.provider.PersonResource;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;

@@ -1,7 +1,7 @@
 package gov.va.ocp.reference.person.transform;
 
-import gov.va.ocp.reference.framework.transfer.PartnerTransferObjectMarker;
-import gov.va.ocp.reference.framework.transfer.DomainTransferObjectMarker;
+import gov.va.ocp.framework.transfer.DomainTransferObjectMarker;
+import gov.va.ocp.framework.transfer.PartnerTransferObjectMarker;
 
 /**
  * The contract for transforming a partner {@link PartnerTransferObjectMarker} object to a domain
