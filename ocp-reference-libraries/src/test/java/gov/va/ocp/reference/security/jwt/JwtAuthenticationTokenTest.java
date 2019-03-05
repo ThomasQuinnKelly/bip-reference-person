@@ -1,4 +1,4 @@
-package gov.va.ocp.reference;
+package gov.va.ocp.reference.security.jwt;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
