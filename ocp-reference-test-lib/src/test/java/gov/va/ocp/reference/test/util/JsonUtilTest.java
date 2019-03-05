@@ -58,7 +58,12 @@ public class JsonUtilTest {
 	public void test_getMap_Success() throws IOException {
 		Map<String, Object> attributes = JsonUtil.getMap(json, "attributes");
 		String attributeValue = JsonUtil.getString(attributes, "attribute1");
+		int intattributeValue = JsonUtil.getInt(attributes, "intattribute");
 		assertThat(attributeValue, equalTo("attributeValue1"));
+		assertThat(intattributeValue, equalTo(10));
 	}
+	
+	
+	
 
 }
