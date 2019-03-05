@@ -4,8 +4,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import gov.va.ocp.reference.framework.log.OcpLogger;
-import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
+import gov.va.ocp.framework.log.OcpLogger;
+import gov.va.ocp.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientImpl;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;

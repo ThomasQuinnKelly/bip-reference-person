@@ -21,8 +21,8 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import gov.va.ocp.reference.framework.config.OcpCommonSpringProfiles;
-import gov.va.ocp.reference.framework.security.PersonTraits;
+import gov.va.ocp.framework.config.OcpCommonSpringProfiles;
+import gov.va.ocp.framework.security.PersonTraits;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientConfig;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientImpl;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;

@@ -5,14 +5,14 @@
 	jaxb:extensionBindingPrefixes="xjc" jaxb:version="2.0">
 
 	<jaxb:globalBindings fixedAttributeAsConstantProperty="true" generateElementProperty="false">
-		<xjc:superClass	name="gov.va.ocp.reference.framework.transfer.AbstractTransferObject" />
+		<xjc:superClass	name="gov.va.ocp.framework.transfer.AbstractTransferObject" />
 		<jaxb:javaType name="java.util.Date" xmlType="xs:date"
-		      parseMethod="gov.va.ocp.reference.framework.transfer.jaxb.adapters.DateAdapter.parseDate"
-		      printMethod="gov.va.ocp.reference.framework.transfer.jaxb.adapters.DateAdapter.printDate"
+		      parseMethod="gov.va.ocp.framework.transfer.jaxb.adapters.DateAdapter.parseDate"
+		      printMethod="gov.va.ocp.framework.transfer.jaxb.adapters.DateAdapter.printDate"
 		    />
 		<jaxb:javaType name="java.util.Date" xmlType="xs:dateTime"
-		      parseMethod="gov.va.ocp.reference.framework.transfer.jaxb.adapters.DateAdapter.parseDate"
-		      printMethod="gov.va.ocp.reference.framework.transfer.jaxb.adapters.DateAdapter.printDate"
+		      parseMethod="gov.va.ocp.framework.transfer.jaxb.adapters.DateAdapter.parseDate"
+		      printMethod="gov.va.ocp.framework.transfer.jaxb.adapters.DateAdapter.printDate"
 		    />
 	</jaxb:globalBindings>
 	
