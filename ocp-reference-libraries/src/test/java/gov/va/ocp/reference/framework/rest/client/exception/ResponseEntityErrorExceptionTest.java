@@ -22,7 +22,12 @@ public class ResponseEntityErrorExceptionTest {
 		ResponseEntity<DomainResponse> errorResponse = new ResponseEntity<DomainResponse>(domainResponse, HttpStatus.ACCEPTED);
 		ResponseEntityErrorException responseEntityErrorException = new ResponseEntityErrorException(errorResponse);
 
-		assertTrue(responseEntityErrorException.getErrorResponse().getStatusCode().equals(HttpStatus.ACCEPTED));
+		assertTrue(responseEntityErrorException.getErrorResponse().getBody().getMessages().get(0).getKey().equals(TEST_KEY));
+		assertTrue(responseEntityErrorException.getErrorResponse().getBody().getMessages().get(0).getHttpStatus()
+				.equals(HttpStatus.ACCEPTED));
+		assertTrue(responseEntityErrorException.getErrorResponse().getBody().getMessages().get(0).getSeverity()
+				.equals(MessageSeverity.INFO));
+		assertTrue(responseEntityErrorException.getErrorResponse().getBody().getMessages().get(0).getText().equals(TEST_TEXT));
 	}
 
 }
