@@ -3,6 +3,8 @@ package gov.va.ocp.reference.person.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,11 +36,6 @@ import gov.va.ocp.reference.person.utils.HystrixCommandConstants;
 import gov.va.ocp.reference.person.ws.client.PersonPartnerHelper;
 import gov.va.ocp.reference.person.ws.client.validate.PersonDomainValidator;
 
-@Service(value = ReferencePersonServiceImpl.BEAN_NAME)
-@Component
-@Qualifier("IMPL")
-@RefreshScope
-@DefaultProperties(groupKey = HystrixCommandConstants.REFERENCE_PERSON_SERVICE_GROUP_KEY)
 /**
  * Implementation class for the Reference Person Service.
  * The class demonstrates the implementation of hystrix circuit breaker
@@ -48,6 +45,11 @@ import gov.va.ocp.reference.person.ws.client.validate.PersonDomainValidator;
  * @author
  *
  */
+@Service(value = ReferencePersonServiceImpl.BEAN_NAME)
+@Component
+@Qualifier("PERSON_SERVICE_IMPL")
+@RefreshScope
+@DefaultProperties(groupKey = HystrixCommandConstants.REFERENCE_PERSON_SERVICE_GROUP_KEY)
 public class ReferencePersonServiceImpl implements ReferencePersonService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ReferencePersonServiceImpl.class);
 
@@ -67,11 +69,20 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	/** Constant for the message when hystrix fallback method is manually invoked */
 	private static final String INVOKE_FALLBACK_MESSAGE = "Could not get data from cache or partner - invoking fallback.";
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see gov.va.ocp.reference.person.api.ReferencePersonService#findPersonByParticipantID
-	 * (gov.va.ocp.reference.partner.person.ws.client.transfer.PersonInfoRequest)
+	/**
+	 * Viability checks before the application is put into service.
+	 */
+	@PostConstruct
+	void postConstruct() {
+		// Check for WS Client reference. Note that cacheManager is allowed to be null.
+		Defense.notNull(personPartnerHelper,
+				"Unable to proceed with Person Service request. The personPartnerHelper must not be null.");
+	}
+
+	/**
+	 * Implementation of the service (domain) layer API.
+	 * <p>
+	 * {@inheritDoc}
 	 *
 	 * @Cacheable Annotation indicating that the result of invoking a method (or all methods in a class) can be cached.
 	 */
@@ -82,9 +93,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	@HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
 			ignoreExceptions = { IllegalArgumentException.class })
 	public PersonByPidDomainResponse findPersonByParticipantID(final PersonByPidDomainRequest personByPidDomainRequest) {
-		// Check for WS Client reference.
-		Defense.notNull(personPartnerHelper,
-				"Unable to proceed with Person Service request. The personPartnerHelper must not be null.");
+
 		// Check for valid input arguments. If validation fails, throws IllegalArgumentException
 		try {
 			PersonDomainValidator.validatePersonInfoRequest(personByPidDomainRequest);
@@ -120,20 +129,32 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 
 		/* TODO below checks belong in business validation, not in this class */
 
-		// check if errors or fatals returned
+		// check if empty response, or errors / fatals
 		if (response == null || response.getPersonInfo() == null
 				&& !response.hasErrors() && !response.hasFatals()) {
 			LOGGER.info("findPersonByParticipantID empty response - throwing PersonServiceException: " + INVOKE_FALLBACK_MESSAGE);
 			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
 		}
+		/*
+		 * In a real-world service, it is highly unlikely that a user would be allowed
+		 * to query for someone else's data. In general, responses should *always*
+		 * contain only data for the logged-in person.
+		 * Therefore, the checks below would typically throw an exception,
+		 * not just set a warning.
+		 */
+		LOGGER.debug("Request PID: " + personByPidDomainRequest.getParticipantID()
+				+ "; Response PID: " + response.getPersonInfo().getParticipantId()
+				+ "; PersonTraits PID: "
+				+ (SecurityUtils.getPersonTraits() == null ? "null" : SecurityUtils.getPersonTraits().getPid()));
+
 		// check requested pid = returned pid
-		if (response.getPersonInfo().getParticipantId() != personByPidDomainRequest.getParticipantID()) {
+		if (!response.getPersonInfo().getParticipantId().equals(personByPidDomainRequest.getParticipantID())) {
 			LOGGER.info("findPersonByParticipantID response has different PID than the request - throwing PersonServiceException: "
 					+ INVOKE_FALLBACK_MESSAGE);
 			response.addMessage(MessageSeverity.WARN, HttpStatus.OK.name(),
 					"A different Participant ID was retrieved than the one requested. " + WARN_MESSAGE, HttpStatus.OK);
 		}
-		// check logged in user's pid matches returned pid - cannot request other people's info
+		// check logged in user's pid matches returned pid
 		PersonTraits personTraits = SecurityUtils.getPersonTraits();
 		if (personTraits != null && StringUtils.isNotBlank(personTraits.getPid())) {
 			if (response.getPersonInfo() != null

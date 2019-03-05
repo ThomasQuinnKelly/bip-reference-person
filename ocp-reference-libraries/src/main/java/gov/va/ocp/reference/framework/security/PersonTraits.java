@@ -15,13 +15,12 @@ import org.springframework.security.core.userdetails.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * VA person identifier data.
- * Created by vgadda on 6/6/17.
+ * VA person identifier data. Created by vgadda on 6/6/17.
  */
 
 public class PersonTraits extends User {
 
-	enum PATTERN_FORMAT {
+	public enum PATTERN_FORMAT {
 		BIRTHDATE_YYYYMMDD("YYYY-MM-dd");
 		private String pattern;
 

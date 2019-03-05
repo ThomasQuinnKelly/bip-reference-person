@@ -24,7 +24,7 @@ import com.netflix.hystrix.HystrixCommand;
 import feign.Feign;
 import feign.Target;
 import feign.hystrix.SetterFactory;
-import gov.va.ocp.reference.framework.rest.provider.RestProviderHttpResponseAspect;
+import gov.va.ocp.reference.framework.rest.provider.aspect.RestProviderHttpResponseAspect;
 import gov.va.ocp.reference.starter.audit.autoconfigure.OcpAuditAutoConfiguration;
 import gov.va.ocp.reference.starter.feign.autoconfigure.OcpFeignAutoConfiguration;
 import gov.va.ocp.reference.starter.feign.autoconfigure.TokenFeignRequestInterceptor;

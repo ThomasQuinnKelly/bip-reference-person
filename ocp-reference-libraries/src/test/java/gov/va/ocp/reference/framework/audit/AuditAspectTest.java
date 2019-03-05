@@ -14,8 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import gov.va.ocp.reference.framework.audit.AuditEvents;
-import gov.va.ocp.reference.framework.audit.Auditable;
 import gov.va.ocp.reference.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.framework.service.DomainRequest;
 import gov.va.ocp.reference.framework.service.DomainResponse;

@@ -85,7 +85,7 @@ public class OcpCacheAutoConfiguration extends CachingConfigurerSupport {
 			for (Entry<String, Long> entry : resultExpires.entrySet()) {
 				org.springframework.data.redis.cache.RedisCacheConfiguration rcc =
 						org.springframework.data.redis.cache.RedisCacheConfiguration.defaultCacheConfig()
-						.entryTtl(Duration.ofSeconds(entry.getValue()));
+								.entryTtl(Duration.ofSeconds(entry.getValue()));
 				cacheConfigs.put(entry.getKey(), rcc);
 			}
 		}
@@ -107,6 +107,8 @@ public class OcpCacheAutoConfiguration extends CachingConfigurerSupport {
 
 	/**
 	 * Reference cache keys follow a specific naming convention, as enforced by this bean.
+	 * <p>
+	 * {@inheritDoc}
 	 */
 	@Bean
 	@Override
@@ -127,11 +129,15 @@ public class OcpCacheAutoConfiguration extends CachingConfigurerSupport {
 		};
 	}
 
+	@Bean
 	@Override
 	public CacheErrorHandler errorHandler() {
 		return new RedisCacheErrorHandler();
 	}
 
+	/**
+	 * The {@link CacheErrorHandler} strategy for Redis implementations.
+	 */
 	public static class RedisCacheErrorHandler implements CacheErrorHandler {
 
 		@Override

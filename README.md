@@ -23,6 +23,7 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 * Service Discovery
 * [Secrets Management](docs/secrets.md)
 * [Configuration Management](docs/config-management.md)
+* [Deployment Packaging](docs/deployment-package.md)
 
 ## Contribution guidelines ## 
 * If you or your team wants to contribute to this repository, then fork the repository and follow the steps to create a PR for our upstream repo to review and commit the changes
