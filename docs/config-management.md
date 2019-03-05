@@ -7,7 +7,7 @@ The reference application uses the [Spring Cloud Consul](https://cloud.spring.io
 Solution is TBD
 
 ## Authenticating to Consul
-See [Vault Consul Token Generation](https://www.vaultproject.io/docs/secrets/consul/index.html)
+See [Vault Consul Token Generation](https://www.vaultproject.io/docs/secrets/consul/index.html)</br>
 See [Spring Cloud Vault Consul](https://cloud.spring.io/spring-cloud-vault/single/spring-cloud-vault.html#vault.config.backends.consul)
 
 ## Retreiving Key/Values
