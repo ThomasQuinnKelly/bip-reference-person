@@ -1,11 +1,11 @@
-package gov.va.ocp.reference.test.service;
+package gov.va.ocp.framework.test.service;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.entity.ContentType;
 
-import gov.va.ocp.reference.test.util.RESTUtil;
+import gov.va.ocp.framework.test.util.RESTUtil;
 /**
  * It Fetches token from the token API. The token will be used as a header while invoking actual end points.
  * @author sravi

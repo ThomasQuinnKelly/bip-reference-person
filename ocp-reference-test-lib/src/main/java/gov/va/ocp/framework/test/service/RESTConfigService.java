@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.test.service;
+package gov.va.ocp.framework.test.service;
 
 import java.net.URL;
 import java.util.Properties;
@@ -6,7 +6,7 @@ import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 
-import gov.va.ocp.reference.test.util.PropertiesUtil;
+import gov.va.ocp.framework.test.util.PropertiesUtil;
 
 /**
  * A singleton to hold an instance of this class

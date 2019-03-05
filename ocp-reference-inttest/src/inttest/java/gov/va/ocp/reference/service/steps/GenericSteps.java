@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import gov.va.ocp.reference.test.restassured.BaseStepDefHandler;
-import gov.va.ocp.reference.test.service.BearerTokenService;
+import gov.va.ocp.framework.test.restassured.BaseStepDefHandler;
+import gov.va.ocp.framework.test.service.BearerTokenService;
 
 public class GenericSteps {
 	private BaseStepDefHandler handler = null;
