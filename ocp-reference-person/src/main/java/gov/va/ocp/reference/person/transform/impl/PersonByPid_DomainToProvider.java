@@ -14,6 +14,8 @@ public class PersonByPid_DomainToProvider extends AbstractDomainToProvider<Perso
 
 	/**
 	 * Transform a service Domain {@link PersonByPidDomainResponse} into a REST Provider {@link PersonInfoResponse} object.
+	 * <br/>
+	 * <b>Member objects inside the returned object may be {@code null}.</b>
 	 * <p>
 	 * {@inheritDoc AbstractDomainToProvider}
 	 */
@@ -21,8 +23,9 @@ public class PersonByPid_DomainToProvider extends AbstractDomainToProvider<Perso
 	public PersonInfoResponse transform(PersonByPidDomainResponse domainObject) {
 		PersonInfoResponse providerObject = new PersonInfoResponse();
 
+		// add data
 		PersonInfo providerData = new PersonInfo();
-		if (domainObject != null) {
+		if (domainObject != null && domainObject.getPersonInfo() != null) {
 			providerData.setFileNumber(domainObject.getPersonInfo().getFileNumber());
 			providerData.setFirstName(domainObject.getPersonInfo().getFirstName());
 			providerData.setLastName(domainObject.getPersonInfo().getLastName());
@@ -30,9 +33,15 @@ public class PersonByPid_DomainToProvider extends AbstractDomainToProvider<Perso
 			providerData.setParticipantId(domainObject.getPersonInfo().getParticipantId());
 			providerData.setSocSecNo(domainObject.getPersonInfo().getSocSecNo());
 		}
-
 		providerObject.setPersonInfo(providerData);
+		// add messages
+		if (domainObject.getMessages() != null && !domainObject.getMessages().isEmpty()) {
+			for (gov.va.ocp.reference.framework.messages.Message domainMsg : domainObject.getMessages()) {
+				providerObject.add(domainMsg.getSeverity(), domainMsg.getKey(), domainMsg.getText(),
+						domainMsg.getHttpStatus());
+			}
+		}
+
 		return providerObject;
 	}
-
 }

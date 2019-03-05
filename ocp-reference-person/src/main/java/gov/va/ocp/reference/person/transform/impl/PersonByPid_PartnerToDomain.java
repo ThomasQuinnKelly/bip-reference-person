@@ -18,6 +18,8 @@ public class PersonByPid_PartnerToDomain extends AbstractPartnerToDomain<FindPer
 
 	/**
 	 * Transform a Partner {@link FindPersonByPtcpntIdResponse} into a service Domain {@link PersonByPidDomainResponse} object.
+	 * <br/>
+	 * <b>Member objects inside the returned object may be {@code null}.</b>
 	 * <p>
 	 * {@inheritDoc AbstractPartnerToDomain}
 	 */
@@ -25,17 +27,19 @@ public class PersonByPid_PartnerToDomain extends AbstractPartnerToDomain<FindPer
 	public PersonByPidDomainResponse transform(FindPersonByPtcpntIdResponse partnerObject) {
 		PersonByPidDomainResponse domainObject = new PersonByPidDomainResponse();
 
-		PersonInfoDomain domainData = new PersonInfoDomain();
-		if (partnerObject != null) {
+		if (partnerObject != null && partnerObject.getPersonDTO() != null) {
+			PersonInfoDomain domainData = new PersonInfoDomain();
+
 			domainData.setFileNumber(partnerObject.getPersonDTO().getFileNbr());
 			domainData.setFirstName(partnerObject.getPersonDTO().getFirstNm());
 			domainData.setLastName(partnerObject.getPersonDTO().getLastNm());
 			domainData.setMiddleName(partnerObject.getPersonDTO().getMiddleNm());
 			domainData.setParticipantId(partnerObject.getPersonDTO().getPtcpntId());
 			domainData.setSocSecNo(partnerObject.getPersonDTO().getSsnNbr());
+
+			domainObject.setPersonInfo(domainData);
 		}
 
-		domainObject.setPersonInfo(domainData);
 		return domainObject;
 	}
 

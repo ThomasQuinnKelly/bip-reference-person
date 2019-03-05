@@ -78,7 +78,7 @@ logging:
     gov.va.ocp.reference.framework.ws.client: DEBUG
     gov.va.ocp.reference.partner: DEBUG
     gov.va.ocp.reference.person.rest.client.feign.FeignPersonClient: INFO
-    gov.va.ocp.reference: INFO
+    gov.va.ocp.reference: DEBUG
     com.ecwid.consul: INFO
     org.springframework.cloud.openfeign: INFO
     org.springframework.security.web: INFO

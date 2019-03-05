@@ -10,7 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 @ApiModel(description = "Model for the response from the Person Service")
-public class PersonInfoResponse implements ProviderTransferObjectMarker {
+public class PersonInfoResponse extends BaseProviderResponse implements ProviderTransferObjectMarker {
 
 	/** A PersonInfoDomain instance. */
 	@ApiModelProperty(value = "The object representing the person information")

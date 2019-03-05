@@ -142,8 +142,13 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		 * Therefore, the checks below would typically throw an exception,
 		 * not just set a warning.
 		 */
+		LOGGER.debug("Request PID: " + personByPidDomainRequest.getParticipantID()
+				+ "; Response PID: " + response.getPersonInfo().getParticipantId()
+				+ "; PersonTraits PID: "
+				+ (SecurityUtils.getPersonTraits() == null ? "null" : SecurityUtils.getPersonTraits().getPid()));
+
 		// check requested pid = returned pid
-		if (response.getPersonInfo().getParticipantId() != personByPidDomainRequest.getParticipantID()) {
+		if (!response.getPersonInfo().getParticipantId().equals(personByPidDomainRequest.getParticipantID())) {
 			LOGGER.info("findPersonByParticipantID response has different PID than the request - throwing PersonServiceException: "
 					+ INVOKE_FALLBACK_MESSAGE);
 			response.addMessage(MessageSeverity.WARN, HttpStatus.OK.name(),
