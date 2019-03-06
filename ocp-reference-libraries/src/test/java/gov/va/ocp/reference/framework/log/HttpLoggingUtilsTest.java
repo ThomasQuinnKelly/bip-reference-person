@@ -2,6 +2,7 @@ package gov.va.ocp.reference.framework.log;
 
 import static gov.va.ocp.reference.framework.log.HttpLoggingUtils.UNABLE_TO_LOG_HTTP_MESSAGE_TEXT;
 import static gov.va.ocp.reference.framework.log.HttpLoggingUtils.logMessage;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
@@ -80,5 +81,18 @@ public class HttpLoggingUtilsTest {
 
 		assertTrue(outString.contains(UNABLE_TO_LOG_HTTP_MESSAGE_TEXT));
 
+	}
+
+	@Test
+	public void byteArrayTransportOutputStreamTest() {
+		ByteArrayTransportOutputStream stream = new ByteArrayTransportOutputStream();
+		try {
+			stream.addHeader("test name", "test value");
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail("Should not have thrown  exception while adding header");
+		}
+
+		assertNotNull(stream.toByteArray());
 	}
 }
