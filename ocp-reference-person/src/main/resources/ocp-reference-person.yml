@@ -75,7 +75,7 @@ ocp-reference-person:
 #-##################################################
 logging: 
   level:
-    gov.va.ocp.reference.framework.ws.client: INFO
+    gov.va.ocp.framework.ws.client: INFO
     gov.va.ocp.framework.rest.provider: INFO
     gov.va.ocp.reference.partner: INFO
     gov.va.ocp.reference.person.rest.client.feign.FeignPersonClient: INFO

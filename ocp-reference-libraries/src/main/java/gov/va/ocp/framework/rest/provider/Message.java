@@ -1,11 +1,10 @@
-package gov.va.ocp.reference.person.api.model.v1;
+package gov.va.ocp.framework.rest.provider;
 
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.http.HttpStatus;
 
 import gov.va.ocp.framework.messages.MessageSeverity;
 
@@ -85,7 +84,6 @@ public class Message {
 	 *
 	 * @return the Http status code
 	 */
-	@JsonProperty("status")
 	public String getStatus() {
 		// Since this method is used by introspection based serialisation, it would need to return the status code number instead of
 		// the default (enum name), which is why the toString() method is used
@@ -137,6 +135,21 @@ public class Message {
 		this.severity = severity;
 	}
 
+	/**
+	 * Get the {@link HttpStatus} enumeration for the status Integer.
+	 * If the status integer is null, then this method returns
+	 * 201 {@link HttpStatus#CREATED}.
+	 *
+	 * @param status the integer status
+	 * @return the HttpStatus
+	 */
+	public final HttpStatus getHttpStatus(Integer status) {
+		if (status == null) {
+			return HttpStatus.CREATED;
+		}
+		return HttpStatus.valueOf(status);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -155,6 +168,14 @@ public class Message {
 	@Override
 	public final int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this, EQUALS_HASH_EXCLUDE_FIELDS);
+	}
+
+	/**
+	 * Returns a String that shows the full content of the Message.
+	 */
+	@Override
+	public final String toString() {
+		return severity + " " + key + "(" + status + "): " + text;
 	}
 
 }

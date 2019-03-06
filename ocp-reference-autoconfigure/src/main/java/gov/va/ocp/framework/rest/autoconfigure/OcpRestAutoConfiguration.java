@@ -25,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 
 import gov.va.ocp.framework.rest.client.exception.ResponseEntityErrorHandler;
 import gov.va.ocp.framework.rest.client.resttemplate.RestClientTemplate;
+import gov.va.ocp.framework.rest.provider.aspect.ProviderHttpAspect;
 import gov.va.ocp.framework.rest.provider.aspect.RestProviderHttpResponseAspect;
 import gov.va.ocp.framework.rest.provider.aspect.RestProviderTimerAspect;
 import gov.va.ocp.framework.util.Defense;
@@ -57,16 +58,29 @@ public class OcpRestAutoConfiguration {
 
 	@Value("${ocp.rest.client.connectionBufferSize:4128}")
 	private String connectionBufferSize;
+	
+//	/**
+//	 * Aspect bean of the {@link RestProviderHttpResponseAspect}
+//	 * (currently executed around auditables and REST controllers).
+//	 *
+//	 * @return RestProviderHttpResponseAspect
+//	 */
+//	@Bean
+//	@ConditionalOnMissingBean
+//	public RestProviderHttpResponseAspect restProviderHttpResponseAspect() {
+//		return new RestProviderHttpResponseAspect();
+//	}
+
 	/**
-	 * Aspect bean of the {@link RestProviderHttpResponseAspect}
-	 * (currently executed around auditables and REST controllers).
+	 * Aspect bean of the {@link ProviderHttpAspect}
+	 * (currently executed before, after returning, and after throwing REST controllers).
 	 *
-	 * @return RestProviderHttpResponseAspect
+	 * @return ProviderHttpAspect
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public RestProviderHttpResponseAspect restProviderHttpResponseAspect() {
-		return new RestProviderHttpResponseAspect();
+	public ProviderHttpAspect providerHttpAspect() {
+		return new ProviderHttpAspect();
 	}
 
 	/**

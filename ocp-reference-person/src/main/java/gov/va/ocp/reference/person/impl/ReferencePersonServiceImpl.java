@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import gov.va.ocp.framework.exception.OcpRuntimeException;
-import gov.va.ocp.framework.messages.Message;
 import gov.va.ocp.framework.messages.MessageSeverity;
+import gov.va.ocp.framework.messages.ServiceMessage;
 import gov.va.ocp.framework.security.PersonTraits;
 import gov.va.ocp.framework.security.SecurityUtils;
 import gov.va.ocp.framework.util.Defense;
@@ -184,13 +185,12 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		LOGGER.info("Hystrix findPersonByParticipantIDFallBack has been activated");
 		final PersonByPidDomainResponse response = new PersonByPidDomainResponse();
 		if (throwable != null) {
+			LOGGER.debug(ReflectionToStringBuilder.toString(throwable, null, true, true, Throwable.class));
+
 			final String msg = throwable.getMessage();
-			final List<Message> messages = new ArrayList<>();
-			messages.add(newMessage(MessageSeverity.FATAL, "FATAL", msg));
-			response.setMessages(messages);
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug(msg);
-			}
+			final List<ServiceMessage> serviceMessages = new ArrayList<>();
+			serviceMessages.add(newMessage(MessageSeverity.FATAL, "FATAL", msg));
+			response.setMessages(serviceMessages);
 
 			if (response != null) {
 				response.setDoNotCacheResponse(true);
@@ -205,15 +205,15 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	}
 
 	/**
-	 * Helper method to create a Message object.
+	 * Helper method to create a ServiceMessage object.
 	 *
 	 * @param severity the severity
 	 * @param key the key
 	 * @param text the text
 	 * @return the message
 	 */
-	private final Message newMessage(final MessageSeverity severity, final String key, final String text) {
-		final Message msg = new Message();
+	private final ServiceMessage newMessage(final MessageSeverity severity, final String key, final String text) {
+		final ServiceMessage msg = new ServiceMessage();
 		msg.setSeverity(severity);
 		msg.setKey(key);
 		msg.setText(text);
