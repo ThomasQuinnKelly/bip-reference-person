@@ -2,7 +2,8 @@ package gov.va.ocp.reference.partner.person.ws.client;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import gov.va.ocp.reference.framework.config.BaseYamlConfig;
+
+import gov.va.ocp.framework.config.BaseYamlConfig;
 
 /**
  * Fake Spring configuration used to test the partner mock framework classes

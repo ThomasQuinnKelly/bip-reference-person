@@ -36,7 +36,7 @@ public class PersonByPid_DomainToProvider extends AbstractDomainToProvider<Perso
 		providerObject.setPersonInfo(providerData);
 		// add messages
 		if (domainObject.getMessages() != null && !domainObject.getMessages().isEmpty()) {
-			for (gov.va.ocp.reference.framework.messages.Message domainMsg : domainObject.getMessages()) {
+			for (gov.va.ocp.framework.messages.Message domainMsg : domainObject.getMessages()) {
 				providerObject.add(domainMsg.getSeverity(), domainMsg.getKey(), domainMsg.getText(),
 						domainMsg.getHttpStatus());
 			}

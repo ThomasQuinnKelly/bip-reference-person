@@ -1,6 +1,6 @@
 package gov.va.ocp.reference.person.exception;
 
-import gov.va.ocp.reference.framework.messages.MessageSeverity;
+import gov.va.ocp.framework.messages.MessageSeverity;
 
 /**
  * Runtime exception for the Person service.

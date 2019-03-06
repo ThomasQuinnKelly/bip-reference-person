@@ -12,9 +12,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.bind.WebDataBinder;
 
-import gov.va.ocp.reference.security.config.OcpSecurityTestConfig;
-import gov.va.ocp.reference.security.jwt.JwtAuthenticationProperties;
-import gov.va.ocp.reference.security.model.Person;
+import gov.va.ocp.framework.security.config.OcpSecurityTestConfig;
+import gov.va.ocp.framework.security.jwt.JwtAuthenticationProperties;
+import gov.va.ocp.framework.security.jwt.TokenResource;
+import gov.va.ocp.framework.security.model.Person;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = OcpSecurityTestConfig.class)

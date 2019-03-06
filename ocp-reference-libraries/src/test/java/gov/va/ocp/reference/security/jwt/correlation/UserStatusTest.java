@@ -6,7 +6,8 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import gov.va.ocp.reference.framework.exception.OcpRuntimeException;
+import gov.va.ocp.framework.exception.OcpRuntimeException;
+import gov.va.ocp.framework.security.jwt.correlation.UserStatus;
 
 public class UserStatusTest {
 

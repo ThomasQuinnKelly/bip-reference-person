@@ -8,8 +8,8 @@ import com.netflix.hystrix.exception.HystrixRuntimeException;
 import com.netflix.hystrix.exception.HystrixTimeoutException;
 
 import feign.hystrix.FallbackFactory;
-import gov.va.ocp.reference.framework.exception.OcpFeignRuntimeException;
-import gov.va.ocp.reference.framework.messages.MessageSeverity;
+import gov.va.ocp.framework.exception.OcpFeignRuntimeException;
+import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 
