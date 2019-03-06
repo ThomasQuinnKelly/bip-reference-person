@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-		<groupId>gov.va.ocp.reference</groupId>
-		<artifactId>ocp-reference-parentpom</artifactId>
+		<groupId>gov.va.ocp.framework</groupId>
+		<artifactId>ocp-framework-parentpom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../ocp-reference-parentpom</relativePath>
+		<relativePath/>
 	</parent>
 
     <artifactId>ocp-reference-partner-person</artifactId>
