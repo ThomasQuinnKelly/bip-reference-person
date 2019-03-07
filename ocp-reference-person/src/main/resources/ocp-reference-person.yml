@@ -80,6 +80,7 @@ logging:
     gov.va.ocp.reference.partner: INFO
     gov.va.ocp.reference.person.rest.client.feign.FeignPersonClient: INFO
     gov.va.ocp.reference: INFO
+    gov.va.ocp.framework: INFO
     com.ecwid.consul: INFO
     org.springframework.cloud.openfeign: INFO
     org.springframework.security.web: INFO

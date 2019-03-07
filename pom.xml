@@ -3,29 +3,34 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>gov.va.ocp.reference</groupId>
-		<artifactId>ocp-reference-parentpom</artifactId>
+		<groupId>gov.va.ocp.framework</groupId>
+		<artifactId>ocp-framework-parentpom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>./ocp-reference-parentpom</relativePath>
+		<relativePath/>
 	</parent>
 	
+	<groupId>gov.va.ocp.reference.person</groupId>
 	<artifactId>ocp-reference-reactor</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <description>Reactor POM for OpenShift Container Platform (OCP) Spring Boot Reference Service</description>
 
 	<modules>
-		<module>ocp-reference-parentpom</module>
-		<module>ocp-reference-libraries</module>
-		<module>ocp-reference-test-lib</module>
-		<module>ocp-reference-autoconfigure</module>
-		<module>ocp-reference-partner-person</module>
+	    <module>ocp-reference-partner-person</module>
 		<module>ocp-reference-person</module>
 		<module>ocp-reference-inttest</module>
-		
-	<!--<module>os-reference-spring-boot-document-service</module>
-	
-		<module>os-reference-spring-boot-service-perftest</module> -->
 	</modules>
-
+	
+	<repositories>
+	  <repository>
+	   	<id>github</id>
+	    <name>GitHub Repository</name>
+	    <url>https://raw.github.com/department-of-veterans-affairs/ocp-framework/mvn-repo</url>
+	    <snapshots>
+	      <enabled>true</enabled>
+	      <updatePolicy>always</updatePolicy>
+	    </snapshots>
+	  </repository>
+	</repositories>
 </project>

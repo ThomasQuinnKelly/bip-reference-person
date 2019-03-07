@@ -3,11 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    <parent>
-		<groupId>gov.va.ocp.reference</groupId>
-		<artifactId>ocp-reference-parentpom</artifactId>
+   <parent>
+		<groupId>gov.va.ocp.reference.person</groupId>
+		<artifactId>ocp-reference-reactor</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../ocp-reference-parentpom</relativePath>
+		<relativePath>..</relativePath>
 	</parent>
 
 	<artifactId>ocp-reference-inttest</artifactId>
@@ -19,8 +19,8 @@
 <dependencies>
 
 		<dependency>
-		<groupId>gov.va.ocp.reference</groupId>
-		<artifactId>ocp-reference-test-lib</artifactId>
+		<groupId>gov.va.ocp.framework</groupId>
+		<artifactId>ocp-framework-test-lib</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		</dependencies>
