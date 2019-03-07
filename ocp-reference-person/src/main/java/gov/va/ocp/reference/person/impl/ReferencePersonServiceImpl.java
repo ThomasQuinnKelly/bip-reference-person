@@ -28,7 +28,7 @@ import gov.va.ocp.framework.security.PersonTraits;
 import gov.va.ocp.framework.security.SecurityUtils;
 import gov.va.ocp.framework.util.Defense;
 import gov.va.ocp.framework.util.OcpCacheUtil;
-import gov.va.ocp.reference.person.api.ReferencePersonService;
+import gov.va.ocp.reference.person.ReferencePersonService;
 import gov.va.ocp.reference.person.exception.PersonServiceException;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;

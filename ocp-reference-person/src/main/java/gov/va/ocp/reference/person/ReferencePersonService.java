@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.person.api;
+package gov.va.ocp.reference.person;
 
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;

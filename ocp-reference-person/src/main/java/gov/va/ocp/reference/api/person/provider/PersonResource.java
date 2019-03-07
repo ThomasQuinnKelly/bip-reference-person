@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.person.api.provider;
+package gov.va.ocp.reference.api.person.provider;
 
 import javax.annotation.PostConstruct;
 
@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.va.ocp.framework.swagger.SwaggerResponseMessages;
 import gov.va.ocp.framework.transfer.ProviderTransferObjectMarker;
 import gov.va.ocp.framework.util.Defense;
-import gov.va.ocp.reference.person.api.ReferencePersonService;
-import gov.va.ocp.reference.person.api.model.v1.PersonInfoRequest;
-import gov.va.ocp.reference.person.api.model.v1.PersonInfoResponse;
+import gov.va.ocp.reference.api.person.ReferencePersonApi;
+import gov.va.ocp.reference.api.person.model.v1.PersonInfoRequest;
+import gov.va.ocp.reference.api.person.model.v1.PersonInfoResponse;
+import gov.va.ocp.reference.person.ReferencePersonService;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 import gov.va.ocp.reference.person.transform.impl.PersonByPid_DomainToProvider;
@@ -37,7 +38,7 @@ import io.swagger.annotations.ApiResponses;
  *
  */
 @RestController
-public class PersonResource implements HealthIndicator, SwaggerResponseMessages {
+public class PersonResource implements ReferencePersonApi, HealthIndicator, SwaggerResponseMessages {
 
 	/** Logger instance */
 	private static final Logger LOGGER = LoggerFactory.getLogger(PersonResource.class);
@@ -95,6 +96,7 @@ public class PersonResource implements HealthIndicator, SwaggerResponseMessages 
 	 * @param personByPidDomainRequest the person info request
 	 * @return the person info response
 	 */
+	@Override
 	@RequestMapping(value = URL_PREFIX + "/pid",
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	@ApiOperation(value = "Retrieve person information by PID from Person Service .",
@@ -106,16 +108,18 @@ public class PersonResource implements HealthIndicator, SwaggerResponseMessages 
 
 		// transform provider request into domain request
 		LOGGER.debug("Transforming from personInfoRequest to domainRequest");
-		PersonByPidDomainRequest domainRequest = personByPidProvider2Domain.transform(personInfoRequest);
+		PersonByPidDomainRequest domainRequest = personByPidProvider2Domain.convert(personInfoRequest);
+
 		// get domain response from the service (domain) layer
 		LOGGER.debug("Calling refPersonService.findPersonByParticipantID");
 		PersonByPidDomainResponse domainResponse = refPersonService.findPersonByParticipantID(domainRequest);
+
 		// transform domain response into provider response
 		LOGGER.debug("Transforming from domainResponse to providerResponse");
-		PersonInfoResponse providerResponse = personByPidDomain2Provider.transform(domainResponse);
+		PersonInfoResponse providerResponse = personByPidDomain2Provider.convert(domainResponse);
+
 		// send provider response back to consumer
 		LOGGER.debug("Returning providerResponse to consumer");
-
 		return providerResponse;
 	}
 

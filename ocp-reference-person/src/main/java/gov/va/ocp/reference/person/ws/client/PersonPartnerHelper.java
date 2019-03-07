@@ -49,7 +49,7 @@ public class PersonPartnerHelper {
 	public PersonByPidDomainResponse findPersonByPid(PersonByPidDomainRequest request) {
 
 		// transform from domain model request to partner model request
-		FindPersonByPtcpntId partnerRequest = personByPidD2P.transform(request);
+		FindPersonByPtcpntId partnerRequest = personByPidD2P.convert(request);
 
 		FindPersonByPtcpntIdResponse partnerResponse = null;
 		// call the partner
@@ -62,7 +62,7 @@ public class PersonPartnerHelper {
 		}
 
 		// transform from partner model response to domain model response
-		PersonByPidDomainResponse domainResponse = personByPidP2D.transform(partnerResponse);
+		PersonByPidDomainResponse domainResponse = personByPidP2D.convert(partnerResponse);
 
 		LOGGER.debug("Partner response: FindPersonByPtcpntIdResponse: {}",
 				partnerResponse == null ? "null" : ToStringBuilder.reflectionToString(partnerResponse));

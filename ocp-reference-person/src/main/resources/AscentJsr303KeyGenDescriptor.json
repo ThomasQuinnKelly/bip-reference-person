@@ -7,7 +7,7 @@
 	      "errorKeys" : {
 	        "reference.demo.UnknownError" : "Represents a general, likely unexpected, error in the service.  If/When reporting this error please note the additional details in the text such as server name and/or unique error id."
 	      },
-	      "genJsr303KeysFromClasses" : [ "gov.va.ocp.reference.person.api.v1.transfer.DemoServiceRequest" ]
+	      "genJsr303KeysFromClasses" : [ "gov.va.ocp.reference.api.person.v1.transfer.DemoServiceRequest" ]
 	    },
 	    {
 	      "name" : "/demo/v1/create",
@@ -15,7 +15,7 @@
 	      "errorKeys" : {
 	        "reference.demo.UnknownError" : "Represents a general, likely unexpected, error in the service.  If/When reporting this error please note the additional details in the text such as server name and/or unique error id."
 	      },
-	      "genJsr303KeysFromClasses" : [ "gov.va.ocp.reference.person.api.v1.transfer.DemoServiceRequest" ]
+	      "genJsr303KeysFromClasses" : [ "gov.va.ocp.reference.api.person.v1.transfer.DemoServiceRequest" ]
 	    }
     ]
   }

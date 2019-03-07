@@ -1,9 +1,9 @@
 package gov.va.ocp.reference.person.transform.impl;
 
-import gov.va.ocp.reference.person.api.model.v1.PersonInfo;
-import gov.va.ocp.reference.person.api.model.v1.PersonInfoResponse;
+import gov.va.ocp.framework.transfer.transform.AbstractDomainToProvider;
+import gov.va.ocp.reference.api.person.model.v1.PersonInfo;
+import gov.va.ocp.reference.api.person.model.v1.PersonInfoResponse;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
-import gov.va.ocp.reference.person.transform.AbstractDomainToProvider;
 
 /**
  * Transform a service Domain {@link PersonByPidDomainResponse} into a REST Provider {@link PersonInfoResponse} object.
@@ -20,7 +20,7 @@ public class PersonByPid_DomainToProvider extends AbstractDomainToProvider<Perso
 	 * {@inheritDoc AbstractDomainToProvider}
 	 */
 	@Override
-	public PersonInfoResponse transform(PersonByPidDomainResponse domainObject) {
+	public PersonInfoResponse convert(PersonByPidDomainResponse domainObject) {
 		PersonInfoResponse providerObject = new PersonInfoResponse();
 
 		// add data

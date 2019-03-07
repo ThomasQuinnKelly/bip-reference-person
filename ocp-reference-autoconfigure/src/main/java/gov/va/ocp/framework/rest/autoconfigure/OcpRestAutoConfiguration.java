@@ -26,7 +26,6 @@ import org.springframework.web.client.RestTemplate;
 import gov.va.ocp.framework.rest.client.exception.ResponseEntityErrorHandler;
 import gov.va.ocp.framework.rest.client.resttemplate.RestClientTemplate;
 import gov.va.ocp.framework.rest.provider.aspect.ProviderHttpAspect;
-import gov.va.ocp.framework.rest.provider.aspect.RestProviderHttpResponseAspect;
 import gov.va.ocp.framework.rest.provider.aspect.RestProviderTimerAspect;
 import gov.va.ocp.framework.util.Defense;
 
@@ -34,6 +33,7 @@ import gov.va.ocp.framework.util.Defense;
  * A collection of spring beans used for REST server and/or client operations.
  *
  * Created by rthota on 8/24/17.
+ * 
  * @author akulkarni
  */
 @Configuration
@@ -58,18 +58,6 @@ public class OcpRestAutoConfiguration {
 
 	@Value("${ocp.rest.client.connectionBufferSize:4128}")
 	private String connectionBufferSize;
-	
-//	/**
-//	 * Aspect bean of the {@link RestProviderHttpResponseAspect}
-//	 * (currently executed around auditables and REST controllers).
-//	 *
-//	 * @return RestProviderHttpResponseAspect
-//	 */
-//	@Bean
-//	@ConditionalOnMissingBean
-//	public RestProviderHttpResponseAspect restProviderHttpResponseAspect() {
-//		return new RestProviderHttpResponseAspect();
-//	}
 
 	/**
 	 * Aspect bean of the {@link ProviderHttpAspect}
@@ -130,14 +118,14 @@ public class OcpRestAutoConfiguration {
 			public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
 				LOGGER.info("Retry request, execution count: {}, exception: {}", executionCount, exception);
 				if (exception instanceof org.apache.http.NoHttpResponseException) {
-	                LOGGER.warn("No response from server on " + executionCount + " call");
-	                return true;
-	            }
+					LOGGER.warn("No response from server on " + executionCount + " call");
+					return true;
+				}
 				return super.retryRequest(exception, executionCount, context);
 			}
 
 		});
-		
+
 		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory =
 				new HttpComponentsClientHttpRequestFactory(clientBuilder.build());
 		clientHttpRequestFactory.setConnectTimeout(connTimeoutValue);
@@ -168,10 +156,11 @@ public class OcpRestAutoConfiguration {
 		interceptors.add(tokenClientHttpRequestInterceptor());
 		restTemplate.setInterceptors(interceptors);
 		restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(httpComponentsClientHttpRequestFactory()));
-		restTemplate.getMessageConverters().stream().filter(StringHttpMessageConverter.class::isInstance).map(StringHttpMessageConverter.class::cast).forEach(a -> {
-			a.setWriteAcceptCharset(false);
-			a.setDefaultCharset(StandardCharsets.UTF_8);
-		});
+		restTemplate.getMessageConverters().stream().filter(StringHttpMessageConverter.class::isInstance)
+				.map(StringHttpMessageConverter.class::cast).forEach(a -> {
+					a.setWriteAcceptCharset(false);
+					a.setDefaultCharset(StandardCharsets.UTF_8);
+				});
 		// create error handler
 		ResponseEntityErrorHandler errorHandler = new ResponseEntityErrorHandler();
 		errorHandler.setMessageConverters(restTemplate.getMessageConverters());

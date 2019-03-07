@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.person.transform;
+package gov.va.ocp.framework.transfer.transform;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -8,15 +8,23 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.springframework.core.convert.converter.Converter;
+
 import gov.va.ocp.framework.log.OcpLogger;
 import gov.va.ocp.framework.log.OcpLoggerFactory;
 
 /**
- * Static methods that are commonly needed for object model transformation.
+ * This abstract class performs two functions related to OCP object conversion / transformation:
+ * <ol>
+ * <li>Declare the generic requirement for conversion
+ * <li>Provide static methods that are commonly needed for object model transformation.
+ * </ol>
  *
+ * @param <S> the source object to be converted
+ * @param <T> the target object to be created and returned
  * @author aburkholder
  */
-public abstract class AbstractBaseTransformer {
+public abstract class AbstractBaseTransformer<S, T> implements Converter<S, T> {
 	/** Logger */
 	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(AbstractBaseTransformer.class);
 

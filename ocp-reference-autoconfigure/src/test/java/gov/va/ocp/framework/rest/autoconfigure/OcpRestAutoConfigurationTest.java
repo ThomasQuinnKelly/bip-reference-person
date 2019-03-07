@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import gov.va.ocp.framework.audit.autoconfigure.OcpAuditAutoConfiguration;
-import gov.va.ocp.framework.rest.provider.aspect.RestProviderHttpResponseAspect;
+import gov.va.ocp.framework.rest.provider.aspect.ProviderHttpAspect;
 import gov.va.ocp.framework.security.autoconfigure.OcpSecurityAutoConfiguration;
 
 /**
@@ -41,7 +41,7 @@ public class OcpRestAutoConfigurationTest {
 				EmbeddedWebServerFactoryCustomizerAutoConfiguration.class,
 				OcpSecurityAutoConfiguration.class,
 				OcpAuditAutoConfiguration.class, OcpRestAutoConfiguration.class,
-				RestProviderHttpResponseAspect.class);
+				ProviderHttpAspect.class);
 
 		context.refresh();
 		assertNotNull(context);
@@ -78,7 +78,6 @@ public class OcpRestAutoConfigurationTest {
 
 	@Test
 	public void testWebConfiguration() throws Exception {
-//TODO		assertNotNull(ocpRestAutoConfiguration.restProviderHttpResponseAspect());
 		assertNotNull(ocpRestAutoConfiguration.providerHttpAspect());
 		assertNotNull(ocpRestAutoConfiguration.restProviderTimerAspect());
 		assertNotNull(ocpRestAutoConfiguration.restClientTemplate());

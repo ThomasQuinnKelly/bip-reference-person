@@ -19,7 +19,7 @@ import gov.va.ocp.framework.rest.client.exception.ResponseEntityErrorException;
 import gov.va.ocp.framework.rest.client.resttemplate.RestClientTemplate;
 import gov.va.ocp.framework.service.DomainResponse;
 import gov.va.ocp.framework.swagger.SwaggerResponseMessages;
-import gov.va.ocp.reference.person.api.provider.PersonResource;
+import gov.va.ocp.reference.api.person.provider.PersonResource;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 import gov.va.ocp.reference.person.rest.client.FeignPersonClient;
