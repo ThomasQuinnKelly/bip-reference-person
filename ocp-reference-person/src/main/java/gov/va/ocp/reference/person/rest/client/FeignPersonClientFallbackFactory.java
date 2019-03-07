@@ -9,9 +9,11 @@ import com.netflix.hystrix.exception.HystrixTimeoutException;
 
 import feign.hystrix.FallbackFactory;
 import gov.va.ocp.framework.exception.OcpFeignRuntimeException;
+import gov.va.ocp.framework.log.OcpLogger;
+import gov.va.ocp.framework.log.OcpLoggerFactory;
 import gov.va.ocp.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
-import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
+import gov.va.ocp.reference.person.api.model.v1.PersonInfoRequest;
+import gov.va.ocp.reference.person.api.model.v1.PersonInfoResponse;
 
 
 @Component
@@ -23,15 +25,18 @@ import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
  */
 public class FeignPersonClientFallbackFactory implements FallbackFactory<FeignPersonClient> {
 
+	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(FeignPersonClientFallbackFactory.class);
 
 	@Override
 	public FeignPersonClient create(Throwable cause) {
 		
 		return new FeignPersonClient() {
 			@Override
-			public PersonByPidDomainResponse personByPid(@RequestBody final PersonByPidDomainRequest personInfoRequest) {
-				
+			public PersonInfoResponse personByPid(@RequestBody final PersonInfoRequest personInfoRequest) {
+				LOGGER.info("FeignPersonClient fallback invoked");
 				String message = cause.getMessage();
+				
+				LOGGER.error("FeignPersonClient fallback Throwable: {}", cause);
 				
 				if (cause instanceof HystrixRuntimeException ) {
 		            message = "HystrixRuntimeException: " + message;
@@ -41,8 +46,7 @@ public class FeignPersonClientFallbackFactory implements FallbackFactory<FeignPe
 		            
 		        }else if (cause instanceof OcpFeignRuntimeException ) {
 		        	OcpFeignRuntimeException exception = ((OcpFeignRuntimeException)cause);
-		        	PersonByPidDomainResponse response = new PersonByPidDomainResponse();
-		        	response.setDoNotCacheResponse(true);
+		        	PersonInfoResponse response = new PersonInfoResponse();
 					response.addMessage(MessageSeverity.ERROR, 
 							exception.getKey(),
 							exception.getText(), 
@@ -59,8 +63,7 @@ public class FeignPersonClientFallbackFactory implements FallbackFactory<FeignPe
 		            
 		        }*/
                
-                PersonByPidDomainResponse response = new PersonByPidDomainResponse();
-				response.setDoNotCacheResponse(true);
+				PersonInfoResponse response = new PersonInfoResponse();
 				response.addMessage(MessageSeverity.FATAL, 
 									HttpStatus.SERVICE_UNAVAILABLE.getReasonPhrase(),
 									message, 
@@ -68,9 +71,6 @@ public class FeignPersonClientFallbackFactory implements FallbackFactory<FeignPe
 				return response;
 				
 			}
-
-
-			
 		};
 	}
 	

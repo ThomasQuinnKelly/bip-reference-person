@@ -1,6 +1,7 @@
 package gov.va.ocp.reference.person.api.provider;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,7 +100,7 @@ public class PersonResource implements HealthIndicator, SwaggerResponseMessages 
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	@ApiOperation(value = "Retrieve person information by PID from Person Service .",
 			notes = "Will return a person info object based on search by PID.")
-	public PersonInfoResponse personByPid(@RequestBody final PersonInfoRequest personInfoRequest) {
+	public PersonInfoResponse personByPid(@Valid @RequestBody final PersonInfoRequest personInfoRequest) {
 		LOGGER.debug("personByPid() method invoked");
 
 		/** TODO move transforms into an aspect */

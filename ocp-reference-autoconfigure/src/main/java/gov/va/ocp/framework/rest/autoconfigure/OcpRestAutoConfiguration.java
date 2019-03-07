@@ -23,10 +23,9 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import gov.va.ocp.framework.rest.client.exception.ResponseEntityErrorHandler;
+import gov.va.ocp.framework.rest.client.exception.OcpRestGlobalExceptionHandler;
 import gov.va.ocp.framework.rest.client.resttemplate.RestClientTemplate;
 import gov.va.ocp.framework.rest.provider.aspect.ProviderHttpAspect;
-import gov.va.ocp.framework.rest.provider.aspect.RestProviderHttpResponseAspect;
 import gov.va.ocp.framework.rest.provider.aspect.RestProviderTimerAspect;
 import gov.va.ocp.framework.util.Defense;
 
@@ -58,18 +57,6 @@ public class OcpRestAutoConfiguration {
 
 	@Value("${ocp.rest.client.connectionBufferSize:4128}")
 	private String connectionBufferSize;
-	
-//	/**
-//	 * Aspect bean of the {@link RestProviderHttpResponseAspect}
-//	 * (currently executed around auditables and REST controllers).
-//	 *
-//	 * @return RestProviderHttpResponseAspect
-//	 */
-//	@Bean
-//	@ConditionalOnMissingBean
-//	public RestProviderHttpResponseAspect restProviderHttpResponseAspect() {
-//		return new RestProviderHttpResponseAspect();
-//	}
 
 	/**
 	 * Aspect bean of the {@link ProviderHttpAspect}
@@ -81,6 +68,17 @@ public class OcpRestAutoConfiguration {
 	@ConditionalOnMissingBean
 	public ProviderHttpAspect providerHttpAspect() {
 		return new ProviderHttpAspect();
+	}
+	
+	/**
+	 * Ocp rest global exception handler.
+	 *
+	 * @return the ocp rest global exception handler
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public OcpRestGlobalExceptionHandler ocpRestGlobalExceptionHandler() {
+		return new OcpRestGlobalExceptionHandler();
 	}
 
 	/**
@@ -172,10 +170,6 @@ public class OcpRestAutoConfiguration {
 			a.setWriteAcceptCharset(false);
 			a.setDefaultCharset(StandardCharsets.UTF_8);
 		});
-		// create error handler
-		ResponseEntityErrorHandler errorHandler = new ResponseEntityErrorHandler();
-		errorHandler.setMessageConverters(restTemplate.getMessageConverters());
-		restTemplate.setErrorHandler(errorHandler);
 		return new RestClientTemplate(restTemplate);
 	}
 
