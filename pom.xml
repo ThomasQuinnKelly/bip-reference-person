@@ -9,6 +9,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 		<relativePath/>
 	</parent>
 	
+	<groupId>gov.va.ocp.reference.person</groupId>
 	<artifactId>ocp-reference-reactor</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
