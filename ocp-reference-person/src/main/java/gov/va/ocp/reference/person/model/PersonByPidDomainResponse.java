@@ -1,6 +1,6 @@
 package gov.va.ocp.reference.person.model;
 
-import gov.va.ocp.reference.framework.service.DomainResponse;
+import gov.va.ocp.framework.service.DomainResponse;
 
 /**
  * This domain model represents a response from processing

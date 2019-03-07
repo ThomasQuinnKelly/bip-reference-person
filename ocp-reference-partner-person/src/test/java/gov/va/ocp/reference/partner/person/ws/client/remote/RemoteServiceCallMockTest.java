@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,8 +23,9 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.ws.client.core.WebServiceTemplate;
-import gov.va.ocp.reference.framework.config.OcpCommonSpringProfiles;
-import gov.va.ocp.reference.framework.security.PersonTraits;
+
+import gov.va.ocp.framework.config.OcpCommonSpringProfiles;
+import gov.va.ocp.framework.security.PersonTraits;
 import gov.va.ocp.reference.partner.person.ws.client.AbstractPersonTest;
 import gov.va.ocp.reference.partner.person.ws.client.PartnerMockFrameworkTestConfig;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientConfig;
@@ -38,8 +40,6 @@ import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdRespo
 public class RemoteServiceCallMockTest extends AbstractPersonTest {
 
 	private static final String PARTICIPANTID_FOR_MOCK_DATA = "13364995";
-
-	private static final String MOCKS_PATH = "test/mocks/";
 
 	static final String MOCK_FINDPERSONBYPTCPNTID_RESPONSE = "person.getPersonInfoByPtcpntId.{0}";
 

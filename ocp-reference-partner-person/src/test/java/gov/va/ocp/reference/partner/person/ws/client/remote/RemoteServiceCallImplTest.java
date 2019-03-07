@@ -41,11 +41,11 @@ import org.springframework.xml.transform.ResourceSource;
 import org.springframework.xml.transform.StringResult;
 import org.springframework.xml.transform.StringSource;
 
-import gov.va.ocp.reference.framework.config.OcpCommonSpringProfiles;
-import gov.va.ocp.reference.framework.security.PersonTraits;
-import gov.va.ocp.reference.framework.transfer.PartnerTransferObjectMarker;
-import gov.va.ocp.reference.framework.util.Defense;
-import gov.va.ocp.reference.framework.ws.client.remote.RemoteServiceCall;
+import gov.va.ocp.framework.config.OcpCommonSpringProfiles;
+import gov.va.ocp.framework.security.PersonTraits;
+import gov.va.ocp.framework.transfer.PartnerTransferObjectMarker;
+import gov.va.ocp.framework.util.Defense;
+import gov.va.ocp.framework.ws.client.remote.RemoteServiceCall;
 import gov.va.ocp.reference.partner.person.ws.client.AbstractPersonTest;
 import gov.va.ocp.reference.partner.person.ws.client.PartnerMockFrameworkTestConfig;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientConfig;

@@ -1,6 +1,6 @@
 package gov.va.ocp.reference.person.model;
 
-import gov.va.ocp.reference.framework.transfer.AbstractTransferObject;
+import gov.va.ocp.framework.transfer.AbstractTransferObject;
 
 /**
  * This domain model represents the relevant subset of the data

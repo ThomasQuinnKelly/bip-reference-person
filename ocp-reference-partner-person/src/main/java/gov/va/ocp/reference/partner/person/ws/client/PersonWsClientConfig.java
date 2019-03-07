@@ -14,21 +14,21 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 
-import gov.va.ocp.reference.framework.exception.InterceptingExceptionTranslator;
-import gov.va.ocp.reference.framework.log.PerformanceLogMethodInterceptor;
-import gov.va.ocp.reference.framework.log.OcpLogger;
-import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
-import gov.va.ocp.reference.framework.util.Defense;
-import gov.va.ocp.reference.framework.ws.client.BaseWsClientConfig;
-import gov.va.ocp.reference.framework.ws.client.remote.RemoteServiceCallInterceptor;
+import gov.va.ocp.framework.exception.InterceptingExceptionTranslator;
+import gov.va.ocp.framework.log.OcpLogger;
+import gov.va.ocp.framework.log.OcpLoggerFactory;
+import gov.va.ocp.framework.log.PerformanceLogMethodInterceptor;
+import gov.va.ocp.framework.util.Defense;
+import gov.va.ocp.framework.ws.client.BaseWsClientConfig;
+import gov.va.ocp.framework.ws.client.remote.RemoteServiceCallInterceptor;
 
 /**
  * This class represents the Spring configuration for the Person Web Service Client.
  */
 @Configuration
 @ComponentScan(basePackages = { "gov.va.ocp.reference.partner",
-		"gov.va.ocp.reference.framework.ws.client",
-		"gov.va.ocp.reference.framework.audit" },
+		"gov.va.ocp.framework.ws.client",
+		"gov.va.ocp.framework.audit" },
 		excludeFilters = @Filter(Configuration.class))
 public class PersonWsClientConfig extends BaseWsClientConfig {
 

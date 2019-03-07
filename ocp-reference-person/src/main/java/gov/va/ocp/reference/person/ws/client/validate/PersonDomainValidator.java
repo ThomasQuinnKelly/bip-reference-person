@@ -1,6 +1,6 @@
 package gov.va.ocp.reference.person.ws.client.validate;
 
-import gov.va.ocp.reference.framework.util.Defense;
+import gov.va.ocp.framework.util.Defense;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 
 /**

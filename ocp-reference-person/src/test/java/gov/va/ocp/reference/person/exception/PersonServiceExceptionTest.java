@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import gov.va.ocp.reference.framework.messages.MessageSeverity;
+import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.reference.person.exception.PersonServiceException;
 
 /**

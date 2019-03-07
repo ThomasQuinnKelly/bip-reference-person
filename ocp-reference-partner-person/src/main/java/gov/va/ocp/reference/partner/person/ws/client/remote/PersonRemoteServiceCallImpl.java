@@ -5,11 +5,11 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
-import gov.va.ocp.reference.framework.config.OcpCommonSpringProfiles;
-import gov.va.ocp.reference.framework.log.OcpLogger;
-import gov.va.ocp.reference.framework.log.OcpLoggerFactory;
-import gov.va.ocp.reference.framework.transfer.PartnerTransferObjectMarker;
-import gov.va.ocp.reference.framework.ws.client.remote.RemoteServiceCall;
+import gov.va.ocp.framework.config.OcpCommonSpringProfiles;
+import gov.va.ocp.framework.log.OcpLogger;
+import gov.va.ocp.framework.log.OcpLoggerFactory;
+import gov.va.ocp.framework.transfer.PartnerTransferObjectMarker;
+import gov.va.ocp.framework.ws.client.remote.RemoteServiceCall;
 
 /**
  * Implements the {@link RemoteServiceCall} interface for the remote client impls spring profile
