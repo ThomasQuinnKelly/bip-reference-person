@@ -13,9 +13,9 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 1. ocp-reference-perftest: Contains the performance JMX tests scripts for Apache JMeter
 
-## How to include these dependency libraries in your project ##
+## How to include the dependency libraries in your project ##
 
-In this repository, projects are dependent on libraries from OCP framework.
+In this repository, projects are dependent on libraries from OCP framework as identified below.
 
 1. ocp-framework-autoconfigure: Shared auto-configuration for the services to enable the patterns for audit, cache, feign, rest, security, swagger, service, vault etc
 
@@ -28,6 +28,7 @@ In this repository, projects are dependent on libraries from OCP framework.
 There are 2 options to download these libraries on your workstation for the projects to compile and build.
 
 **OPTION 1**
+
 1. Clone the `ocp-framework` repository
    
     git clone https://github.com/department-of-veterans-affairs/ocp-framework.git
@@ -35,6 +36,7 @@ There are 2 options to download these libraries on your workstation for the proj
 1. Navigate to the folder `ocp-framework` and run `mvn clean install` command
 
 **OPTION 2**
+
 A section has already been added in the reactor (root) pom.xml of this repository. See example: https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/pom.xml
 
 pom.xml
