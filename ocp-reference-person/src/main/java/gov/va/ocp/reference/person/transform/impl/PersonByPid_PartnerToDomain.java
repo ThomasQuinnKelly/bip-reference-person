@@ -1,10 +1,10 @@
 package gov.va.ocp.reference.person.transform.impl;
 
+import gov.va.ocp.framework.transfer.transform.AbstractPartnerToDomain;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
 import gov.va.ocp.reference.partner.person.ws.transfer.ObjectFactory;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 import gov.va.ocp.reference.person.model.PersonInfoDomain;
-import gov.va.ocp.reference.person.transform.AbstractPartnerToDomain;
 
 /**
  * Transform a Partner client {@link FindPersonByPtcpntIdResponse} object to a service Domain {@link PersonByPidDomainResponse} object.
@@ -24,7 +24,7 @@ public class PersonByPid_PartnerToDomain extends AbstractPartnerToDomain<FindPer
 	 * {@inheritDoc AbstractPartnerToDomain}
 	 */
 	@Override
-	public PersonByPidDomainResponse transform(FindPersonByPtcpntIdResponse partnerObject) {
+	public PersonByPidDomainResponse convert(FindPersonByPtcpntIdResponse partnerObject) {
 		PersonByPidDomainResponse domainObject = new PersonByPidDomainResponse();
 
 		if (partnerObject != null && partnerObject.getPersonDTO() != null) {

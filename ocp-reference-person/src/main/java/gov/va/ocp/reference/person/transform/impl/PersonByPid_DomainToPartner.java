@@ -1,8 +1,8 @@
 package gov.va.ocp.reference.person.transform.impl;
 
+import gov.va.ocp.framework.transfer.transform.AbstractDomainToPartner;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
-import gov.va.ocp.reference.person.transform.AbstractDomainToPartner;
 
 /**
  * Transform a service Domain {@link PersonByPidDomainRequest} object to a Partner client {@link FindPersonByPtcpntId} requets object.
@@ -17,7 +17,7 @@ public class PersonByPid_DomainToPartner extends AbstractDomainToPartner<PersonB
 	 * {@inheritDoc AbstractDomainToPartner}
 	 */
 	@Override
-	public FindPersonByPtcpntId transform(PersonByPidDomainRequest domainObject) {
+	public FindPersonByPtcpntId convert(PersonByPidDomainRequest domainObject) {
 		FindPersonByPtcpntId partnerObject = new FindPersonByPtcpntId();
 		partnerObject.setPtcpntId(domainObject.getParticipantID());
 		return partnerObject;

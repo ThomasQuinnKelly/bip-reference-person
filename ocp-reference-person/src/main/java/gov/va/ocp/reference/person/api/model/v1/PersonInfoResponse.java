@@ -1,6 +1,6 @@
 package gov.va.ocp.reference.person.api.model.v1;
 
-import gov.va.ocp.framework.transfer.ProviderTransferObjectMarker;
+import gov.va.ocp.framework.rest.provider.ProviderResponse;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -10,7 +10,8 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 @ApiModel(description = "Model for the response from the Person Service")
-public class PersonInfoResponse extends BaseProviderResponse implements ProviderTransferObjectMarker {
+public class PersonInfoResponse extends ProviderResponse {
+	private static final long serialVersionUID = -3964574323969408832L;
 
 	/** A PersonInfoDomain instance. */
 	@ApiModelProperty(value = "The object representing the person information")
