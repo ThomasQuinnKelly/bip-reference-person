@@ -11,8 +11,8 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
-import gov.va.ocp.reference.test.restassured.BaseStepDefHandler;
-import gov.va.ocp.reference.test.util.JsonUtil;
+import gov.va.ocp.framework.test.restassured.BaseStepDefHandler;
+import gov.va.ocp.framework.test.util.JsonUtil;
 
 public class PersonHealth {
 

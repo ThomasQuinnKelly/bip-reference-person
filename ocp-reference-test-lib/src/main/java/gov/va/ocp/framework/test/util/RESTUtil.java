@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.test.util;
+package gov.va.ocp.framework.test.util;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -28,7 +28,7 @@ import org.dom4j.io.XMLWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gov.va.ocp.reference.test.service.RESTConfigService;
+import gov.va.ocp.framework.test.service.RESTConfigService;
 import io.restassured.RestAssured;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.config.SSLConfig;
@@ -313,7 +313,7 @@ public class RESTUtil {
 	 */
 	public void validateStatusCode(final int intStatusCode) {
 		final int actStatusCode = response.getStatusCode();
-		assertThat(intStatusCode, equalTo(actStatusCode));
+		assertThat(actStatusCode, equalTo(intStatusCode));
 		
 	}
 
