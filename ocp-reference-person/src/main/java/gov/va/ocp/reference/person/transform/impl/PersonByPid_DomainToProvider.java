@@ -1,8 +1,8 @@
 package gov.va.ocp.reference.person.transform.impl;
 
 import gov.va.ocp.framework.transfer.transform.AbstractDomainToProvider;
-import gov.va.ocp.reference.api.person.model.v1.PersonInfo;
-import gov.va.ocp.reference.api.person.model.v1.PersonInfoResponse;
+import gov.va.ocp.reference.person.api.model.v1.PersonInfo;
+import gov.va.ocp.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 
 /**

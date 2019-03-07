@@ -1,10 +1,10 @@
-package gov.va.ocp.reference.api.person;
+package gov.va.ocp.reference.person.api;
 
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import gov.va.ocp.reference.api.person.model.v1.PersonInfoRequest;
-import gov.va.ocp.reference.api.person.model.v1.PersonInfoResponse;
+import gov.va.ocp.reference.person.api.model.v1.PersonInfoRequest;
+import gov.va.ocp.reference.person.api.model.v1.PersonInfoResponse;
 
 /**
  * The contract for the Reference Person endpoint.

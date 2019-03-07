@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.api.person.model.v1;
+package gov.va.ocp.reference.person.api.model.v1;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

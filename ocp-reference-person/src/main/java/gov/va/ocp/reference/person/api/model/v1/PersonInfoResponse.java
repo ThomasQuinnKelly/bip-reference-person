@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.api.person.model.v1;
+package gov.va.ocp.reference.person.api.model.v1;
 
 import gov.va.ocp.framework.rest.provider.ProviderResponse;
 import io.swagger.annotations.ApiModel;

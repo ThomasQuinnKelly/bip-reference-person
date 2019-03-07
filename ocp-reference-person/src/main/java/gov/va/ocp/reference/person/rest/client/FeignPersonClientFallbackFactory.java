@@ -12,8 +12,8 @@ import gov.va.ocp.framework.exception.OcpFeignRuntimeException;
 import gov.va.ocp.framework.log.OcpLogger;
 import gov.va.ocp.framework.log.OcpLoggerFactory;
 import gov.va.ocp.framework.messages.MessageSeverity;
-import gov.va.ocp.reference.api.person.model.v1.PersonInfoRequest;
-import gov.va.ocp.reference.api.person.model.v1.PersonInfoResponse;
+import gov.va.ocp.reference.person.api.model.v1.PersonInfoRequest;
+import gov.va.ocp.reference.person.api.model.v1.PersonInfoResponse;
 
 /**
  * This class provides the Hystrix fallback implementation for Feign Client calls to the service

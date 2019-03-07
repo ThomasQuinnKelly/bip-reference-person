@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.api.person.provider;
+package gov.va.ocp.reference.person.api.provider;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.va.ocp.framework.swagger.SwaggerResponseMessages;
 import gov.va.ocp.framework.transfer.ProviderTransferObjectMarker;
 import gov.va.ocp.framework.util.Defense;
-import gov.va.ocp.reference.api.person.ReferencePersonApi;
-import gov.va.ocp.reference.api.person.model.v1.PersonInfoRequest;
-import gov.va.ocp.reference.api.person.model.v1.PersonInfoResponse;
 import gov.va.ocp.reference.person.ReferencePersonService;
+import gov.va.ocp.reference.person.api.ReferencePersonApi;
+import gov.va.ocp.reference.person.api.model.v1.PersonInfoRequest;
+import gov.va.ocp.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 import gov.va.ocp.reference.person.transform.impl.PersonByPid_DomainToProvider;
