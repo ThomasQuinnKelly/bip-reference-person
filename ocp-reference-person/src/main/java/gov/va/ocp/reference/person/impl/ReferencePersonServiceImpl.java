@@ -35,7 +35,6 @@ import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 import gov.va.ocp.reference.person.utils.CacheConstants;
 import gov.va.ocp.reference.person.utils.HystrixCommandConstants;
 import gov.va.ocp.reference.person.ws.client.PersonPartnerHelper;
-import gov.va.ocp.reference.person.ws.client.validate.PersonDomainValidator;
 
 /**
  * Implementation class for the Reference Person Service.
@@ -95,16 +94,6 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			ignoreExceptions = { IllegalArgumentException.class })
 	public PersonByPidDomainResponse findPersonByParticipantID(final PersonByPidDomainRequest personByPidDomainRequest) {
 
-		// Check for valid input arguments. If validation fails, throws IllegalArgumentException
-		try {
-			PersonDomainValidator.validatePersonInfoRequest(personByPidDomainRequest);
-		} catch (final IllegalArgumentException e) {
-			final PersonByPidDomainResponse personByPidDomainResponse = new PersonByPidDomainResponse();
-			personByPidDomainResponse.addMessage(MessageSeverity.ERROR,
-					HttpStatus.BAD_REQUEST.name(), e.getMessage(), HttpStatus.BAD_REQUEST);
-			LOGGER.error("Exception raised {}", e);
-			return personByPidDomainResponse;
-		}
 		String cacheKey = "findPersonByParticipantID" + OcpCacheUtil.createKey(personByPidDomainRequest.getParticipantID());
 
 		// try from cache

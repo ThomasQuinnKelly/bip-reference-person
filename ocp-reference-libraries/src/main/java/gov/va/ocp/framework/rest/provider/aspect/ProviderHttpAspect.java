@@ -4,8 +4,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -18,8 +16,6 @@ import org.slf4j.event.Level;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import gov.va.ocp.framework.audit.AuditEventData;
 import gov.va.ocp.framework.audit.AuditEvents;
@@ -31,8 +27,6 @@ import gov.va.ocp.framework.log.OcpLogger;
 import gov.va.ocp.framework.log.OcpLoggerFactory;
 import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.framework.rest.provider.ProviderResponse;
-import gov.va.ocp.framework.rest.provider.bre.MessagesToHttpStatusRulesEngine;
-import gov.va.ocp.framework.rest.provider.bre.rules.MessageSeverityMatchRule;
 
 /**
  * This aspect performs Audit logging before and after the endpoint operation is executed.
@@ -48,33 +42,6 @@ public class ProviderHttpAspect extends BaseHttpProviderAspect {
 
 	/** The Constant LOGGER. */
 	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(ProviderHttpAspect.class);
-
-	/** The rules engine. */
-	private final MessagesToHttpStatusRulesEngine rulesEngine;
-
-	/**
-	 * This aspect performs Audit logging before and after the endpoint operation is executed.
-	 * Additionally, any exceptions thrown back to the endpoint operation will be intercepted
-	 * and converted to appropriate JSON object with message(s).
-	 */
-	public ProviderHttpAspect() {
-		final MessagesToHttpStatusRulesEngine ruleEngine = new MessagesToHttpStatusRulesEngine();
-		ruleEngine.addRule(
-				new MessageSeverityMatchRule(MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR));
-		ruleEngine.addRule(
-				new MessageSeverityMatchRule(MessageSeverity.ERROR,
-						HttpStatus.BAD_REQUEST));
-		this.rulesEngine = ruleEngine;
-	}
-
-	/**
-	 * Instantiate using the specified MessagesToHttpStatusRulesEngine
-	 *
-	 * @param rulesEngine the rules engine
-	 */
-	public ProviderHttpAspect(final MessagesToHttpStatusRulesEngine rulesEngine) {
-		this.rulesEngine = rulesEngine;
-	}
 
 	/**
 	 * Perform audit logging on the request, before the operation is executed.
@@ -117,7 +84,6 @@ public class ProviderHttpAspect extends BaseHttpProviderAspect {
 	 * @param joinPoint
 	 * @param responseToConsumer
 	 */
-	@SuppressWarnings("unchecked")
 	@AfterReturning(pointcut = "!auditableAnnotation() && publicServiceResponseRestMethod()",
 			returning = "responseToConsumer")
 	public void afterreturningAuditAdvice(JoinPoint joinPoint, ProviderResponse responseToConsumer) {
@@ -160,7 +126,6 @@ public class ProviderHttpAspect extends BaseHttpProviderAspect {
 	 * @param joinPoint the intersection for the pointcut
 	 * @param throwable the exception thrown by the application code
 	 */
-	@SuppressWarnings("unchecked")
 	@AfterThrowing(pointcut = "!auditableAnnotation() && publicServiceResponseRestMethod()",
 			throwing = "throwable")
 	public ResponseEntity<ProviderResponse> afterThrowingAdvice(JoinPoint joinPoint, Throwable throwable) {
@@ -169,18 +134,12 @@ public class ProviderHttpAspect extends BaseHttpProviderAspect {
 
 		AuditEventData auditEventData = null;
 		ResponseEntity<ProviderResponse> providerResponse = null;
-		HttpServletResponse servletResponse = null;
-		boolean returnTypeIsResponseEntity = false;
 
 		try {
 			if (throwable == null) {
 				// null throwable almost certain not to happen, but check nonetheless
 				throwable = new Throwable("Unknown exception.");
 			}
-//RequestContextHolder.getRequestAttributes().getAttribute("org.springframework.core.convert.ConversionService", 0);//https://docs.spring.io/spring/docs/5.1.2.RELEASE/spring-framework-reference/core.html#core-convert
-			servletResponse = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-			Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-			returnTypeIsResponseEntity = method.getReturnType().toString().contains("ResponseEntity") ? false : true;
 
 			OcpRuntimeException ocpException = null;
 			if (!OcpRuntimeException.class.isAssignableFrom(throwable.getClass())) {

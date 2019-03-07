@@ -1,8 +1,5 @@
 package gov.va.ocp.framework.rest.provider.aspect;
 
-import gov.va.ocp.framework.log.OcpLogger;
-import gov.va.ocp.framework.log.OcpLoggerFactory;
-
 /**
  * The Class RestProviderHttpResponseAspect is an aspect to alter HTTP response codes from our REST endpoints.
  * It defers to the MessagesToHttpStatusRulesEngine to determine codes.
@@ -17,11 +14,11 @@ import gov.va.ocp.framework.log.OcpLoggerFactory;
 //@Order(-9998)
 public class RestProviderHttpResponseAspect extends BaseHttpProviderAspect {
 
-	/** The Constant LOGGER. */
-	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(RestProviderHttpResponseAspect.class);
-
-	private static final int NUMBER_OF_BYTES = 1024;
-
+//	/** The Constant LOGGER. */
+//	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(RestProviderHttpResponseAspect.class);
+//
+//	private static final int NUMBER_OF_BYTES = 1024;
+//
 //	/** The rules engine. */
 //	private final MessagesToHttpStatusRulesEngine rulesEngine;
 //

@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.va.ocp.framework.messages.MessageSeverity;
-import gov.va.ocp.framework.rest.client.exception.ResponseEntityErrorException;
 import gov.va.ocp.framework.rest.client.resttemplate.RestClientTemplate;
-import gov.va.ocp.framework.service.DomainResponse;
 import gov.va.ocp.framework.swagger.SwaggerResponseMessages;
+import gov.va.ocp.reference.api.person.model.v1.PersonInfoRequest;
+import gov.va.ocp.reference.api.person.model.v1.PersonInfoResponse;
 import gov.va.ocp.reference.api.person.provider.PersonResource;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
@@ -59,20 +58,10 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 		// invoke the service using classic REST Template from Spring, but load balanced through Consul
 		HttpEntity<PersonByPidDomainRequest> requestEntity = new HttpEntity<>(personByPidDomainRequest);
 		ResponseEntity<PersonByPidDomainResponse> exchange = null;
-		try {
 			exchange =
 					personUsageRestTemplate.executeURL("http://localhost:8080" + PersonResource.URL_PREFIX + "/pid",
 							HttpMethod.POST, requestEntity, new ParameterizedTypeReference<PersonByPidDomainResponse>() {
 							});
-		} catch (ResponseEntityErrorException e) {
-			LOGGER.error("ResponseEntityErrorHandler: {}", e);
-			DomainResponse serviceResponse = e.getErrorResponse() == null ? new DomainResponse() : e.getErrorResponse().getBody();
-			LOGGER.error("ServiceResponse: {}", serviceResponse == null ? "" : serviceResponse.toString());
-			PersonByPidDomainResponse personInfoResponse = new PersonByPidDomainResponse();
-			personInfoResponse.addMessages(serviceResponse.getMessages());
-			LOGGER.error("PersonInfoResponse: {}", personInfoResponse.toString());
-			return new ResponseEntity<>(personInfoResponse, e.getErrorResponse().getStatusCode());
-		}
 		LOGGER.info("Invoked os-reference-person service using REST template: " + exchange);
 		return exchange;
 	}
@@ -86,23 +75,25 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 	@ApiOperation(value = "An endpoint which uses a REST client using Feign to call the remote person by pid operation.")
 	@RequestMapping(value = URL_PREFIX + "/callPersonByPidUsingFeignClient", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PersonByPidDomainResponse>
-			callPersonByPidUsingFeignClient(@RequestBody final PersonByPidDomainRequest personByPidDomainRequest) {
+	public ResponseEntity<PersonInfoResponse>
+			callPersonByPidUsingFeignClient(@RequestBody final PersonInfoRequest personInfoRequest) {
 
 		// use this in case of feign hystrix to test fallback handler invocation
 		// NOSONAR ConfigurationManager.getConfigInstance().setProperty("hystrix.command.default.circuitBreaker.forceOpen", "true");
-		PersonByPidDomainResponse personByPidDomainResponse = null;
-		try {
-			personByPidDomainResponse = feignPersonClient.personByPid(personByPidDomainRequest); // NOSONAR cannot immediately return
-		} catch (Exception e) {
-			LOGGER.error("Exception: {}", e);
-			personByPidDomainResponse = new PersonByPidDomainResponse();
-			personByPidDomainResponse.addMessage(MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-					e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-			LOGGER.error("PersonInfoResponse: {}", personByPidDomainResponse.toString());
-			return new ResponseEntity<>(personByPidDomainResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		PersonInfoResponse personInfoResponse = null;
 
-		return new ResponseEntity<>(personByPidDomainResponse, HttpStatus.OK);
+		personInfoResponse = feignPersonClient.personByPid(personInfoRequest); // NOSONAR cannot immediately return
+		
+		if (personInfoResponse != null) {
+			if (personInfoResponse.hasErrors()) {
+				return new ResponseEntity<>(personInfoResponse, HttpStatus.BAD_REQUEST);
+			} else if (personInfoResponse.hasFatals()) {
+				return new ResponseEntity<>(personInfoResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+			} else {
+				return new ResponseEntity<>(personInfoResponse, HttpStatus.OK);
+			}
+		} else {
+			return new ResponseEntity<>(personInfoResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }
