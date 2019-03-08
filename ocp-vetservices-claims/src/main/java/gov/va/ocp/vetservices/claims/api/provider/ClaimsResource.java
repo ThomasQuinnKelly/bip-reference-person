@@ -3,6 +3,7 @@ package gov.va.ocp.vetservices.claims.api.provider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +18,7 @@ import gov.va.ocp.vetservices.claims.model.ClaimsDomainResponse;
 public class ClaimsResource {
 
 	/** The root path to this resource */
-	public static final String URL_PREFIX = "/api/v1/claims";
+	public static final String URL_PREFIX = "/api/v1";
 
 	/** The service layer API contract for processing claims requests */
 	@Autowired
@@ -30,11 +31,12 @@ public class ClaimsResource {
 	 * @return ClaimDetailByIdDomainResponse
 	 */
 	@RequestMapping(value = URL_PREFIX
-			+ "/getClaimDetailById", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-	public ClaimDetailByIdDomainResponse getClaimDetailById(
-			@RequestBody final ClaimDetailByIdDomainRequest getClaimDetailByIdDomainRequest) {
+			+ "/claims/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+	public ClaimDetailByIdDomainResponse getClaimDetailById(@PathVariable("id") String id) {
+		ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest = new ClaimDetailByIdDomainRequest();
+		claimDetailByIdDomainRequest.setId(id);
 		ClaimDetailByIdDomainResponse claimDetailByIdDomainResponse = vetServicesClaimsService
-				.getClaimDetailById(getClaimDetailByIdDomainRequest);
+				.getClaimDetailById(claimDetailByIdDomainRequest);
 		return claimDetailByIdDomainResponse;
 	}
 
@@ -42,7 +44,7 @@ public class ClaimsResource {
 	 * Returns all claims
 	 * @return ClaimsDomainResponse
 	 */
-	@RequestMapping(value = URL_PREFIX + "/getClaims", method = RequestMethod.GET)
+	@RequestMapping(value = URL_PREFIX + "/claims", method = RequestMethod.GET)
 	public ClaimsDomainResponse getAllclaims() {
 		return vetServicesClaimsService.getClaims();
 	}
