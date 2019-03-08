@@ -164,8 +164,9 @@ public class RemoteServiceCallImplTest extends AbstractPersonTest {
 		try {
 			resource = new ResourceSource(new ClassPathResource(filename));
 		} catch (final IOException e) {
-			throw new PersonWsClientException("Could not read mock XML file '" + filename
-					+ "'. Please make sure this response file exists in the main/resources directory.", e);
+			throw new PersonWsClientException(null, "Could not read mock XML file '" + filename
+					+ "'. Please make sure this response file exists in the main/resources directory.",
+					null, null, e);
 		}
 		return resource;
 	}

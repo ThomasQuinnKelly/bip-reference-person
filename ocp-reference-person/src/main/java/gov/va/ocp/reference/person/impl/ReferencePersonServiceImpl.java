@@ -189,7 +189,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			LOGGER.error(
 					"findPersonByParticipantIDFallBack No Throwable Exception and No Cached Data. Just Raise Runtime Exception {}",
 					personByPidDomainRequest);
-			throw new OcpRuntimeException("There was a problem processing your request.");
+			throw new OcpRuntimeException("", "There was a problem processing your request.", MessageSeverity.FATAL,
+					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

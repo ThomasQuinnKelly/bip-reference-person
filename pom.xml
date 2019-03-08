@@ -17,11 +17,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
     <description>Reactor POM for OpenShift Container Platform (OCP) Spring Boot Reference Service</description>
 
 	<modules>
-	    <module>ocp-reference-partner-person</module>
+		<module>ocp-reference-partner-person</module>
 		<module>ocp-reference-person</module>
 		<module>ocp-reference-inttest</module>
 	</modules>
-	
+
 	<repositories>
 	  <repository>
 	   	<id>github</id>

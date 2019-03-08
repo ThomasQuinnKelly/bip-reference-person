@@ -5,8 +5,6 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientException;
-
 public class PersonWsClientExceptionTest {
 
 	private PersonWsClientException testException;
@@ -16,13 +14,13 @@ public class PersonWsClientExceptionTest {
 
 	@Test
 	public void testPersonWsClientException() {
-		testException = new PersonWsClientException();
+		testException = new PersonWsClientException(null, null, null, null);
 		assertNotNull(testException);
 	}
 
 	@Test
 	public void testPersonWsClientExceptionStringThrowable() {
-		testException = new PersonWsClientException(TEST_MESSAGE, TEST_CAUSE);
+		testException = new PersonWsClientException(null, TEST_MESSAGE, null, null, TEST_CAUSE);
 		assertNotNull(testException);
 		assertEquals(TEST_MESSAGE, testException.getMessage());
 		assertEquals(TEST_CAUSE, testException.getCause());
@@ -30,14 +28,14 @@ public class PersonWsClientExceptionTest {
 
 	@Test
 	public void testPersonWsClientExceptionString() {
-		testException = new PersonWsClientException(TEST_MESSAGE);
+		testException = new PersonWsClientException(null, TEST_MESSAGE, null, null);
 		assertNotNull(testException);
 		assertEquals(TEST_MESSAGE, testException.getMessage());
 	}
 
 	@Test
 	public void testPersonWsClientExceptionThrowable() {
-		testException = new PersonWsClientException(TEST_CAUSE);
+		testException = new PersonWsClientException(null, null, null, null, TEST_CAUSE);
 		assertNotNull(testException);
 		assertEquals(TEST_CAUSE, testException.getCause());
 	}
