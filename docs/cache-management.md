@@ -13,8 +13,8 @@
 add the ocp-reference-autoconfigure dependency to the project pom, with the appropriate version:
 
 	<dependency>
-        <groupId>gov.va.ocp.reference</groupId>
-        <artifactId>ocp-reference-autoconfigure</artifactId>
+        <groupId>gov.va.ocp.framework</groupId>
+        <artifactId>ocp-framework-autoconfigure</artifactId>
         <!-- add the appropriate version -->
     </dependency>
     
@@ -58,4 +58,4 @@ add the ocp-reference-autoconfigure dependency to the project pom, with the appr
 
 - Use @CachePut annotation with @HystrixCommand. @CachePut annotation does not cause the advised method to be skipped. Hystrix captures the execution of method each time its called. Cache existence to be checked in the business methods to make a decision of returning cached data vs calling partner / third party services
 
-- The class gov.va.ocp.reference.framework.util.ReferenceCacheUtil in [ocp-reference-libraries](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/master/ocp-reference-libraries) project has functions to generate keys and conditionals for @CachePuts operation using Spring Expression Language (SpEL). Add more such methods as required and use them accordingly.
+- The class gov.va.ocp.framework.util.OcpCacheUtil in [ocp-framework-libraries](https://github.com/department-of-veterans-affairs/ocp-framework/tree/master/ocp-framework-libraries) project has functions to generate keys and conditionals for @CachePuts operation using Spring Expression Language (SpEL). Add more such methods as required and use them accordingly.

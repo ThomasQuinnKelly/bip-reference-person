@@ -83,8 +83,9 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 			mockFilename = getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE, paramPID);
 
 		} else {
-			throw new PersonWsClientException(
-					this.getClass().getSimpleName() + ERROR_UNHANDLED_REQUEST_TYPE + request.getClass().getName());
+			throw new PersonWsClientException(null,
+					this.getClass().getSimpleName() + ERROR_UNHANDLED_REQUEST_TYPE + request.getClass().getName(),
+					null, null);
 		}
 
 		// return value can never be null or empty, there is Defense against it
@@ -110,7 +111,7 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 
 		if (StringUtils.isNotBlank(paramPID) && fileName.contains("{")) {
 			fileName = MessageFormat.format(fileName, paramPID);
-		} else if ((personTraits != null) && StringUtils.isNotBlank(personTraits.getPid()) && fileName.contains("{")) {
+		} else if (personTraits != null && StringUtils.isNotBlank(personTraits.getPid()) && fileName.contains("{")) {
 			fileName = MessageFormat.format(fileName, personTraits.getPid());
 		} else {
 			if (fileName.contains("{")) {
