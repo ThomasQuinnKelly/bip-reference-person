@@ -11,15 +11,15 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 @ApiModel(description = "Model for data to request PersonInfoDomain from the Person Service")
-@NotNull(message = "PersonInfoRequest cannot be null")
+@NotNull(message = "{ocp.reference.person.info.request.NotNull}")
 public class PersonInfoRequest implements ProviderTransferObjectMarker {
 	public static final String MODEL_NAME = PersonInfoRequest.class.getSimpleName();
 
 	/** A String representing a social security number. */
 	@ApiModelProperty(value = "The Participant ID of the person for whom to retrieve data", required = true,
 			example = "6666345")
-	@NotNull(message = "PersonInfoRequest.participantID cannot be null")
-	@Min(value = 1, message = "PersonInfoRequest.participantID cannot be zero")
+	@NotNull(message = "{ocp.reference.person.info.request.pid.NotNull}")
+	@Min(value = 1, message = "{ocp.reference.person.info.request.pid.Min}")
 	private Long participantID;
 
 	/**
