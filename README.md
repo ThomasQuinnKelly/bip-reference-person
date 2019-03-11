@@ -5,53 +5,46 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 ## Project Breakdown ##
 
-1. ocp-reference-partner: Partner services for reference, showing BGS with sample mock data
-
-1. ocp-reference-person: Service implementation project.  It has REST endpoints and shows various patterns for producing endpoints, swagger for the application, registering the application with Consul, Secrets from Vault calling REST endpoints through Zuul, Hystrix Circuit Breaker, logging pattern etc.
-
-1. ocp-reference-inttest: Contains the integration tests using RestAssured, Cucumber libraries. Includes Test cases against the end points for ascent demo and claims demo. 
-
-1. ocp-reference-perftest: Contains the performance JMX tests scripts for Apache JMeter
+1. **ocp-reference-partner**: Partner services for reference, showing BGS with sample mock data
+1. **ocp-reference-person**: Service implementation project.  It has REST endpoints and shows various patterns for producing endpoints, swagger for the application, registering the application with Consul, Secrets from Vault calling REST endpoints through Zuul, Hystrix Circuit Breaker, logging pattern etc.
+1. **ocp-reference-inttest**: Contains the integration tests using RestAssured, Cucumber libraries. Includes Test cases against the end points for ascent demo and claims demo. 
+1. **ocp-reference-perftest**: Contains the performance JMX tests scripts for Apache JMeter
 
 ## How to include and download these dependency libraries in your project ##
 
-In this repository, projects are dependent on libraries from OCP framework as identified below.
+In this repository, projects are dependent on libraries from [OCP framework](https://github.com/department-of-veterans-affairs/ocp-framework) as listed below.
 
-1. ocp-framework-autoconfigure: Shared auto-configuration for the services to enable the patterns for audit, cache, feign, rest, security, swagger, service, vault etc
-
-1. ocp-framework-libraries: Shared libraries for the services to provide common framework and security interfaces. 
-
-1. ocp-framework-parentpom: Parent POM for spring boot and cloud enabled services. It provides common Maven configuration and dependencies for the suite of projects.
-
-1. ocp-framework-test-lib: Test library framework to support functional testing for the services
+1. **ocp-framework-autoconfigure**: Shared auto-configuration for the services to enable the patterns for audit, cache, feign, rest, security, swagger, service, vault etc
+1. **ocp-framework-libraries**: Shared libraries for the services to provide common framework and security interfaces. 
+1. **ocp-framework-parentpom**: Parent POM for spring boot and cloud enabled services. It provides common Maven configuration and dependencies for the suite of projects.
+1. **ocp-framework-test-lib**: Test library framework to support functional testing for the services
 
        <dependency>
          <groupId>gov.va.ocp.framework</groupId>
          <artifactId>ocp-framework-autoconfigure</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version><!-- add the appropriate version --></version>
        </dependency>
        <dependency>
          <groupId>gov.va.ocp.framework</groupId>
          <artifactId>ocp-framework-libraries</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version><!-- add the appropriate version --></version>
        </dependency>
        <dependency>
          <groupId>gov.va.ocp.framework</groupId>
          <artifactId>ocp-framework-parentpom</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version><!-- add the appropriate version --></version>
        </dependency>
        <dependency>
          <groupId>gov.va.ocp.framework</groupId>
          <artifactId>ocp-framework-test-lib</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version><!-- add the appropriate version --></version>
        </dependency>
 
-There are 2 options to download these libraries on your workstation for your service projects to compile and build.
+There are 2 options to download the above libraries on your workstation for your service projects to compile and build.
 
 **OPTION 1**
 
 1. Clone the `ocp-framework` repository
-   
     git clone https://github.com/department-of-veterans-affairs/ocp-framework.git
     
 1. Navigate to the folder `ocp-framework` and run `mvn clean install` command
@@ -70,7 +63,7 @@ pom.xml
 	    </repository>
 	</distributionManagement>
 
-You must then update your local ~/.m2/settings.xml as shown below
+You must then update your local ~/.m2/settings.xml as shown below.
 
 	<settings>
 	  <servers>
@@ -96,6 +89,7 @@ You must then update your local ~/.m2/settings.xml as shown below
 * Service Discovery
 * [Log and Audit Management](docs/log-audit-management.md)
 * [Cache Management](docs/cache-management.md)
+* [Swagger Management](docs/swagger-management.md)
 * [Secrets Management](docs/secrets.md)
 * [Configuration Management](docs/config-management.md)
 * [Deployment Packaging](docs/deployment-package.md)
