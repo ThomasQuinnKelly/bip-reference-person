@@ -175,16 +175,6 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 
 			throw ExceptionHandlingUtils.resolveRuntimeException(throwable);
 
-			// TODO remove
-//			final String msg = throwable.getMessage();
-//			final List<ServiceMessage> serviceMessages = new ArrayList<>();
-//			serviceMessages.add(newMessage(MessageSeverity.FATAL, "FATAL", msg));
-//			response.setMessages(serviceMessages);
-//
-//			if (response != null) {
-//				response.setDoNotCacheResponse(true);
-//			}
-//			return response;
 		} else {
 			LOGGER.error(
 					"findPersonByParticipantIDFallBack No Throwable Exception and No Cached Data. Just Raise Runtime Exception {}",
@@ -193,21 +183,4 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
-	// TODO remove
-//	/**
-//	 * Helper method to create a ServiceMessage object.
-//	 *
-//	 * @param severity the severity
-//	 * @param key the key
-//	 * @param text the text
-//	 * @return the message
-//	 */
-//	private final ServiceMessage newMessage(final MessageSeverity severity, final String key, final String text) {
-//		final ServiceMessage msg = new ServiceMessage();
-//		msg.setSeverity(severity);
-//		msg.setKey(key);
-//		msg.setText(text);
-//		return msg;
-//	}
 }
