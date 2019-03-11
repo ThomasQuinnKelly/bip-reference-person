@@ -39,24 +39,24 @@ Here is the code of the logback-spring.xml file from src/main/resources director
 	
 - In the logback-spring.xml file, resource  `gov/va/ocp/reference/starter/logger/ocp-reference-logback-starter.xml` is available from shared auto configuration library. Logback dependency comes from spring boot starter, so add only the Logstash logback encoder and also requires the Janino library for conditional logging. Libraries added via pom.xml dependencies as shown below.
 
-	<dependency>
-        <groupId>gov.va.ocp.framework</groupId>
-        <artifactId>ocp-framework-autoconfigure</artifactId>
-        <version><!-- add the appropriate version --></version>
-    </dependency>
-    <dependency>
-        <groupId>net.logstash.logback</groupId>
-        <artifactId>logstash-logback-encoder</artifactId>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/org.codehaus.janino/janino -->
-	<dependency>
+	   <dependency>
+            <groupId>gov.va.ocp.framework</groupId>
+            <artifactId>ocp-framework-autoconfigure</artifactId>
+            <version><!-- add the appropriate version --></version>
+           </dependency>
+           <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+           </dependency>
+           <!-- https://mvnrepository.com/artifact/org.codehaus.janino/janino -->
+	   <dependency>
 	    <groupId>org.codehaus.janino</groupId>
 	    <artifactId>janino</artifactId>
-	</dependency>
-    
+	    </dependency>
+	    
 - Modify application service YML file to change logging levels for the application packages, classes
 
-	logging: 
+       logging: 
 	  level:
 	    gov.va.ocp.framework.ws.client: DEBUG
 	    gov.va.ocp.framework.rest.provider: DEBUG
