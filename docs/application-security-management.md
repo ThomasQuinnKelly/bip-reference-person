@@ -46,16 +46,16 @@
 		        - /**
 -  All the properties for JWT Security with prefix `ocp.security.jwt` that are configurable are listed below.
 
-a. **ocp.security.jwt.enabled**: Boolean property to enable or disable JWT security on the service end points. Defaults to "**true**"
+    a.  **ocp.security.jwt.enabled**: Boolean property to enable or disable JWT security on the service end points. Defaults to "**true**"
 
-b.**ocp.security.jwt.filterProcessUrls**: List of strings to specify the URLs that are allowed for any authenticated user. Defaults to "**/api/****"
+    b. **ocp.security.jwt.filterProcessUrls**: List of strings to specify the URLs that are allowed for any authenticated user. Defaults to "**/api/****"
 
-c. **ocp.security.jwt.excludeUrls**: List of strings that allows adding RequestMatcher instances which Spring Security should ignore. Defaults to "**/****"
+    c. **ocp.security.jwt.excludeUrls**: List of strings that allows adding RequestMatcher instances which Spring Security should ignore. Defaults to "**/****"
 
-d. **ocp.security.jwt.issuer**: Ensures that the specified "iss" exists in the parsed JWT. If missing or if the parsed value does not equal the specified value, an exception will be thrown indicating that the JWT is 								 invalid and may not be used. Defaults to "**Vets.gov**"
+    d. **ocp.security.jwt.issuer**: Ensures that the specified "iss" exists in the parsed JWT. If missing or if the parsed value does not equal the specified value, an exception will be thrown indicating that the JWT is 								 invalid and may not be used. Defaults to "**Vets.gov**"
 
-e. **ocp.security.jwt.secret**: JWT needs to be signed with a signing key and must match for the trusted services that communicates. Defaults to "**secret**"
+    e. **ocp.security.jwt.secret**: JWT needs to be signed with a signing key and must match for the trusted services that communicates. Defaults to "**secret**"
 
-f. **ocp.security.jwt.header**: Request header name to read JWT token value from. Defaults to "**Authorization**"
+    f. **ocp.security.jwt.header**: Request header name to read JWT token value from. Defaults to "**Authorization**"
 	
 
