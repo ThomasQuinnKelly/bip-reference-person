@@ -28,22 +28,22 @@ In this repository, projects are dependent on libraries from OCP framework as id
        <dependency>
          <groupId>gov.va.ocp.framework</groupId>
          <artifactId>ocp-framework-autoconfigure</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version><!-- add the appropriate version --></version>
        </dependency>
        <dependency>
          <groupId>gov.va.ocp.framework</groupId>
          <artifactId>ocp-framework-libraries</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version><!-- add the appropriate version --></version>
        </dependency>
        <dependency>
          <groupId>gov.va.ocp.framework</groupId>
          <artifactId>ocp-framework-parentpom</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version><!-- add the appropriate version --></version>
        </dependency>
        <dependency>
          <groupId>gov.va.ocp.framework</groupId>
          <artifactId>ocp-framework-test-lib</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version><!-- add the appropriate version --></version>
        </dependency>
 
 There are 2 options to download these libraries on your workstation for your service projects to compile and build.
