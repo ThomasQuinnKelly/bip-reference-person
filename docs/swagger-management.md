@@ -70,6 +70,7 @@ Swagger provides more benefits than just helping create clear documentation.
 - Reference Swagger application snapshot: Please refer: [Swagger Person Sample](/docs/images/Swagger-Person-Sample.jpg)
 
 - JWT Token Generation and Authorization:
+
 	a. Expand Token Resource end point and click on "Try it out" button as shown in - [Swagger Expand Token Resopurce](/docs/images/Swagger-Expand-Token-Resource.png)
 	
 	b. We can view the default Person Traits in the swagger as shown in: [Swagger JWT Token Person Traits](/docs/images/Swagger-JWTToken-PersonTraits.png) which can be edited as required.
