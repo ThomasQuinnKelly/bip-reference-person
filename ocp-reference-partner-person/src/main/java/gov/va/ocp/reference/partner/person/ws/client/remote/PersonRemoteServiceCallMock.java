@@ -83,7 +83,7 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 			mockFilename = getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE, paramPID);
 
 		} else {
-			throw new PersonWsClientException(null,
+			throw new PersonWsClientException("",
 					this.getClass().getSimpleName() + ERROR_UNHANDLED_REQUEST_TYPE + request.getClass().getName(),
 					null, null);
 		}
