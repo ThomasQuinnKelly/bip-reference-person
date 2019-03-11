@@ -71,6 +71,9 @@ Swagger provides more benefits than just helping create clear documentation.
 
 - JWT Token Generation and Authorization:
 	a. Expand Token Resource end point and click on "Try it out" button as shown in - [Swagger Expand Token Resopurce](/docs/images/Swagger-Expand-Token-Resource.png)
+	
 	b. We can view the default Person Traits in the swagger as shown in: [Swagger JWT Token Person Traits](/docs/images/Swagger-JWTToken-PersonTraits.png) which can be edited as required.
+	
 	c. Copy the JWT token generated as shown: [JWT Copy Token](/docs/images/Swagger-Copy-JWTToken.png)
+	
 	d. Paste the JWT token by clicking the Authorize button and use the key as "Bearer" as shown in [JWT Authorize](/docs/images/Swagger-JWTToken-Bearer.png) and click Authorize button.
