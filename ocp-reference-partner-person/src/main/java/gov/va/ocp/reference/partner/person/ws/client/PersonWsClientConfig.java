@@ -163,7 +163,7 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 */
 	@Bean
 	InterceptingExceptionTranslator personWsClientExceptionInterceptor() throws ClassNotFoundException {
-		return getInterceptingExceptionTranslator(DEFAULT_EXCEPTION_CLASS, PACKAGE_REFERENCE_FRAMEWORK_EXCEPTION);
+		return getInterceptingExceptionTranslator(DEFAULT_EXCEPTION_CLASS, PACKAGE_FRAMEWORK_EXCEPTION);
 	}
 
 	/**
