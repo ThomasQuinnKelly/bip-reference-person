@@ -39,7 +39,10 @@ Swagger provides more benefits than just helping create clear documentation.
     			description:
     			groupName: "@project.name@-@project.version@"
     			version: ${info.build.version}
-    			securePaths:   
+    			securePaths: /api/v?.*/persons/.*
+    			
+   securePaths above secures the swagger URL's access and forwards the Security Context(JWT) to 
+   actual Service API calls.  
 
 - Add the @EnableSwagger2 annotation to the Spring Boot Application class 
 
@@ -64,3 +67,10 @@ Swagger provides more benefits than just helping create clear documentation.
 
 - Swagger page has link to access the possible key-value of the errors in the REST resource responses
 
+- Reference Swagger application snapshot: Please refer - docs/images/Swagger-Person-Sample.jpg
+
+- JWT Token Generation and Authorization:
+	a. Expand Token Resource end point and click on "Try it out" button as shown in - docs/images/Swagger-Expand-Token-Resource.png
+	b. We can view the default Person Traits in the swagger as shown in: docs/images/Swagger-JWTToken-PersonTraits.png which can be edited as required.
+	c. Copy the JWT token generated as shown: docs/images/Swagger-Copy-JWTToken.png
+	d. Paste the JWT token by clicking the Authorize button and use the key as "Bearer" as shown in docs/images/Swagger-JWTToken-Bearer.png and click Authorize button.
