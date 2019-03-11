@@ -20,6 +20,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 		<module>ocp-reference-partner-person</module>
 		<module>ocp-reference-person</module>
 		<module>ocp-reference-inttest</module>
+	    <module>ocp-reference-perftest</module>
 	</modules>
 
 	<repositories>
