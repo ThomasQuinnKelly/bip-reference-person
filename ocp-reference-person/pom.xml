@@ -108,7 +108,11 @@
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
         </dependency>
-        
+        <!-- https://mvnrepository.com/artifact/org.codehaus.janino/janino -->
+		<dependency>
+		    <groupId>org.codehaus.janino</groupId>
+		    <artifactId>janino</artifactId>
+		</dependency>
         <!-- additional jackson dependencies not brought in via spring-boot starters -->
         <dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>

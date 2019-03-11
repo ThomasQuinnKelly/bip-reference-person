@@ -13,7 +13,7 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 1. ocp-reference-perftest: Contains the performance JMX tests scripts for Apache JMeter
 
-## How to include the dependency libraries in your project ##
+## How to include and download these dependency libraries in your project ##
 
 In this repository, projects are dependent on libraries from OCP framework as identified below.
 
@@ -25,7 +25,28 @@ In this repository, projects are dependent on libraries from OCP framework as id
 
 1. ocp-framework-test-lib: Test library framework to support functional testing for the services
 
-There are 2 options to download these libraries on your workstation for the projects to compile and build.
+       <dependency>
+         <groupId>gov.va.ocp.framework</groupId>
+         <artifactId>ocp-framework-autoconfigure</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+       </dependency>
+       <dependency>
+         <groupId>gov.va.ocp.framework</groupId>
+         <artifactId>ocp-framework-libraries</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+       </dependency>
+       <dependency>
+         <groupId>gov.va.ocp.framework</groupId>
+         <artifactId>ocp-framework-parentpom</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+       </dependency>
+       <dependency>
+         <groupId>gov.va.ocp.framework</groupId>
+         <artifactId>ocp-framework-test-lib</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+       </dependency>
+
+There are 2 options to download these libraries on your workstation for your service projects to compile and build.
 
 **OPTION 1**
 
@@ -71,8 +92,10 @@ You must then update your local ~/.m2/settings.xml as shown below
 	  </servers>
 	</settings>
 
-## Core Concepts
+## Core Concepts and Patterns
 * Service Discovery
+* [Log and Audit Management](docs/log-audit-management.md)
+* [Cache Management](docs/cache-management.md)
 * [Secrets Management](docs/secrets.md)
 * [Configuration Management](docs/config-management.md)
 * [Deployment Packaging](docs/deployment-package.md)
