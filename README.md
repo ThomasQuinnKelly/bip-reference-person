@@ -89,6 +89,7 @@ You must then update your local ~/.m2/settings.xml as shown below.
 * Service Discovery
 * [Log and Audit Management](docs/log-audit-management.md)
 * [Cache Management](docs/cache-management.md)
+* [Swagger Management](docs/swagger-management.md)
 * [Secrets Management](docs/secrets.md)
 * [Configuration Management](docs/config-management.md)
 * [Deployment Packaging](docs/deployment-package.md)
