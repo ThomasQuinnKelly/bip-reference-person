@@ -132,3 +132,10 @@ libraries as configuration. feignBuilder is implemented as part of OcpFeignAutoC
 		return HystrixFeign.builder().setterFactory(commandKeyIsRequestLine).requestInterceptor(tokenFeignRequestInterceptor());
 	}
 	
+- Service implementation class must define a Thread Pool (Group Key) and unique Command Keys for each method.
+
+- If a command key isn't defined for a method, then by default name of command key is command method name. For example , getStates but you can rename it to GetStatesRefDataCommand
+
+- Group Key naming convention must follow pattern <<repository-name+Group>> with camel case letters. For example, "VetsAPIRefDataGroup"
+
+- Command Key naming convention must follow pattern as <<method-name+repo-name+Command>> with camel case letters. For example, method getStates would have a command key as "GetStatesRefDataCommand"
