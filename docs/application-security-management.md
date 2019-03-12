@@ -56,6 +56,6 @@
 
      **ocp.security.jwt.secret**: JWT needs to be signed with a signing key and must match for the trusted services that communicates. Defaults to "**secret**"
 
-    f **ocp.security.jwt.header**: Request header name to read JWT token value from. Defaults to "**Authorization**"
+     **ocp.security.jwt.header**: Request header name to read JWT token value from. Defaults to "**Authorization**"
 	
 
