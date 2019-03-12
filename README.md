@@ -10,9 +10,9 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 1. **ocp-reference-inttest**: Contains the integration tests using RestAssured, Cucumber libraries. Includes Test cases against the end points for ascent demo and claims demo. 
 1. **ocp-reference-perftest**: Contains the performance JMX tests scripts for Apache JMeter
 
-## How to include and download these dependency libraries in your project ##
+## How to include and download the dependency framework libraries in your project ##
 
-In this repository, projects are dependent on libraries from [OCP framework](https://github.com/department-of-veterans-affairs/ocp-framework) as listed below.
+The projects in this repository are dependent on libraries from [OCP framework](https://github.com/department-of-veterans-affairs/ocp-framework). Framework libraries are listed below.
 
 1. **ocp-framework-autoconfigure**: Shared auto-configuration for the services to enable the patterns for audit, cache, feign, rest, security, swagger, service, vault etc
 1. **ocp-framework-libraries**: Shared libraries for the services to provide common framework and security interfaces. 
@@ -40,30 +40,18 @@ In this repository, projects are dependent on libraries from [OCP framework](htt
          <version><!-- add the appropriate version --></version>
        </dependency>
 
-There are 2 options to download the above libraries on your workstation for your service projects to compile and build.
+There are 2 ways to download the libraries on your workstation for the service projects to compile and build.
 
 **OPTION 1**
-
 1. Clone the `ocp-framework` repository
     git clone https://github.com/department-of-veterans-affairs/ocp-framework.git
     
 1. Navigate to the folder `ocp-framework` and run `mvn clean install` command
 
 **OPTION 2**
+A section has already been added in the reactor (root) pom.xml of this repository. See Example: [pom.xml](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/pom.xml)
 
-A section has already been added in the reactor (root) pom.xml of this repository. See example: https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/pom.xml
-
-pom.xml
-
-	<distributionManagement>
-	    <repository>
-	        <id>github</id>
-	        <name>GitHub Repository</name>
-	        <url>https://raw.github.com/department-of-veterans-affairs/ocp-framework/mvn-repo</url>
-	    </repository>
-	</distributionManagement>
-
-You must then update your local ~/.m2/settings.xml as shown below.
+You MUST update your local ~/.m2/settings.xml as shown below.
 
 	<settings>
 	  <servers>
@@ -90,6 +78,7 @@ You must then update your local ~/.m2/settings.xml as shown below.
 * [Log and Audit Management](docs/log-audit-management.md)
 * [Cache Management](docs/cache-management.md)
 * [Swagger Management](docs/swagger-management.md)
+* [Application Security Management](docs/application-security-management.md)
 * [Secrets Management](docs/secrets.md)
 * [Configuration Management](docs/config-management.md)
 * [Deployment Packaging](docs/deployment-package.md)
@@ -99,5 +88,5 @@ You must then update your local ~/.m2/settings.xml as shown below.
 * [Creating a pull request from a fork](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)
 
 ## Local Development
-Instructions on running the application locall can be found [here].(local-dev)
+Instructions on running the application local can be found [here](local-dev)
 	

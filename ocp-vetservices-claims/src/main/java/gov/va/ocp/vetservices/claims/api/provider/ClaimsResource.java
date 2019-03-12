@@ -31,7 +31,7 @@ public class ClaimsResource {
 	 * @return ClaimDetailByIdDomainResponse
 	 */
 	@RequestMapping(value = URL_PREFIX
-			+ "/claims/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+			+ "/claims/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
 	public ClaimDetailByIdDomainResponse getClaimDetailById(@PathVariable("id") String id) {
 		ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest = new ClaimDetailByIdDomainRequest();
 		claimDetailByIdDomainRequest.setId(id);

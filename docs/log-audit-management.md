@@ -56,11 +56,11 @@ Here is the code of the logback-spring.xml file from src/main/resources director
 	    
 - Modify application service YML file to change logging levels for the application packages, classes
 
-       logging: 
-	  level:
-	    gov.va.ocp.framework.ws.client: DEBUG
-	    gov.va.ocp.framework.rest.provider: DEBUG
-	    gov.va.ocp.reference.partner: DEBUG
+		logging: 
+		   level:
+		     gov.va.ocp.framework.ws.client: DEBUG
+		     gov.va.ocp.framework.rest.provider: DEBUG
+		     gov.va.ocp.reference.partner: DEBUG
 	   
 ## Sample JSON Output for application and audit logs
 

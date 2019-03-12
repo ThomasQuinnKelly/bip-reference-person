@@ -1,5 +1,8 @@
 package gov.va.ocp.reference.person.exception;
 
+import org.springframework.http.HttpStatus;
+
+import gov.va.ocp.framework.exception.OcpRuntimeException;
 import gov.va.ocp.framework.messages.MessageSeverity;
 
 /**
@@ -7,100 +10,38 @@ import gov.va.ocp.framework.messages.MessageSeverity;
  *
  * @author aburkholder
  */
-public class PersonServiceException extends RuntimeException {
+public class PersonServiceException extends OcpRuntimeException {
 	private static final long serialVersionUID = -5224277215368080694L;
 
-	/** The enumeration for message severity */
-	private MessageSeverity severity; // NOSONAR cannot be final
-	/** The error message key */
-	private String key; // NOSONAR cannot be final
-	/** the error message */
-	private String message; // NOSONAR cannot be final
-
 	/**
-	 * Create an exception for the Person service.
+	 * Constructs a new RuntimeException for the Person service with the specified detail key, message, severity, and status.
+	 * The cause is not initialized.
 	 *
-	 * @param severity the MessageSeverity
-	 * @param key the property key for the message
-	 * @param message the message
+	 * @see OcpRuntimeException#OcpRuntimeException(String)
+	 *
+	 * @param key - the consumer-facing key that can uniquely identify the nature of the exception
+	 * @param message - the detail message
+	 * @param severity - the severity of the event: FATAL (500 series), ERROR (400 series), WARN (200 series), or INFO/DEBUG/TRACE
+	 * @param status - the HTTP Status code that applies best to the encountered problem, see
+	 *            <a href="https://tools.ietf.org/html/rfc7231">https://tools.ietf.org/html/rfc7231</a>
 	 */
-	public PersonServiceException(final MessageSeverity severity, final String key, final String message) {
-		super(message);
-		this.severity = severity;
-		this.key = key;
-		this.message = message;
+	public PersonServiceException(final String key, final String message, final MessageSeverity severity, HttpStatus status) {
+		super(key, message, severity, status);
 	}
 
 	/**
-	 * Create an exception for the Person service, without a property key.
+	 * Constructs a new RuntimeException with the specified detail key, message, severity, status, and cause.
 	 *
-	 * @param severity the MessageSeverity
-	 * @param message the message
-	 */
-	public PersonServiceException(final MessageSeverity severity, final String message) {
-		super(message);
-		this.severity = severity;
-		this.message = message;
-	}
-
-	/**
-	 * Create an exception for the Person service, with default ERROR severity, and without a property key.
+	 * @see RuntimeException#RuntimeException(String, Throwable)
 	 *
-	 * @param message the message
+	 * @param key - the consumer-facing key that can uniquely identify the nature of the exception
+	 * @param message - the detail message
+	 * @param severity - the severity of the event: FATAL (500 series), ERROR (400 series), WARN (200 series), or INFO/DEBUG/TRACE
+	 * @param status - the HTTP Status code that applies best to the encountered problem, see
+	 *            <a href="https://tools.ietf.org/html/rfc7231">https://tools.ietf.org/html/rfc7231</a>
+	 * @param cause - the throwable that caused this throwable
 	 */
-	public PersonServiceException(String message) {
-		super(message);
-		this.severity = MessageSeverity.ERROR;
-		this.message = message;
+	public PersonServiceException(String key, String message, MessageSeverity severity, HttpStatus status, Throwable cause) {
+		super(key, message, severity, status, cause);
 	}
-
-	/**
-	 * Create an exception for the Person service, with cause.
-	 *
-	 * @param severity the MessageSeverity
-	 * @param key the property key for the message
-	 * @param message the message
-	 * @param cause the exception that caused this one
-	 */
-	public PersonServiceException(final MessageSeverity severity, final String key, final String message, Throwable cause) {
-		super(message, cause);
-		this.severity = severity;
-		this.key = key;
-		this.message = message;
-	}
-
-	/**
-	 * Create an exception for the Person service, with default ERROR severity, and without a property key.
-	 *
-	 * @param message the message
-	 * @param cause the exception that caused this one
-	 */
-	public PersonServiceException(String message, Throwable cause) {
-		super(message, cause);
-		this.message = message;
-	}
-
-	/**
-	 * The message severity enumeration.
-	 *
-	 * @return MessageSeverity
-	 */
-	public MessageSeverity getSeverity() {
-		return severity;
-	}
-
-	/**
-	 * The message key.
-	 *
-	 * @return String the key
-	 */
-	public String getKey() {
-		return key;
-	}
-
-	@Override
-	public String getMessage() {
-		return message;
-	}
-
 }

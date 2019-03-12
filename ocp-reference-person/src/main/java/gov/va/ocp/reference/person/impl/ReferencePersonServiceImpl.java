@@ -120,7 +120,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		if (response == null || response.getPersonInfo() == null
 				&& !response.hasErrors() && !response.hasFatals()) {
 			LOGGER.info("findPersonByParticipantID empty response - throwing PersonServiceException: " + INVOKE_FALLBACK_MESSAGE);
-			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
+			throw new PersonServiceException("", INVOKE_FALLBACK_MESSAGE, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		/*
 		 * In a real-world service, it is highly unlikely that a user would be allowed
