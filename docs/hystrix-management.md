@@ -31,7 +31,7 @@ the ServiceImpl class level. There is provision to ignore certain exceptions fro
     
 - Update the application service yml file with the following configuration (under the default profile):
 
-	hystrix:
+	   hystrix:
 		 wrappers.enabled: true
 		 command:
 		  default:
@@ -45,18 +45,17 @@ the ServiceImpl class level. There is provision to ignore certain exceptions fro
 		      requestVolumeThreshold: 20
 		    execution:
 		      isolation:
-		        # strategy: SEMAPHORE
 		        thread:
 		          timeoutInMilliseconds: 20000
 	    
 - Use below configurations on the actual method and fallBack methods in the ServiceImpl class:
 
-    Actual method:
-	@HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
+      Actual method:
+        @HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
 			ignoreExceptions = { IllegalArgumentException.class })
 	
-    FallBack method:
-     @HystrixCommand(commandKey = "FindPersonByParticipantIDFallBackCommand")
+      FallBack method:
+         @HystrixCommand(commandKey = "FindPersonByParticipantIDFallBackCommand")
 	
 ## Hystrix Client configuration
 
@@ -73,16 +72,15 @@ method.
     
 - Update the application service yml file with the following configuration (under the default profile):
 
-	feign.hystrix.enabled: true
+        feign.hystrix.enabled: true
 	    
 - Use below configurations on the actual method in the Feign Client class. FallBack is implemented with a factory class
 
-	@FeignClient(value = "${spring.application.name}",
-	url="${ocp-reference-person.ribbon.listOfServers:}",
-	name = "${spring.application.name}",
-	fallbackFactory = FeignPersonClientFallbackFactory.class,
-	configuration = ReferenceServiceFeignConfig.class)
+		@FeignClient(value = "${spring.application.name}",
+		url="${ocp-reference-person.ribbon.listOfServers:}",
+		name = "${spring.application.name}",
+		fallbackFactory = FeignPersonClientFallbackFactory.class,
+		configuration = ReferenceServiceFeignConfig.class)
 
-- Hystrix client configuration needs OcpFeignAutoConfiguration which is part of the framework 
-libraries as configuration. feignBuilder is implemented as part of OcpFeignAutoConfiguration as client side Hystrix needs a seperate configuration from server side. Please see feignBuilder method in OcpFeignAutoConfiguration.java
+- Hystrix client configuration needs OcpFeignAutoConfiguration which is part of the framework libraries as configuration. feignBuilder is implemented as part of OcpFeignAutoConfiguration as client side Hystrix needs a seperate configuration from server side. Please see feignBuilder method in [OcpFeignAutoConfiguration.java](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/ocp-framework-autoconfigure/src/main/java/gov/va/ocp/framework/feign/autoconfigure/OcpFeignAutoConfiguration.java)
 	
