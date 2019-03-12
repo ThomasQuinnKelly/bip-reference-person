@@ -24,7 +24,7 @@
      
  - Java source file from OCP Framework library that does AutoConfiguration for JWT. [OcpSecurityAutoConfiguration.java](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/ocp-framework-autoconfigure/src/main/java/gov/va/ocp/framework/security/autoconfigure/OcpSecurityAutoConfiguration.java)
  
- - JWT authentication properties are set via prefix "ocp.security.jwt". Java source file: https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/ocp-framework-libraries/src/main/java/gov/va/ocp/framework/security/jwt/JwtAuthenticationProperties.java
+ - JWT authentication properties are set via prefix "ocp.security.jwt". Java source file: [JwtAuthenticationProperties.java](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/ocp-framework-libraries/src/main/java/gov/va/ocp/framework/security/jwt/JwtAuthenticationProperties.java)
  
  - By default in ${spring.config.name}.yml file, ascent security is enabled for all the application profiles. To disable the security, developer would have to set the property ocp.security.jwt.enabled to false
  	
