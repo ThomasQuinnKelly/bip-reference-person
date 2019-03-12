@@ -1,4 +1,4 @@
-package gov.va.ocp.vetservices.claims.api;
+package gov.va.ocp.vetservices.claims;
 
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
