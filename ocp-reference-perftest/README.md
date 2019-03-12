@@ -6,7 +6,7 @@ This module was created to facilitate the performance testing of reference perso
 
 This test will execute requests for the rest end points available in reference person service module.
 
--PID based Person Info from Person Partner Service - /api/ascent-demo-service/demo/v1/person/ssn
+-PID based Person Info from Person Partner Service - /api/v1/persons/pid
 -Person service Health check endpoint - /api/v1/persons/health
 
 Additionally it will also hit the /token end point to generate JWT token for the users.
