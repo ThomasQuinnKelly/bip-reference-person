@@ -25,5 +25,4 @@ EOF
 fi
 
 # Proceed with Consul entrypoint script
-echo "Running $@"
 docker-entrypoint.sh "$@"
