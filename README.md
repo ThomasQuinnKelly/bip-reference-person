@@ -1,4 +1,3 @@
-
 ## What is this repository for? ##
 
 This is a suite of projects to demonstrate various patterns required to deploy and run application spring boot and spring cloud services on the BIP Platform.  
@@ -12,12 +11,7 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 ## How to include and download the dependency framework libraries in your project ##
 
-The projects in this repository are dependent on libraries from [OCP framework](https://github.com/department-of-veterans-affairs/ocp-framework). Framework libraries are listed below.
-
-1. **ocp-framework-autoconfigure**: Shared auto-configuration for the services to enable the patterns for audit, cache, feign, rest, security, swagger, service, vault etc
-1. **ocp-framework-libraries**: Shared libraries for the services to provide common framework and security interfaces. 
-1. **ocp-framework-parentpom**: Parent POM for spring boot and cloud enabled services. It provides common Maven configuration and dependencies for the suite of projects.
-1. **ocp-framework-test-lib**: Test library framework to support functional testing for the services
+The projects in this repository are dependent on libraries from [OCP framework](https://github.com/department-of-veterans-affairs/ocp-framework) for  auto configuration, common shared libraries, parent maven configuration and test libary. These libraries can be included as shown below.
 
        <dependency>
          <groupId>gov.va.ocp.framework</groupId>
@@ -40,18 +34,18 @@ The projects in this repository are dependent on libraries from [OCP framework](
          <version><!-- add the appropriate version --></version>
        </dependency>
 
-There are 2 ways to download the libraries on your workstation for the service projects to compile and build.
+To make these libraries available locally for the service projects to compile and build, there are 2 options.
 
 **OPTION 1**
-1. Clone the `ocp-framework` repository
-    git clone https://github.com/department-of-veterans-affairs/ocp-framework.git
-    
-1. Navigate to the folder `ocp-framework` and run `mvn clean install` command
+
+1. Clone the `ocp-framework` repository `git clone https://github.com/department-of-veterans-affairs/ocp-framework.git`
+1. Navigate to the folder `ocp-framework` and run `mvn clean install` command. This would build all the libraries with versions as configured in pom.xml files.
 
 **OPTION 2**
-A section has already been added in the reactor (root) pom.xml of this repository. See Example: [pom.xml](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/pom.xml)
 
-You MUST update your local ~/.m2/settings.xml as shown below.
+This is a temporary solution until Nexus repository is made available by DevOps. A <repositories> section is added in the reactor pom.xml of this repository. See [pom.xml](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/pom.xml). Verify in the `mvn-repo` feature branch of `ocp-framework` for the library versions to be used in your service project.
+
+You MUST also update your local ~/.m2/settings.xml as shown below.
 
 	<settings>
 	  <servers>
@@ -68,10 +62,14 @@ You MUST update your local ~/.m2/settings.xml as shown below.
 	            	<value>Basic {{base64 encoded content}}</value>
 	          	</property>
         	</httpHeaders>
-      </configuration>
+          </configuration>
 	    </server>
 	  </servers>
 	</settings>
+
+## How to build and test? ##
+
+Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 
 ## Core Concepts and Patterns
 * Service Discovery
