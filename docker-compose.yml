@@ -30,11 +30,13 @@ services:
       - vault-config
 
   consul:
-    image: consul:1.4.2
+    image: bip/consul:1.4.3
+    build:
+      context: ./local-dev/consul
+    environment:
+      - MASTER_ACL_TOKEN=7652ba4c-0f6e-8e75-5724-5e083d72cfe4
     ports:
       - "8500:8500"
-    volumes: 
-      - "./local-dev/consul/acl.json:/consul/config/acl.json"
     networks:
       - bip
 
