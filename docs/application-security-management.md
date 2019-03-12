@@ -16,11 +16,11 @@
 ## Security configuration
 - Add dependency in pom.xml to include ocp-framework-autoconfigure library
 
-	 <dependency>
+      <dependency>
         <groupId>gov.va.ocp.framework</groupId>
         <artifactId>ocp-framework-autoconfigure</artifactId>
         <version><!-- add the appropriate version --></version>
-     </dependency>
+      </dependency>
      
  - Java source file from OCP Framework library that does AutoConfiguration for JWT. [OcpSecurityAutoConfiguration.java](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/ocp-framework-autoconfigure/src/main/java/gov/va/ocp/framework/security/autoconfigure/OcpSecurityAutoConfiguration.java)
  
