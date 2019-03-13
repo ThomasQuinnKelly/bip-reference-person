@@ -1,7 +1,7 @@
 Feature: PID based Person Info from Person Partner Service.
 
   @personinfo @happypath
-  Scenario Outline: PID based Person Info from Person Partner Service.
+  Scenario Outline: PID based Person Info from Person Partner Service for valid PID.
     Given the claimant is a "<Veteran>"
     And invoke token API by passing header from "<tokenrequestfile>" and sets the authorization in the header
     When client request person info "<ServiceURL>" with PID data "<RequestFile>"
@@ -39,21 +39,21 @@ Feature: PID based Person Info from Person Partner Service.
       | Veteran          | tokenrequestfile              | ServiceURL          | RequestFile        | Text                                           |
       | va-janedoe       | va/janedoetoken.request       | /api/v1/persons/pid | va/invalid.request | PersonInfoRequest.participantID cannot be zero |
       | va-russellwatson | va/russellwatsontoken.request | /api/v1/persons/pid | va/null.request    | PersonInfoRequest.participantID cannot be null |
-      
+
   @personinfo
-  Scenario Outline: PID based Person Info from Person Partner Service for no record found
+  Scenario Outline: PID based Person Info from Person Partner Service for no record found.
     Given the claimant is a "<Veteran>"
     And invoke token API by passing header from "<tokenrequestfile>" and sets the authorization in the header
     When client request person info "<ServiceURL>" with PID data "<RequestFile>"
     Then the service returns status code = 200
-    And the service returns message "<Text>"
+    And the service returns message "<Severity>" and "<Text>"
 
     @DEV
     Examples: 
-      | Veteran           | tokenrequestfile               | ServiceURL          | RequestFile         | Text                                           |
-      | dev-janedoe       | dev/janedoetoken.request       | /api/v1/persons/pid | dev/norecordfound.request | Could not read mock XML file 'test/mocks/person.getPersonInfoByPtcpntId.6666355.xml' using key 'person.getPersonInfoByPtcpntId.6666355'. Please make sure this response file exists in the main/resources directory. |
+      | Veteran     | tokenrequestfile         | ServiceURL          | RequestFile               | Severity | Text                                                                                                                                                                                                                 |
+      | dev-janedoe | dev/janedoetoken.request | /api/v1/persons/pid | dev/norecordfound.request | ERROR    | Could not read mock XML file 'test/mocks/person.getPersonInfoByPtcpntId.6666355.xml' using key 'person.getPersonInfoByPtcpntId.6666355'. Please make sure this response file exists in the main/resources directory. |
 
     @VA
     Examples: 
-      | Veteran          | tokenrequestfile              | ServiceURL          | RequestFile        | Text                                           |
-      | va-janedoe       | va/janedoetoken.request       | /api/v1/persons/pid | va/norecordfound.request | Could not read mock XML file 'test/mocks/person.getPersonInfoByPtcpntId.6666355.xml' using key 'person.getPersonInfoByPtcpntId.6666355'. Please make sure this response file exists in the main/resources directory. |
+      | Veteran    | tokenrequestfile        | ServiceURL          | RequestFile              | Severity | Text                                                                                                                                                                                                                 |
+      | va-janedoe | va/janedoetoken.request | /api/v1/persons/pid | va/norecordfound.request | ERROR    | Could not read mock XML file 'test/mocks/person.getPersonInfoByPtcpntId.6666355.xml' using key 'person.getPersonInfoByPtcpntId.6666355'. Please make sure this response file exists in the main/resources directory. |
