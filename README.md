@@ -43,7 +43,9 @@ To make these libraries available locally for the service projects to compile an
 
 **OPTION 2**
 
-This is a temporary solution until Nexus repository is made available by DevOps. A <repositories> section is added in the reactor pom.xml of this repository. See [pom.xml](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/pom.xml). Verify in the `mvn-repo` feature branch of `ocp-framework` for the library versions to be used in your service project.
+This is a temporary solution until Nexus repository is made available by DevOps. 
+
+A <repositories> section has been added in the reactor pom.xml of this repository. See [pom.xml](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/pom.xml). To verify library versions, see the [mvn-repo][https://github.com/department-of-veterans-affairs/ocp-framework/branches] feature branch of `ocp-framework`.
 
 You MUST also update your local ~/.m2/settings.xml as shown below.
 
@@ -51,14 +53,24 @@ You MUST also update your local ~/.m2/settings.xml as shown below.
 	  <servers>
 	    <server>
 	      <id>github</id>
-	      <username>{{GitHub User Name}}</username>
-	      <password>{{Personal Access Token}}</password>
+	      <username>{{Your GitHub User Name}}</username>
+	      <password>{{Your Personal Access Token}}</password>
 	      <configuration>
         	<httpHeaders>
 	          	<property>
 	            	<name>Authorization</name>
-	            	<!-- Base64-encoded username:access_token -->
-	            	<!-- Example site to generate https://codebeautify.org/base64-encode -->
+	            	<!--
+			For value tag below:
+				Step 1: Base64-encode your username and Github access token together
+				        in the form: {{username}}:{{access_token}}
+					Example: encode the string "myGithubUsername:ab123983245sldfkjsw398r7"
+				Step 2: Add the encoded string to the value tag in the form of
+					"Basic {{encoded-string}}"
+					Example: <value>Basic YXJtaXvB4F5ghTE2OGYwNmExMWM2NDdhYjWExZjQ1N2FhNGJiMjE=</value>
+	            	Base64 encoders:
+				https://codebeautify.org/base64-encode
+				https://www.base64encode.org/
+			-->
 	            	<value>Basic {{base64 encoded content}}</value>
 	          	</property>
         	</httpHeaders>
