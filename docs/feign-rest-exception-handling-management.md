@@ -47,6 +47,8 @@
 			return new ResponseEntity<>(personInfoResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+- If Hystrix is enabled on Feign Client then any exception other than HystrixBadRequestException or its subclasses invoke the FallBack methods. So HystrixBadRequestException or its subclasses being propagated need to be handled on the client side as shown above that are using the Hystrix enabled Feign Client.
 	
 ## Rest Client
 
