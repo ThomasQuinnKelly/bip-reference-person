@@ -18,8 +18,6 @@ import gov.va.ocp.vetservices.claims.api.VetservicesClaimsApi;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
 import gov.va.ocp.vetservices.claims.model.ClaimsDomainResponse;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -42,11 +40,8 @@ public class ClaimsResource implements VetservicesClaimsApi, HealthIndicator, Sw
 	 */
 	@RequestMapping(value = URL_PREFIX
 			+ "/claims/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-<<<<<<< HEAD
 	@ApiOperation(value = "Retrieve Claim Detail information by id from Claims Service.",
 	notes = "Will return a Claim object based on search by id.")
-=======
->>>>>>> master
 	public ClaimDetailByIdDomainResponse getClaimDetailById(@PathVariable("id") String id) {
 		Defense.notNull(id, "Invalid request, id cannot be null.");
 		ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest = new ClaimDetailByIdDomainRequest();
