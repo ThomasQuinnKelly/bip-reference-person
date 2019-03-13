@@ -1,17 +1,12 @@
 package gov.va.ocp.reference.person.model;
 
-import gov.va.ocp.framework.transfer.AbstractTransferObject;
-
 /**
  * This domain model represents the relevant subset of the data
  * returned from the Person partner client,
  * for use in the person business layer,
  * as required by the REST "person" controller.
  */
-public class PersonInfoDomain extends AbstractTransferObject {
-
-	/** The class version id. */
-	private static final long serialVersionUID = 7620240445562663971L;
+public class PersonInfoDomain {
 
 	/** The person's file number. */
 	private String fileNumber;

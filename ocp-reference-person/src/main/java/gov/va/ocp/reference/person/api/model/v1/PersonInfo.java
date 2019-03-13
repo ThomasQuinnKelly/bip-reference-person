@@ -1,6 +1,7 @@
 package gov.va.ocp.reference.person.api.model.v1;
 
-import gov.va.ocp.framework.transfer.AbstractTransferObject;
+import java.io.Serializable;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -10,9 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 @ApiModel(description = "Model for data contained in the response from the Person Service")
-public class PersonInfo extends AbstractTransferObject {
-
-	/** The class version id. */
+public class PersonInfo implements Serializable {
 	private static final long serialVersionUID = 5791227842810442936L;
 
 	/** The person's file number. */
