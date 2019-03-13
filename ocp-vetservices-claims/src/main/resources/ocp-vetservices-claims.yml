@@ -163,7 +163,7 @@ ocp:
     jwt:
       enabled: true
       filterProcessUrls: 
-        - /api/v1/**
+        - /api/v1/claims/**
       excludeUrls:
         - /**
   swagger:
@@ -171,7 +171,7 @@ ocp:
     description: API Error Keys <a href="swagger/error-keys.html">error keys</a>
     groupName: "@project.name@-@project.version@"
     version: ${info.build.version}
-    securePaths: /api/v?.*/claims/.*
+    securePaths: /api/v?.*/claims.*
 ##################################################
 # Feign or REST client connection timeout
 # when making inter-service or external REST calls

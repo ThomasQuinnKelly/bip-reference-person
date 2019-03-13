@@ -57,7 +57,7 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 	@CachePut(value = gov.va.ocp.vetservices.claims.utils.CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE,
 			key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).createKey(#claimDetailByIdDomainRequest.id)",
 			unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
-	@HystrixCommand(fallbackMethod = "getClaimDetailByFallBack", commandKey = "getClaimDetailByIdCommand",
+	@HystrixCommand(fallbackMethod = "getClaimDetailByIdFallBack", commandKey = "getClaimDetailByIdCommand",
 			ignoreExceptions = { IllegalArgumentException.class })
     public ClaimDetailByIdDomainResponse getClaimDetailById(ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest) {
 		String cacheKey = "getClaimDetailById" + OcpCacheUtil.createKey(claimDetailByIdDomainRequest.getId());
@@ -78,7 +78,8 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 		}
     	
     	claimDetailByIdDomainResponse = new ClaimDetailByIdDomainResponse();
-    	claimDetailByIdDomainResponse.setClaim(claimsRepository.findById(Long.parseLong(claimDetailByIdDomainRequest.getId())).get());
+		claimDetailByIdDomainResponse
+				.setClaim(claimsRepository.findById(Long.parseLong(claimDetailByIdDomainRequest.getId())).get());
 		return claimDetailByIdDomainResponse;
     }
 	
@@ -90,9 +91,9 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 	 * @param throwable the throwable
 	 * @return A JAXB element for the WS request
 	 */
-	@HystrixCommand(commandKey = "getClaimDetailByFallBackCommand")
-	public ClaimDetailByIdDomainResponse getClaimDetailByFallBack(final ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest,
-			final Throwable throwable) {
+	@HystrixCommand(commandKey = "getClaimDetailByIdFallBackCommand")
+	public ClaimDetailByIdDomainResponse getClaimDetailByIdFallBack(
+			final ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest, final Throwable throwable) {
 		LOGGER.info("Hystrix findPersonByParticipantIDFallBack has been activated");
 		final ClaimDetailByIdDomainResponse response = new ClaimDetailByIdDomainResponse();
 		if (throwable != null) {
@@ -109,45 +110,44 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 			return response;
 		} else {
 			LOGGER.error(
-					"getClaimDetailByFallBack - No Throwable Exception and No Cached Data. Just Raise Runtime Exception {}",
+					"getClaimDetailByIdFallBack - No Throwable Exception and No Cached Data. Just Raise Runtime Exception {}",
 					claimDetailByIdDomainRequest);
 			throw new OcpRuntimeException("", "There was a problem processing your request.", MessageSeverity.FATAL,
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	}		
+	}	
     
 	/**
 	 * Returns all claims
 	 *
 	 * @return the claims
 	 */
-	@CachePut(value = CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE,
-			key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).getUserBasedKey()",
-			unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
-	@HystrixCommand(fallbackMethod = "getClaimsFallBack", commandKey = "getClaimsCommand",
-	ignoreExceptions = { IllegalArgumentException.class })
-    public ClaimsDomainResponse getClaims() {
+	@CachePut(value = CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE, key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).getUserBasedKey()", unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
+	@HystrixCommand(fallbackMethod = "getClaimsFallBack", commandKey = "getClaimsCommand", ignoreExceptions = {
+			IllegalArgumentException.class })
+	public ClaimsDomainResponse getClaims() {
 		String cacheKey = "getClaims" + OcpCacheUtil.getUserBasedKey();
-		
-    	ClaimsDomainResponse claimsDomainResponse = null;
-    	
-    	try {
-			if (cacheManager != null && cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE) != null
-					&& cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE).get(cacheKey) != null) {
+
+		ClaimsDomainResponse claimsDomainResponse = null;
+
+		try {
+			if (cacheManager != null
+					&& cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE) != null
+					&& cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE)
+							.get(cacheKey) != null) {
 				LOGGER.debug("findPersonByParticipantID returning cached data");
-				claimsDomainResponse =
-						cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE).get(cacheKey,
-								ClaimsDomainResponse.class);
+				claimsDomainResponse = cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE)
+						.get(cacheKey, ClaimsDomainResponse.class);
 				return claimsDomainResponse;
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}
-    	
-    	claimsDomainResponse = new ClaimsDomainResponse();
-    	claimsDomainResponse.setClaims(claimsRepository.findAll());
+
+		claimsDomainResponse = new ClaimsDomainResponse();
+		claimsDomainResponse.setClaims(claimsRepository.findAll());
 		return claimsDomainResponse;
-    }
+	}
 	
 	/**
 	 * Hystrix Fallback Method Which is Triggered When there Is An Unexpected Exception

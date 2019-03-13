@@ -57,12 +57,9 @@ public class ClaimsResource implements VetservicesClaimsApi, HealthIndicator, Sw
 	 * Returns all claims
 	 * @return ClaimsDomainResponse
 	 */
-	@RequestMapping(value = URL_PREFIX + "/claims/", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+	@RequestMapping(value = URL_PREFIX + "/claims", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
 	@ApiOperation(value = "Retrieves all Claims for a given user from Claims Service.",
 	notes = "Will return all Claims based on search by pid of the user.")
-/*	@ApiImplicitParams({
-	    @ApiImplicitParam(name = "Authorization", value = "Authorization token", 
-	                      required = true, dataType = "string", paramType = "header") })*/
 	public ClaimsDomainResponse getAllclaims() {
 		return vetServicesClaimsService.getClaims();
 	}
