@@ -11,7 +11,8 @@ Swagger provides more benefits than just helping create clear documentation.
 ## Swagger configuration
 
 - Swagger has the following dependency in autoconfigure project:
-		<dependency>
+
+	    <dependency>
 	      <groupId>io.springfox</groupId>
 	      <artifactId>springfox-swagger2</artifactId>
 	      <version>${springfox.version}</version>
@@ -23,43 +24,43 @@ Swagger provides more benefits than just helping create clear documentation.
 	    </dependency>
 
 - add the ocp-framework-autoconfigure dependency to the project pom, with the appropriate version that will 
-  include the autoconfigure projects
-
-	<dependency>
-        <groupId>gov.va.ocp.framework</groupId>
-        <artifactId>ocp-framework-autoconfigure</artifactId>
-        <!-- add the appropriate version -->
-    </dependency>
+  include the autoconfigure projects.
+  
+	   <dependency>
+             <groupId>gov.va.ocp.framework</groupId>
+             <artifactId>ocp-framework-autoconfigure</artifactId>
+             <!-- add the appropriate version -->
+           </dependency>
     
 - Update the application service yml file with the following configuration (under the default profile):
 
-	ocp:
-		swagger:
-    			title: 
-    			description:
-    			groupName: "@project.name@-@project.version@"
-    			version: ${info.build.version}
-    			securePaths: /api/v?.*/persons/.*
+	   ocp:
+	     swagger:
+    		title: 
+    		description:
+    		groupName: "@project.name@-@project.version@"
+    		version: ${info.build.version}
+    		securePaths: /api/v?.*/persons/.*
     			
    securePaths above secures the swagger URL's access and forwards the Security Context(JWT) to 
    actual Service API calls.  
 
 - Add the @EnableSwagger2 annotation to the Spring Boot Application class 
 
-	@Configuration
-	@EnableConfigurationProperties(SwaggerProperties.class)
-	@EnableSwagger2
-	@ConditionalOnProperty(prefix = "ocp.swagger", name = "enabled", matchIfMissing = true)
-	@Import({ BeanValidatorPluginsConfiguration.class })
-	public class SwaggerAutoConfiguration {
+		@Configuration
+		@EnableConfigurationProperties(SwaggerProperties.class)
+		@EnableSwagger2
+		@ConditionalOnProperty(prefix = "ocp.swagger", name = "enabled", matchIfMissing = true)
+		@Import({ BeanValidatorPluginsConfiguration.class })
+		public class SwaggerAutoConfiguration {}
 	
 - Add ApiOperations and ApiMethod annotations on the resource class methods to describe about the 
   method and responses
   
-  	@ApiOperation(value = "A health check of this endpoint",
-			notes = "Will perform a basic health check to see if the operation is running.")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = MESSAGE_200) })
+		@ApiOperation(value = "A health check of this endpoint",
+				notes = "Will perform a basic health check to see if the operation is running.")
+		@ApiResponses(value = {
+				@ApiResponse(code = 200, message = MESSAGE_200) })
 	
 ## Swagger Page Security and Errors
 
