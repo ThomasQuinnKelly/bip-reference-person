@@ -53,7 +53,7 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	 */
 	@Override
 	public PartnerTransferObjectMarker callRemoteService(final WebServiceTemplate webserviceTemplate,
-			final PartnerTransferObjectMarker request, final Class<? extends PartnerTransferObjectMarker> requestClass) {
+			final PartnerTransferObjectMarker request, final Class<? extends PartnerTransferObjectMarker> requestClass) throws Exception {
 		Defense.notNull(request, "Cannot callRemoteService with null request");
 		Defense.notNull(requestClass, "Cannot callRemoteService with null requestClass");
 

@@ -22,9 +22,9 @@ public interface ReferencePersonApi {
 
 	/**
 	 * Contract for the "get person info by PID" operation.
-	 * 
-	 * @param personInfoRequest
-	 * @return
+	 *
+	 * @param personInfoRequest the person info request
+	 * @return the person info response
 	 */
 	public PersonInfoResponse personByPid(@RequestBody final PersonInfoRequest personInfoRequest);
 }
