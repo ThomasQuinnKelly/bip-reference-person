@@ -8,7 +8,7 @@
 ## Log and Audit patterns
 - Application Framework team has proposed Logback for service application and audit logging as it's fast, light and internally Spring Boot provides a great support for console and file appending. In addition Logback provides appenders for logstash configuration, classic async and email for error notification.
 
-- JSON encoder pattern is defined in [ocp-reference-logback-starter.xml](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/ocp-framework-autoconfigure/src/main/resources/gov/va/ocp/reference/starter/logger/ocp-reference-logback-starter.xml)
+- JSON encoder pattern is defined in [ocp-framework-logback-starter.xml](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/ocp-framework-autoconfigure/src/main/resources/gov/va/ocp/framework/starter/logger/ocp-framework-logback-starter.xml)
 
 - Logback requires the [Janino library](https://logback.qos.ch/setup.html#janino) for conditional logging. You don't need it if you aren't using the structures in your config files. If you are using conditionals, you will need to add the Janino dependency. You can add this to your pom.xml file to get the dependency
 
@@ -23,12 +23,12 @@ Here is the code of the logback-spring.xml file from src/main/resources director
 	<!DOCTYPE xml>
 	<configuration scan="false" debug="false">
 		<!-- Resource is available in shared auto-configure included via pom.xml dependency-->
-	    <include resource="gov/va/ocp/reference/starter/logger/ocp-reference-logback-starter.xml" />
+	    <include resource="gov/va/ocp/framework/starter/logger/ocp-framework-logback-starter.xml" />
 	    
 	    <root level="INFO">
 	    	<if condition='"local-int,ci,dev,stage,prod".contains("${spring.profiles.active}")'>
 	           <then>
-	                <appender-ref ref="OCP_REFERENCE_ASYNC_CONSOLE_APPENDER" />
+	                <appender-ref ref="OCP_FRAMEWORK_ASYNC_CONSOLE_APPENDER" />
 	           </then>
 	           <else>
 	                <appender-ref ref="CONSOLE" />
@@ -37,7 +37,7 @@ Here is the code of the logback-spring.xml file from src/main/resources director
 	    </root>
 	</configuration>
 	
-- In the logback-spring.xml file, resource  `gov/va/ocp/reference/starter/logger/ocp-reference-logback-starter.xml` is available from shared auto configuration library. Logback dependency comes from spring boot starter, so add only the Logstash logback encoder and also requires the Janino library for conditional logging. Libraries added via pom.xml dependencies as shown below.
+- In the logback-spring.xml file, resource  `gov/va/ocp/framework/starter/logger/ocp-framework-logback-starter.xml` is available from shared auto configuration library. Logback dependency comes from spring boot starter, so add only the Logstash logback encoder and also requires the Janino library for conditional logging. Libraries added via pom.xml dependencies as shown below.
   
 	  <dependency>
 	    <groupId>gov.va.ocp.framework</groupId>
@@ -56,11 +56,11 @@ Here is the code of the logback-spring.xml file from src/main/resources director
 	    
 - Modify application service YML file to change logging levels for the application packages, classes
 
-       logging: 
-	  level:
-	    gov.va.ocp.framework.ws.client: DEBUG
-	    gov.va.ocp.framework.rest.provider: DEBUG
-	    gov.va.ocp.reference.partner: DEBUG
+		logging: 
+		   level:
+		     gov.va.ocp.framework.ws.client: DEBUG
+		     gov.va.ocp.framework.rest.provider: DEBUG
+		     gov.va.ocp.reference.partner: DEBUG
 	   
 ## Sample JSON Output for application and audit logs
 
@@ -74,6 +74,5 @@ Here is the code of the logback-spring.xml file from src/main/resources director
 	
 ## References
 - For Logstash Logback Encoder Usage, refer to https://github.com/logstash/logstash-logback-encoder#usage
-
 - For ELK Docker documentation, refer to http://elk-docker.readthedocs.io
 
