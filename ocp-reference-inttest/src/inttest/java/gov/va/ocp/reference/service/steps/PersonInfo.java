@@ -41,6 +41,14 @@ public class PersonInfo {
 		assertThat(partcipantValue, equalTo(participantId));
 	}
 
+	@And("^the service returns message \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void validateSeverityTextMessage(final String severity, String text) throws Throwable {
+		String severityMessage = JsonUtil.getString(handler.getStrResponse(), "messages[0].severity");
+		String textMessage = JsonUtil.getString(handler.getStrResponse(), "messages[0].text");
+		assertThat(severityMessage, equalTo(severity));
+		assertThat(textMessage, equalTo(text));
+	}
+
 	@And("^the service returns message \"([^\"]*)\"$")
 	public void validateTextMessage(final String text) throws Throwable {
 		String textMessage = JsonUtil.getString(handler.getStrResponse(), "messages[0].text");
