@@ -1,11 +1,16 @@
 package gov.va.ocp.vetservices.claims.orm;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Attributes {
+public class Attributes implements Serializable {
+	
+	private static final long serialVersionUID = -4926174195580891727L;
+
 	@Id
 	@GeneratedValue
 	private long id;
