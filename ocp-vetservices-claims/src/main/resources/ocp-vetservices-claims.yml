@@ -78,7 +78,6 @@ logging:
     gov.va.ocp.framework.ws.client: INFO
     gov.va.ocp.framework.rest.provider: INFO
     gov.va.ocp.reference.partner: INFO
-    gov.va.ocp.reference.person.rest.client.feign.FeignPersonClient: INFO
     gov.va.ocp.reference: INFO
     gov.va.ocp.framework: INFO
     com.ecwid.consul: INFO
@@ -162,9 +161,9 @@ hystrix:
 ocp:
   security:
     jwt:
-      enabled: false
+      enabled: true
       filterProcessUrls: 
-        - /api/v1/claims/**
+        - /api/v1/**
       excludeUrls:
         - /**
   swagger:
@@ -172,7 +171,7 @@ ocp:
     description: API Error Keys <a href="swagger/error-keys.html">error keys</a>
     groupName: "@project.name@-@project.version@"
     version: ${info.build.version}
-    securePaths: /api/v?.*/persons/.*
+    securePaths: /api/v?.*/claims/.*
 ##################################################
 # Feign or REST client connection timeout
 # when making inter-service or external REST calls
@@ -195,7 +194,7 @@ ocp:
 #       name: Cache Name
 #       ttl:  TTL (In Seconds)
       -
-        name: refPersonService_@project.name@_@project.version@
+        name: vetservicesClaimsService_@project.name@_@project.version@
         ttl: 1800
     redis-config:
       host: localhost

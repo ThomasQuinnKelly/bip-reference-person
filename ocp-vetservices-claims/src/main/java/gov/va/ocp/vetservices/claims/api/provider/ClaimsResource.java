@@ -18,6 +18,8 @@ import gov.va.ocp.vetservices.claims.api.VetservicesClaimsApi;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
 import gov.va.ocp.vetservices.claims.model.ClaimsDomainResponse;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -55,9 +57,12 @@ public class ClaimsResource implements VetservicesClaimsApi, HealthIndicator, Sw
 	 * Returns all claims
 	 * @return ClaimsDomainResponse
 	 */
-	@RequestMapping(value = URL_PREFIX + "/claims", method = RequestMethod.GET)
+	@RequestMapping(value = URL_PREFIX + "/claims/", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
 	@ApiOperation(value = "Retrieves all Claims for a given user from Claims Service.",
 	notes = "Will return all Claims based on search by pid of the user.")
+/*	@ApiImplicitParams({
+	    @ApiImplicitParam(name = "Authorization", value = "Authorization token", 
+	                      required = true, dataType = "string", paramType = "header") })*/
 	public ClaimsDomainResponse getAllclaims() {
 		return vetServicesClaimsService.getClaims();
 	}

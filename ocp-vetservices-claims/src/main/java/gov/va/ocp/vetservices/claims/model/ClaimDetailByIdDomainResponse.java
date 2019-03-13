@@ -1,5 +1,6 @@
 package gov.va.ocp.vetservices.claims.model;
 
+import java.util.List;
 import java.util.Optional;
 
 import gov.va.ocp.framework.service.DomainResponse;
@@ -16,14 +17,14 @@ public class ClaimDetailByIdDomainResponse extends DomainResponse  {
 	private static final long serialVersionUID = 7534345055983583386L;
 	
 	/** The claim object */
-	private Optional<Claim> claim;
+	private Claim claim;
 
 	/**
 	 * Gets the claims for a user.
 	 * 
 	 * @return claim
 	 */
-	public Optional<Claim> getClaim() {
+	public Claim getClaim() {
 		return claim;
 	}
 
@@ -32,7 +33,7 @@ public class ClaimDetailByIdDomainResponse extends DomainResponse  {
 	 * 
 	 * @return claim
 	 */
-	public void setClaim(Optional<Claim> claim) {
+	public void setClaim(Claim claim) {
 		this.claim = claim;
 	}
 }

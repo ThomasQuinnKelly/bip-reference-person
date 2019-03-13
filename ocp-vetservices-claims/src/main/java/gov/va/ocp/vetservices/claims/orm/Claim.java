@@ -1,5 +1,7 @@
 package gov.va.ocp.vetservices.claims.orm;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -8,9 +10,11 @@ import javax.persistence.OneToOne;
 
 
 @Entity
-public class Claim
+public class Claim implements Serializable
 {
-    @OneToOne
+	private static final long serialVersionUID = -1330928616668416505L;
+
+	@OneToOne
     @JoinColumn(name = "id")
     private Attributes attributes;
 

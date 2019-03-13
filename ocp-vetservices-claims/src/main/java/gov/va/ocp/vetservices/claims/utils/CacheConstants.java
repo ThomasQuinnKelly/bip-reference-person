@@ -27,7 +27,7 @@ public class CacheConstants {
 	private static final String CACHE_NAME_SUFFIX =
 			CACHE_NAME_SEPARATOR + ApplicationInfo.PROJECT_NAME + CACHE_NAME_SEPARATOR + ApplicationInfo.VERSION;
 
-	public static final String CACHENAME_REFERENCE_PERSON_SERVICE = "refPersonService" + CACHE_NAME_SUFFIX;
+	public static final String CACHENAME_VETSERVICES_CLAIMS_SERVICE = "vetServicesClaimsService" + CACHE_NAME_SUFFIX;
 
 	/**
 	 * No instantiation
