@@ -1,8 +1,5 @@
 package gov.va.ocp.reference.person.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,8 +19,8 @@ import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import gov.va.ocp.framework.exception.OcpRuntimeException;
+import gov.va.ocp.framework.exception.interceptor.ExceptionHandlingUtils;
 import gov.va.ocp.framework.messages.MessageSeverity;
-import gov.va.ocp.framework.messages.ServiceMessage;
 import gov.va.ocp.framework.security.PersonTraits;
 import gov.va.ocp.framework.security.SecurityUtils;
 import gov.va.ocp.framework.util.Defense;
@@ -123,7 +120,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		if (response == null || response.getPersonInfo() == null
 				&& !response.hasErrors() && !response.hasFatals()) {
 			LOGGER.info("findPersonByParticipantID empty response - throwing PersonServiceException: " + INVOKE_FALLBACK_MESSAGE);
-			throw new PersonServiceException(INVOKE_FALLBACK_MESSAGE);
+			throw new PersonServiceException("", INVOKE_FALLBACK_MESSAGE, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		/*
 		 * In a real-world service, it is highly unlikely that a user would be allowed
@@ -176,15 +173,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		if (throwable != null) {
 			LOGGER.debug(ReflectionToStringBuilder.toString(throwable, null, true, true, Throwable.class));
 
-			final String msg = throwable.getMessage();
-			final List<ServiceMessage> serviceMessages = new ArrayList<>();
-			serviceMessages.add(newMessage(MessageSeverity.FATAL, "FATAL", msg));
-			response.setMessages(serviceMessages);
+			throw ExceptionHandlingUtils.resolveRuntimeException(throwable);
 
-			if (response != null) {
-				response.setDoNotCacheResponse(true);
-			}
-			return response;
 		} else {
 			LOGGER.error(
 					"findPersonByParticipantIDFallBack No Throwable Exception and No Cached Data. Just Raise Runtime Exception {}",
@@ -192,21 +182,5 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			throw new OcpRuntimeException("", "There was a problem processing your request.", MessageSeverity.FATAL,
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	}
-
-	/**
-	 * Helper method to create a ServiceMessage object.
-	 *
-	 * @param severity the severity
-	 * @param key the key
-	 * @param text the text
-	 * @return the message
-	 */
-	private final ServiceMessage newMessage(final MessageSeverity severity, final String key, final String text) {
-		final ServiceMessage msg = new ServiceMessage();
-		msg.setSeverity(severity);
-		msg.setKey(key);
-		msg.setText(text);
-		return msg;
 	}
 }

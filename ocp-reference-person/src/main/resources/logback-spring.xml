@@ -2,12 +2,12 @@
 <!DOCTYPE xml>
 <configuration scan="false" debug="false">
 	<!-- Resource is available in shared auto-configure included via pom.xml dependency-->
-    <include resource="gov/va/ocp/reference/starter/logger/ocp-reference-logback-starter.xml" />
+    <include resource="gov/va/ocp/framework/starter/logger/ocp-framework-logback-starter.xml" />
     
     <root level="INFO">
     	<if condition='"local-int,ci,dev,stage,prod".contains("${spring.profiles.active}")'>
            <then>
-                <appender-ref ref="OCP_REFERENCE_ASYNC_CONSOLE_APPENDER" />
+                <appender-ref ref="OCP_FRAMEWORK_ASYNC_CONSOLE_APPENDER" />
            </then>
            <else>
                 <appender-ref ref="CONSOLE" />
