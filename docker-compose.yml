@@ -4,7 +4,7 @@ services:
   
   # Fill this out once the dev team has their app code into the repo
   ocp-reference-person:
-    image: bip/ocp-reference-person
+    image: ocpdev/ocp-reference-person
     build:
       context: ./ocp-reference-person
     environment:
@@ -30,11 +30,13 @@ services:
       - vault-config
 
   consul:
-    image: consul:1.4.2
+    image: ocpdev/consul:1.4.3
+    build:
+      context: ./local-dev/consul
+    environment:
+      - MASTER_ACL_TOKEN=7652ba4c-0f6e-8e75-5724-5e083d72cfe4
     ports:
       - "8500:8500"
-    volumes: 
-      - "./local-dev/consul/acl.json:/consul/config/acl.json"
     networks:
       - bip
 
@@ -48,7 +50,7 @@ services:
       - bip
 
   vault-config:
-    image: bip/vault-config
+    image: ocpdev/vault-config
     build:
       context: ./local-dev/vault-config
     environment:
@@ -79,7 +81,7 @@ services:
       - consul
 
   grafana:
-    image:  bip/grafana
+    image:  ocpdev/grafana
     build:
       context: ./local-dev/grafana
     ports:
