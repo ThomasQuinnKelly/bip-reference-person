@@ -1,12 +1,17 @@
 package gov.va.ocp.reference.person.model;
 
+import java.io.Serializable;
+
 /**
  * This domain model represents the relevant subset of the data
  * returned from the Person partner client,
  * for use in the person business layer,
  * as required by the REST "person" controller.
  */
-public class PersonInfoDomain {
+public class PersonInfoDomain implements Serializable {
+
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
 
 	/** The person's file number. */
 	private String fileNumber;
