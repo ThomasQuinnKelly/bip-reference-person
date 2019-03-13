@@ -1,6 +1,6 @@
 package gov.va.ocp.reference.person.model;
 
-import gov.va.ocp.framework.transfer.AbstractTransferObject;
+import java.io.Serializable;
 
 /**
  * This domain model represents the relevant subset of the data
@@ -8,10 +8,10 @@ import gov.va.ocp.framework.transfer.AbstractTransferObject;
  * for use in the person business layer,
  * as required by the REST "person" controller.
  */
-public class PersonInfoDomain extends AbstractTransferObject {
+public class PersonInfoDomain implements Serializable {
 
-	/** The class version id. */
-	private static final long serialVersionUID = 7620240445562663971L;
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
 
 	/** The person's file number. */
 	private String fileNumber;

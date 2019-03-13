@@ -42,8 +42,11 @@ public class ClaimsResource implements VetservicesClaimsApi, HealthIndicator, Sw
 	 */
 	@RequestMapping(value = URL_PREFIX
 			+ "/claims/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+<<<<<<< HEAD
 	@ApiOperation(value = "Retrieve Claim Detail information by id from Claims Service.",
 	notes = "Will return a Claim object based on search by id.")
+=======
+>>>>>>> master
 	public ClaimDetailByIdDomainResponse getClaimDetailById(@PathVariable("id") String id) {
 		Defense.notNull(id, "Invalid request, id cannot be null.");
 		ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest = new ClaimDetailByIdDomainRequest();

@@ -38,16 +38,15 @@ spring:
       password: ${ocp.security.password:default}
   # spring jackson mapper, serialization and deserialization global settings
   jackson:
-    mapper:
-      DEFAULT_VIEW_INCLUSION: true 
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+    serialization-inclusion: NON_EMPTY
+    default-property-inclusion: NON_EMPTY
     serialization: 
       indent_output: true
-      WRITE_DATES_AS_TIMESTAMPS: false
+      write-dates-as-timestamps: false
     deserialization:
       FAIL_ON_IGNORED_PROPERTIES: false
       FAIL_ON_UNKNOWN_PROPERTIES: false
-      ACCEPT_SINGLE_VALUE_AS_ARRAY: true
-    default-property-inclusion: non_empty
 # Route Path
 # service.context: http://localhost:8080
 

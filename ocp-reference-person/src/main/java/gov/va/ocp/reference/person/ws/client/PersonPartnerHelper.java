@@ -4,6 +4,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import gov.va.ocp.framework.exception.OcpRuntimeException;
+import gov.va.ocp.framework.exception.interceptor.ExceptionHandlingUtils;
 import gov.va.ocp.framework.log.OcpLogger;
 import gov.va.ocp.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientImpl;
@@ -58,7 +60,10 @@ public class PersonPartnerHelper {
 		} catch (final Exception clientException) {
 			String message = THROWSTR + clientException.getClass().getName() + ": " + clientException.getMessage();
 			LOGGER.error(message, clientException);
-			throw new PersonServiceException(message, clientException);
+			OcpRuntimeException re = ExceptionHandlingUtils.resolveRuntimeException(clientException);
+
+			throw new PersonServiceException(re.getKey(), re.getMessage(), re.getSeverity(), re.getStatus());
+			// new PersonServiceException("",message, clientException);
 		}
 
 		// transform from partner model response to domain model response
