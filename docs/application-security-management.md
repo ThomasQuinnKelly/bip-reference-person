@@ -26,7 +26,7 @@
  
  - JWT authentication properties are set via prefix "ocp.security.jwt". Java source file: [JwtAuthenticationProperties.java](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/ocp-framework-libraries/src/main/java/gov/va/ocp/framework/security/jwt/JwtAuthenticationProperties.java)
  
- - By default in ${spring.config.name}.yml file, ascent security is enabled for all the application profiles. To disable the security, developer would have to set the property ocp.security.jwt.enabled to false
+ - By default in ${spring.config.name}.yml file, OCP security is enabled for all the application profiles. To disable the security, developer would have to set the property ocp.security.jwt.enabled to false
  	
 		Example from ocp-reference-person service is shown below.
 		
