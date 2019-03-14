@@ -70,7 +70,7 @@ public class PersonWsClientImplTest extends AbstractPersonTest {
 	}
 
 	@Test
-	public void testFindPersonByPtcpntId() {
+	public void testFindPersonByPtcpntId() throws Exception {
 		PersonTraits personTraits = new PersonTraits("user", "password", AuthorityUtils.createAuthorityList("ROLE_TEST"));
 		personTraits.setPid(PARTICIPANTID_FOR_MOCK_DATA);
 		Authentication auth =

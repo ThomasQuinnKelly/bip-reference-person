@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
+import gov.va.ocp.framework.exception.OcpException;
 import gov.va.ocp.framework.exception.OcpRuntimeException;
 import gov.va.ocp.framework.exception.interceptor.ExceptionHandlingUtils;
 import gov.va.ocp.framework.messages.MessageSeverity;
@@ -88,7 +89,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).createKey(#personByPidDomainRequest.participantID)",
 			unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
-			ignoreExceptions = { IllegalArgumentException.class })
+			ignoreExceptions = {IllegalArgumentException.class, OcpException.class})
 	public PersonByPidDomainResponse findPersonByParticipantID(final PersonByPidDomainRequest personByPidDomainRequest) {
 
 		String cacheKey = "findPersonByParticipantID" + OcpCacheUtil.createKey(personByPidDomainRequest.getParticipantID());
@@ -111,7 +112,14 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		// try from partner
 		if (response == null) {
 			LOGGER.debug("findPersonByParticipantID no cached data found");
-			response = personPartnerHelper.findPersonByPid(personByPidDomainRequest);
+			try {
+				response = personPartnerHelper.findPersonByPid(personByPidDomainRequest);
+			} catch (OcpException ocpException) {
+				PersonByPidDomainResponse domainResponse = new PersonByPidDomainResponse();
+				// check exception..create domain model response
+				domainResponse.addMessage(ocpException.getSeverity(), ocpException.getKey(), ocpException.getMessage(), ocpException.getStatus());
+				return domainResponse;
+			}
 		}
 
 		/* TODO below checks belong in business validation, not in this class */
@@ -168,8 +176,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	@HystrixCommand(commandKey = "FindPersonByParticipantIDFallBackCommand")
 	public PersonByPidDomainResponse findPersonByParticipantIDFallBack(final PersonByPidDomainRequest personByPidDomainRequest,
 			final Throwable throwable) {
-		LOGGER.info("Hystrix findPersonByParticipantIDFallBack has been activated");
-		final PersonByPidDomainResponse response = new PersonByPidDomainResponse();
+		LOGGER.info("findPersonByParticipantIDFallBack has been activated");
 		if (throwable != null) {
 			LOGGER.debug(ReflectionToStringBuilder.toString(throwable, null, true, true, Throwable.class));
 
@@ -177,7 +184,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 
 		} else {
 			LOGGER.error(
-					"findPersonByParticipantIDFallBack No Throwable Exception and No Cached Data. Just Raise Runtime Exception {}",
+					"findPersonByParticipantIDFallBack No Throwable Exception. Just Raise Runtime Exception {}",
 					personByPidDomainRequest);
 			throw new OcpRuntimeException("", "There was a problem processing your request.", MessageSeverity.FATAL,
 					HttpStatus.INTERNAL_SERVER_ERROR);
