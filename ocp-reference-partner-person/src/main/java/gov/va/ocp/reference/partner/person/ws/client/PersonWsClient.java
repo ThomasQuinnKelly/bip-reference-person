@@ -14,7 +14,8 @@ public interface PersonWsClient {
 	 * 
 	 * @param findPersonByPtcpntIdRequest The Person Web Service request entity
 	 * @return findPersonByPtcpntIdResponse The Person Web Service response entity
+	 * @throws Exception 
 	 */
-	FindPersonByPtcpntIdResponse getPersonInfoByPtcpntId(final FindPersonByPtcpntId findPersonByPtcpntIdRequest);
+	FindPersonByPtcpntIdResponse getPersonInfoByPtcpntId(final FindPersonByPtcpntId findPersonByPtcpntIdRequest) throws Exception;
 
 }

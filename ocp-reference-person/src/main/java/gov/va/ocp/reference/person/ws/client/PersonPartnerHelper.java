@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import gov.va.ocp.framework.exception.OcpException;
 import gov.va.ocp.framework.exception.OcpRuntimeException;
 import gov.va.ocp.framework.exception.interceptor.ExceptionHandlingUtils;
 import gov.va.ocp.framework.log.OcpLogger;
@@ -47,8 +48,9 @@ public class PersonPartnerHelper {
 	 *
 	 * @param request the {@link PersonByPidDomainRequest} from the domain
 	 * @return PersonByPidDomainResponse domain representation of the partner response
+	 * @throws OcpException 
 	 */
-	public PersonByPidDomainResponse findPersonByPid(PersonByPidDomainRequest request) {
+	public PersonByPidDomainResponse findPersonByPid(PersonByPidDomainRequest request) throws OcpException {
 
 		// transform from domain model request to partner model request
 		FindPersonByPtcpntId partnerRequest = personByPidD2P.convert(request);
@@ -57,7 +59,12 @@ public class PersonPartnerHelper {
 		// call the partner
 		try {
 			partnerResponse = personWsClient.getPersonInfoByPtcpntId(partnerRequest);
-		} catch (final Exception clientException) {
+		} catch (final OcpException ocpException) {
+			String message = THROWSTR + ocpException.getClass().getName() + ": " + ocpException.getMessage();
+			LOGGER.error(message, ocpException);
+			throw ocpException;
+		} 
+		catch (final Exception clientException) {
 			String message = THROWSTR + clientException.getClass().getName() + ": " + clientException.getMessage();
 			LOGGER.error(message, clientException);
 			OcpRuntimeException re = ExceptionHandlingUtils.resolveRuntimeException(clientException);

@@ -59,7 +59,7 @@ public class PersonWsClientImpl extends BaseWsClientImpl implements PersonWsClie
 	 */
 	@Override
 	@Auditable(event = AuditEvents.REQUEST_RESPONSE, activity = "partnerPersonInfoByPtcpntId")
-	public FindPersonByPtcpntIdResponse getPersonInfoByPtcpntId(final FindPersonByPtcpntId findPersonByPtcpntIdRequest) {
+	public FindPersonByPtcpntIdResponse getPersonInfoByPtcpntId(final FindPersonByPtcpntId findPersonByPtcpntIdRequest) throws Exception {
 		Defense.notNull(findPersonByPtcpntIdRequest, REQUEST_FOR_WEBSERVICE_CALL_NULL);
 		LOGGER.debug("Calling partner client " + remoteServiceCall.getClass().getSimpleName()
 				+ " with request " + findPersonByPtcpntIdRequest.getClass().getSimpleName());
