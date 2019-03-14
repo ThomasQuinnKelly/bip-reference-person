@@ -2,7 +2,6 @@ package gov.va.ocp.reference.person.impl;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +21,9 @@ import gov.va.ocp.framework.exception.OcpException;
 import gov.va.ocp.framework.exception.OcpRuntimeException;
 import gov.va.ocp.framework.exception.interceptor.ExceptionHandlingUtils;
 import gov.va.ocp.framework.messages.MessageSeverity;
-import gov.va.ocp.framework.security.PersonTraits;
-import gov.va.ocp.framework.security.SecurityUtils;
 import gov.va.ocp.framework.util.Defense;
 import gov.va.ocp.framework.util.OcpCacheUtil;
 import gov.va.ocp.reference.person.ReferencePersonService;
-import gov.va.ocp.reference.person.exception.PersonServiceException;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 import gov.va.ocp.reference.person.utils.CacheConstants;
@@ -54,8 +50,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	/** Bean name constant */
 	public static final String BEAN_NAME = "personServiceImpl";
 
-	private static final String WARN_MESSAGE =
-			"In a real service, this condition should throw a service exception (in this case, PersonServiceException) with INVOKE_FALLBACK_MESSAGE.";
+//	private static final String WARN_MESSAGE =
+//			"In a real service, this condition should throw a service exception (in this case, PersonServiceException) with INVOKE_FALLBACK_MESSAGE.";
 
 	/** The person web service client helper. */
 	@Autowired
@@ -64,8 +60,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	@Autowired
 	private CacheManager cacheManager;
 
-	/** Constant for the message when hystrix fallback method is manually invoked */
-	private static final String INVOKE_FALLBACK_MESSAGE = "Could not get data from cache or partner - invoking fallback.";
+//	/** Constant for the message when hystrix fallback method is manually invoked */
+//	private static final String INVOKE_FALLBACK_MESSAGE = "Could not get data from cache or partner - invoking fallback.";
 
 	/**
 	 * Viability checks before the application is put into service.
@@ -89,7 +85,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).createKey(#personByPidDomainRequest.participantID)",
 			unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
-			ignoreExceptions = {IllegalArgumentException.class, OcpException.class})
+			ignoreExceptions = { IllegalArgumentException.class, OcpException.class })
 	public PersonByPidDomainResponse findPersonByParticipantID(final PersonByPidDomainRequest personByPidDomainRequest) {
 
 		String cacheKey = "findPersonByParticipantID" + OcpCacheUtil.createKey(personByPidDomainRequest.getParticipantID());
@@ -117,51 +113,52 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			} catch (OcpException ocpException) {
 				PersonByPidDomainResponse domainResponse = new PersonByPidDomainResponse();
 				// check exception..create domain model response
-				domainResponse.addMessage(ocpException.getSeverity(), ocpException.getKey(), ocpException.getMessage(), ocpException.getStatus());
+				domainResponse.addMessage(ocpException.getSeverity(), ocpException.getKey(), ocpException.getMessage(),
+						ocpException.getStatus());
 				return domainResponse;
 			}
 		}
 
-		/* TODO below checks belong in business validation, not in this class */
-
-		// check if empty response, or errors / fatals
-		if (response == null || response.getPersonInfo() == null
-				&& !response.hasErrors() && !response.hasFatals()) {
-			LOGGER.info("findPersonByParticipantID empty response - throwing PersonServiceException: " + INVOKE_FALLBACK_MESSAGE);
-			throw new PersonServiceException("", INVOKE_FALLBACK_MESSAGE, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		/*
-		 * In a real-world service, it is highly unlikely that a user would be allowed
-		 * to query for someone else's data. In general, responses should *always*
-		 * contain only data for the logged-in person.
-		 * Therefore, the checks below would typically throw an exception,
-		 * not just set a warning.
-		 */
-		LOGGER.debug("Request PID: " + personByPidDomainRequest.getParticipantID()
-				+ "; Response PID: " + response.getPersonInfo().getParticipantId()
-				+ "; PersonTraits PID: "
-				+ (SecurityUtils.getPersonTraits() == null ? "null" : SecurityUtils.getPersonTraits().getPid()));
-
-		// check requested pid = returned pid
-		if (!response.getPersonInfo().getParticipantId().equals(personByPidDomainRequest.getParticipantID())) {
-			LOGGER.info("findPersonByParticipantID response has different PID than the request - throwing PersonServiceException: "
-					+ INVOKE_FALLBACK_MESSAGE);
-			response.addMessage(MessageSeverity.WARN, HttpStatus.OK.name(),
-					"A different Participant ID was retrieved than the one requested. " + WARN_MESSAGE, HttpStatus.OK);
-		}
-		// check logged in user's pid matches returned pid
-		PersonTraits personTraits = SecurityUtils.getPersonTraits();
-		if (personTraits != null && StringUtils.isNotBlank(personTraits.getPid())) {
-			if (response.getPersonInfo() != null
-					&& response.getPersonInfo().getParticipantId() != null
-					&& !personTraits.getPid().equals(response.getPersonInfo().getParticipantId().toString())) {
-				LOGGER.info(
-						"findPersonByParticipantID response has different PID than the logged in user - throwing PersonServiceException: "
-								+ INVOKE_FALLBACK_MESSAGE);
-				response.addMessage(MessageSeverity.WARN, HttpStatus.OK.name(),
-						"A different Participant ID was retrieved than that of the logged in user. " + WARN_MESSAGE, HttpStatus.OK);
-			}
-		}
+//		/* TODO below checks belong in business validation, not in this class */
+//
+//		// check if empty response, or errors / fatals
+//		if (response == null || response.getPersonInfo() == null
+//				&& !response.hasErrors() && !response.hasFatals()) {
+//			LOGGER.info("findPersonByParticipantID empty response - throwing PersonServiceException: " + INVOKE_FALLBACK_MESSAGE);
+//			throw new PersonServiceException("", INVOKE_FALLBACK_MESSAGE, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//		/*
+//		 * In a real-world service, it is highly unlikely that a user would be allowed
+//		 * to query for someone else's data. In general, responses should *always*
+//		 * contain only data for the logged-in person.
+//		 * Therefore, the checks below would typically throw an exception,
+//		 * not just set a warning.
+//		 */
+//		LOGGER.debug("Request PID: " + personByPidDomainRequest.getParticipantID()
+//				+ "; Response PID: " + response.getPersonInfo().getParticipantId()
+//				+ "; PersonTraits PID: "
+//				+ (SecurityUtils.getPersonTraits() == null ? "null" : SecurityUtils.getPersonTraits().getPid()));
+//
+//		// check requested pid = returned pid
+//		if (!response.getPersonInfo().getParticipantId().equals(personByPidDomainRequest.getParticipantID())) {
+//			LOGGER.info("findPersonByParticipantID response has different PID than the request - throwing PersonServiceException: "
+//					+ INVOKE_FALLBACK_MESSAGE);
+//			response.addMessage(MessageSeverity.WARN, HttpStatus.OK.name(),
+//					"A different Participant ID was retrieved than the one requested. " + WARN_MESSAGE, HttpStatus.OK);
+//		}
+//		// check logged in user's pid matches returned pid
+//		PersonTraits personTraits = SecurityUtils.getPersonTraits();
+//		if (personTraits != null && StringUtils.isNotBlank(personTraits.getPid())) {
+//			if (response.getPersonInfo() != null
+//					&& response.getPersonInfo().getParticipantId() != null
+//					&& !personTraits.getPid().equals(response.getPersonInfo().getParticipantId().toString())) {
+//				LOGGER.info(
+//						"findPersonByParticipantID response has different PID than the logged in user - throwing PersonServiceException: "
+//								+ INVOKE_FALLBACK_MESSAGE);
+//				response.addMessage(MessageSeverity.WARN, HttpStatus.OK.name(),
+//						"A different Participant ID was retrieved than that of the logged in user. " + WARN_MESSAGE, HttpStatus.OK);
+//			}
+//		}
 		return response;
 	}
 
