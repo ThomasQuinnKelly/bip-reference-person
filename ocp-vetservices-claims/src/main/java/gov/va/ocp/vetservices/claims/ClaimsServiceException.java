@@ -18,7 +18,7 @@ public class ClaimsServiceException extends RuntimeException {
 	private String message; // NOSONAR cannot be final
 
 	/**
-	 * Create an exception for the Person service.
+	 * Create an exception for the Claims service.
 	 *
 	 * @param severity the MessageSeverity
 	 * @param key the property key for the message
@@ -32,7 +32,7 @@ public class ClaimsServiceException extends RuntimeException {
 	}
 
 	/**
-	 * Create an exception for the Person service, without a property key.
+	 * Create an exception for the Claims service, without a property key.
 	 *
 	 * @param severity the MessageSeverity
 	 * @param message the message
@@ -44,7 +44,7 @@ public class ClaimsServiceException extends RuntimeException {
 	}
 
 	/**
-	 * Create an exception for the Person service, with default ERROR severity, and without a property key.
+	 * Create an exception for the Claims service, with default ERROR severity, and without a property key.
 	 *
 	 * @param message the message
 	 */
@@ -55,7 +55,7 @@ public class ClaimsServiceException extends RuntimeException {
 	}
 
 	/**
-	 * Create an exception for the Person service, with cause.
+	 * Create an exception for the Claims service, with cause.
 	 *
 	 * @param severity the MessageSeverity
 	 * @param key the property key for the message
@@ -70,7 +70,7 @@ public class ClaimsServiceException extends RuntimeException {
 	}
 
 	/**
-	 * Create an exception for the Person service, with default ERROR severity, and without a property key.
+	 * Create an exception for the Claims service, with default ERROR severity, and without a property key.
 	 *
 	 * @param message the message
 	 * @param cause the exception that caused this one

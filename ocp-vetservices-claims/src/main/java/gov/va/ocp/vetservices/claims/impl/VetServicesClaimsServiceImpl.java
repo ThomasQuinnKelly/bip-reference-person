@@ -67,7 +67,7 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
     	try {
 			if (cacheManager != null && cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE) != null
 					&& cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE).get(cacheKey) != null) {
-				LOGGER.debug("findPersonByParticipantID returning cached data");
+				LOGGER.debug("getClaimDetailById returning cached data");
 				claimDetailByIdDomainResponse =
 						cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE).get(cacheKey,
 								ClaimDetailByIdDomainResponse.class);
@@ -85,16 +85,16 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 	
 	/**
 	 * Hystrix Fallback Method Which is Triggered When there Is An Unexpected Exception
-	 * in findPersonByParticipantID method.
+	 * in getClaimDetailById method.
 	 *
-	 * @param personByPidDomainRequest The request from the Java Service.
+	 * @param claimDetailByIdDomainRequest The request from the Java Service.
 	 * @param throwable the throwable
 	 * @return A JAXB element for the WS request
 	 */
 	@HystrixCommand(commandKey = "getClaimDetailByIdFallBackCommand")
 	public ClaimDetailByIdDomainResponse getClaimDetailByIdFallBack(
 			final ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest, final Throwable throwable) {
-		LOGGER.info("Hystrix findPersonByParticipantIDFallBack has been activated");
+		LOGGER.info("Hystrix getClaimDetailByIdFallBack has been activated");
 		final ClaimDetailByIdDomainResponse response = new ClaimDetailByIdDomainResponse();
 		if (throwable != null) {
 			LOGGER.debug(ReflectionToStringBuilder.toString(throwable, null, true, true, Throwable.class));
@@ -135,7 +135,7 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 					&& cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE) != null
 					&& cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE)
 							.get(cacheKey) != null) {
-				LOGGER.debug("findPersonByParticipantID returning cached data");
+				LOGGER.debug("getClaims returning cached data");
 				claimsDomainResponse = cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE)
 						.get(cacheKey, ClaimsDomainResponse.class);
 				return claimsDomainResponse;
@@ -151,15 +151,14 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 	
 	/**
 	 * Hystrix Fallback Method Which is Triggered When there Is An Unexpected Exception
-	 * in findPersonByParticipantID method.
+	 * in getClaims method.
 	 *
-	 * @param personByPidDomainRequest The request from the Java Service.
 	 * @param throwable the throwable
 	 * @return A JAXB element for the WS request
 	 */
 	@HystrixCommand(commandKey = "getClaimsFallBackCommand")
 	public ClaimsDomainResponse getClaimsFallBack(final Throwable throwable) {
-		LOGGER.info("Hystrix findPersonByParticipantIDFallBack has been activated");
+		LOGGER.info("Hystrix getClaimsFallBack has been activated");
 		final ClaimsDomainResponse claimsDomainResponse = new ClaimsDomainResponse();
 		if (throwable != null) {
 			LOGGER.debug(ReflectionToStringBuilder.toString(throwable, null, true, true, Throwable.class));
