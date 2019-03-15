@@ -8,15 +8,15 @@ Consul is a service mesh solution providing a full featured control plane with s
 
 - Need to use @EnableDiscoveryClient annotation on the Spring Boot Application to enable service registry and discovery in Consul
 
-	@SpringBootApplication
-	@EnableDiscoveryClient 
-	@EnableAspectJAutoProxy(proxyTargetClass = true)
-	@EnableFeignClients
-	@EnableHystrix
-	@EnableCaching
-	@EnableAsync
-	@Import(ReferencePersonConfig.class)
-	public class ReferencePersonApplication {
+		@SpringBootApplication
+		@EnableDiscoveryClient 
+		@EnableAspectJAutoProxy(proxyTargetClass = true)
+		@EnableFeignClients
+		@EnableHystrix
+		@EnableCaching
+		@EnableAsync
+		@Import(ReferencePersonConfig.class)
+		public class ReferencePersonApplication {
 	
 - Update the application service yml file with the following configuration (under the default profile):
 
