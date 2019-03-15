@@ -2,14 +2,14 @@
 
 ## Capability (Service Discovery: Consul)
 
-Consul is a service mesh solution providing a full featured control plane with service discovery, configuration, and segmentation functionality. Each of these features can be used individually as needed, or they can be used together to build a full service mesh. Clients of Consul can register a service, such as api or mysql, and other clients can use Consul to discover providers of a given service. Using either DNS or HTTP, applications can easily find the services they depend upon.
+Consul is a service mesh solution providing a full featured control plane with service discovery, configuration, and segmentation   functionality. Each of these features can be used individually as needed, or they can be used together to build a full service mesh. Clients of Consul can register a service, such as api or mysql, and other clients can use Consul to discover providers of a given service. Using either DNS or HTTP, applications can easily find the services they depend upon.
 
 ## Consul Service Discovery Configuration
 
 - Need to use @EnableDiscoveryClient annotation on the Spring Boot Application to enable service registry and discovery in Consul
 
 	@SpringBootApplication
-	@EnableDiscoveryClient // needed to reach out to spring cloud config, eureka
+	@EnableDiscoveryClient 
 	@EnableAspectJAutoProxy(proxyTargetClass = true)
 	@EnableFeignClients
 	@EnableHystrix
