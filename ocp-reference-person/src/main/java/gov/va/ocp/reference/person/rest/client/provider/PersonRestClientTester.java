@@ -58,10 +58,10 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 		// invoke the service using classic REST Template from Spring, but load balanced through Consul
 		HttpEntity<PersonByPidDomainRequest> requestEntity = new HttpEntity<>(personByPidDomainRequest);
 		ResponseEntity<PersonByPidDomainResponse> exchange = null;
-			exchange =
-					personUsageRestTemplate.executeURL("http://localhost:8080" + PersonResource.URL_PREFIX + "/pid",
-							HttpMethod.POST, requestEntity, new ParameterizedTypeReference<PersonByPidDomainResponse>() {
-							});
+		exchange =
+				personUsageRestTemplate.executeURL("http://localhost:8080" + PersonResource.URL_PREFIX + "/pid",
+						HttpMethod.POST, requestEntity, new ParameterizedTypeReference<PersonByPidDomainResponse>() {
+						});
 		LOGGER.info("Invoked os-reference-person service using REST template: " + exchange);
 		return exchange;
 	}
@@ -83,13 +83,14 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 		PersonInfoResponse personInfoResponse = null;
 
 		personInfoResponse = feignPersonClient.personByPid(personInfoRequest); // NOSONAR cannot immediately return
-		
+
 		if (personInfoResponse != null) {
 			if (personInfoResponse.hasErrors()) {
 				return new ResponseEntity<>(personInfoResponse, HttpStatus.BAD_REQUEST);
 			} else if (personInfoResponse.hasFatals()) {
 				return new ResponseEntity<>(personInfoResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 			} else {
+				// real-world might do more business processing here
 				return new ResponseEntity<>(personInfoResponse, HttpStatus.OK);
 			}
 		} else {
