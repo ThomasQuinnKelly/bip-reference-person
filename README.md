@@ -95,7 +95,7 @@ You MUST also update your local ~/.m2/settings.xml as shown below. Replace value
 Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 
 ## Core Concepts and Patterns
-* Service Discovery
+* [Service Discovery](docs/service-discovery-guide.md)
 * [Log and Audit Management](docs/log-audit-management.md)
 * [Cache Management](docs/cache-management.md)
 * [Swagger Management](docs/swagger-management.md)
