@@ -103,6 +103,9 @@ Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 * [Hystrix Circuit Breaker Management](docs/hystrix-management.md)
 * [Secrets Management](docs/secrets.md)
 * [Configuration Management](docs/config-management.md)
+* [Validation Management](docs/validation-management.md)
+* [Framework Capabilities Summary](docs/framework-capabilities-summary.md)
+* [Feign and REST Clients Exception Management](docs/feign-rest-exception-handling-management.md)
 * [Deployment Packaging](docs/deployment-package.md)
 
 ## Contribution guidelines ## 
