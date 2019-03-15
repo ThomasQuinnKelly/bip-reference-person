@@ -6,7 +6,7 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 1. **ocp-reference-partner**: Partner services for reference, showing BGS with sample mock data
 1. **ocp-reference-person**: Service implementation project.  It has REST endpoints and shows various patterns for producing endpoints, swagger for the application, registering the application with Consul, Secrets from Vault calling REST endpoints through Zuul, Hystrix Circuit Breaker, logging pattern etc.
-1. **ocp-reference-inttest**: Contains the integration tests using RestAssured, Cucumber libraries. Includes Test cases against the end points for ascent demo and claims demo. 
+1. **ocp-reference-inttest**: Contains the integration tests using RestAssured, Cucumber libraries. Includes Test cases against the end points for OCP demo and claims demo. 
 1. **ocp-reference-perftest**: Contains the performance JMX tests scripts for Apache JMeter
 
 ## How to include and download the dependency framework libraries in your project ##

@@ -18,7 +18,7 @@
 #	ignoreExceptions = {IllegalArgumentException.class})
 # 
 # MOCK SOAP UI : 
-#	File: ascent-demo-partner-soapui-project.xml
+#	File: ocp-reference-person-soapui-project.xml
 #   Mock Person Service Name: MockPersonWebService
 #
 ###########################################################################################################
