@@ -27,7 +27,7 @@ public interface FeignPersonClient { // NOSONAR not a functional interface
 	/**
   * Person by pid.
   *
-  * @param personByPidDomainRequest the person by pid domain request
+  * @param personInfoRequest the person info request
   * @return the person by pid domain response
   */
  @RequestMapping(value = PersonResource.URL_PREFIX + "/pid", 

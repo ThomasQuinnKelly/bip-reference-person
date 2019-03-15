@@ -35,7 +35,7 @@ import gov.va.ocp.reference.person.ws.client.PersonPartnerHelper;
  * pattern for read operations. When there is a failure the fallback method is invoked and the response is
  * returned from the cache
  *
- * @author
+ * @author akulkarni
  *
  */
 @Service(value = ReferencePersonServiceImpl.BEAN_NAME)
@@ -71,7 +71,6 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 * <p>
 	 * {@inheritDoc}
 	 *
-	 * @Cacheable Annotation indicating that the result of invoking a method (or all methods in a class) can be cached.
 	 */
 	@Override
 	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE,
@@ -119,7 +118,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 * Support graceful degradation in a Hystrix command by adding a fallback method that Hystrix will call to obtain a 
 	 * default value or values in case the main command fails for findPersonByParticipantID <br/> <br/>
 	 * 
-	 * See {@link https://github.com/Netflix/Hystrix/wiki/How-To-Use#fallback} for Hystrix Fallback usage <br/> <br/>
+	 * See {https://github.com/Netflix/Hystrix/wiki/How-To-Use#fallback} for Hystrix Fallback usage <br/> <br/>
 	 * 
 	 * Hystrix doesn't REQUIRE you to set this method. Unless you want to return a default data or add business logic for that case, 
 	.* If you throw an exception you'll "confuse" Hystrix and it will throw an HystrixRuntimeException.
