@@ -25,6 +25,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 import gov.va.ocp.framework.config.OcpCommonSpringProfiles;
+import gov.va.ocp.framework.exception.OcpValidationRuntimeException;
 import gov.va.ocp.framework.security.PersonTraits;
 import gov.va.ocp.reference.partner.person.ws.client.AbstractPersonTest;
 import gov.va.ocp.reference.partner.person.ws.client.PartnerMockFrameworkTestConfig;
@@ -125,7 +126,7 @@ public class RemoteServiceCallMockTest extends AbstractPersonTest {
 		try {
 			keyForMockResponse = mock.getKeyForMockResponse(request);
 		} catch (Throwable e) {
-			assertTrue("Invalid exception was thrown.", IllegalArgumentException.class.equals(e.getClass()));
+			assertTrue("Invalid exception was thrown.", OcpValidationRuntimeException.class.equals(e.getClass()));
 			assertTrue("Exception message contains wrong string.",
 					e.getMessage().equals(PersonRemoteServiceCallMock.ERROR_NULL_REQUEST));
 		}

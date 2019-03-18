@@ -24,14 +24,13 @@ import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 import gov.va.ocp.reference.person.rest.client.FeignPersonClient;
 import io.swagger.annotations.ApiOperation;
 
-@RestController
-
 /**
  * The purpose of this class is to make REST client calls. These are REST clients to our own
  * services just to experiment with how to use REST clients through the various techniques.
  *
  * @author akulkarni
  */
+@RestController
 public class PersonRestClientTester implements SwaggerResponseMessages {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PersonRestClientTester.class);

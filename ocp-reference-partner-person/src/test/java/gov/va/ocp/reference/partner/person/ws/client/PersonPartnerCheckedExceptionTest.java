@@ -5,22 +5,22 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-public class PersonWsClientExceptionTest {
+public class PersonPartnerCheckedExceptionTest {
 
-	private PersonWsClientException testException;
+	private PersonPartnerCheckedException testException;
 
 	private static final String TEST_MESSAGE = "This is a test error message";
 	private static NullPointerException TEST_CAUSE = new NullPointerException();
 
 	@Test
 	public void testPersonWsClientException() {
-		testException = new PersonWsClientException(null, null, null, null);
+		testException = new PersonPartnerCheckedException(null, null, null, null);
 		assertNotNull(testException);
 	}
 
 	@Test
 	public void testPersonWsClientExceptionStringThrowable() {
-		testException = new PersonWsClientException(null, TEST_MESSAGE, null, null, TEST_CAUSE);
+		testException = new PersonPartnerCheckedException(null, TEST_MESSAGE, null, null, TEST_CAUSE);
 		assertNotNull(testException);
 		assertEquals(TEST_MESSAGE, testException.getMessage());
 		assertEquals(TEST_CAUSE, testException.getCause());
@@ -28,14 +28,14 @@ public class PersonWsClientExceptionTest {
 
 	@Test
 	public void testPersonWsClientExceptionString() {
-		testException = new PersonWsClientException(null, TEST_MESSAGE, null, null);
+		testException = new PersonPartnerCheckedException(null, TEST_MESSAGE, null, null);
 		assertNotNull(testException);
 		assertEquals(TEST_MESSAGE, testException.getMessage());
 	}
 
 	@Test
 	public void testPersonWsClientExceptionThrowable() {
-		testException = new PersonWsClientException(null, null, null, null, TEST_CAUSE);
+		testException = new PersonPartnerCheckedException(null, null, null, null, TEST_CAUSE);
 		assertNotNull(testException);
 		assertEquals(TEST_CAUSE, testException.getCause());
 	}
