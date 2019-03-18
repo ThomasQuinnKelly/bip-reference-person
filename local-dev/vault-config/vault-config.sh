@@ -31,13 +31,3 @@ consul acl policy create  -name "readonly" -description "Read Only Policy" -rule
 vault write consul/roles/os-svc policies=readonly
 
 ######################################################################
-
-#################### Load Sample Vault Secrets ####################
-vault kv put secret/application bip.service.example.username=john
-vault kv put secret/ocp-reference-person bip.service.example.password=doe
-###################################################################
-
-#################### Load Sample Consul K/V ####################
-consul kv put config/application/bip.service.example.test demo
-consul kv put config/ocp-reference-person/bip.service.example.test override
-################################################################
