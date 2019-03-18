@@ -65,5 +65,5 @@ Sample Command for executing the test in performance test environment:
 For developing the performance test, use the GUI mode. For the actual test execution, use of NON-GUI mode is recommended.
 
 ## How to set up JMeter and Create Test Plan (JMX)
-[Set Up Read Guide](docs/referenceperson-perftest.md)
+[Set Up Read Guide](/docs/referenceperson-perftest.md)
 
