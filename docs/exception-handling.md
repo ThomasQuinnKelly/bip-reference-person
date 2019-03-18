@@ -1,5 +1,5 @@
-#OCP Exception Handling
-This docoument is primarily concerned with exceptions generated in the course of executing business processes in the service and partner layers. For discussion of input validations, see [validation.md](./validation.md).
+#OCP Exception Management
+This docoument is primarily concerned with exceptions generated in the course of executing business processes in the service and partner layers. For discussion of input validations, see [validation-management.md](./validation-management.md).
 
 ##Layer Concerns
 Each layer of an OCP micro-service has different exception handling needs. Understanding layer concerns is necessary.
