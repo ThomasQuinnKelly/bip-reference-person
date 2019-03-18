@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 import gov.va.ocp.framework.config.OcpCommonSpringProfiles;
+import gov.va.ocp.framework.exception.OcpException;
+import gov.va.ocp.framework.exception.OcpRuntimeException;
 import gov.va.ocp.framework.log.OcpLogger;
 import gov.va.ocp.framework.log.OcpLoggerFactory;
 import gov.va.ocp.framework.security.PersonTraits;
@@ -53,7 +55,7 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	 */
 	@Override
 	public PartnerTransferObjectMarker callRemoteService(final WebServiceTemplate webserviceTemplate,
-			final PartnerTransferObjectMarker request, final Class<? extends PartnerTransferObjectMarker> requestClass) {
+			final PartnerTransferObjectMarker request, final Class<? extends PartnerTransferObjectMarker> requestClass) throws OcpException, OcpRuntimeException {
 		Defense.notNull(request, "Cannot callRemoteService with null request");
 		Defense.notNull(requestClass, "Cannot callRemoteService with null requestClass");
 

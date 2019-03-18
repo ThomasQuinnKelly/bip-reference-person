@@ -51,9 +51,9 @@ Feature: PID based Person Info from Person Partner Service.
     @DEV
     Examples: 
       | Veteran     | tokenrequestfile         | ServiceURL          | RequestFile               | Severity | Text                                                                                                                                                                                                                 |
-      | dev-janedoe | dev/janedoetoken.request | /api/v1/persons/pid | dev/norecordfound.request | ERROR    | Could not read mock XML file 'test/mocks/person.getPersonInfoByPtcpntId.6666355.xml' using key 'person.getPersonInfoByPtcpntId.6666355'. Please make sure this response file exists in the main/resources directory. |
+      | dev-janedoe | dev/janedoetoken.request | /api/v1/persons/pid | dev/norecordfound.request | WARN    | Could not read mock XML file 'test/mocks/person.getPersonInfoByPtcpntId.6666355.xml' using key 'person.getPersonInfoByPtcpntId.6666355'. Please make sure this response file exists in the main/resources directory. |
 
     @VA
     Examples: 
       | Veteran    | tokenrequestfile        | ServiceURL          | RequestFile              | Severity | Text                                                                                                                                                                                                                 |
-      | va-janedoe | va/janedoetoken.request | /api/v1/persons/pid | va/norecordfound.request | ERROR    | Could not read mock XML file 'test/mocks/person.getPersonInfoByPtcpntId.6666355.xml' using key 'person.getPersonInfoByPtcpntId.6666355'. Please make sure this response file exists in the main/resources directory. |
+      | va-janedoe | va/janedoetoken.request | /api/v1/persons/pid | va/norecordfound.request | WARN    | Could not read mock XML file 'test/mocks/person.getPersonInfoByPtcpntId.6666355.xml' using key 'person.getPersonInfoByPtcpntId.6666355'. Please make sure this response file exists in the main/resources directory. |

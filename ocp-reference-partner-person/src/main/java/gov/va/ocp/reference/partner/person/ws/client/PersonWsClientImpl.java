@@ -9,6 +9,8 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 
 import gov.va.ocp.framework.audit.AuditEvents;
 import gov.va.ocp.framework.audit.Auditable;
+import gov.va.ocp.framework.exception.OcpException;
+import gov.va.ocp.framework.exception.OcpRuntimeException;
 import gov.va.ocp.framework.log.OcpLogger;
 import gov.va.ocp.framework.log.OcpLoggerFactory;
 import gov.va.ocp.framework.util.Defense;
@@ -59,7 +61,7 @@ public class PersonWsClientImpl extends BaseWsClientImpl implements PersonWsClie
 	 */
 	@Override
 	@Auditable(event = AuditEvents.REQUEST_RESPONSE, activity = "partnerPersonInfoByPtcpntId")
-	public FindPersonByPtcpntIdResponse getPersonInfoByPtcpntId(final FindPersonByPtcpntId findPersonByPtcpntIdRequest) {
+	public FindPersonByPtcpntIdResponse getPersonInfoByPtcpntId(final FindPersonByPtcpntId findPersonByPtcpntIdRequest) throws OcpException, OcpRuntimeException {
 		Defense.notNull(findPersonByPtcpntIdRequest, REQUEST_FOR_WEBSERVICE_CALL_NULL);
 		LOGGER.debug("Calling partner client " + remoteServiceCall.getClass().getSimpleName()
 				+ " with request " + findPersonByPtcpntIdRequest.getClass().getSimpleName());

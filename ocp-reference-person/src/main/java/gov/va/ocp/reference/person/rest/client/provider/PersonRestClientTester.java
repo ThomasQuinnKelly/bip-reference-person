@@ -47,7 +47,7 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 	/**
 	 * This method demonstrates the use of RestTemplate to make REST calls on the service endpoints.
 	 *
-	 * @param request the request
+	 * @param personByPidDomainRequest the person by pid domain request
 	 * @return a ResponseEntity
 	 */
 	@ApiOperation(value = "An endpoint which uses a REST client using RestTemplate to call the remote echo operation.")
@@ -69,7 +69,7 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 	/**
 	 * This method demonstrates the use of Feign Client to make REST calls.
 	 *
-	 * @param request the request
+	 * @param personInfoRequest the person info request
 	 * @return a ResponseEntity
 	 */
 	@ApiOperation(value = "An endpoint which uses a REST client using Feign to call the remote person by pid operation.")

@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiResponses;
 /**
  * REST Person Service endpoint
  *
- * @author
+ * @author akulkarni
  *
  */
 @RestController
@@ -94,7 +94,7 @@ public class PersonResource implements ReferencePersonApi, HealthIndicator, Swag
 	 * </ol>
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
-	 * @param personByPidDomainRequest the person info request
+	 * @param personInfoRequest the person info request
 	 * @return the person info response
 	 */
 	@Override

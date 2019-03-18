@@ -7,10 +7,10 @@
 - Server to Server communication
 
 ## Security Pattern
-- JSON Web Token (JWT) Security using Transitive Trust Relationship to be enabled for the application
+- [JSON Web Token](https://tools.ietf.org/html/rfc7519) ([JWT](https://jwt.io/)) Security using Transitive Trust Relationship to be enabled for the application
 - JWT signature algorithm to sign the token must use HS256 as defined in [JSON Web Algorithms](https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-31#section-3.1)
 - JWT needs to be signed with a signing key and must match for the trusted services that communicates.
-- JWT issuer to exists in the parsed JWT as specified in "iss" and must match for the trusted services that communicates.
+- JWT issuer to exists in the parsed JWT as specified in "[iss](https://tools.ietf.org/html/rfc7519#section-4.1.1)" and must match for the trusted services that communicates.
 - OCP Framework library would DeCrypt the JWT and attempt to construct a PersonTraits object from it. [PersonTraits.java](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/ocp-framework-libraries/src/main/java/gov/va/ocp/framework/security/PersonTraits.java)
 
 ## Security configuration
@@ -26,7 +26,7 @@
  
  - JWT authentication properties are set via prefix "ocp.security.jwt". Java source file: [JwtAuthenticationProperties.java](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/ocp-framework-libraries/src/main/java/gov/va/ocp/framework/security/jwt/JwtAuthenticationProperties.java)
  
- - By default in ${spring.config.name}.yml file, ascent security is enabled for all the application profiles. To disable the security, developer would have to set the property ocp.security.jwt.enabled to false
+ - By default in ${spring.config.name}.yml file, OCP security is enabled for all the application profiles. To disable the security, developer would have to set the property ocp.security.jwt.enabled to false
  	
 		Example from ocp-reference-person service is shown below.
 		
