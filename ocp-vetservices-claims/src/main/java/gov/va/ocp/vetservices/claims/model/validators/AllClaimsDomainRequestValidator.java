@@ -12,7 +12,7 @@ import gov.va.ocp.framework.validation.AbstractStandardValidator;
 import gov.va.ocp.vetservices.claims.model.AllClaimsDomainRequest;
 
 /**
- * Validates the PID input on the {@link PersonByPidDomainRequest}.
+ * Validates the PID input on the {@link AllClaimsDomainRequest}.
  *
  * @see AbstractStandardValidator
  * @author rajuthota

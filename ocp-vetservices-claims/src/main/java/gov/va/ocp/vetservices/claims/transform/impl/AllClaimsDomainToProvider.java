@@ -1,7 +1,6 @@
 package gov.va.ocp.vetservices.claims.transform.impl;
 
 import gov.va.ocp.framework.transfer.transform.AbstractDomainToProvider;
-import gov.va.ocp.vetservices.claims.api.model.v1.ClaimDetailResponse;
 import gov.va.ocp.vetservices.claims.api.model.v1.ClaimsResponse;
 import gov.va.ocp.vetservices.claims.model.AllClaimsDomainResponse;
 
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import gov.va.ocp.framework.messages.ServiceMessage;
 /**
- * Transform a service Domain {@link PersonByPidDomainResponse} into a REST Provider {@link ClaimDetailResponse} object.
+ * Transform a service Domain {@link AllClaimsDomainResponse} into a REST Provider {@link ClaimsResponse} object.
  *
  * @author rajuthota
  */
@@ -17,7 +16,7 @@ import gov.va.ocp.framework.messages.ServiceMessage;
 public class AllClaimsDomainToProvider extends AbstractDomainToProvider<AllClaimsDomainResponse, ClaimsResponse> {
 
 	/**
-	 * Transform a service Domain {@link PersonByPidDomainResponse} into a REST Provider {@link ClaimDetailResponse} object.
+	 * Transform a service Domain {@link AllClaimsDomainResponse} into a REST Provider {@link ClaimsResponse} object.
 	 * <br/>
 	 * <b>Member objects inside the returned object may be {@code null}.</b>
 	 * <p>

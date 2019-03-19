@@ -7,19 +7,20 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * A class to represent a request for PersonInfoDomain from the Person Service.
+ * A class to represent a request for AllClaimsDomain from the Claims Service.
+ * @author rajuthota
  *
  */
-@ApiModel(description = "Model for data to request PersonInfoDomain from the Person Service")
-@NotNull(message = "{ocp.reference.person.info.request.NotNull}")
+@ApiModel(description = "Model for data to request AllClaimsDomain from the Claims Service")
+@NotNull(message = "{ocp.vetservices.claims.request.NotNull}")
 public class AllClaimsDomainRequest implements ProviderTransferObjectMarker {
 	public static final String MODEL_NAME = AllClaimsDomainRequest.class.getSimpleName();
 
 	/** A String representing a social security number. */
 	@ApiModelProperty(value = "The Participant ID of the person for whom to retrieve data", required = true,
 			example = "6666345")
-	@NotNull(message = "{ocp.reference.person.info.request.pid.NotNull}")
-	@Min(value = 1, message = "{ocp.reference.person.info.request.pid.Min}")
+	@NotNull(message = "{ocp.vetservices.claims.request.pid.NotNull}")
+	@Min(value = 1, message = "{ocp.vetservices.claims.request.pid.Min}")
 	private String pid;
 
 	/**

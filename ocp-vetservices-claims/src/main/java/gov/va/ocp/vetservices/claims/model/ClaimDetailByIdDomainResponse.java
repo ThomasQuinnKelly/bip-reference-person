@@ -5,8 +5,9 @@ import gov.va.ocp.vetservices.claims.orm.Claim;
 
 /**
  * The class GetClaimsResponse is a response object which returns
- *  a list of claims
- * 
+ * claim details for a given claim id.
+ * @author rajuthota
+ *
  */
 public class ClaimDetailByIdDomainResponse extends DomainResponse  {
 

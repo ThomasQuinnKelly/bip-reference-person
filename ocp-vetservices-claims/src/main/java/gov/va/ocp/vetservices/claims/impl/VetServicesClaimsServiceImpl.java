@@ -31,6 +31,11 @@ import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
 import gov.va.ocp.vetservices.claims.model.AllClaimsDomainResponse;
 import gov.va.ocp.vetservices.claims.orm.ClaimsDataHelper;
 
+/**
+ * Claims Service implemnetation.
+ * @author rajuthota
+ *
+ */
 @Service(value = VetServicesClaimsServiceImpl.BEAN_NAME)
 @Component
 @Qualifier("IMPL")

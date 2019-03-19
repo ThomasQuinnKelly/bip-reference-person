@@ -4,15 +4,13 @@ import gov.va.ocp.framework.transfer.transform.AbstractDomainToProvider;
 import gov.va.ocp.vetservices.claims.api.model.v1.AttributesInfo;
 import gov.va.ocp.vetservices.claims.api.model.v1.ClaimDetailResponse;
 import gov.va.ocp.vetservices.claims.api.model.v1.ClaimInfo;
-import gov.va.ocp.vetservices.claims.api.model.v1.ClaimsResponse;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
-import gov.va.ocp.vetservices.claims.model.AllClaimsDomainResponse;
 
 import org.springframework.stereotype.Component;
 
 import gov.va.ocp.framework.messages.ServiceMessage;
 /**
- * Transform a service Domain {@link PersonByPidDomainResponse} into a REST Provider {@link ClaimDetailResponse} object.
+ * Transform a service Domain {@link ClaimDetailByIdDomainResponse} into a REST Provider {@link ClaimDetailResponse} object.
  *
  * @author rajuthota
  */
@@ -20,7 +18,7 @@ import gov.va.ocp.framework.messages.ServiceMessage;
 public class ClaimDetailDomainToProvider extends AbstractDomainToProvider<ClaimDetailByIdDomainResponse, ClaimDetailResponse> {
 
 	/**
-	 * Transform a service Domain {@link PersonByPidDomainResponse} into a REST Provider {@link ClaimDetailResponse} object.
+	 * Transform a service Domain {@link ClaimDetailByIdDomainResponse} into a REST Provider {@link ClaimDetailResponse} object.
 	 * <br/>
 	 * <b>Member objects inside the returned object may be {@code null}.</b>
 	 * <p>
@@ -51,6 +49,11 @@ public class ClaimDetailDomainToProvider extends AbstractDomainToProvider<ClaimD
 		return providerObject;
 	}
 	
+	/**
+	 * Populate Attributes
+	 * @param domainObject
+	 * @return
+	 */
 	private AttributesInfo populateAttributes(ClaimDetailByIdDomainResponse domainObject) {
 		AttributesInfo attributesInfo = new AttributesInfo();
 		attributesInfo.setClaim_type(domainObject.getClaim().getAttributes().getClaim_type());

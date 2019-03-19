@@ -1,16 +1,15 @@
 package gov.va.ocp.vetservices.claims.api.model.v1;
 
 import gov.va.ocp.framework.rest.provider.ProviderResponse;
-import gov.va.ocp.vetservices.claims.orm.Claim;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
  * A class to represent the data contained in the response
- * from the Person Service.
+ * from the Claims Service.
  *
  */
-@ApiModel(description = "Model for the response from the Person Service")
+@ApiModel(description = "Model for the response from the Claim Detail")
 public class ClaimDetailResponse extends ProviderResponse {
 	private static final long serialVersionUID = -7401776200109879041L;
 	/** The claim object */

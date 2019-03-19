@@ -30,6 +30,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+/**
+ * Claims Rest Resource
+ * @author rajuthota
+ *
+ */
 @RestController
 public class ClaimsResource implements VetservicesClaimsApi, HealthIndicator, SwaggerResponseMessages {
 
@@ -42,10 +47,10 @@ public class ClaimsResource implements VetservicesClaimsApi, HealthIndicator, Sw
 	VetServicesClaimsService vetServicesClaimsService;
 	
 	@Autowired
-	ClaimDetailProviderToDomain claimsProviderToDomainConverter;
+	ClaimDetailProviderToDomain claimsProviderToDomain;
 
 	@Autowired
-	ClaimDetailDomainToProvider claimsDomainToProviderConverter;
+	ClaimDetailDomainToProvider claimsDomainToProvider;
 	
 	@Autowired
 	AllClaimsDomainToProvider allClaimsDomainToProvider;
@@ -62,15 +67,15 @@ public class ClaimsResource implements VetservicesClaimsApi, HealthIndicator, Sw
 	@ApiOperation(value = "Retrieve Claim Detail information by id from Claims Service.",
 	notes = "Will return a Claim object based on search by id.")
 	public ClaimDetailResponse getClaimDetailById(@PathVariable("claimId") String claimId) {
-		Defense.notNull(claimId, "Invalid request, id cannot be null.");
+		Defense.notNull(claimId, "Invalid request, claimId cannot be null.");
 		
 		ClaimDetailRequest claimDetailRequest = new ClaimDetailRequest();
 		claimDetailRequest.setClaimId(claimId);
-		ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest = claimsProviderToDomainConverter.convert(claimDetailRequest);
+		ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest = claimsProviderToDomain.convert(claimDetailRequest);
 		claimDetailByIdDomainRequest.setId(claimId);
 		ClaimDetailByIdDomainResponse claimDetailByIdDomainResponse = vetServicesClaimsService
 				.getClaimDetailById(claimDetailByIdDomainRequest);
-		return claimsDomainToProviderConverter.convert(claimDetailByIdDomainResponse);
+		return claimsDomainToProvider.convert(claimDetailByIdDomainResponse);
 	}
 
 	/** 

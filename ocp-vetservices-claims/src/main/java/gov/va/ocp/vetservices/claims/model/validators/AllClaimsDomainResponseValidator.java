@@ -14,6 +14,11 @@ import gov.va.ocp.vetservices.claims.model.AllClaimsDomainResponse;
 import gov.va.ocp.vetservices.claims.exception.ClaimsServiceException;
 import gov.va.ocp.vetservices.claims.model.AllClaimsDomainRequest;;
 
+/**
+ * 
+ * @author rajuthota
+ *
+ */
 public class AllClaimsDomainResponseValidator extends AbstractStandardValidator<AllClaimsDomainResponse> {
 
 	/** Class logger */

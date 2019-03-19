@@ -15,6 +15,11 @@ public class ClaimsDataHelper {
 	@Autowired
 	ClaimsRepository claimsRepository;
 	
+	/**
+	 * 
+	 * @param claimDetailByIdDomainRequest
+	 * @return ClaimDetailByIdDomainResponse
+	 */
 	@Auditable(event = AuditEvents.REST_REQUEST, activity = "getClaimDetailById")
 	public ClaimDetailByIdDomainResponse getClaimDetailById(ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest) {
 		ClaimDetailByIdDomainResponse claimDetailByIdDomainResponse = new ClaimDetailByIdDomainResponse();
@@ -23,6 +28,10 @@ public class ClaimsDataHelper {
 		return claimDetailByIdDomainResponse;
 	}
 	
+	/**
+	 * 
+	 * @return AllClaimsDomainResponse
+	 */
 	@Auditable(event = AuditEvents.REST_REQUEST, activity = "getClaims")
 	public AllClaimsDomainResponse getClaims() {
 		AllClaimsDomainResponse claimsDomainResponse = new AllClaimsDomainResponse();
