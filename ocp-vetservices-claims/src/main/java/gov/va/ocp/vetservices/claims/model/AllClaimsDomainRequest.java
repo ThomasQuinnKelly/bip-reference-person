@@ -27,7 +27,7 @@ public class AllClaimsDomainRequest implements ProviderTransferObjectMarker {
 	 *
 	 * @return the pid
 	 */
-	public String getId() {
+	public String getPid() {
 		return pid;
 	}
 
@@ -36,7 +36,7 @@ public class AllClaimsDomainRequest implements ProviderTransferObjectMarker {
 	 *
 	 * @param pid the pid
 	 */
-	public void setId(String pid) {
+	public void setPid(String pid) {
 		this.pid = pid;
 	}
 }

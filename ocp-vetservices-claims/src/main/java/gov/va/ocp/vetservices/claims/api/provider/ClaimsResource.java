@@ -21,9 +21,11 @@ import gov.va.ocp.vetservices.claims.api.model.v1.ClaimsResponse;
 import gov.va.ocp.vetservices.claims.model.AllClaimsDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
-import gov.va.ocp.vetservices.claims.model.ClaimsDomainResponse;
-import gov.va.ocp.vetservices.claims.transform.impl.ClaimsDomainToProviderConverter;
-import gov.va.ocp.vetservices.claims.transform.impl.ClaimsProviderToDomainConverter;
+import gov.va.ocp.vetservices.claims.model.AllClaimsDomainResponse;
+import gov.va.ocp.vetservices.claims.transform.impl.AllClaimsDomainToProvider;
+import gov.va.ocp.vetservices.claims.transform.impl.AllClaimsProviderToDomain;
+import gov.va.ocp.vetservices.claims.transform.impl.ClaimDetailDomainToProvider;
+import gov.va.ocp.vetservices.claims.transform.impl.ClaimDetailProviderToDomain;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -40,10 +42,16 @@ public class ClaimsResource implements VetservicesClaimsApi, HealthIndicator, Sw
 	VetServicesClaimsService vetServicesClaimsService;
 	
 	@Autowired
-	ClaimsProviderToDomainConverter claimsProviderToDomainConverter;
+	ClaimDetailProviderToDomain claimsProviderToDomainConverter;
 
 	@Autowired
-	ClaimsDomainToProviderConverter claimsDomainToProviderConverter;
+	ClaimDetailDomainToProvider claimsDomainToProviderConverter;
+	
+	@Autowired
+	AllClaimsDomainToProvider allClaimsDomainToProvider;
+	
+	@Autowired
+	AllClaimsProviderToDomain allClaimsProviderToDomain;
 	/**
 	 * Returns the claim detail for a given claim id.
 	 * @param getClaimDetailByIdDomainRequest
@@ -73,9 +81,9 @@ public class ClaimsResource implements VetservicesClaimsApi, HealthIndicator, Sw
 	@ApiOperation(value = "Retrieves all Claims for a given user from Claims Service.",
 	notes = "Will return all Claims based on search by pid of the user.")
 	public ClaimsResponse getAllclaims() {
-		AllClaimsDomainRequest allClaimsDomainRequest = claimsProviderToDomainConverter.convertAllClaims();
-		ClaimsDomainResponse claimsDomainResponse = vetServicesClaimsService.getClaims(allClaimsDomainRequest);
-		return claimsDomainToProviderConverter.convertAll(claimsDomainResponse);
+		AllClaimsDomainRequest allClaimsDomainRequest = allClaimsProviderToDomain.convert();
+		AllClaimsDomainResponse claimsDomainResponse = vetServicesClaimsService.getClaims(allClaimsDomainRequest);
+		return allClaimsDomainToProvider.convert(claimsDomainResponse);
 	}
 
 	/**

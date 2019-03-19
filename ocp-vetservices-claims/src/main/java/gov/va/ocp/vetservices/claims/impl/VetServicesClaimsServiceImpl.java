@@ -28,7 +28,7 @@ import gov.va.ocp.vetservices.claims.VetServicesClaimsService;
 import gov.va.ocp.vetservices.claims.model.AllClaimsDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
-import gov.va.ocp.vetservices.claims.model.ClaimsDomainResponse;
+import gov.va.ocp.vetservices.claims.model.AllClaimsDomainResponse;
 import gov.va.ocp.vetservices.claims.orm.ClaimsDataHelper;
 
 @Service(value = VetServicesClaimsServiceImpl.BEAN_NAME)
@@ -124,10 +124,10 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 	@CachePut(value = CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE, key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).getUserBasedKey()", unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(fallbackMethod = "getClaimsFallBack", commandKey = "getClaimsCommand", ignoreExceptions = {
 			IllegalArgumentException.class })
-	public ClaimsDomainResponse getClaims(AllClaimsDomainRequest allClaimsDomainRequest) {
+	public AllClaimsDomainResponse getClaims(AllClaimsDomainRequest allClaimsDomainRequest) {
 		String cacheKey = "getClaims" + OcpCacheUtil.getUserBasedKey();
 
-		ClaimsDomainResponse claimsDomainResponse = null;
+		AllClaimsDomainResponse claimsDomainResponse = null;
 
 		try {
 			if (cacheManager != null
@@ -136,7 +136,7 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 							.get(cacheKey) != null) {
 				LOGGER.debug("getClaims returning cached data");
 				claimsDomainResponse = cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE)
-						.get(cacheKey, ClaimsDomainResponse.class);
+						.get(cacheKey, AllClaimsDomainResponse.class);
 				return claimsDomainResponse;
 			}
 		} catch (Exception e) {
@@ -155,9 +155,9 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 	 * @return A JAXB element for the WS request
 	 */
 	@HystrixCommand(commandKey = "getClaimsFallBackCommand")
-	public ClaimsDomainResponse getClaimsFallBack(final Throwable throwable) {
+	public AllClaimsDomainResponse getClaimsFallBack(final Throwable throwable) {
 		LOGGER.info("Hystrix getClaimsFallBack has been activated");
-		final ClaimsDomainResponse claimsDomainResponse = new ClaimsDomainResponse();
+		final AllClaimsDomainResponse claimsDomainResponse = new AllClaimsDomainResponse();
 		if (throwable != null) {
 			LOGGER.debug(ReflectionToStringBuilder.toString(throwable, null, true, true, Throwable.class));
 

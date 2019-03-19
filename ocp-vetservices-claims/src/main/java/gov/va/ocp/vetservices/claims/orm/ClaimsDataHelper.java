@@ -3,9 +3,11 @@ package gov.va.ocp.vetservices.claims.orm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import gov.va.ocp.framework.audit.AuditEvents;
+import gov.va.ocp.framework.audit.Auditable;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
-import gov.va.ocp.vetservices.claims.model.ClaimsDomainResponse;
+import gov.va.ocp.vetservices.claims.model.AllClaimsDomainResponse;
 
 @Component
 public class ClaimsDataHelper {
@@ -13,6 +15,7 @@ public class ClaimsDataHelper {
 	@Autowired
 	ClaimsRepository claimsRepository;
 	
+	@Auditable(event = AuditEvents.REST_REQUEST, activity = "getClaimDetailById")
 	public ClaimDetailByIdDomainResponse getClaimDetailById(ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest) {
 		ClaimDetailByIdDomainResponse claimDetailByIdDomainResponse = new ClaimDetailByIdDomainResponse();
 		claimDetailByIdDomainResponse
@@ -20,8 +23,9 @@ public class ClaimsDataHelper {
 		return claimDetailByIdDomainResponse;
 	}
 	
-	public ClaimsDomainResponse getClaims() {
-		ClaimsDomainResponse claimsDomainResponse = new ClaimsDomainResponse();
+	@Auditable(event = AuditEvents.REST_REQUEST, activity = "getClaims")
+	public AllClaimsDomainResponse getClaims() {
+		AllClaimsDomainResponse claimsDomainResponse = new AllClaimsDomainResponse();
 		claimsDomainResponse.setClaims(claimsRepository.findAll());
 		return claimsDomainResponse;
 	}

@@ -188,7 +188,7 @@ ocp:
 # REDIS
 ##################################################
   cache:
-    defaultExpires: 86400 # (Seconds)
+    defaultExpires: 1 # (Seconds)
     expires:
 #     -
 #       name: Cache Name

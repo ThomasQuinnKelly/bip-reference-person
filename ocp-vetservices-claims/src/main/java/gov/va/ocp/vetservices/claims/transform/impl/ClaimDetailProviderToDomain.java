@@ -15,7 +15,7 @@ import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainRequest;
  * @author rajuthota
  */
 @Component
-public class ClaimsProviderToDomainConverter extends AbstractProviderToDomain<ClaimDetailRequest, ClaimDetailByIdDomainRequest> {
+public class ClaimDetailProviderToDomain extends AbstractProviderToDomain<ClaimDetailRequest, ClaimDetailByIdDomainRequest> {
 
 	/**
 	 * Transform a REST Provider {@link ClaimDetailRequest} into a service Domain {@link ClaimDetailByIdDomainRequest} object.
@@ -26,14 +26,6 @@ public class ClaimsProviderToDomainConverter extends AbstractProviderToDomain<Cl
 	public ClaimDetailByIdDomainRequest convert(ClaimDetailRequest providerRequest) {
 		ClaimDetailByIdDomainRequest domainRequest = new ClaimDetailByIdDomainRequest();
 		domainRequest.setId(providerRequest.getClaimId());
-		return domainRequest;
-	}
-	
-	public AllClaimsDomainRequest convertAllClaims() {
-		PersonTraits personTraits = SecurityUtils.getPersonTraits();
-
-		AllClaimsDomainRequest domainRequest = new AllClaimsDomainRequest();
-		domainRequest.setId(personTraits.getPid());
 		return domainRequest;
 	}
 
