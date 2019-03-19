@@ -161,7 +161,7 @@ hystrix:
 ocp:
   security:
     jwt:
-      enabled: false
+      enabled: true
       filterProcessUrls: 
         - /api/v1/claims/**
       excludeUrls:
@@ -188,7 +188,7 @@ ocp:
 # REDIS
 ##################################################
   cache:
-    defaultExpires: 1 # (Seconds)
+    defaultExpires: 86400 # (Seconds)
     expires:
 #     -
 #       name: Cache Name
