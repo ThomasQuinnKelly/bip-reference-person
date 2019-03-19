@@ -6,7 +6,7 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 1. **ocp-reference-partner**: Partner services for reference, showing BGS with sample mock data
 1. **ocp-reference-person**: Service implementation project.  It has REST endpoints and shows various patterns for producing endpoints, swagger for the application, registering the application with Consul, Secrets from Vault calling REST endpoints through Zuul, Hystrix Circuit Breaker, logging pattern etc.
-1. **ocp-reference-inttest**: Contains the integration tests using RestAssured, Cucumber libraries. Includes Test cases against the end points for ascent demo and claims demo. 
+1. **ocp-reference-inttest**: Contains the integration tests using RestAssured, Cucumber libraries. Includes Test cases against the end points for OCP demo and claims demo. 
 1. **ocp-reference-perftest**: Contains the performance JMX tests scripts for Apache JMeter
 
 ## How to include and download the dependency framework libraries in your project ##
@@ -95,7 +95,7 @@ You MUST also update your local ~/.m2/settings.xml as shown below. Replace value
 Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 
 ## Core Concepts and Patterns
-* Service Discovery
+* [Service Discovery](docs/service-discovery-guide.md)
 * [Log and Audit Management](docs/log-audit-management.md)
 * [Cache Management](docs/cache-management.md)
 * [Swagger Management](docs/swagger-management.md)
@@ -103,6 +103,9 @@ Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 * [Hystrix Circuit Breaker Management](docs/hystrix-management.md)
 * [Secrets Management](docs/secrets.md)
 * [Configuration Management](docs/config-management.md)
+* [Validation Management](docs/validation-management.md)
+* [Framework Capabilities Summary](docs/framework-capabilities-summary.md)
+* [Feign and REST Clients Exception Management](docs/feign-rest-exception-handling-management.md)
 * [Deployment Packaging](docs/deployment-package.md)
 
 ## Contribution guidelines ## 

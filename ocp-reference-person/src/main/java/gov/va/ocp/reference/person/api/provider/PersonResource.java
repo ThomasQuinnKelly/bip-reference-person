@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gov.va.ocp.framework.swagger.SwaggerResponseMessages;
 import gov.va.ocp.framework.transfer.ProviderTransferObjectMarker;
-import gov.va.ocp.framework.util.Defense;
+import gov.va.ocp.framework.validation.Defense;
 import gov.va.ocp.reference.person.ReferencePersonService;
 import gov.va.ocp.reference.person.api.ReferencePersonApi;
 import gov.va.ocp.reference.person.api.model.v1.PersonInfoRequest;
@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiResponses;
 /**
  * REST Person Service endpoint
  *
- * @author
+ * @author akulkarni
  *
  */
 @RestController
@@ -94,7 +94,7 @@ public class PersonResource implements ReferencePersonApi, HealthIndicator, Swag
 	 * </ol>
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
-	 * @param personByPidDomainRequest the person info request
+	 * @param personInfoRequest the person info request
 	 * @return the person info response
 	 */
 	@Override

@@ -17,7 +17,7 @@ public class PersonServiceException extends OcpRuntimeException {
 	 * Constructs a new RuntimeException for the Person service with the specified detail key, message, severity, and status.
 	 * The cause is not initialized.
 	 *
-	 * @see OcpRuntimeException#OcpRuntimeException(String)
+	 * @see OcpRuntimeException#OcpRuntimeException(String, String, MessageSeverity, HttpStatus)
 	 *
 	 * @param key - the consumer-facing key that can uniquely identify the nature of the exception
 	 * @param message - the detail message

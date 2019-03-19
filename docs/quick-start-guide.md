@@ -58,8 +58,6 @@ There are 2 application profiles that you could run locally
 
   [OCP Reference Person Swagger](http://localhost:8080/swagger-ui.html)
 
-  [OCP Reference App](http://localhost:8080)
-
   [Consul](http://localhost:8500) - Master ACL token is `7652ba4c-0f6e-8e75-5724-5e083d72cfe4`
 
   [Vault](http://localhost:8200) - Root token is `vaultroot`

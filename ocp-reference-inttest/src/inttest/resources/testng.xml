@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
   
 <suite name="Default suite" verbose="1" parallel="classes" thread-count="1">
-  <test name="AscentRunnerTest">
+  <test name="ReferenceRunnerTest">
     <classes>
  <class name="gov.va.ocp.reference.service.runner.ReferencePersonRunner"/> 
   </classes>

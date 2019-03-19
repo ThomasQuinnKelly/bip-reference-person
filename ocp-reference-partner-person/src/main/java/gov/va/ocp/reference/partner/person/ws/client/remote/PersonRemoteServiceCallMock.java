@@ -9,15 +9,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 import gov.va.ocp.framework.config.OcpCommonSpringProfiles;
+import gov.va.ocp.framework.exception.OcpPartnerRuntimeException;
 import gov.va.ocp.framework.log.OcpLogger;
 import gov.va.ocp.framework.log.OcpLoggerFactory;
 import gov.va.ocp.framework.security.PersonTraits;
 import gov.va.ocp.framework.security.SecurityUtils;
 import gov.va.ocp.framework.transfer.PartnerTransferObjectMarker;
-import gov.va.ocp.framework.util.Defense;
+import gov.va.ocp.framework.validation.Defense;
 import gov.va.ocp.framework.ws.client.remote.AbstractRemoteServiceCallMock;
 import gov.va.ocp.framework.ws.client.remote.RemoteServiceCall;
-import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientException;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 
 /**
@@ -33,7 +33,6 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	/** error message if request is null */
 	static final String ERROR_NULL_REQUEST = "getKeyForMockResponse request parameter cannot be null.";
 
-	// TODO
 	/** Error message prefix if request type is not handled in getKeyForMockResponse(..) */
 	static final String ERROR_UNHANDLED_REQUEST_TYPE = PersonRemoteServiceCallMock.class.getSimpleName()
 			+ ".getKeyForMockResponse(..) does not have a file naming block for requests of type ";
@@ -53,7 +52,8 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	 */
 	@Override
 	public PartnerTransferObjectMarker callRemoteService(final WebServiceTemplate webserviceTemplate,
-			final PartnerTransferObjectMarker request, final Class<? extends PartnerTransferObjectMarker> requestClass) throws Exception {
+			final PartnerTransferObjectMarker request, final Class<? extends PartnerTransferObjectMarker> requestClass) {
+
 		Defense.notNull(request, "Cannot callRemoteService with null request");
 		Defense.notNull(requestClass, "Cannot callRemoteService with null requestClass");
 
@@ -62,14 +62,18 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 		PartnerTransferObjectMarker response = super.callMockService(webserviceTemplate, request, requestClass);
 		LOGGER.info("Called MOCK service with request '" + requestClass.getSimpleName() + "', got mocked response '"
 				+ response.getClass() + "'");
+
 		return response;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * This implementation is entirely dependent on the naming conventions used for
+	 * mock files in src/main/resources/test/mocks/**<br/>
+	 * <b><i>Each implementation could differ.</i></b>
+	 * {@inheritDoc}
 	 *
 	 * @see gov.va.ocp.framework.ws.client.remote.AbstractRemoteServiceCallMock#
-	 * getKeyForMockResponse(gov.va.ocp.framework.transfer. PartnerTransferObjectMarker)
+	 *      getKeyForMockResponse(gov.va.ocp.framework.transfer. PartnerTransferObjectMarker)
 	 */
 	@Override
 	protected String getKeyForMockResponse(final PartnerTransferObjectMarker request) {
@@ -77,18 +81,25 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 
 		String mockFilename = null;
 
-		// TODO
+		/*
+		 * This block is dependent on the naming conventions used for
+		 * mock files in src/main/resources/test/mocks/**
+		 */
 		if (request.getClass().isAssignableFrom(FindPersonByPtcpntId.class)) {
 			final String paramPID = String.valueOf(((FindPersonByPtcpntId) request).getPtcpntId());
 			mockFilename = getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE, paramPID);
 
 		} else {
-			throw new PersonWsClientException("",
+			// no recovery from this
+			throw new OcpPartnerRuntimeException("",
 					this.getClass().getSimpleName() + ERROR_UNHANDLED_REQUEST_TYPE + request.getClass().getName(),
 					null, null);
 		}
 
-		// return value can never be null or empty, there is Defense against it
+		/*
+		 * Return value can never be null or empty,
+		 * there is Defense against it in AbstractRemoteServiceCallMock
+		 */
 		return mockFilename;
 	}
 

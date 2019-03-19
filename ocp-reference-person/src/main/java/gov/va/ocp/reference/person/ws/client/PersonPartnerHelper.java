@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import gov.va.ocp.framework.exception.OcpException;
 import gov.va.ocp.framework.exception.OcpRuntimeException;
-import gov.va.ocp.framework.exception.interceptor.ExceptionHandlingUtils;
 import gov.va.ocp.framework.log.OcpLogger;
 import gov.va.ocp.framework.log.OcpLoggerFactory;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientImpl;
@@ -48,7 +47,7 @@ public class PersonPartnerHelper {
 	 *
 	 * @param request the {@link PersonByPidDomainRequest} from the domain
 	 * @return PersonByPidDomainResponse domain representation of the partner response
-	 * @throws OcpException 
+	 * @throws OcpException
 	 */
 	public PersonByPidDomainResponse findPersonByPid(PersonByPidDomainRequest request) throws OcpException {
 
@@ -56,25 +55,37 @@ public class PersonPartnerHelper {
 		FindPersonByPtcpntId partnerRequest = personByPidD2P.convert(request);
 
 		FindPersonByPtcpntIdResponse partnerResponse = null;
+		PersonByPidDomainResponse domainResponse = null;
 		// call the partner
 		try {
 			partnerResponse = personWsClient.getPersonInfoByPtcpntId(partnerRequest);
+
+			// transform from partner model response to domain model response
+			domainResponse = personByPidP2D.convert(partnerResponse);
+
 		} catch (final OcpException ocpException) {
+			/*
+			 * For this service, no useful work could be done without a successful call
+			 * to the partner web service.
+			 * So in this case, we throw a RuntimeException to abort execution and
+			 * handle from OcpRestGlobalExceptionHandler
+			 */
+			// checked exception to be handled separately
 			String message = THROWSTR + ocpException.getClass().getName() + ": " + ocpException.getMessage();
 			LOGGER.error(message, ocpException);
 			throw ocpException;
-		} 
-		catch (final Exception clientException) {
+		} catch (final OcpRuntimeException clientException) {
+			// any other exception can be caught and thrown as PersonServiceException for the circuit not to be opened
 			String message = THROWSTR + clientException.getClass().getName() + ": " + clientException.getMessage();
 			LOGGER.error(message, clientException);
-			OcpRuntimeException re = ExceptionHandlingUtils.resolveRuntimeException(clientException);
-
-			throw new PersonServiceException(re.getKey(), re.getMessage(), re.getSeverity(), re.getStatus());
-			// new PersonServiceException("",message, clientException);
+			throw new PersonServiceException(clientException.getKey(), clientException.getMessage(),
+					clientException.getSeverity(), clientException.getStatus());
+		} catch (final RuntimeException runtimeException) {
+			// RuntimeException can't be ignored as it's a candidate for circuit to be opened in Hystrix
+			String message = THROWSTR + runtimeException.getClass().getName() + ": " + runtimeException.getMessage();
+			LOGGER.error(message, runtimeException);
+			throw runtimeException;
 		}
-
-		// transform from partner model response to domain model response
-		PersonByPidDomainResponse domainResponse = personByPidP2D.convert(partnerResponse);
 
 		LOGGER.debug("Partner response: FindPersonByPtcpntIdResponse: {}",
 				partnerResponse == null ? "null" : ToStringBuilder.reflectionToString(partnerResponse));

@@ -140,7 +140,7 @@ public class PersonInfo implements Serializable {
 	/**
 	 * Sets the ssn.
 	 *
-	 * @param ssn The person SSN
+	 * @param socSecNo the new soc sec no
 	 */
 	public void setSocSecNo(final String socSecNo) {
 		this.socSecNo = socSecNo;

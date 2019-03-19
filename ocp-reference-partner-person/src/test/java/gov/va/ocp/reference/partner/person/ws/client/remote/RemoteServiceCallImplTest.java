@@ -42,14 +42,14 @@ import org.springframework.xml.transform.StringResult;
 import org.springframework.xml.transform.StringSource;
 
 import gov.va.ocp.framework.config.OcpCommonSpringProfiles;
+import gov.va.ocp.framework.exception.OcpPartnerRuntimeException;
 import gov.va.ocp.framework.security.PersonTraits;
 import gov.va.ocp.framework.transfer.PartnerTransferObjectMarker;
-import gov.va.ocp.framework.util.Defense;
+import gov.va.ocp.framework.validation.Defense;
 import gov.va.ocp.framework.ws.client.remote.RemoteServiceCall;
 import gov.va.ocp.reference.partner.person.ws.client.AbstractPersonTest;
 import gov.va.ocp.reference.partner.person.ws.client.PartnerMockFrameworkTestConfig;
 import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientConfig;
-import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientException;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -164,7 +164,7 @@ public class RemoteServiceCallImplTest extends AbstractPersonTest {
 		try {
 			resource = new ResourceSource(new ClassPathResource(filename));
 		} catch (final IOException e) {
-			throw new PersonWsClientException(null, "Could not read mock XML file '" + filename
+			throw new OcpPartnerRuntimeException(null, "Could not read mock XML file '" + filename
 					+ "'. Please make sure this response file exists in the main/resources directory.",
 					null, null, e);
 		}

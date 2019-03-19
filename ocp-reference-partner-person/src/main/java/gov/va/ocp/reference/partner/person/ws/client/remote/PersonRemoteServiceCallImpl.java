@@ -29,14 +29,8 @@ public class PersonRemoteServiceCallImpl implements RemoteServiceCall {
 
 		PartnerTransferObjectMarker response = null;
 
-		try {
-			LOGGER.info("Calling partner SOAP service with request " + ReflectionToStringBuilder.toString(request));
-			response = (PartnerTransferObjectMarker) webserviceTemplate.marshalSendAndReceive(requestClass.cast(request));
-		} catch (Exception e) {
-			LOGGER.error("IMPL partner service call failed with requestClass "
-					+ requestClass.getName() + " and request object " + ReflectionToStringBuilder.toString(request), e);
-			throw e;
-		}
+		LOGGER.info("Calling partner SOAP service with request " + ReflectionToStringBuilder.toString(request));
+		response = (PartnerTransferObjectMarker) webserviceTemplate.marshalSendAndReceive(requestClass.cast(request));
 
 		return response;
 	}

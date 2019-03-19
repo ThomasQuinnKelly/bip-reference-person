@@ -24,14 +24,13 @@ import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 import gov.va.ocp.reference.person.rest.client.FeignPersonClient;
 import io.swagger.annotations.ApiOperation;
 
-@RestController
-
 /**
  * The purpose of this class is to make REST client calls. These are REST clients to our own
  * services just to experiment with how to use REST clients through the various techniques.
  *
  * @author akulkarni
  */
+@RestController
 public class PersonRestClientTester implements SwaggerResponseMessages {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PersonRestClientTester.class);
@@ -47,7 +46,7 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 	/**
 	 * This method demonstrates the use of RestTemplate to make REST calls on the service endpoints.
 	 *
-	 * @param request the request
+	 * @param personByPidDomainRequest the person by pid domain request
 	 * @return a ResponseEntity
 	 */
 	@ApiOperation(value = "An endpoint which uses a REST client using RestTemplate to call the remote echo operation.")
@@ -58,10 +57,10 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 		// invoke the service using classic REST Template from Spring, but load balanced through Consul
 		HttpEntity<PersonByPidDomainRequest> requestEntity = new HttpEntity<>(personByPidDomainRequest);
 		ResponseEntity<PersonByPidDomainResponse> exchange = null;
-			exchange =
-					personUsageRestTemplate.executeURL("http://localhost:8080" + PersonResource.URL_PREFIX + "/pid",
-							HttpMethod.POST, requestEntity, new ParameterizedTypeReference<PersonByPidDomainResponse>() {
-							});
+		exchange =
+				personUsageRestTemplate.executeURL("http://localhost:8080" + PersonResource.URL_PREFIX + "/pid",
+						HttpMethod.POST, requestEntity, new ParameterizedTypeReference<PersonByPidDomainResponse>() {
+						});
 		LOGGER.info("Invoked os-reference-person service using REST template: " + exchange);
 		return exchange;
 	}
@@ -69,7 +68,7 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 	/**
 	 * This method demonstrates the use of Feign Client to make REST calls.
 	 *
-	 * @param request the request
+	 * @param personInfoRequest the person info request
 	 * @return a ResponseEntity
 	 */
 	@ApiOperation(value = "An endpoint which uses a REST client using Feign to call the remote person by pid operation.")
@@ -83,13 +82,14 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 		PersonInfoResponse personInfoResponse = null;
 
 		personInfoResponse = feignPersonClient.personByPid(personInfoRequest); // NOSONAR cannot immediately return
-		
+
 		if (personInfoResponse != null) {
 			if (personInfoResponse.hasErrors()) {
 				return new ResponseEntity<>(personInfoResponse, HttpStatus.BAD_REQUEST);
 			} else if (personInfoResponse.hasFatals()) {
 				return new ResponseEntity<>(personInfoResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 			} else {
+				// real-world might do more business processing here
 				return new ResponseEntity<>(personInfoResponse, HttpStatus.OK);
 			}
 		} else {
