@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gov.va.ocp.framework.swagger.SwaggerResponseMessages;
 import gov.va.ocp.framework.transfer.ProviderTransferObjectMarker;
-import gov.va.ocp.framework.util.Defense;
+import gov.va.ocp.framework.validation.Defense;
 import gov.va.ocp.vetservices.claims.VetServicesClaimsService;
 import gov.va.ocp.vetservices.claims.api.VetservicesClaimsApi;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainRequest;
