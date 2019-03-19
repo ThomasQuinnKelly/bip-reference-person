@@ -25,10 +25,11 @@ import gov.va.ocp.framework.messages.ServiceMessage;
 import gov.va.ocp.framework.util.OcpCacheUtil;
 import gov.va.ocp.vetservices.claims.utils.CacheConstants;
 import gov.va.ocp.vetservices.claims.VetServicesClaimsService;
+import gov.va.ocp.vetservices.claims.model.AllClaimsDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
 import gov.va.ocp.vetservices.claims.model.ClaimsDomainResponse;
-import gov.va.ocp.vetservices.claims.orm.ClaimsRepository;
+import gov.va.ocp.vetservices.claims.orm.ClaimsDataHelper;
 
 @Service(value = VetServicesClaimsServiceImpl.BEAN_NAME)
 @Component
@@ -44,9 +45,9 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 
 	@Autowired
 	private CacheManager cacheManager;
-	
+
 	@Autowired
-	ClaimsRepository claimsRepository;
+	ClaimsDataHelper claimsDataHelper;
 	
 	/**
 	 * Returns the claim detail for a given claim id.
@@ -77,9 +78,7 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 			LOGGER.error(e.getMessage(), e);
 		}
     	
-    	claimDetailByIdDomainResponse = new ClaimDetailByIdDomainResponse();
-		claimDetailByIdDomainResponse
-				.setClaim(claimsRepository.findById(Long.parseLong(claimDetailByIdDomainRequest.getId())).get());
+		claimDetailByIdDomainResponse = claimsDataHelper.getClaimDetailById(claimDetailByIdDomainRequest);
 		return claimDetailByIdDomainResponse;
     }
 	
@@ -125,7 +124,7 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 	@CachePut(value = CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE, key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).getUserBasedKey()", unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(fallbackMethod = "getClaimsFallBack", commandKey = "getClaimsCommand", ignoreExceptions = {
 			IllegalArgumentException.class })
-	public ClaimsDomainResponse getClaims() {
+	public ClaimsDomainResponse getClaims(AllClaimsDomainRequest allClaimsDomainRequest) {
 		String cacheKey = "getClaims" + OcpCacheUtil.getUserBasedKey();
 
 		ClaimsDomainResponse claimsDomainResponse = null;
@@ -144,8 +143,7 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 			LOGGER.error(e.getMessage(), e);
 		}
 
-		claimsDomainResponse = new ClaimsDomainResponse();
-		claimsDomainResponse.setClaims(claimsRepository.findAll());
+		claimsDomainResponse = claimsDataHelper.getClaims();
 		return claimsDomainResponse;
 	}
 	

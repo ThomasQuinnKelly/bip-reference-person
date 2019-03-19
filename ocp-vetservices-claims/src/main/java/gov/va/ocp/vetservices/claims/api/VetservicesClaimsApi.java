@@ -3,8 +3,8 @@ package gov.va.ocp.vetservices.claims.api;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
-import gov.va.ocp.vetservices.claims.model.ClaimsDomainResponse;
+import gov.va.ocp.vetservices.claims.api.model.v1.ClaimDetailResponse;
+import gov.va.ocp.vetservices.claims.api.model.v1.ClaimsResponse;
 
 /**
  * The contract for the Vetservices Claims endpoint.
@@ -25,12 +25,12 @@ public interface VetservicesClaimsApi {
 	 * @param id
 	 * @return
 	 */
-	public ClaimDetailByIdDomainResponse getClaimDetailById(@PathVariable("id") String id);
+	public ClaimDetailResponse getClaimDetailById(@PathVariable("id") String id);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public ClaimsDomainResponse getAllclaims();
+	public ClaimsResponse getAllclaims();
 
 }

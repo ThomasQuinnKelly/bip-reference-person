@@ -1,8 +1,5 @@
 package gov.va.ocp.vetservices.claims.model;
 
-import java.util.List;
-import java.util.Optional;
-
 import gov.va.ocp.framework.service.DomainResponse;
 import gov.va.ocp.vetservices.claims.orm.Claim;
 

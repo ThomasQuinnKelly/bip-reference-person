@@ -161,7 +161,7 @@ hystrix:
 ocp:
   security:
     jwt:
-      enabled: true
+      enabled: false
       filterProcessUrls: 
         - /api/v1/claims/**
       excludeUrls:

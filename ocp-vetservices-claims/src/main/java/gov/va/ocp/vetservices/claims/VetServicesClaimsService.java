@@ -1,5 +1,6 @@
 package gov.va.ocp.vetservices.claims;
 
+import gov.va.ocp.vetservices.claims.model.AllClaimsDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
 import gov.va.ocp.vetservices.claims.model.ClaimsDomainResponse;
@@ -21,5 +22,5 @@ public interface VetServicesClaimsService {
 	 * Returns all claims
 	 * @return
 	 */
-	ClaimsDomainResponse getClaims();
+	ClaimsDomainResponse getClaims(AllClaimsDomainRequest allClaimsDomainRequest);
 }

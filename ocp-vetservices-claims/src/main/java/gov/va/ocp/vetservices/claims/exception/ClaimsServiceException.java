@@ -1,4 +1,4 @@
-package gov.va.ocp.vetservices.claims;
+package gov.va.ocp.vetservices.claims.exception;
 
 import gov.va.ocp.framework.messages.MessageSeverity;
 
