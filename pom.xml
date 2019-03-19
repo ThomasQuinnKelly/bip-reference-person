@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>gov.va.ocp.framework</groupId>
+		<artifactId>ocp-framework-parentpom</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath/>
+	</parent>
+	
+	<groupId>gov.va.ocp.reference.person</groupId>
+	<artifactId>ocp-reference-reactor</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <description>Reactor POM for OpenShift Container Platform (OCP) Spring Boot Reference Service</description>
+
+	<modules>
+		<module>ocp-reference-partner-person</module>
+		<module>ocp-reference-person</module>
+		<module>ocp-reference-inttest</module>
+	    <module>ocp-reference-perftest</module>
+	</modules>
+
+	<repositories>
+	  <repository>
+	   	<id>github</id>
+	    <name>GitHub Repository</name>
+	    <url>https://raw.github.com/department-of-veterans-affairs/ocp-framework/mvn-repo</url>
+	    <snapshots>
+	      <enabled>true</enabled>
+	      <updatePolicy>always</updatePolicy>
+	    </snapshots>
+	  </repository>
+	</repositories>
+</project>
