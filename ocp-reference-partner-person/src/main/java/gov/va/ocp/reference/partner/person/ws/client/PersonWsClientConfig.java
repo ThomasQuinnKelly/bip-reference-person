@@ -1,5 +1,8 @@
 package gov.va.ocp.reference.partner.person.ws.client;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -14,13 +17,14 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 
+import gov.va.ocp.framework.exception.OcpPartnerRuntimeException;
 import gov.va.ocp.framework.exception.interceptor.InterceptingExceptionTranslator;
 import gov.va.ocp.framework.log.OcpLogger;
 import gov.va.ocp.framework.log.OcpLoggerFactory;
 import gov.va.ocp.framework.log.PerformanceLogMethodInterceptor;
-import gov.va.ocp.framework.util.Defense;
+import gov.va.ocp.framework.validation.Defense;
 import gov.va.ocp.framework.ws.client.BaseWsClientConfig;
-import gov.va.ocp.framework.ws.client.remote.RemoteServiceCallInterceptor;
+import gov.va.ocp.framework.ws.client.remote.AuditAroundRemoteServiceCallInterceptor;
 
 /**
  * This class represents the Spring configuration for the Person Web Service Client.
@@ -41,8 +45,8 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	/** The XSD for this web service */
 	private static final String XSD = "xsd/PersonService/PersonWebService.xsd";
 
-	/** Exception class for exception interceptor */
-	private static final String DEFAULT_EXCEPTION_CLASS = PersonWsClientException.class.getName();
+	/** Class for exceptions thrown by the InterceptingExceptionTranslator */
+	private static final String DEFAULT_EXCEPTION_CLASS = OcpPartnerRuntimeException.class.getName();
 
 	// ####### for test, member values are from src/test/resource/application.yml ######
 
@@ -154,29 +158,34 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	}
 
 	/**
-	 * InterceptingExceptionTranslator for the Web Service Client
+	 * InterceptingExceptionTranslator for the Web Service Client.
+	 * Handles exceptions raised by the web service client due to
+	 * operations and communication with the remote service.
 	 * <p>
-	 * Handles runtime exceptions raised by the web service client through runtime operation and communication with the remote service.
+	 * In addition to the default exclusions, this interceptor
+	 * is configured to exclude {@link PersonPartnerCheckedException}.
 	 *
 	 * @return the intercepting exception translator
 	 * @throws ClassNotFoundException the class not found exception
 	 */
 	@Bean
-	InterceptingExceptionTranslator personWsClientExceptionInterceptor() throws ClassNotFoundException {
-		return getInterceptingExceptionTranslator(DEFAULT_EXCEPTION_CLASS, PACKAGE_FRAMEWORK_EXCEPTION);
+	InterceptingExceptionTranslator personWsClientExceptionInterceptor() {
+		Set<String> exclusions = new HashSet<>();
+		exclusions.add(PersonPartnerCheckedException.class.getName());
+		return getInterceptingExceptionTranslator(DEFAULT_EXCEPTION_CLASS, exclusions);
 	}
 
 	/**
-	 * RemoteServiceCallInterceptor for the Web Service Client
+	 * AuditAroundRemoteServiceCallInterceptor for the Web Service Client
 	 *
 	 * Handles runtime exceptions raised by the web service client through runtime
 	 * operation and communication with the remote service.
 	 *
-	 * @return the RemoteServiceCallInterceptor
+	 * @return the AuditAroundRemoteServiceCallInterceptor
 	 * @throws ClassNotFoundException the class not found exception
 	 */
 	@Bean
-	RemoteServiceCallInterceptor personWsClientRemoteServiceCallInterceptor() {
+	AuditAroundRemoteServiceCallInterceptor personWsClientRemoteServiceCallInterceptor() {
 		return getRemoteServiceCallInterceptor();
 	}
 }

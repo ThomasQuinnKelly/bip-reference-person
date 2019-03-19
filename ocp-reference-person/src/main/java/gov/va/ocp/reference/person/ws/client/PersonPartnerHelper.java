@@ -47,7 +47,7 @@ public class PersonPartnerHelper {
 	 *
 	 * @param request the {@link PersonByPidDomainRequest} from the domain
 	 * @return PersonByPidDomainResponse domain representation of the partner response
-	 * @throws OcpException 
+	 * @throws OcpException
 	 */
 	public PersonByPidDomainResponse findPersonByPid(PersonByPidDomainRequest request) throws OcpException {
 
@@ -64,6 +64,12 @@ public class PersonPartnerHelper {
 			domainResponse = personByPidP2D.convert(partnerResponse);
 
 		} catch (final OcpException ocpException) {
+			/*
+			 * For this service, no useful work could be done without a successful call
+			 * to the partner web service.
+			 * So in this case, we throw a RuntimeException to abort execution and
+			 * handle from OcpRestGlobalExceptionHandler
+			 */
 			// checked exception to be handled separately
 			String message = THROWSTR + ocpException.getClass().getName() + ": " + ocpException.getMessage();
 			LOGGER.error(message, ocpException);
@@ -72,7 +78,7 @@ public class PersonPartnerHelper {
 			// any other exception can be caught and thrown as PersonServiceException for the circuit not to be opened
 			String message = THROWSTR + clientException.getClass().getName() + ": " + clientException.getMessage();
 			LOGGER.error(message, clientException);
-			throw new PersonServiceException(clientException.getKey(), clientException.getMessage(), 
+			throw new PersonServiceException(clientException.getKey(), clientException.getMessage(),
 					clientException.getSeverity(), clientException.getStatus());
 		} catch (final RuntimeException runtimeException) {
 			// RuntimeException can't be ignored as it's a candidate for circuit to be opened in Hystrix

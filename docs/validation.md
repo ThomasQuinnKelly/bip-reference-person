@@ -1,4 +1,4 @@
-# Validation Management
+# Validation
 
 ## Capability
 - Standard JSR303 validation in the Provider (REST) layer.
