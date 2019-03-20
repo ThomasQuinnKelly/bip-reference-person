@@ -160,7 +160,8 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 	 * @return A JAXB element for the WS request
 	 */
 	@HystrixCommand(commandKey = "getClaimsFallBackCommand")
-	public AllClaimsDomainResponse getClaimsFallBack(final Throwable throwable) {
+	public AllClaimsDomainResponse getClaimsFallBack(final AllClaimsDomainRequest allClaimsDomainRequest,
+			final Throwable throwable) {
 		LOGGER.info("Hystrix getClaimsFallBack has been activated");
 		final AllClaimsDomainResponse claimsDomainResponse = new AllClaimsDomainResponse();
 		if (throwable != null) {
