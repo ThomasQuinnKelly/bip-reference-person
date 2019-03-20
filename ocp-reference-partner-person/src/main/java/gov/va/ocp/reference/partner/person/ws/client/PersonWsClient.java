@@ -7,6 +7,7 @@ import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdRespo
  * The interface for the PersonWsClient Web Service Client.
  *
  */
+@FunctionalInterface
 public interface PersonWsClient {
 
 	/**
