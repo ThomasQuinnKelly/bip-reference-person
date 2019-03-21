@@ -21,15 +21,17 @@ public interface VetservicesClaimsApi {
 	public Health health();
 
 	/**
-	 * 
-	 * @param id
-	 * @return
+	 * Gets the claim detail by id.
+	 *
+	 * @param id the id
+	 * @return the claim detail by id
 	 */
 	public ClaimDetailResponse getClaimDetailById(@PathVariable("id") String id);
 	
 	/**
-	 * 
-	 * @return
+	 * Gets the all claims.
+	 *
+	 * @return the all claims
 	 */
 	public ClaimsResponse getAllclaims();
 

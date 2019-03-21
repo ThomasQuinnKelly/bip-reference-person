@@ -57,7 +57,7 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 	/**
 	 * Returns the claim detail for a given claim id.
 	 *
-	 * @param request the request
+	 * @param claimDetailByIdDomainRequest the claim detail by id domain request
 	 * @return the claim detail by id
 	 */
 	@CachePut(value = gov.va.ocp.vetservices.claims.utils.CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE,

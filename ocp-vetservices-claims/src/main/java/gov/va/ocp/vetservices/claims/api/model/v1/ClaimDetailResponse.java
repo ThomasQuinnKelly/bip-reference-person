@@ -27,8 +27,8 @@ public class ClaimDetailResponse extends ProviderResponse {
 
 	/**
 	 * Sets the claims for a user.
-	 * 
-	 * @return claim
+	 *
+	 * @param claim the new claim
 	 */
 	public void setClaim(ClaimInfo claim) {
 		this.claim = claim;

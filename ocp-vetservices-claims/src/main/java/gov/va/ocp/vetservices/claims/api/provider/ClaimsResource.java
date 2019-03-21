@@ -57,9 +57,11 @@ public class ClaimsResource implements VetservicesClaimsApi, HealthIndicator, Sw
 	
 	@Autowired
 	AllClaimsProviderToDomain allClaimsProviderToDomain;
+	
 	/**
 	 * Returns the claim detail for a given claim id.
-	 * @param getClaimDetailByIdDomainRequest
+	 *
+	 * @param claimId the claim id
 	 * @return ClaimDetailByIdDomainResponse
 	 */
 	@RequestMapping(value = URL_PREFIX

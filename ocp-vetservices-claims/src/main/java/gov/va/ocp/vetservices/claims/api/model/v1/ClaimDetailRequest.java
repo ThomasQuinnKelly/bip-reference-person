@@ -32,7 +32,7 @@ public class ClaimDetailRequest implements ProviderTransferObjectMarker {
 	/**
 	 * Sets the claimID.
 	 *
-	 * @param claimID the claimID
+	 * @param claimId the new claim id
 	 */
 	public void setClaimId(String claimId) {
 		this.claimId = claimId;

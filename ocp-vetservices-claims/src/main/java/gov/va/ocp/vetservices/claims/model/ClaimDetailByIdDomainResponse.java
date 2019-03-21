@@ -27,9 +27,9 @@ public class ClaimDetailByIdDomainResponse extends DomainResponse  {
 	}
 
 	/**
-	 * Sets the claims for a user.
-	 * 
-	 * @return claim
+	 * Sets the claim.
+	 *
+	 * @param claim the new claim
 	 */
 	public void setClaim(Claim claim) {
 		this.claim = claim;
