@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
  * A class to represent a request for PersonInfoDomain from the Person Service.
  *
  */
-@ApiModel(description = "Model for data to request ClaimDetailByIdDomain from the Claimns Service")
+@ApiModel(description = "Model for data to request ClaimDetailByIdDomain from the Claims Service")
 @NotNull(message = "{ocp.vetservices.claims.claimdetail.request.NotNull}")
 public class ClaimDetailRequest implements ProviderTransferObjectMarker {
 	public static final String MODEL_NAME = ClaimDetailRequest.class.getSimpleName();

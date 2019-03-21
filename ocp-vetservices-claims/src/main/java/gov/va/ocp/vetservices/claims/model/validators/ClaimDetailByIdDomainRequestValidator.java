@@ -25,9 +25,9 @@ public class ClaimDetailByIdDomainRequestValidator extends AbstractStandardValid
 	public void validate(ClaimDetailByIdDomainRequest toValidate, List<ServiceMessage> messages) {
 		// validate the request content (claim id)
 		if (toValidate.getId() == null) {
-			LOGGER.debug("claim id is null");
+			LOGGER.error("claim id is null");
 			messages.add(new ServiceMessage(MessageSeverity.ERROR, "",
-					super.getCallingMethodName() + "Claimn ID cannot be null.",
+					super.getCallingMethodName() + "Claims ID cannot be null.",
 					HttpStatus.BAD_REQUEST));
 		} 
 	}

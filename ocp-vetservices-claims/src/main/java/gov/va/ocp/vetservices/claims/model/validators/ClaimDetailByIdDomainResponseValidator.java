@@ -10,9 +10,9 @@ import gov.va.ocp.framework.log.OcpLoggerFactory;
 import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.framework.messages.ServiceMessage;
 import gov.va.ocp.framework.validation.AbstractStandardValidator;
+import gov.va.ocp.vetservices.claims.model.AllClaimsDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
 import gov.va.ocp.vetservices.claims.exception.ClaimsServiceException;
-import gov.va.ocp.vetservices.claims.model.AllClaimsDomainRequest;;
 
 public class ClaimDetailByIdDomainResponseValidator extends AbstractStandardValidator<ClaimDetailByIdDomainResponse> {
 
@@ -27,6 +27,7 @@ public class ClaimDetailByIdDomainResponseValidator extends AbstractStandardVali
 	
 	@Override
 	public void validate(ClaimDetailByIdDomainResponse toValidate, List<ServiceMessage> messages) {
+		
 		Object supplemental = getSupplemental(AllClaimsDomainRequest.class);
 		AllClaimsDomainRequest request = supplemental == null ? new AllClaimsDomainRequest()
 				: (AllClaimsDomainRequest) supplemental;

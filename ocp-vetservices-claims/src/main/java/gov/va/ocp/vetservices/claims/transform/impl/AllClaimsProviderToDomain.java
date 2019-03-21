@@ -25,7 +25,7 @@ public class AllClaimsProviderToDomain {
 		if (personTraits != null) {
 			domainRequest.setPid(personTraits.getPid());
 		} else {
-			// clean up this code later
+			//TODO: clean up this code later
 			domainRequest.setPid("1234567689");
 		}
 		return domainRequest;
