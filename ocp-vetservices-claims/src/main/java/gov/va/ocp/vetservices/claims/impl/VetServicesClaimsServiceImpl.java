@@ -42,7 +42,7 @@ import gov.va.ocp.vetservices.claims.orm.ClaimsDataHelper;
 @RefreshScope
 @DefaultProperties(groupKey = HystrixCommandConstants.VETSERVICES_CLAIMS_SERVICE_GROUP_KEY)
 public class VetServicesClaimsServiceImpl implements VetServicesClaimsService { 
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(VetServicesClaimsServiceImpl.class);
 
 	/** Bean name constant */
@@ -53,7 +53,7 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 
 	@Autowired
 	ClaimsDataHelper claimsDataHelper;
-	
+
 	/**
 	 * Returns the claim detail for a given claim id.
 	 *
@@ -64,13 +64,13 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 			key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).createKey(#claimDetailByIdDomainRequest.id)",
 			unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(fallbackMethod = "getClaimDetailByIdFallBack", commandKey = "getClaimDetailByIdCommand",
-			ignoreExceptions = { IllegalArgumentException.class })
-    public ClaimDetailByIdDomainResponse getClaimDetailById(ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest) {
+	ignoreExceptions = { IllegalArgumentException.class })
+	public ClaimDetailByIdDomainResponse getClaimDetailById(ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest) {
 		String cacheKey = "getClaimDetailById" + OcpCacheUtil.createKey(claimDetailByIdDomainRequest.getId());
-		
+
 		ClaimDetailByIdDomainResponse claimDetailByIdDomainResponse = null;
-    	
-    	try {
+
+		try {
 			if (cacheManager != null && cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE) != null
 					&& cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE).get(cacheKey) != null) {
 				LOGGER.debug("getClaimDetailById returning cached data");
@@ -82,11 +82,11 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}
-    	
+
 		claimDetailByIdDomainResponse = claimsDataHelper.getClaimDetailById(claimDetailByIdDomainRequest);
 		return claimDetailByIdDomainResponse;
-    }
-	
+	}
+
 	/**
 	 * Hystrix Fallback Method Which is Triggered When there Is An Unexpected Exception
 	 * in getClaimDetailById method.
@@ -120,13 +120,15 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}	
-    
+
 	/**
 	 * Returns all claims
 	 *
 	 * @return the claims
 	 */
-	@CachePut(value = CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE, key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).getUserBasedKey()", unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
+	@CachePut(value = CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE, 
+			key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).getUserBasedKey()", 
+			unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(fallbackMethod = "getClaimsFallBack", commandKey = "getClaimsCommand", ignoreExceptions = {
 			IllegalArgumentException.class })
 	public AllClaimsDomainResponse getClaims(AllClaimsDomainRequest allClaimsDomainRequest) {
@@ -138,7 +140,7 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 			if (cacheManager != null
 					&& cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE) != null
 					&& cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE)
-							.get(cacheKey) != null) {
+					.get(cacheKey) != null) {
 				LOGGER.debug("getClaims returning cached data");
 				claimsDomainResponse = cacheManager.getCache(CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE)
 						.get(cacheKey, AllClaimsDomainResponse.class);
@@ -151,7 +153,7 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 		claimsDomainResponse = claimsDataHelper.getClaims();
 		return claimsDomainResponse;
 	}
-	
+
 	/**
 	 * Hystrix Fallback Method Which is Triggered When there Is An Unexpected Exception
 	 * in getClaims method.
@@ -183,7 +185,7 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-    
+
 	/**
 	 * Helper method to create a ServiceMessage object.
 	 *
