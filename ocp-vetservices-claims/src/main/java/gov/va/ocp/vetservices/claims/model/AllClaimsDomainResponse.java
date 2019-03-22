@@ -5,7 +5,12 @@ import java.util.List;
 import gov.va.ocp.framework.service.DomainResponse;
 import gov.va.ocp.vetservices.claims.orm.Claim;
 
-public class ClaimsDomainResponse extends DomainResponse{
+/**
+ * AllClaimsDomainResponse class returns list of claims for a given user.
+ * @author rajuthota
+ *
+ */
+public class AllClaimsDomainResponse extends DomainResponse{
 	/** Id for serialization. */
 	private static final long serialVersionUID = 1022369564490801042L;
 

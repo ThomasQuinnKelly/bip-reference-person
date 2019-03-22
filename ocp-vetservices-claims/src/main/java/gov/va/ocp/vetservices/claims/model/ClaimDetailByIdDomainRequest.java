@@ -2,11 +2,23 @@ package gov.va.ocp.vetservices.claims.model;
 
 import javax.validation.constraints.NotNull;
 
-public class ClaimDetailByIdDomainRequest  {
+import gov.va.ocp.framework.service.DomainRequest;
+import io.swagger.annotations.ApiModel;
+
+/**
+ * A class to represent a request for AllClaimsDomain from the Claims Service.
+ * @author rajuthota
+ *
+ */
+@ApiModel(description = "Model for data to request ClaimDetailByIdDomain from the Claims Service")
+@NotNull(message = "{ocp.vetservices.claims.claimdetail.request.NotNull}")
+public class ClaimDetailByIdDomainRequest extends DomainRequest {
+	/** Id for serialization. */
+	private static final long serialVersionUID = 1721412087987262336L;
 
 	/** The claim id. */
 	// Suppressing warning for ShortVariable as id is a valid variable name
-	@NotNull(message = "GetClaimDetailByIdDomainRequest.id.NotNull")
+	@NotNull(message = "{ocp.vetservices.claims.claimdetail.request.id.NotNull}")
 	@SuppressWarnings("PMD.ShortVariable")
 	private String id;
 
@@ -15,7 +27,7 @@ public class ClaimDetailByIdDomainRequest  {
 	 * 
 	 * @return the id
 	 */
-	public final String getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -24,7 +36,7 @@ public class ClaimDetailByIdDomainRequest  {
 	 * 
 	 * @param id the new id
 	 */
-	public void setId(final String id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 }
