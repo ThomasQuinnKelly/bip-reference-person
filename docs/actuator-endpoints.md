@@ -34,4 +34,3 @@
 - A new dashboard can be created based on the requirement using below steps:
 	a. Click on "Create your first dashboard" tab. Then click on one of the options like Graph or Singlestat or Table etc as shown in 	   docs/images/Grafana-NewDashBoard.jpeg 
 	b. Select a particular option as above to look at the required stats.
-- 
