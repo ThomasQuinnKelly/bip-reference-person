@@ -40,18 +40,18 @@ To make these libraries available for compilation, read the [section](#how-to-ma
 
 Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 
-## Core Concepts and Patterns
+## Application Core Concepts and Patterns
 * [Service Discovery](docs/service-discovery-guide.md)
+* [Configuration Management](docs/config-management.md)
+* [Secrets Management](docs/secrets.md)
+* [Swagger Management](docs/swagger-management.md)
+* [Security Management](docs/application-security-management.md)
 * [Log and Audit Management](docs/log-audit-management.md)
 * [Cache Management](docs/cache-management.md)
-* [Swagger Management](docs/swagger-management.md)
-* [Application Security Management](docs/application-security-management.md)
-* [Hystrix Circuit Breaker Management](docs/hystrix-management.md)
-* [Secrets Management](docs/secrets.md)
-* [Configuration Management](docs/config-management.md)
 * [Validation Management](docs/validation-management.md)
+* [Exception Handling](docs/exception-handling.md)
+* [Hystrix Circuit Breaker Management](docs/hystrix-management.md)
 * [Framework Capabilities Summary](docs/framework-capabilities-summary.md)
-* [Feign and REST Clients Exception Management](docs/feign-rest-exception-handling-management.md)
 * [Deployment Packaging](docs/deployment-package.md)
 
 ## How to make the dependency framework libraries available
