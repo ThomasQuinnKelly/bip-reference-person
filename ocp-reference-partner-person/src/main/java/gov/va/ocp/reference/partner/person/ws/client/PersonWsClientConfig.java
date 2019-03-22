@@ -102,7 +102,7 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	@Bean
 	Jaxb2Marshaller personMarshaller() {
 		final Resource[] schemas = new Resource[] { new ClassPathResource(XSD) };
-		return getMarshaller(TRANSFER_PACKAGE, schemas, logValidation);
+		return super.getMarshaller(TRANSFER_PACKAGE, schemas, logValidation);
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 
 		Defense.hasText(endpoint, "personWsClientAxiomTemplate endpoint cannot be empty.");
 
-		return createSslWebServiceTemplate(endpoint, readTimeout, connectionTimeout, personMarshaller(), personMarshaller(),
+		return super.createSslWebServiceTemplate(endpoint, readTimeout, connectionTimeout, personMarshaller(), personMarshaller(),
 				new ClientInterceptor[] { personSecurityInterceptor() },
 				keystore, keystorePass, truststore, truststorePass);
 	}
@@ -133,7 +133,7 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 */
 	@Bean
 	Wss4jSecurityInterceptor personSecurityInterceptor() {
-		return getVAServiceWss4jSecurityInterceptor(username, password, vaApplicationName, vaStationId);
+		return super.getVAServiceWss4jSecurityInterceptor(username, password, vaApplicationName, vaStationId);
 	}
 
 	/**
@@ -145,12 +145,12 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	@Bean
 	PerformanceLogMethodInterceptor personWsClientPerformanceLogMethodInterceptor(
 			@Value("${ocp-reference-partner-person.ws.client.methodWarningThreshhold:2500}") final Integer methodWarningThreshhold) {
-		return getPerformanceLogMethodInterceptor(methodWarningThreshhold);
+		return super.getPerformanceLogMethodInterceptor(methodWarningThreshhold);
 	}
 
 	@Bean
 	BeanNameAutoProxyCreator personWsClientBeanProxy() {
-		return getBeanNameAutoProxyCreator(new String[] { "personWsClient" },
+		return super.getBeanNameAutoProxyCreator(new String[] { "personWsClient" },
 				new String[] { "personWsClientPerformanceLogMethodInterceptor" });
 	}
 }
