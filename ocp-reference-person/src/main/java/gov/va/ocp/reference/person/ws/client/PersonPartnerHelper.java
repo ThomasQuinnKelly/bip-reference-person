@@ -8,7 +8,7 @@ import gov.va.ocp.framework.exception.OcpException;
 import gov.va.ocp.framework.exception.OcpRuntimeException;
 import gov.va.ocp.framework.log.OcpLogger;
 import gov.va.ocp.framework.log.OcpLoggerFactory;
-import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientImpl;
+import gov.va.ocp.reference.partner.person.ws.client.PersonWsClient;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
 import gov.va.ocp.reference.person.exception.PersonServiceException;
@@ -34,7 +34,7 @@ public class PersonPartnerHelper {
 
 	/** WS client to run all intent to file operations via SOAP */
 	@Autowired
-	private PersonWsClientImpl personWsClient;
+	private PersonWsClient personWsClient;
 
 	/** Transformer for domain-to-partner model transformation */
 	private PersonByPid_DomainToPartner personByPidD2P = new PersonByPid_DomainToPartner();
