@@ -35,6 +35,7 @@ src/inttest/resources/config/referenceperson-stage.properties – STAGE configur
 
 ## Execution ##
 1. In ocp-reference-person/src/main/resources/ocp-reference-person.yml file JWT by default is set to false, enable that to true.  
+ 
  os.reference:
   security:
     jwt:
@@ -42,8 +43,14 @@ src/inttest/resources/config/referenceperson-stage.properties – STAGE configur
 
 2. To execute the functional test in local ocp-reference-person service needs to be up and running.
 
+# How to Build and Test reference-person service ##
+[quick-start-guide](/docs/quick-start-guide.md)
+
 **Command Line:** Use this command(s) to execute the reference person service Functional test. 
 
+ Default Local: mvn verify -Pinttest -Dcucumber.options="--tags @DEV"
+ 
 
-Default Local: mvn verify -Pinttest -Dcucumber.options="--tags @DEV"
+## More Details For Functional Test ##
+ [Read Guide](/docs/referenceperson-intest.md)
 
