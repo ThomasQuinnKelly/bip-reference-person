@@ -13,7 +13,7 @@ package gov.va.ocp.vetservices.claims.utils;
  * 
  *
  * @author Abhijit Kulkarni
- * @see pom.xml
+ * see pom.xml
  */
 public final class ApplicationInfo {
 	/**
