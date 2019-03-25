@@ -5,7 +5,7 @@ package gov.va.ocp.vetservices.claims.utils;
  */
 public final class HystrixCommandConstants {
 
-	/** Reference Person Service Thread Pool Group. */
+	/** Vetservices Claims Service Thread Pool Group. */
 	public static final String VETSERVICES_CLAIMS_SERVICE_GROUP_KEY = "VetservicesClaimsServiceGroup";
 
 	/**

@@ -1,15 +1,13 @@
 package gov.va.ocp.vetservices.claims.model;
 
-import java.util.List;
-import java.util.Optional;
-
 import gov.va.ocp.framework.service.DomainResponse;
 import gov.va.ocp.vetservices.claims.orm.Claim;
 
 /**
  * The class GetClaimsResponse is a response object which returns
- *  a list of claims
- * 
+ * claim details for a given claim id.
+ * @author rajuthota
+ *
  */
 public class ClaimDetailByIdDomainResponse extends DomainResponse  {
 
@@ -29,9 +27,9 @@ public class ClaimDetailByIdDomainResponse extends DomainResponse  {
 	}
 
 	/**
-	 * Sets the claims for a user.
-	 * 
-	 * @return claim
+	 * Sets the claim.
+	 *
+	 * @param claim the new claim
 	 */
 	public void setClaim(Claim claim) {
 		this.claim = claim;
