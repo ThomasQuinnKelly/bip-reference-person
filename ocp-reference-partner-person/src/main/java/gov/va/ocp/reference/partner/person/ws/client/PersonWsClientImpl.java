@@ -58,7 +58,7 @@ public class PersonWsClientImpl extends BaseWsClientImpl implements PersonWsClie
 	 * transfer.FindPersonByPtcpntId)
 	 */
 	@Override
-	@Auditable(event = AuditEvents.REQUEST_RESPONSE, activity = "partnerPersonInfoByPtcpntId")
+	@Auditable(event = AuditEvents.SERVICE_AUDIT, activity = "partnerPersonInfoByPtcpntId")
 	public FindPersonByPtcpntIdResponse getPersonInfoByPtcpntId(final FindPersonByPtcpntId findPersonByPtcpntIdRequest)
 			throws PersonPartnerCheckedException {
 

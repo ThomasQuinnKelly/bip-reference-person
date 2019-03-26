@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -17,10 +18,10 @@ import org.springframework.stereotype.Service;
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
+import gov.va.ocp.framework.cache.OcpCacheUtil;
 import gov.va.ocp.framework.exception.OcpException;
 import gov.va.ocp.framework.exception.OcpRuntimeException;
 import gov.va.ocp.framework.messages.MessageSeverity;
-import gov.va.ocp.framework.util.OcpCacheUtil;
 import gov.va.ocp.framework.validation.Defense;
 import gov.va.ocp.reference.person.ReferencePersonService;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
@@ -74,10 +75,10 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 */
 	@Override
 	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE,
-				key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).createKey(#personByPidDomainRequest.participantID)",
-				unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
+			key = "#root.methodName + T(gov.va.ocp.framework.cache.OcpCacheUtil).createKey(#personByPidDomainRequest.participantID)",
+			unless = "T(gov.va.ocp.framework.cache.OcpCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(commandKey = "GetPersonInfoByPIDCommand",
-					ignoreExceptions = { IllegalArgumentException.class, OcpException.class, OcpRuntimeException.class })
+			ignoreExceptions = { IllegalArgumentException.class, OcpException.class, OcpRuntimeException.class })
 	public PersonByPidDomainResponse findPersonByParticipantID(final PersonByPidDomainRequest personByPidDomainRequest) {
 
 		String cacheKey = "findPersonByParticipantID" + OcpCacheUtil.createKey(personByPidDomainRequest.getParticipantID());
@@ -85,12 +86,11 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		// try from cache
 		PersonByPidDomainResponse response = null;
 		try {
-			if (cacheManager != null && cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE) != null
-					&& cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey) != null) {
+			Cache cache = null;
+			if (cacheManager != null && (cache = cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE)) != null
+					&& cache.get(cacheKey) != null) {
 				LOGGER.debug("findPersonByParticipantID returning cached data");
-				response =
-						cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE).get(cacheKey,
-								PersonByPidDomainResponse.class);
+				response = cache.get(cacheKey, PersonByPidDomainResponse.class);
 				return response;
 			}
 		} catch (Exception e) {
@@ -115,13 +115,15 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	}
 
 	/**
-	 * Support graceful degradation in a Hystrix command by adding a fallback method that Hystrix will call to obtain a 
-	 * default value or values in case the main command fails for findPersonByParticipantID <br/> <br/>
-	 * 
-	 * See {https://github.com/Netflix/Hystrix/wiki/How-To-Use#fallback} for Hystrix Fallback usage <br/> <br/>
-	 * 
-	 * Hystrix doesn't REQUIRE you to set this method. Unless you want to return a default data or add business logic for that case, 
-	.* If you throw an exception you'll "confuse" Hystrix and it will throw an HystrixRuntimeException.
+	 * Support graceful degradation in a Hystrix command by adding a fallback method that Hystrix will call to obtain a
+	 * default value or values in case the main command fails for findPersonByParticipantID <br/>
+	 * <br/>
+	 *
+	 * See {https://github.com/Netflix/Hystrix/wiki/How-To-Use#fallback} for Hystrix Fallback usage <br/>
+	 * <br/>
+	 *
+	 * Hystrix doesn't REQUIRE you to set this method. Unless you want to return a default data or add business logic for that case,
+	 * .* If you throw an exception you'll "confuse" Hystrix and it will throw an HystrixRuntimeException.
 	 *
 	 * @param personByPidDomainRequest The request from the Java Service.
 	 * @param throwable the throwable
@@ -134,10 +136,10 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 
 		/**
 		 * Fallback Method for Demonstration Purpose. In this use case, there is no static / mock data
-		 * that can be sent back to the consumers. Hence the method isn't configured as fallback. 
+		 * that can be sent back to the consumers. Hence the method isn't configured as fallback.
 		 *
 		 * If needed to be configured, add annotation to the implementation method "findPersonByParticipantID" as below
-		 * 
+		 *
 		 * @HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack")
 		 */
 		final PersonByPidDomainResponse response = new PersonByPidDomainResponse();
@@ -145,13 +147,13 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 
 		if (throwable != null) {
 			LOGGER.debug(ReflectionToStringBuilder.toString(throwable, null, true, true, Throwable.class));
-			response.addMessage(MessageSeverity.WARN, "", 
-					throwable.getLocalizedMessage(), HttpStatus.OK); 
+			response.addMessage(MessageSeverity.WARN, "",
+					throwable.getLocalizedMessage(), HttpStatus.OK);
 		} else {
 			LOGGER.error(
 					"findPersonByParticipantIDFallBack No Throwable Exception. Just Raise Runtime Exception {}",
 					personByPidDomainRequest);
-			response.addMessage(MessageSeverity.WARN, "", 
+			response.addMessage(MessageSeverity.WARN, "",
 					"There was a problem processing your request.", HttpStatus.OK);
 		}
 		return response;
