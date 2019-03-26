@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-import gov.va.ocp.framework.rest.provider.aspect.LogAnnotatedMethodRequestResponseAspect;
+import gov.va.ocp.framework.aspect.AuditAnnotationAspect;
+
 
 @SpringBootApplication
 @EnableDiscoveryClient // needed to reach out to spring cloud config, eureka
@@ -26,7 +27,7 @@ public class VetservicesClaimsApplication {
 	}
 	
 	@Bean
-	LogAnnotatedMethodRequestResponseAspect myAspect() {
-		return new LogAnnotatedMethodRequestResponseAspect();
+	AuditAnnotationAspect myAspect() {
+		return new AuditAnnotationAspect();
 	}
 }
