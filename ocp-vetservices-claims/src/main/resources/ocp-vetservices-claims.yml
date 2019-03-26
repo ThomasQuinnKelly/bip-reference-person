@@ -7,7 +7,7 @@ info:
     name: "@project.name@"
     description: "@project.description@"
 server: 
-  port: ${reference.server.port:8080}
+  port: ${vetservices.server.port:8080}
 ---
 spring.profiles: default
 spring.profiles.include: remote_client_sims, embedded-redis
@@ -77,8 +77,8 @@ logging:
   level:
     gov.va.ocp.framework.ws.client: INFO
     gov.va.ocp.framework.rest.provider: INFO
-    gov.va.ocp.reference.partner: INFO
-    gov.va.ocp.reference: INFO
+    gov.va.ocp.vetservices.partner: INFO
+    gov.va.ocp.vetservices: INFO
     gov.va.ocp.framework: INFO
     com.ecwid.consul: INFO
     org.springframework.cloud.openfeign: INFO

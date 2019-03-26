@@ -39,11 +39,6 @@
             <artifactId>ocp-framework-libraries</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-		 <dependency>
-            <groupId>gov.va.ocp.reference.person</groupId>
-            <artifactId>ocp-reference-partner-person</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>gov.va.ocp.framework</groupId>
             <artifactId>ocp-framework-autoconfigure</artifactId>

@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties
-@ConfigurationProperties(prefix="ocp-reference-person")
+@ConfigurationProperties(prefix="ocp-vetservices-claims")
 @RefreshScope //to demo refreshing the properties after app running
 public class VetservicesClaimsProperties {
 
