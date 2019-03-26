@@ -19,7 +19,9 @@ public class PersonByPid_ProviderToDomain extends AbstractProviderToDomain<Perso
 	@Override
 	public PersonByPidDomainRequest convert(PersonInfoRequest domainObject) {
 		PersonByPidDomainRequest providerObject = new PersonByPidDomainRequest();
-		providerObject.setParticipantID(domainObject.getParticipantID());
+		if (domainObject != null) {
+			providerObject.setParticipantID(domainObject.getParticipantID());
+		}
 		return providerObject;
 	}
 
