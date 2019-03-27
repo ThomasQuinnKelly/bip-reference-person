@@ -18,9 +18,7 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 
 import gov.va.ocp.framework.config.OcpCommonSpringProfiles;
-import gov.va.ocp.framework.exception.interceptor.InterceptingExceptionTranslator;
 import gov.va.ocp.framework.log.PerformanceLogMethodInterceptor;
-import gov.va.ocp.framework.ws.client.remote.AuditAroundRemoteServiceCallInterceptor;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners(inheritListeners = false, listeners = { DependencyInjectionTestExecutionListener.class,
@@ -45,14 +43,6 @@ public class PersonWsClientConfigTest {
 	@Qualifier("personWsClientPerformanceLogMethodInterceptor")
 	PerformanceLogMethodInterceptor personWsClientPerformanceLogMethodInterceptor;
 
-	@Autowired
-	@Qualifier("personWsClientExceptionInterceptor")
-	InterceptingExceptionTranslator personWsClientExceptionInterceptor;
-
-	@Autowired
-	@Qualifier("personWsClientRemoteServiceCallInterceptor")
-	AuditAroundRemoteServiceCallInterceptor personWsClientRemoteServiceCallInterceptor;
-
 	@Test
 	public void personMarshallerTest() {
 		assertNotNull(mashaller);
@@ -71,15 +61,5 @@ public class PersonWsClientConfigTest {
 	@Test
 	public void personWsClientPerformanceLogMethodInterceptorTest() {
 		assertNotNull(personWsClientPerformanceLogMethodInterceptor);
-	}
-
-	@Test
-	public void personWsClientExceptionInterceptorTest() {
-		assertNotNull(personWsClientExceptionInterceptor);
-	}
-
-	@Test
-	public void personWsClientRemoteServiceCallInterceptorTest() {
-		assertNotNull(personWsClientRemoteServiceCallInterceptor);
 	}
 }

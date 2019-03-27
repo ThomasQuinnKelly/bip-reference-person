@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import brave.sampler.Sampler;
+import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientConfig;
 import gov.va.ocp.reference.person.config.ReferencePersonConfig;
 
 /**
@@ -27,9 +28,10 @@ import gov.va.ocp.reference.person.config.ReferencePersonConfig;
 @EnableHystrix
 @EnableCaching
 @EnableAsync
-@Import(ReferencePersonConfig.class)
+@Import({ ReferencePersonConfig.class,
+		PersonWsClientConfig.class })
 public class ReferencePersonApplication {
-	
+
 	/**
 	 * Runs the spring-boot application with this class and any command-line arguments.
 	 *
