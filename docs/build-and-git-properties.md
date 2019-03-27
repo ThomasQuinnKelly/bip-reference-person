@@ -62,12 +62,12 @@
 ## Accessing Git Properties	
 - After rebuilding and restarting the /info endpoint displays Git via `GitInfoContributor` class info as shown below
 
-{
-  "git": {
-    "commit": {
-      "time": "2018-09-01T19:46:31Z",
-      "id": "493f071"
-    },
-    "branch": "master"
-  }
-}
+		{
+		  "git": {
+		    "commit": {
+		      "time": "2018-09-01T19:46:31Z",
+		      "id": "493f071"
+		    },
+		    "branch": "master"
+		  }
+		}
