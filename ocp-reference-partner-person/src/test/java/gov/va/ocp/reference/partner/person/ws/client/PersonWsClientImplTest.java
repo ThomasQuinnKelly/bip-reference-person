@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -23,8 +22,6 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 import gov.va.ocp.framework.config.OcpCommonSpringProfiles;
 import gov.va.ocp.framework.security.PersonTraits;
-import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientConfig;
-import gov.va.ocp.reference.partner.person.ws.client.PersonWsClientImpl;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
 
@@ -56,8 +53,8 @@ public class PersonWsClientImplTest extends AbstractPersonTest {
 	private static final String PARTICIPANTID_FOR_MOCK_DATA = "13364995";
 
 	@Autowired
-	@Qualifier(PersonWsClientImpl.BEAN_NAME)
-	PersonWsClientImpl personWsClientImpl;
+//	@Qualifier("personWsClient")
+	PersonWsClient personWsClientImpl;
 
 	@Before
 	public void setUp() {
