@@ -31,7 +31,7 @@ See [Quick Start Guide](quick-start-guide.md) to run docker containers for local
 	
 ## Dashboard
 
-- We can access the home page for the dashboard as shown in: [Grafana Dashboard](/docs/images/Grafana-Dashboard.jpeg). JVM Micrometer and Hystrix dashboards are available by default
+- We can access the home page for the dashboard as shown in: [Grafana Dashboard](/docs/images/Grafana-Dashboard.jpg). JVM Micrometer and Hystrix dashboards are available by default
 
 - A new dashboard can be created based on the requirement using below steps:
 	a. Click on "Create your first dashboard" tab. Then click on one of the options like Graph or Singlestat or Table etc as shown in [Grafana New Dashboard](/docs/images/Grafana-NewDashBoard.jpg)
