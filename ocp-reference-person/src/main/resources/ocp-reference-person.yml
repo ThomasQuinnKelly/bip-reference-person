@@ -243,7 +243,7 @@ ocp-reference-partner-person:
       readTimeout: ${bgs.default.connectionTimeout}
       connectionTimeout: ${bgs.default.methodWarningThreshhold}
       ssl:
-        # For the JKS file on file system use value as Ex: 'file:/Users/akulkarni/Desktop/vaebnweb1Keystore.jks'
+        # For the JKS file on file system use absolute path value. For Example: 'file:/Users/akulkarni/Desktop/vaebnweb1Keystore.jks'
         keystore: ${javax.net.ssl.keyStore:classpath:test/ssl/dev/vaebnweb1Keystore.jks}
         keystorePass: ${javax.net.ssl.keyStorePassword:password}
         truststore: ${javax.net.ssl.trustStore:classpath:test/ssl/dev/vaebnTruststore.jks}

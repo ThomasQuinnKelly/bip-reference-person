@@ -44,15 +44,17 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	// ####### for test, member values are from src/test/resource/application.yml ######
 
 	/** Location of the truststore containing the cert */
-	@Value("${ocp-reference-partner-person.ws.client.ssl.keystore:classpath:ssl/dev/vaebnweb1Keystore.jks}")
+	@Value("#{ baseWsClientUtil."
+			+ "verifyAddFilePrefix('${ocp-reference-partner-person.ws.client.ssl.keystore:classpath:ssl/dev/vaebnweb1Keystore.jks}') }")
 	private Resource keystore;
 
 	/** Password for the cert */
 	@Value("${ocp-reference-partner-person.ws.client.ssl.keystorePass:password}")
 	private String keystorePass;
-
+	
 	/** Location of the truststore containing the cert */
-	@Value("${ocp-reference-partner-person.ws.client.ssl.truststore:classpath:ssl/dev/vaebnTruststore.jks}")
+	@Value("#{ baseWsClientUtil."
+			+ "verifyAddFilePrefix('${ocp-reference-partner-person.ws.client.ssl.truststore:classpath:ssl/dev/vaebnTruststore.jks}') }")
 	private Resource truststore;
 
 	/** Password for the cert */
