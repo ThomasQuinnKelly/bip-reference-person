@@ -19,6 +19,18 @@ spring.profiles: local-int, ci, dev, stage, prod
 spring.profiles.include: remote_client_sims
 ---
 spring: 
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/ORCLCDB.localdomain
+    username: claims_admin
+    password: Oradoc_db1
+    driver-class-name: oracle.jdbc.OracleDriver
+    initialize: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  hikari:
+    connection-timeout: 60000
+    maximum-pool-size: 5
   cache:
     type: redis
   redis: 
