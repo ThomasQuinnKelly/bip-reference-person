@@ -52,6 +52,9 @@ Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 * [Exception Handling](docs/exception-handling.md)
 * [Hystrix Circuit Breaker Management](docs/hystrix-management.md)
 * [Framework Capabilities Summary](docs/framework-capabilities-summary.md)
+* [Actuator Management](docs/actuator-management.md)
+* [Build Info and Git Properties Plugin](docs/build-and-git-properties.md)
+* [Prometheus Grafana Local Dev](docs/prometheus-grafana-setup.md)
 * [Deployment Packaging](docs/deployment-package.md)
 
 ## How to make the dependency framework libraries available
