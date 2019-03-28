@@ -89,3 +89,84 @@ Actuator comes with most endpoints disabled. Thus, the only two available by def
 	
 - Actuator has enabled an endpoint http://localhost:8080/actuator/prometheus for us. If you browse this URL, you will be able to see the metrics exported from the application. The data is the actual metrics collected from the application and exported as JSON.
 
+#  Actuator: Health Monitoring
+
+## Health Endpoint
+
+Actuator comes with most endpoints disabled. Thus, the only two available by default are /health and /info.Endpoints exposed to and availble but some may need configuration. Health end point can be accessed as below and that summarizes the health of all healt h indicators including custom end points that extend AbstractHealthIndicator.
+
+	/health – summarises the health status of our application
+	
+Most production environments have a dashboard that show the health of an application’s instances. If the circuitbreaker has tripped, your application is essentially in an unhealthy state. The circuit breaker mechanism will ensure that failures won’t cascade, but in a clustered environment you’d want that server removed from the pool or at least have a general indication that something is wrong.
+
+Spring Boot’s health endpoints works by querying various indicators. Like most things in Spring Boot, indicators are only active if there are components that can be checked. For example, if you have a datasource, an indicator will become active checking the state of that datasource.
+
+# Custom Health Endpoint 
+
+Sample code below to indicate the health of the application based on querying the Hystrix Command Key. But again this is for a particular instance only and not across instances in a cluster. If we want to look across instances in a cluster then need to use the Hystrix Dashboard using hystrix.stream or turbine.stream. Below example also illustrates on how to create a custom health indicator.
+
+	class HystrixMetricsHealthIndicator extends AbstractHealthIndicator {
+	    @Override
+	    protected void doHealthCheck(Health.Builder builder) throws Exception {
+	        def breakers = []
+	        HystrixCommandMetrics.instances.each {
+	            def breaker = HystrixCircuitBreaker.Factory.getInstance(it.commandKey)
+	            def breakerOpen = breaker.open?:false
+	            if(breakerOpen) {
+	                breakers << it.commandGroup.name() + "::" + it.commandKey.name()
+	            }
+	        }
+	        breakers ? builder.outOfService().withDetail("openCircuitBreakers", breakers) : builder.up()
+	    }
+	}
+	
+# Sample Health Endpoint Data
+
+	{
+	  "status" : "UP",
+	  "diskSpace" : {
+	    "status" : "UP",
+	    "total" : 63251804160,
+	    "free" : 31316164608,
+	    "threshold" : 10485760
+	  },
+	  "db" : {
+	    "status" : "UP",
+	    "database" : "H2",
+	    "hello" : 1
+	  }
+	}
+
+## Spring Boot Actuator configuration
+- Add the following dependency in your project, to the project pom:
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+    
+- Update the application service yml file with the following configuration (under the default profile) to enable/disable endpoints:
+
+		# Expose over JMX
+		management.endpoints.jmx.exposure.exclude=shutdown
+		management.endpoints.jmx.exposure.include=*
+		# Expose HTTP REST Endpoint
+		management.endpoints.web.exposure.exclude=
+		management.endpoints.web.exposure.include=health,info,metrics
+
+## Enabling/Disabling endpoints
+
+- You can configure not only whether an endpoint is exposed over HTTP or JMX, but also you can turn specific endpoints on/off. All the endpoints except shutdown are enabled by default (although not exposed over HTTP).
+
+		# Disable an endpoint
+		management.endpoint.[endpoint-name].enabled=false
+
+		# Specific example for 'health' endpoint
+		management.endpoint.health.enabled=false
+
+		# Instead of enabled by default, you can change to mode
+		# where endpoints need to be explicitly enabled
+		management.endpoints.enabled-by-default=false
+	
+
+
