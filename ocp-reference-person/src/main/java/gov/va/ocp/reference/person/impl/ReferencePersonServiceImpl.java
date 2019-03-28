@@ -102,7 +102,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			LOGGER.debug("findPersonByParticipantID no cached data found");
 			try {
 				response = personPartnerHelper.findPersonByPid(personByPidDomainRequest);
-			} catch (OcpException ocpException) {
+			} catch (OcpException | OcpRuntimeException ocpException) {
 				PersonByPidDomainResponse domainResponse = new PersonByPidDomainResponse();
 				// check exception..create domain model response
 				domainResponse.addMessage(ocpException.getSeverity(), ocpException.getKey(), ocpException.getMessage(),
