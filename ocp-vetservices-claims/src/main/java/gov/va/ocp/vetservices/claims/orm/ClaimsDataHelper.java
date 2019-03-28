@@ -20,7 +20,7 @@ public class ClaimsDataHelper {
 	 * @param claimDetailByIdDomainRequest
 	 * @return ClaimDetailByIdDomainResponse
 	 */
-	@Auditable(event = AuditEvents.REST_REQUEST, activity = "getClaimDetailById")
+	@Auditable(event = AuditEvents.SERVICE_AUDIT, activity = "getClaimDetailById")
 	public ClaimDetailByIdDomainResponse getClaimDetailById(ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest) {
 		ClaimDetailByIdDomainResponse claimDetailByIdDomainResponse = new ClaimDetailByIdDomainResponse();
 		claimDetailByIdDomainResponse
@@ -32,7 +32,7 @@ public class ClaimsDataHelper {
 	 * 
 	 * @return AllClaimsDomainResponse
 	 */
-	@Auditable(event = AuditEvents.REST_REQUEST, activity = "getClaims")
+	@Auditable(event = AuditEvents.SERVICE_AUDIT, activity = "getClaims")
 	public AllClaimsDomainResponse getClaims() {
 		AllClaimsDomainResponse claimsDomainResponse = new AllClaimsDomainResponse();
 		claimsDomainResponse.setClaims(claimsRepository.findAll());
