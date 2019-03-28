@@ -74,6 +74,7 @@ ocp-reference-person:
 #-##################################################
 logging: 
   level:
+#    gov.va.ocp: DEBUG
     gov.va.ocp.framework.ws.client: INFO
     gov.va.ocp.framework.rest.provider: INFO
     gov.va.ocp.reference.partner: INFO
@@ -81,6 +82,7 @@ logging:
     gov.va.ocp.reference: INFO
     gov.va.ocp.framework: INFO
     com.ecwid.consul: INFO
+#    org.springframework: DEBUG
     org.springframework.cloud.openfeign: INFO
     org.springframework.security.web: INFO
     org.springframework.cloud.consul.config: INFO
