@@ -18,20 +18,23 @@ ocp-vetservices-claims:
 ---
 spring.profiles: local-int, ci, dev, stage, prod
 spring.profiles.include: remote_client_sims
----
-spring: 
+spring:
   datasource:
     url: jdbc:oracle:thin:@localhost:1521/ORCLCDB.localdomain
-    username: claims_admin
+    username: sys as sysdba
     password: Oradoc_db1
     driver-class-name: oracle.jdbc.OracleDriver
     initialize: true
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
   hikari:
     connection-timeout: 60000
     maximum-pool-size: 5
+---
+#spring.profiles.active: local-int
+---
+spring: 
   cache:
     type: redis
   redis: 
