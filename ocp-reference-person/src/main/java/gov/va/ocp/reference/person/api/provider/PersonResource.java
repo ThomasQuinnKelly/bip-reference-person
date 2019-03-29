@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -46,6 +47,9 @@ public class PersonResource implements ReferencePersonApi, HealthIndicator, Swag
 
 	/** The root path to this resource */
 	public static final String URL_PREFIX = "/api/v1/persons";
+	
+	@Autowired
+	BuildProperties buildProperties;
 
 	/** The service layer API contract for processing personByPid() requests */
 	@Autowired
@@ -62,6 +66,12 @@ public class PersonResource implements ReferencePersonApi, HealthIndicator, Swag
 		Defense.notNull(refPersonService);
 		Defense.notNull(personByPidProvider2Domain);
 		Defense.notNull(personByPidDomain2Provider);
+
+		// Print build properties
+		LOGGER.info(buildProperties.getName());
+		LOGGER.info(buildProperties.getVersion());
+		LOGGER.info(buildProperties.getArtifact());
+		LOGGER.info(buildProperties.getGroup());
 	}
 
 	/**

@@ -21,6 +21,11 @@ public class PersonByPidDomainRequestValidator extends AbstractStandardValidator
 	/** Class logger */
 	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(PersonByPidDomainRequestValidator.class);
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.va.ocp.framework.validation.AbstractStandardValidator#validate(java.lang.Object, java.util.List)
+	 */
 	@Override
 	public void validate(PersonByPidDomainRequest toValidate, List<ServiceMessage> messages) {
 		// validate the request content (PID)

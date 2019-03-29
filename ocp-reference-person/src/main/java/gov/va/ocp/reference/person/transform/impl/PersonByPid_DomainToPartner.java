@@ -19,7 +19,9 @@ public class PersonByPid_DomainToPartner extends AbstractDomainToPartner<PersonB
 	@Override
 	public FindPersonByPtcpntId convert(PersonByPidDomainRequest domainObject) {
 		FindPersonByPtcpntId partnerObject = new FindPersonByPtcpntId();
-		partnerObject.setPtcpntId(domainObject.getParticipantID());
+		if (domainObject != null) {
+			partnerObject.setPtcpntId(domainObject.getParticipantID());
+		}
 		return partnerObject;
 	}
 

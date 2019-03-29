@@ -25,13 +25,10 @@ import gov.va.ocp.reference.partner.person.ws.transfer.FindPersonByPtcpntIdRespo
  * This class implements the Person WS Client interface. It encapsulates the details of interacting with the Person Web Service.
  *
  */
-@Component(PersonWsClientImpl.BEAN_NAME)
+@Component
 public class PersonWsClientImpl extends BaseWsClientImpl implements PersonWsClient {
 	/** Logger */
 	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(PersonWsClientImpl.class);
-
-	/** A constant representing the Spring Bean name. */
-	public static final String BEAN_NAME = "personWsClient";
 
 	/** the switchable remote for service calls (impl or mock) */
 	@Autowired
@@ -61,7 +58,7 @@ public class PersonWsClientImpl extends BaseWsClientImpl implements PersonWsClie
 	 * transfer.FindPersonByPtcpntId)
 	 */
 	@Override
-	@Auditable(event = AuditEvents.REQUEST_RESPONSE, activity = "partnerPersonInfoByPtcpntId")
+	@Auditable(event = AuditEvents.SERVICE_AUDIT, activity = "partnerPersonInfoByPtcpntId")
 	public FindPersonByPtcpntIdResponse getPersonInfoByPtcpntId(final FindPersonByPtcpntId findPersonByPtcpntIdRequest)
 			throws PersonPartnerCheckedException {
 
@@ -75,13 +72,14 @@ public class PersonWsClientImpl extends BaseWsClientImpl implements PersonWsClie
 			webServiceResponse = remoteServiceCall.callRemoteService(
 					personWsTemplate, findPersonByPtcpntIdRequest, findPersonByPtcpntIdRequest.getClass());
 			/*
-			 * NOTE THAT PersonWsClientConfig configures an InterceptingExceptionTranslator
-			 * that by default ignores any exceptions declared in the
-			 * "gov.va.ocp.framework.exceptions" package.
+			 * NOTE THAT PersonWsClientConfig configures
+			 * gov.va.ocp.framework.ws.client.remote.aspect.WsClientAspect
+			 * that by default ignores any exceptions that implement
+			 * gov.va.ocp.framework.exception.OcpExceptionExtender.
 			 *
 			 * If some issue other than a SOAP Fault happens,
 			 * we intentionally allow the exception to propagate as-is
-			 * for the InterceptingExceptionTranslator to convert into
+			 * for the WsClientAspect to convert into
 			 * an OcpPartnerRuntimeException.
 			 */
 		} catch (WebServiceException sf) { // <- usually thrown as SoapFaultClientException

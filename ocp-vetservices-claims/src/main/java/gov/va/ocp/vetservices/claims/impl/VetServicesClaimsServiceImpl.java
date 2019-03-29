@@ -22,7 +22,7 @@ import  gov.va.ocp.vetservices.claims.utils.HystrixCommandConstants;
 import gov.va.ocp.framework.exception.OcpRuntimeException;
 import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.framework.messages.ServiceMessage;
-import gov.va.ocp.framework.util.OcpCacheUtil;
+import gov.va.ocp.framework.cache.OcpCacheUtil;
 import gov.va.ocp.vetservices.claims.utils.CacheConstants;
 import gov.va.ocp.vetservices.claims.VetServicesClaimsService;
 import gov.va.ocp.vetservices.claims.model.AllClaimsDomainRequest;

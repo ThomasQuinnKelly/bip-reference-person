@@ -52,6 +52,9 @@ Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 * [Exception Handling](docs/exception-handling.md)
 * [Hystrix Circuit Breaker Management](docs/hystrix-management.md)
 * [Framework Capabilities Summary](docs/framework-capabilities-summary.md)
+* [Actuator Management](docs/actuator-management.md)
+* [Build Info and Git Properties Plugin](docs/build-and-git-properties.md)
+* [Prometheus Grafana Local Dev](docs/prometheus-grafana-setup.md)
 * [Deployment Packaging](docs/deployment-package.md)
 
 ## How to make the dependency framework libraries available
@@ -60,8 +63,8 @@ To make these libraries available locally for the service projects to compile an
 
 **OPTION 1**
 
-1. Clone the OCP framework repository `git clone https://github.ec.va.gov/EPMO/bip-ocp-framework.git`
-1. Navigate to the folder `bip-ocp-framework` and run `mvn clean install` command. This would build all the libraries with versions as configured in pom.xml files.
+1. Clone the OCP framework repository `git clone https://github.com/department-of-veterans-affairs/ocp-framework.git`
+1. Navigate to the folder `ocp-framework` and run `mvn clean install` command. This would build all the libraries with versions as configured in pom.xml files.
 
 **OPTION 2**
 

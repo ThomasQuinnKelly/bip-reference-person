@@ -1,0 +1,99 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ocp-reference-person-template
+parameters:
+  - name: APP_NAME
+    displayName: Application Name
+    description: Unique application identifier
+    required: true
+  - name: IMAGE
+    displayName: Image Name
+    description: Container Image Name including repository (but not tag)
+    required: true
+  - name: IMAGE_TAG
+    displayName: Image Tag
+    description: Tag of the container image to deploy
+    value: "latest"
+    required: true
+  - name: REPLICA_COUNT
+    displayName: Number of Replicas
+    description: Number of replicas to run
+    value: "1"
+    required: true
+objects:
+  - apiVersion: v1
+    kind: DeploymentConfig
+    metadata:
+      labels:
+        app: ${APP_NAME}
+      name: ${APP_NAME}
+    spec:
+      replicas: ${REPLICA_COUNT}
+      selector:
+        app: ${APP_NAME}
+        deploymentconfig: ${APP_NAME}
+      strategy:
+        resources: {}
+        rollingParams:
+          intervalSeconds: 1
+          maxSurge: 25%
+          maxUnavailable: 25%
+          timeoutSeconds: 600
+          updatePeriodSeconds: 1
+        type: Rolling
+      template:
+        metadata:
+          annotations: null
+          labels:
+            app: ${APP_NAME}
+            deploymentconfig: ${APP_NAME}
+        spec:
+          containers:
+            - image: ${IMAGE}:${IMAGE_TAG}
+              imagePullPolicy: IfNotPresent
+              name: ${APP_NAME}
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+              resources:
+                requests:
+                  cpu: 750m
+                  memory: 1024Mi
+              terminationMessagePath: /dev/termination-log
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+      test: false
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: ${APP_NAME}
+      name: ${APP_NAME}
+    spec:
+      ports:
+        - name: ${APP_NAME}
+          port: 443
+          protocol: TCP
+          targetPort: 8080
+      selector:
+        app: ${APP_NAME}
+        deploymentconfig: ${APP_NAME}
+      sessionAffinity: None
+      type: ClusterIP
+  - apiVersion: extensions/v1beta1
+    kind: Ingress
+    metadata:
+      name: ${APP_NAME}
+    spec:
+      rules:
+        - host: ${APP_NAME}.192.168.64.2.nip.io
+          http:
+            paths:
+              - backend:
+                  serviceName: ${APP_NAME}
+                  servicePort: 443
+                path: /
+          tls: []

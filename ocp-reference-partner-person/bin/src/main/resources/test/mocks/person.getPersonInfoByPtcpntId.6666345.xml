@@ -1,0 +1,27 @@
+<ns2:findPersonByPtcpntIdResponse
+	xmlns:ns2="http://person.services.gov/">
+	<PersonDTO>
+		<brthdyDt>1978-05-20</brthdyDt>
+		<emailAddr>jane.doe@va.gov</emailAddr>
+		<fileNbr>912444689</fileNbr>
+		<firstNm>JANE</firstNm>
+		<firstNmKey>-2</firstNmKey>
+		<genderCd>F</genderCd>
+		<jrnDt>2014-03-19T11:14:13-05:00</jrnDt>
+		<jrnLctnId>281</jrnLctnId>
+		<jrnObjId>VBMS - CEST</jrnObjId>
+		<jrnStatusTypeCd>U</jrnStatusTypeCd>
+		<jrnUserId>VBMSSYSACCT</jrnUserId>
+		<lastNm>DOE</lastNm>
+		<lastNmKey>0</lastNmKey>
+		<middleNm>M</middleNm>
+		<middleNmKey>-1</middleNmKey>
+		<mltyPersonInd>Y</mltyPersonInd>
+		<ptcpntId>6666345</ptcpntId>
+		<ssnNbr>912444689</ssnNbr>
+		<ssnVrfctnStatusTypeCd>0</ssnVrfctnStatusTypeCd>
+		<stationOfJurisdiction>317</stationOfJurisdiction>
+		<termnlDigitNbr>18</termnlDigitNbr>
+		<vetInd>Y</vetInd>
+	</PersonDTO>
+</ns2:findPersonByPtcpntIdResponse>
