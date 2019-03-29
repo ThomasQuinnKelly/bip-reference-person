@@ -32,63 +32,78 @@ public class PersonByPidDomainResponseValidator extends AbstractStandardValidato
 	/** The method that caused this validator to be invoked */
 	private Method callingMethod;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.va.ocp.framework.validation.AbstractStandardValidator#validate(java.lang.Object, java.util.List)
+	 */
 	@Override
 	public void validate(PersonByPidDomainResponse toValidate, List<ServiceMessage> messages) {
 		Object supplemental = getSupplemental(PersonByPidDomainRequest.class);
 		PersonByPidDomainRequest request =
 				supplemental == null ? new PersonByPidDomainRequest() : (PersonByPidDomainRequest) supplemental;
 
-				// if response has errors, fatals or warnings skip validations 
-				if (toValidate.hasErrors() 
-						|| toValidate.hasFatals() 
-						|| toValidate.hasWarnings()) {
-					return;
-				}
-				// check if empty response, or errors / fatals
-				if (toValidate == null || toValidate.getPersonInfo() == null) {
-					LOGGER.info("findPersonByParticipantID empty response - throwing PersonServiceException: " + INVOKE_FALLBACK_MESSAGE);
-					throw new PersonServiceException("", INVOKE_FALLBACK_MESSAGE, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
-				}
+		// if response has errors, fatals or warnings skip validations
+		if (toValidate.hasErrors()
+				|| toValidate.hasFatals()
+				|| toValidate.hasWarnings()) {
+			return;
+		}
+		// check if empty response, or errors / fatals
+		if (toValidate == null || toValidate.getPersonInfo() == null) {
+			LOGGER.info("findPersonByParticipantID empty response - throwing PersonServiceException: " + INVOKE_FALLBACK_MESSAGE);
+			throw new PersonServiceException("", INVOKE_FALLBACK_MESSAGE, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
-				/*
-				 * In a real-world service, it is highly unlikely that a user would be allowed
-				 * to query for someone else's data. In general, responses should *always*
-				 * contain only data for the logged-in person.
-				 * Therefore, the checks below would typically throw an exception,
-				 * not just set a warning.
-				 */
-				LOGGER.debug("Request PID: " + request.getParticipantID()
+		/*
+		 * In a real-world service, it is highly unlikely that a user would be allowed
+		 * to query for someone else's data. In general, responses should *always*
+		 * contain only data for the logged-in person.
+		 * Therefore, the checks below would typically throw an exception,
+		 * not just set a warning.
+		 */
+		LOGGER.debug("Request PID: " + request.getParticipantID()
 				+ "; Response PID: " + toValidate.getPersonInfo().getParticipantId()
 				+ "; PersonTraits PID: "
 				+ (SecurityUtils.getPersonTraits() == null ? "null" : SecurityUtils.getPersonTraits().getPid()));
 
-				// check requested pid = returned pid
-				if (!toValidate.getPersonInfo().getParticipantId().equals(request.getParticipantID())) {
-					LOGGER.info("findPersonByParticipantID response has different PID than the request - throwing PersonServiceException: "
-							+ INVOKE_FALLBACK_MESSAGE);
-					toValidate.addMessage(MessageSeverity.WARN, HttpStatus.OK.name(),
-							"A different Participant ID was retrieved than the one requested. " + WARN_MESSAGE, HttpStatus.OK);
-				}
-				// check logged in user's pid matches returned pid
-				PersonTraits personTraits = SecurityUtils.getPersonTraits();
-				if (personTraits != null && StringUtils.isNotBlank(personTraits.getPid())) {
-					if (toValidate.getPersonInfo() != null
-							&& toValidate.getPersonInfo().getParticipantId() != null
-							&& !personTraits.getPid().equals(toValidate.getPersonInfo().getParticipantId().toString())) {
-						LOGGER.info(
-								"findPersonByParticipantID response has different PID than the logged in user - throwing PersonServiceException: "
-										+ INVOKE_FALLBACK_MESSAGE);
-						toValidate.addMessage(MessageSeverity.WARN, HttpStatus.OK.name(),
-								"A different Participant ID was retrieved than that of the logged in user. " + WARN_MESSAGE, HttpStatus.OK);
-					}
-				}
+		// check requested pid = returned pid
+		if (!toValidate.getPersonInfo().getParticipantId().equals(request.getParticipantID())) {
+			LOGGER.info("findPersonByParticipantID response has different PID than the request - throwing PersonServiceException: "
+					+ INVOKE_FALLBACK_MESSAGE);
+			toValidate.addMessage(MessageSeverity.WARN, HttpStatus.OK.name(),
+					"A different Participant ID was retrieved than the one requested. " + WARN_MESSAGE, HttpStatus.OK);
+		}
+		// check logged in user's pid matches returned pid
+		PersonTraits personTraits = SecurityUtils.getPersonTraits();
+		if (personTraits != null && StringUtils.isNotBlank(personTraits.getPid())) {
+			if (toValidate.getPersonInfo() != null
+					&& toValidate.getPersonInfo().getParticipantId() != null
+					&& !personTraits.getPid().equals(toValidate.getPersonInfo().getParticipantId().toString())) {
+				LOGGER.info(
+						"findPersonByParticipantID response has different PID than the logged in user - throwing PersonServiceException: "
+								+ INVOKE_FALLBACK_MESSAGE);
+				toValidate.addMessage(MessageSeverity.WARN, HttpStatus.OK.name(),
+						"A different Participant ID was retrieved than that of the logged in user. " + WARN_MESSAGE, HttpStatus.OK);
+			}
+		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.va.ocp.framework.validation.AbstractStandardValidator#setCallingMethod(java.lang.reflect.Method)
+	 */
 	@Override
 	public void setCallingMethod(Method callingMethod) {
 		this.callingMethod = callingMethod;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see gov.va.ocp.framework.validation.AbstractStandardValidator#getCallingMethod()
+	 */
 	@Override
 	public Method getCallingMethod() {
 		return this.callingMethod;
