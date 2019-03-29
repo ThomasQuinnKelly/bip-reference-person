@@ -60,9 +60,9 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 	 * @param claimDetailByIdDomainRequest the claim detail by id domain request
 	 * @return the claim detail by id
 	 */
-	@CachePut(value = gov.va.ocp.vetservices.claims.utils.CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE,
+/*	@CachePut(value = gov.va.ocp.vetservices.claims.utils.CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE,
 			key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).createKey(#claimDetailByIdDomainRequest.id)",
-			unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
+			unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")*/
 	@HystrixCommand(fallbackMethod = "getClaimDetailByIdFallBack", commandKey = "getClaimDetailByIdCommand",
 	ignoreExceptions = { IllegalArgumentException.class })
 	public ClaimDetailByIdDomainResponse getClaimDetailById(ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest) {
@@ -126,9 +126,9 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 	 *
 	 * @return the claims
 	 */
-	@CachePut(value = CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE, 
+/*	@CachePut(value = CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE, 
 			key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).getUserBasedKey()", 
-			unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
+			unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")*/
 	@HystrixCommand(fallbackMethod = "getClaimsFallBack", commandKey = "getClaimsCommand", ignoreExceptions = {
 			IllegalArgumentException.class })
 	public AllClaimsDomainResponse getClaims(AllClaimsDomainRequest allClaimsDomainRequest) {
