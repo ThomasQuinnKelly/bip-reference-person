@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * The Class ApplicationConfig serves 2 purposes.
@@ -18,16 +19,17 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties
-@ConfigurationProperties(prefix="ocp-reference-person")
-@RefreshScope //to demo refreshing the properties after app running
+@ConfigurationProperties(prefix = "ocp-reference-person")
+@PropertySource("classpath:messages.properties")
+@RefreshScope // to demo refreshing the properties after app running
 public class ReferencePersonProperties {
 
 	@NotNull
-    private String env;
-	
+	private String env;
+
 	@NotNull
-    private String propSource;
-	
+	private String propSource;
+
 	@NotNull
 	private String sampleProperty;
 
