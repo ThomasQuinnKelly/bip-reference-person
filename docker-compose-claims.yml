@@ -6,7 +6,7 @@ services:
   ocp-vetservices-claims:
     image: ocpdev/ocp-vetservices-claims
     build:
-      context: ./
+      context: ./ocp-vetservices-claims
     environment:
       - spring.profiles.active=local-int
       - spring.cloud.consul.host=consul
@@ -24,6 +24,10 @@ services:
     networks:
        - bip
     depends_on:
+      - consul
+      - redis
+      - vault
+      - vault-config
       - oracle
 
   oracle:
@@ -67,6 +71,34 @@ services:
     depends_on:
       - consul
       - vault
+
+  redis:
+    image: redis
+    networks:
+      - bip
+
+  prometheus:
+    image:  prom/prometheus:v2.5.0
+    ports:
+      - "9090:9090"
+    volumes: 
+      - "./local-dev/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+    networks:
+      - bip
+    depends_on:
+      - consul
+
+  grafana:
+    image:  ocpdev/grafana
+    build:
+      context: ./local-dev/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - bip
+    depends_on:
+      - prometheus
+
 networks:
   bip:
     driver: bridge
