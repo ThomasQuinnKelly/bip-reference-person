@@ -21,6 +21,11 @@ parameters:
     description: Number of replicas to run
     value: "1"
     required: true
+  - name: PORT
+    displayName: Port Number
+    description: Port number to expose the service on
+    value: "443"
+    required: true
 objects:
   - apiVersion: v1
     kind: DeploymentConfig
@@ -75,7 +80,7 @@ objects:
     spec:
       ports:
         - name: ${APP_NAME}
-          port: 443
+          port: ${PORT}
           protocol: TCP
           targetPort: 8080
       selector:
@@ -94,6 +99,6 @@ objects:
             paths:
               - backend:
                   serviceName: ${APP_NAME}
-                  servicePort: 443
+                  servicePort: ${PORT}
                 path: /
           tls: []
