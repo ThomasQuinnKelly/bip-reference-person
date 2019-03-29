@@ -55,7 +55,7 @@ objects:
             deploymentconfig: ${APP_NAME}
         spec:
           containers:
-            - image: ${IMAGE}:${IMAGE_TAG}
+            - image: ${REPOSITORY}/${PROJECT}/${IMAGE}:${IMAGE_TAG}
               imagePullPolicy: IfNotPresent
               name: ${APP_NAME}
               ports:
