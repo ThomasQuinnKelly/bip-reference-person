@@ -20,7 +20,7 @@ spring.profiles: local-int, ci, dev, stage, prod
 spring.profiles.include: remote_client_sims
 spring:
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521/ORCLCDB.localdomain
+    url: jdbc:oracle:thin:@ocp-vetservices-claims_oracle_1:1521/ORCLCDB.localdomain
     username: sys as sysdba
     password: Oradoc_db1
     driver-class-name: oracle.jdbc.OracleDriver

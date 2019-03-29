@@ -24,6 +24,10 @@ services:
     networks:
        - bip
     depends_on:
+      - consul
+      - redis
+      - vault
+      - vault-config    
       - oracle
 
   oracle:
@@ -32,7 +36,7 @@ services:
       - "1521:1521"
     networks:
       - bip
-      
+  
   consul:
     image: ocpdev/consul:1.4.3
     build:
@@ -67,6 +71,34 @@ services:
     depends_on:
       - consul
       - vault
+  
+  redis:
+    image: redis
+    networks:
+      - bip
+      
+  prometheus:
+    image:  prom/prometheus:v2.5.0
+    ports:
+      - "9090:9090"
+    volumes: 
+      - "./local-dev/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+    networks:
+      - bip
+    depends_on:
+      - consul
+
+  grafana:
+    image:  ocpdev/grafana
+    build:
+      context: ./local-dev/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - bip
+    depends_on:
+      - prometheus      
+
 networks:
   bip:
     driver: bridge
