@@ -55,7 +55,7 @@ objects:
             deploymentconfig: ${APP_NAME}
         spec:
           containers:
-            - image: ${IMAGE}:${IMAGE_TAG}
+            - image: ${REPOSITORY}/${PROJECT}/${IMAGE}:${IMAGE_TAG}
               imagePullPolicy: IfNotPresent
               name: ${APP_NAME}
               ports:
@@ -102,3 +102,17 @@ objects:
                   servicePort: ${PORT}
                 path: /
           tls: []
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: ${IMAGE}-config
+      labels:
+        app: ${APP_NAME}
+    data:
+      spring.cloud.consul.config.enabled: true
+      spring.cloud.consul.config.failFast: true
+      spring.cloud.consul.discovery.enabled: true
+      spring.cloud.consul.discovery.register: true
+      spring.cloud.vault.enabled: true
+      spring.cloud.vault.consul.enabled: true
+ 
