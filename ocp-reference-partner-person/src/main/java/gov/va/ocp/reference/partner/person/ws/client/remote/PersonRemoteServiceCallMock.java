@@ -38,7 +38,7 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 			+ ".getKeyForMockResponse(..) does not have a file naming block for requests of type ";
 
 	/*
-	 * Below: Constants for mock XML file names
+	 * Below: OcpConstants for mock XML file names
 	 */
 
 	/** The {@code src/main/resources/test/mocks/*} filename prefix for the "filename.PID.xml" mock file. */
