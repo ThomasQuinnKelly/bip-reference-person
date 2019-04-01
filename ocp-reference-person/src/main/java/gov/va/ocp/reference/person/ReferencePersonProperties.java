@@ -12,10 +12,8 @@ import org.springframework.context.annotation.PropertySource;
  * The Class ApplicationConfig serves 2 purposes.
  * (1) It provides a bean that classes can use to get to our properties.
  * (2) It allows the actuator and the /configprops endpoint to surface all bound/bindable properties (as documentation)
- */
-/**
- * @author akulkarni
  *
+ * @author akulkarni
  */
 @Configuration
 @EnableConfigurationProperties
