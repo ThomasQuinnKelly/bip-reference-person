@@ -7,6 +7,15 @@ parameters:
     displayName: Application Name
     description: Unique application identifier
     required: true
+  - name: PROJECT
+    displayName: Project Name
+    description: Project Name in Openshift
+    required: true
+  - name: REPOSITORY
+    displayName: Repository URL
+    description: Repository URL
+    value: "docker-registry.default.svc:5000"
+    required: true
   - name: IMAGE
     displayName: Image Name
     description: Container Image Name including repository (but not tag)
