@@ -33,7 +33,7 @@ parameters:
   - name: PORT
     displayName: Port Number
     description: Port number to expose the service on
-    value: "443"
+    value: 443
     required: true
 objects:
   - apiVersion: v1
