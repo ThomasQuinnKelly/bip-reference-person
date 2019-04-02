@@ -33,7 +33,7 @@ parameters:
   - name: PORT
     displayName: Port Number
     description: Port number to expose the service on
-    value: 443
+    value: "443"
     required: true
 objects:
   - apiVersion: v1
@@ -108,7 +108,7 @@ objects:
             paths:
               - backend:
                   serviceName: ${APP_NAME}
-                  servicePort: ${PORT}
+                  servicePort: ${{PORT}}
                 path: /
           tls: []
   - apiVersion: v1
