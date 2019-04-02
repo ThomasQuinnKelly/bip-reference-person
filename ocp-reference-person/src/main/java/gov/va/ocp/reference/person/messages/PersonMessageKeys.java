@@ -1,4 +1,4 @@
-package gov.va.ocp.reference.person;
+package gov.va.ocp.reference.person.messages;
 
 import java.util.Locale;
 
@@ -14,18 +14,22 @@ import gov.va.ocp.framework.messages.MessageKey;
  */
 public enum PersonMessageKeys implements MessageKey {
 
-	/** Minimum allowed value validation for PID */
-	OCP_PERSON_INFO_REQUEST_PID_MIN(
-			"ocp.reference.person.info.request.pid.Min",
+	/** Minimum allowed value validation for PID; no args */
+	OCP_PERSON_INFO_REQUEST_PID_MIN("ocp.reference.person.info.request.pid.Min",
 			"PersonInfoRequest.participantID cannot be zero"),
-	/** PID cannot be null validation */
-	OCP_PERSON_INFO_REQUEST_PID_NOTNULL(
-			"ocp.reference.person.info.request.pid.NotNull",
+	/** PID cannot be null validation; no args */
+	OCP_PERSON_INFO_REQUEST_PID_NOTNULL("ocp.reference.person.info.request.pid.NotNull",
 			"PersonInfoRequest.participantID cannot be null"),
-	/** Payload cannot be null validation */
-	OCP_PERSON_INFO_REQUEST_NOTNULL(
-			"ocp.reference.person.info.request.NotNull",
-			"PersonInfoRequest Payload cannot be null");
+	/** Payload cannot be null validation; no args */
+	OCP_PERSON_INFO_REQUEST_NOTNULL("ocp.reference.person.info.request.NotNull",
+			"PersonInfoRequest Payload cannot be null"),
+
+	/** Response has different PID than the request; no args */
+	OCP_PERSON_INFO_REQUEST_PID_INCONSISTENT("ocp.reference.person.info.request.pid.inconsistent",
+			"Response returned an invalid Participant ID."),
+	/** Response has different PID than the logged in user; no args */
+	OCP_PERSON_INFO_REQUEST_PID_INVALID("ocp.reference.person.info.request.pid.invalid",
+			"Response has different PID than the logged in user.");
 
 	/** The key - must be identical to the key in framework-messages.properties */
 	private String key;
@@ -63,7 +67,7 @@ public enum PersonMessageKeys implements MessageKey {
 	 * @see gov.va.ocp.framework.messages.MessageKey#getMessage(java.lang.Object[])
 	 */
 	@Override
-	public String getMessage(Object[] params) {
+	public String getMessage(Object... params) {
 		return messageSource.getMessage(this.getKey(), params, this.defaultMessage, Locale.getDefault());
 	}
 }
