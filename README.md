@@ -11,7 +11,7 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 ## How to include the dependency framework libraries in your project
 
-The projects in this repository are dependent on libraries from [OCP framework](https://github.com/department-of-veterans-affairs/ocp-framework) for  auto configuration, common shared libraries, parent maven configuration and test libary. These libraries can be included as shown below.
+The projects in this repository are dependent on the libraries from [OCP framework](https://github.com/department-of-veterans-affairs/ocp-framework) for  auto configuration, common shared libraries, parent pom maven configuration and test libary. These libraries can be included as shown below.
 
        <dependency>
          <groupId>gov.va.ocp.framework</groupId>
@@ -46,6 +46,7 @@ Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 * [Secrets Management](docs/secrets.md)
 * [Swagger Management](docs/swagger-management.md)
 * [Security Management](docs/application-security-management.md)
+* [Secure Communications](docs/secure-communication.md)
 * [Log and Audit Management](docs/log-audit-management.md)
 * [Cache Management](docs/cache-management.md)
 * [Validation Management](docs/validation-management.md)
