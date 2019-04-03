@@ -183,7 +183,7 @@ ocp:
         - /**
   swagger:
     title: OCP Vetservices Claims Spring Boot Service v1 API Documentation
-    description: API Error Keys <a href="swagger/error-keys.html">error keys</a>
+    description: 
     groupName: "@project.name@-@project.version@"
     version: ${info.build.version}
     securePaths: /api/v?.*/claims.*
