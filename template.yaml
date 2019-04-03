@@ -47,6 +47,17 @@ objects:
       selector:
         app: ${APP_NAME}
         deploymentconfig: ${APP_NAME}
+      triggers:
+        - type: "ConfigChange"
+        - type: "ImageChange"
+          imageChangeParams:
+            automatic: true
+            from:
+              kind: "ImageStreamTag"
+              name: ${IMAGE}:${IMAGE_TAG}
+              namespace: ${PROJECT}
+            containerNames:
+              - ${APP_NAME}
       strategy:
         resources: {}
         rollingParams:
