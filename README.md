@@ -11,7 +11,7 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 ## How to include the dependency framework libraries in your project
 
-The projects in this repository are dependent on libraries from [OCP framework](https://github.com/department-of-veterans-affairs/ocp-framework) for  auto configuration, common shared libraries, parent maven configuration and test libary. These libraries can be included as shown below.
+The projects in this repository are dependent on the libraries from [OCP framework](https://github.com/department-of-veterans-affairs/ocp-framework) for  auto configuration, common shared libraries, parent pom maven configuration and test libary. These libraries can be included as shown below.
 
        <dependency>
          <groupId>gov.va.ocp.framework</groupId>
