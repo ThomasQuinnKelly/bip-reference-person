@@ -23,6 +23,7 @@ services:
       - "8080:8080"
     networks:
        - bip
+    entrypoint: ["/wait-for-it.sh","oracle:1521","--timeout=0","--strict", "--", "java", "-jar","/ocp-vetservices-claims.jar" ]
     depends_on:
       - consul
       - redis
@@ -30,6 +31,7 @@ services:
       - vault-config    
       - oracle
 
+# Developer note: To run oracle locally in local-int profile for first time, login into dockerhub and susbsribe to the oracle image.
   oracle:
     image: store/oracle/database-enterprise:12.2.0.1
     ports:

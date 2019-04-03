@@ -11,3 +11,6 @@ ADD ${JAR_FILE} ocp-vetservices-claims.jar
 
 # Run the jar file 
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/ocp-vetservices-claims.jar"]
+
+ADD ./local-dev/wait-for-it.sh /wait-for-it.sh
+
