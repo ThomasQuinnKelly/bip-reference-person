@@ -42,7 +42,7 @@ services:
   consul:
     image: ocpdev/consul:1.4.3
     build:
-      context: ./local-dev/consul
+      context: ../local-dev/consul
     environment:
       - MASTER_ACL_TOKEN=7652ba4c-0f6e-8e75-5724-5e083d72cfe4
     ports:
@@ -62,7 +62,7 @@ services:
   vault-config:
     image: ocpdev/vault-config
     build:
-      context: ./local-dev/vault-config
+      context: ../local-dev/vault-config
     environment:
       - VAULT_ADDR=http://vault:8200
       - VAULT_DEV_ROOT_TOKEN_ID=${VAULT_TOKEN:-vaultroot}
@@ -84,7 +84,7 @@ services:
     ports:
       - "9090:9090"
     volumes: 
-      - "./local-dev/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+      - "../local-dev/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
     networks:
       - bip
     depends_on:
@@ -93,7 +93,7 @@ services:
   grafana:
     image:  ocpdev/grafana
     build:
-      context: ./local-dev/grafana
+      context: ../local-dev/grafana
     ports:
       - "3000:3000"
     networks:
