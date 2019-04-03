@@ -4,9 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import gov.va.ocp.framework.messages.MessageKeys;
 
+@RunWith(JUnit4.class)
 public class PersonPartnerCheckedExceptionTest {
 
 	private PersonPartnerCheckedException testException;
@@ -16,7 +19,7 @@ public class PersonPartnerCheckedExceptionTest {
 
 	@Test
 	public void testPersonWsClientException() {
-		testException = new PersonPartnerCheckedException(null, null, null, null);
+		testException = new PersonPartnerCheckedException(null, null, null, TEST_CAUSE);
 		assertNotNull(testException);
 	}
 
@@ -37,7 +40,7 @@ public class PersonPartnerCheckedExceptionTest {
 
 	@Test
 	public void testPersonWsClientExceptionThrowable() {
-		testException = new PersonPartnerCheckedException(null, null, null, null, TEST_CAUSE);
+		testException = new PersonPartnerCheckedException(null, null, null, TEST_CAUSE);
 		assertNotNull(testException);
 		assertEquals(TEST_CAUSE, testException.getCause());
 	}
