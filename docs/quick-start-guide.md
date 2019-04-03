@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-* Apache Maven 3.5.4
+* Apache Maven 3.6.0
 * JDK 8
 * GIT 2.18.0 or higher
 * IDE (Spring Tool Suite:STS is recommended as it plays nicely with Spring Boot. However you are free to choose.)
