@@ -35,18 +35,25 @@ parameters:
     description: Port number to expose the service on
     value: "443"
     required: true
+  - name: BRANCH
+    displayName: Branch name from SCM
+    description: Branch name from SCM, used to label objects for pipeline detection
+    value: "master"
+    required: false
 objects:
   - apiVersion: v1
     kind: DeploymentConfig
     metadata:
       labels:
         app: ${APP_NAME}
-      name: ${APP_NAME}
+        branch: ${BRANCH}
+      name: ${APP_NAME}-${BRANCH}
     spec:
       replicas: ${REPLICA_COUNT}
       selector:
         app: ${APP_NAME}
-        deploymentconfig: ${APP_NAME}
+        deploymentconfig: ${APP_NAME}-${BRANCH}
+        branch: ${BRANCH}
       triggers:
         - type: "ConfigChange"
         - type: "ImageChange"
@@ -72,7 +79,7 @@ objects:
           annotations: null
           labels:
             app: ${APP_NAME}
-            deploymentconfig: ${APP_NAME}
+            deploymentconfig: ${APP_NAME}-${BRANCH}
         spec:
           containers:
             - image: ${REPOSITORY}/${PROJECT}/${IMAGE}:${IMAGE_TAG}
@@ -96,7 +103,8 @@ objects:
     metadata:
       labels:
         app: ${APP_NAME}
-      name: ${APP_NAME}
+        branch: ${BRANCH}
+      name: ${APP_NAME}-${BRANCH}
     spec:
       ports:
         - name: ${APP_NAME}
@@ -105,17 +113,16 @@ objects:
           targetPort: 8080
       selector:
         app: ${APP_NAME}
-        deploymentconfig: ${APP_NAME}
+        deploymentconfig: ${APP_NAME}-${BRANCH}
       sessionAffinity: None
       type: ClusterIP
   - apiVersion: extensions/v1beta1
     kind: Ingress
     metadata:
-      name: ${APP_NAME}
+      name: ${APP_NAME}-${BRANCH}
     spec:
       rules:
-        - host: ${APP_NAME}.192.168.64.2.nip.io
-          http:
+        - http:
             paths:
               - backend:
                   serviceName: ${APP_NAME}
@@ -125,9 +132,10 @@ objects:
   - apiVersion: v1
     kind: ConfigMap
     metadata:
-      name: ${IMAGE}-config
+      name: ${IMAGE}-${BRANCH}-config
       labels:
         app: ${APP_NAME}
+        branch: ${BRANCH}
     data:
       spring.cloud.consul.config.enabled: "true"
       spring.cloud.consul.config.failFast: "true"
