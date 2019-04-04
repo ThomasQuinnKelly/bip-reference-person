@@ -11,12 +11,27 @@ server:
 ---
 spring.profiles: default
 spring.profiles.include: remote_client_sims, embedded-redis
+# spring.autoconfigure.exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 ocp-vetservices-claims:
   ribbon:
     listOfServers: localhost:${server.port}
 ---
 spring.profiles: local-int, ci, dev, stage, prod
 spring.profiles.include: remote_client_sims
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@oracle:1521/ORCLCDB.localdomain
+    username: sys as sysdba
+    password: Oradoc_db1
+    driver-class-name: oracle.jdbc.OracleDriver
+    initialize: true
+    data: classpath:/import.sql
+  jpa:
+    hibernate:
+      ddl-auto: create
+  hikari:
+    connection-timeout: 60000
+    maximum-pool-size: 5
 ---
 spring: 
   cache:
@@ -168,7 +183,7 @@ ocp:
         - /**
   swagger:
     title: OCP Vetservices Claims Spring Boot Service v1 API Documentation
-    description: API Error Keys <a href="swagger/error-keys.html">error keys</a>
+    description: 
     groupName: "@project.name@-@project.version@"
     version: ${info.build.version}
     securePaths: /api/v?.*/claims.*
