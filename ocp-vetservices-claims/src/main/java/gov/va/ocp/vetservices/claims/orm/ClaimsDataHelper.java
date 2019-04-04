@@ -45,7 +45,7 @@ public class ClaimsDataHelper {
 			// the circuit not to be opened
 			String message = THROWSTR + clientException.getClass().getName() + ": " + clientException.getMessage();
 			LOGGER.error(message, clientException);
-			throw new ClaimsServiceException(MessageKeys.PROPAGATE, MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
+			throw new ClaimsServiceException(MessageKeys.PROPAGATE, MessageSeverity.WARN, HttpStatus.BAD_REQUEST,
 					clientException, clientException.getMessage());
 		} catch (final RuntimeException runtimeException) {
 			// RuntimeException can't be ignored as it's a candidate for circuit to be opened in Hystrix
