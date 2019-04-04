@@ -74,28 +74,28 @@ ocp-reference-person:
 #-##################################################
 logging: 
   level:
-#    gov.va.ocp: DEBUG
-    gov.va.ocp.framework.ws.client: INFO
-    gov.va.ocp.framework.rest.provider: INFO
-    gov.va.ocp.reference.partner: INFO
-    gov.va.ocp.reference.person.rest.client.feign.FeignPersonClient: INFO
-    gov.va.ocp.reference: INFO
-    gov.va.ocp.framework: INFO
+    gov.va.ocp: DEBUG
+#    gov.va.ocp.framework.ws.client: INFO
+#    gov.va.ocp.framework.rest.provider: INFO
+#    gov.va.ocp.reference.partner: INFO
+#    gov.va.ocp.reference.person.rest.client.feign.FeignPersonClient: INFO
+#    gov.va.ocp.reference: INFO
+#    gov.va.ocp.framework: INFO
+    org.springframework: DEBUG
+#    org.springframework.cloud.openfeign: INFO
+#    org.springframework.security.web: INFO
+#    org.springframework.cloud.consul.config: INFO
+#    org.springframework.cloud.consul: INFO
+#    org.springframework.client.discovery: INFO
+#    org.springframework.cloud.sleuth: INFO 
+#    org.springframework.cloud.sleuth.log: INFO
+#    org.springframework.security: INFO
+#    org.springframework.ws: INFO
+#    org.springframework.web.client: INFO
+#    org.springframework.cache: INFO 
+#    org.springframework.retry: INFO
     com.ecwid.consul: INFO
-#    org.springframework: DEBUG
-    org.springframework.cloud.openfeign: INFO
-    org.springframework.security.web: INFO
-    org.springframework.cloud.consul.config: INFO
-    org.springframework.cloud.consul: INFO
-    org.springframework.client.discovery: INFO
-    org.springframework.cloud.sleuth: INFO 
-    org.springframework.cloud.sleuth.log: INFO
-    org.springframework.security: INFO
-    org.springframework.ws: INFO
-    org.springframework.web.client: INFO
-    org.springframework.cache: INFO 
     org.apache.http.impl.client: INFO
-    org.springframework.retry: INFO
     sun.net.www.protocol: INFO
     feign: INFO
 ##################################################

@@ -2,10 +2,8 @@ package gov.va.ocp.reference.person.messages;
 
 import java.util.Locale;
 
-import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
-import gov.va.ocp.framework.config.MessageKeysConfig;
 import gov.va.ocp.framework.messages.MessageKey;
 
 /**
@@ -32,12 +30,21 @@ public enum PersonMessageKeys implements MessageKey {
 	OCP_PERSON_INFO_REQUEST_PID_INVALID("ocp.reference.person.info.request.pid.invalid",
 			"Response has different PID than the logged in user.");
 
+	/** The filename "name" part of the properties file to get from the classpath */
+	private static final String propertiesFile = "messages";
+	/** The message source containing properties for this enum */
+	private static ReloadableResourceBundleMessageSource messageSource;
+	/* Populate the message source from the properties file */
+	static {
+		messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasename("classpath:" + propertiesFile);
+		messageSource.setDefaultEncoding("UTF-8");
+	}
+
 	/** The key - must be identical to the key in framework-messages.properties */
 	private String key;
 	/** A default message, in case the key is not found in framework-messages.properties */
 	private String defaultMessage;
-	/** The spring message source */
-	private MessageSource messageSource;
 
 	/**
 	 * Construct keys with their property file counterpart key and a default message.
@@ -48,10 +55,6 @@ public enum PersonMessageKeys implements MessageKey {
 	private PersonMessageKeys(String key, String defaultMessage) {
 		this.key = key;
 		this.defaultMessage = defaultMessage;
-		// Each enumeration must manually get spring bean
-		AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext(MessageKeysConfig.class);
-		this.messageSource = ((MessageSource) appContext.getBean("messageSource"));
-		appContext.close();
 	}
 
 	/*
