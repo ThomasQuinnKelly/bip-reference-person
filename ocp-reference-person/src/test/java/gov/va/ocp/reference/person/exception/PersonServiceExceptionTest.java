@@ -10,6 +10,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import gov.va.ocp.framework.messages.MessageKeys;
 import gov.va.ocp.framework.messages.MessageSeverity;
 
 /**
@@ -19,12 +20,13 @@ import gov.va.ocp.framework.messages.MessageSeverity;
 public class PersonServiceExceptionTest {
 	PersonServiceException instance;
 
-	private static final String KEY = "EVSS-7001";
-	private static final String MESSAGE = "Invalid Pid";
+	private static final MessageKeys KEY = MessageKeys.NO_KEY;
+	private static final String NAME = "NO_KEY";
+	private static final String MESSAGE = "NO_KEY";
 
 	@Before
 	public void setUp() {
-		instance = new PersonServiceException(KEY, MESSAGE, MessageSeverity.ERROR, null);
+		instance = new PersonServiceException(MessageKeys.NO_KEY, MessageSeverity.ERROR, null);
 	}
 
 	/**
@@ -44,7 +46,7 @@ public class PersonServiceExceptionTest {
 	@Test
 	public void testGetKey() {
 		System.out.println("getKey");
-		String expResult = KEY;
+		String expResult = NAME;
 		String result = instance.getKey();
 		assertEquals(expResult, result);
 	}
@@ -64,5 +66,4 @@ public class PersonServiceExceptionTest {
 		assertEquals(expResult, result);
 
 	}
-
 }

@@ -21,6 +21,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import gov.va.ocp.framework.cache.OcpCacheUtil;
 import gov.va.ocp.framework.exception.OcpException;
 import gov.va.ocp.framework.exception.OcpRuntimeException;
+import gov.va.ocp.framework.messages.MessageKeys;
 import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.framework.validation.Defense;
 import gov.va.ocp.reference.person.ReferencePersonService;
@@ -105,8 +106,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			} catch (OcpException | OcpRuntimeException ocpException) {
 				PersonByPidDomainResponse domainResponse = new PersonByPidDomainResponse();
 				// check exception..create domain model response
-				domainResponse.addMessage(ocpException.getSeverity(), ocpException.getKey(), ocpException.getMessage(),
-						ocpException.getStatus());
+				domainResponse.addMessage(ocpException.getSeverity(), ocpException.getStatus(), ocpException.getMessageKey(),
+						ocpException.getParams());
 				return domainResponse;
 			}
 		}
@@ -147,14 +148,14 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 
 		if (throwable != null) {
 			LOGGER.debug(ReflectionToStringBuilder.toString(throwable, null, true, true, Throwable.class));
-			response.addMessage(MessageSeverity.WARN, "",
-					throwable.getLocalizedMessage(), HttpStatus.OK);
+			response.addMessage(MessageSeverity.WARN, HttpStatus.OK, MessageKeys.OCP_GLOBAL_GENERAL_EXCEPTION,
+					throwable.getClass().getSimpleName(), throwable.getLocalizedMessage());
 		} else {
 			LOGGER.error(
 					"findPersonByParticipantIDFallBack No Throwable Exception. Just Raise Runtime Exception {}",
 					personByPidDomainRequest);
-			response.addMessage(MessageSeverity.WARN, "",
-					"There was a problem processing your request.", HttpStatus.OK);
+			response.addMessage(MessageSeverity.WARN, HttpStatus.OK, MessageKeys.WARN_KEY,
+					"There was a problem processing your request.");
 		}
 		return response;
 	}

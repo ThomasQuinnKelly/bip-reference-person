@@ -80,8 +80,8 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 		} catch (OcpRuntimeException ocpRuntimeException) {
 			ClaimDetailByIdDomainResponse response = new ClaimDetailByIdDomainResponse();
 			// check exception..create domain model response
-			response.addMessage(ocpRuntimeException.getSeverity(), ocpRuntimeException.getKey(), ocpRuntimeException.getMessage(),
-					ocpRuntimeException.getStatus());
+			response.addMessage(ocpRuntimeException.getSeverity(), ocpRuntimeException.getStatus(), ocpRuntimeException.getMessageKey(),
+					ocpRuntimeException.getParams());
 			return response;
 		}
 		return claimDetailByIdDomainResponse;

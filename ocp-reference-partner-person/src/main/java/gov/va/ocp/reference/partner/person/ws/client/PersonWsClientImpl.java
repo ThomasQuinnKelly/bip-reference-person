@@ -13,6 +13,7 @@ import gov.va.ocp.framework.audit.AuditEvents;
 import gov.va.ocp.framework.audit.Auditable;
 import gov.va.ocp.framework.log.OcpLogger;
 import gov.va.ocp.framework.log.OcpLoggerFactory;
+import gov.va.ocp.framework.messages.MessageKeys;
 import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.framework.validation.Defense;
 import gov.va.ocp.framework.ws.client.BaseWsClientImpl;
@@ -90,7 +91,8 @@ public class PersonWsClientImpl extends BaseWsClientImpl implements PersonWsClie
 			 * so the calling Helper has the opportunity to
 			 * do something about it if necessary.
 			 */
-			throw new PersonPartnerCheckedException("", sf.getMessage(), MessageSeverity.ERROR, HttpStatus.BAD_REQUEST, sf);
+			throw new PersonPartnerCheckedException(MessageKeys.PROPAGATE, MessageSeverity.ERROR, HttpStatus.BAD_REQUEST, sf,
+					sf.getMessage());
 		}
 
 		Defense.notNull(webServiceResponse, RESPONSE_FROM_WEBSERVICE_CALL_NULL);
