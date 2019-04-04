@@ -11,7 +11,7 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
-import gov.va.ocp.framework.test.restassured.BaseStepDefHandler;
+import gov.va.ocp.framework.test.rest.BaseStepDefHandler;
 import gov.va.ocp.framework.test.util.JsonUtil;
 
 public class PersonHealth {
@@ -38,7 +38,7 @@ public class PersonHealth {
 	public void getPersonHealthMessageValidation() {
 		String status = JsonUtil.getString(handler.getStrResponse(), "status");
 		String details = JsonUtil.getString(handler.getStrResponse(),
-				"details.'Reference Person Service REST Endpoint'");
+				"['details'].['Reference Person Service REST Endpoint']");
 		assertThat(status, equalTo("UP"));
 		assertThat(details, equalTo("Person Service REST Provider Up and Running!"));
 	}
