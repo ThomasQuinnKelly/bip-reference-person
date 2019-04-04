@@ -15,6 +15,7 @@ import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
 import gov.va.ocp.vetservices.claims.exception.ClaimsServiceException;
+import gov.va.ocp.vetservices.claims.messages.ClaimsMessageKeys;
 import gov.va.ocp.vetservices.claims.model.AllClaimsDomainResponse;
 
 @Component
@@ -45,8 +46,8 @@ public class ClaimsDataHelper {
 			// the circuit not to be opened
 			String message = THROWSTR + clientException.getClass().getName() + ": " + clientException.getMessage();
 			LOGGER.error(message, clientException);
-			throw new ClaimsServiceException(MessageKeys.PROPAGATE, MessageSeverity.WARN, HttpStatus.BAD_REQUEST,
-					clientException, clientException.getMessage());
+			throw new ClaimsServiceException(ClaimsMessageKeys.OCP_CLAIMS_INFO_REQUEST_CLAIMID_NOTVALID, MessageSeverity.WARN, HttpStatus.BAD_REQUEST,
+					clientException, ClaimsMessageKeys.OCP_CLAIMS_INFO_REQUEST_CLAIMID_NOTVALID);
 		} catch (final RuntimeException runtimeException) {
 			// RuntimeException can't be ignored as it's a candidate for circuit to be opened in Hystrix
 			String message = THROWSTR + runtimeException.getClass().getName() + ": " + runtimeException.getMessage();
