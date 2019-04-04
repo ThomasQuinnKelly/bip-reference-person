@@ -35,18 +35,36 @@ parameters:
     description: Port number to expose the service on
     value: "443"
     required: true
+  - name: BRANCH
+    displayName: Branch name from SCM
+    description: Branch name from SCM, used to label objects for pipeline detection
+    value: "master"
+    required: false
 objects:
   - apiVersion: v1
     kind: DeploymentConfig
     metadata:
       labels:
         app: ${APP_NAME}
-      name: ${APP_NAME}
+        branch: ${BRANCH}
+      name: ${APP_NAME}-${BRANCH}
     spec:
       replicas: ${REPLICA_COUNT}
       selector:
         app: ${APP_NAME}
-        deploymentconfig: ${APP_NAME}
+        deploymentconfig: ${APP_NAME}-${BRANCH}
+        branch: ${BRANCH}
+      triggers:
+        - type: "ConfigChange"
+        - type: "ImageChange"
+          imageChangeParams:
+            automatic: true
+            from:
+              kind: "ImageStreamTag"
+              name: ${IMAGE}:${IMAGE_TAG}
+              namespace: ${PROJECT}
+            containerNames:
+              - ${APP_NAME}
       strategy:
         resources: {}
         rollingParams:
@@ -61,7 +79,8 @@ objects:
           annotations: null
           labels:
             app: ${APP_NAME}
-            deploymentconfig: ${APP_NAME}
+            deploymentconfig: ${APP_NAME}-${BRANCH}
+            branch: ${BRANCH}
         spec:
           containers:
             - image: ${REPOSITORY}/${PROJECT}/${IMAGE}:${IMAGE_TAG}
@@ -75,6 +94,73 @@ objects:
                   cpu: 750m
                   memory: 1024Mi
               terminationMessagePath: /dev/termination-log
+              env:
+                - name: spring.cloud.consul.discovery.enabled
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.consul.discovery.enabled
+                - name: spring.cloud.consul.discovery.register
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.consul.discovery.register
+                - name: spring.cloud.consul.host
+                  valueFrom:
+                    fieldRef:
+                      apiVersion: v1
+                      fieldPath: status.hostIP
+                - name: spring.cloud.consul.port
+                  valueFrom:
+                    configMapKeyRef:
+                      name: consul-config
+                      key: CONSUL_PORT
+                - name: spring.cloud.consul.scheme
+                  valueFrom:
+                    configMapKeyRef:
+                      name: consul-config
+                      key: CONSUL_SCHEME
+                - name: spring.cloud.vault.enabled
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.vault.enabled
+                - name: spring.cloud.vault.authentication
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.vault.authentication
+                - name: spring.cloud.vault.kubernetes.service-account-token-file
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.vault.kubernetes.service-account-token-file
+                - name: spring.cloud.vault.host
+                  valueFrom:
+                    configMapKeyRef:
+                      name: vault-config
+                      key: VAULT_HOST
+                - name: spring.cloud.vault.port
+                  valueFrom:
+                    configMapKeyRef:
+                      name: vault-config
+                      key: VAULT_PORT
+                - name: spring.cloud.vault.scheme
+                  valueFrom:
+                    configMapKeyRef:
+                      name: vault-config
+                      key: VAULT_SCHEME
+                - name: spring.cloud.vault.scheme
+                  valueFrom:
+                    configMapKeyRef:
+                      name: vault-config
+                      key: VAULT_SCHEME
+                - name: spring.cloud.vault.kubernetes.role
+                  valueFrom:
+                    configMapKeyRef:
+                      name: vault-config
+                      key: VAULT_KUBERNETES_ROLE
+                
           dnsPolicy: ClusterFirst
           restartPolicy: Always
           securityContext: {}
@@ -85,7 +171,8 @@ objects:
     metadata:
       labels:
         app: ${APP_NAME}
-      name: ${APP_NAME}
+        branch: ${BRANCH}
+      name: ${APP_NAME}-${BRANCH}
     spec:
       ports:
         - name: ${APP_NAME}
@@ -94,29 +181,16 @@ objects:
           targetPort: 8080
       selector:
         app: ${APP_NAME}
-        deploymentconfig: ${APP_NAME}
+        deploymentconfig: ${APP_NAME}-${BRANCH}
       sessionAffinity: None
       type: ClusterIP
-  - apiVersion: extensions/v1beta1
-    kind: Ingress
-    metadata:
-      name: ${APP_NAME}
-    spec:
-      rules:
-        - host: ${APP_NAME}.192.168.64.2.nip.io
-          http:
-            paths:
-              - backend:
-                  serviceName: ${APP_NAME}
-                  servicePort: ${{PORT}}
-                path: /
-          tls: []
   - apiVersion: v1
     kind: ConfigMap
     metadata:
-      name: ${IMAGE}-config
+      name: ${IMAGE}-${BRANCH}-config
       labels:
         app: ${APP_NAME}
+        branch: ${BRANCH}
     data:
       spring.cloud.consul.config.enabled: "true"
       spring.cloud.consul.config.failFast: "true"
@@ -124,4 +198,6 @@ objects:
       spring.cloud.consul.discovery.register: "true"
       spring.cloud.vault.enabled: "true"
       spring.cloud.vault.consul.enabled: "true"
+      spring.cloud.vault.authentication: "KUBERNETES"
+      spring.cloud.vault.kubernetes.service-account-token-file: "/var/run/secrets/kubernetes.io/serviceaccount/token"
  
