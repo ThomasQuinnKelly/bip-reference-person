@@ -9,6 +9,7 @@ import gov.va.ocp.framework.log.OcpLoggerFactory;
 import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.framework.messages.ServiceMessage;
 import gov.va.ocp.framework.validation.AbstractStandardValidator;
+import gov.va.ocp.vetservices.claims.messages.ClaimsMessageKeys;
 import gov.va.ocp.vetservices.claims.model.AllClaimsDomainRequest;
 
 /**
@@ -26,9 +27,8 @@ public class AllClaimsDomainRequestValidator extends AbstractStandardValidator<A
 		// validate the request content (claim id)
 		if (toValidate.getPid() == null) {
 			LOGGER.debug("PID is null");
-			messages.add(new ServiceMessage(MessageSeverity.ERROR, "",
-					super.getCallingMethodName() + "Participant ID cannot be null.",
-					HttpStatus.BAD_REQUEST));
+			messages.add(new ServiceMessage(MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
+					ClaimsMessageKeys.OCP_CLAIMS_INFO_REQUEST_PID_NOTNULL));
 		} 
 	}
 

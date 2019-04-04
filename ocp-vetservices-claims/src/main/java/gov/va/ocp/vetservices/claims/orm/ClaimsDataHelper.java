@@ -10,6 +10,7 @@ import gov.va.ocp.framework.audit.AuditEvents;
 import gov.va.ocp.framework.audit.Auditable;
 import gov.va.ocp.framework.log.OcpLogger;
 import gov.va.ocp.framework.log.OcpLoggerFactory;
+import gov.va.ocp.framework.messages.MessageKeys;
 import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainRequest;
 import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
@@ -40,10 +41,12 @@ public class ClaimsDataHelper {
 			claimDetailByIdDomainResponse
 					.setClaim(claimsRepository.findById(Long.parseLong(claimDetailByIdDomainRequest.getId())).get());
 		} catch (final NoSuchElementException clientException) {
-			// any other exception can be caught and thrown as PersonServiceException for the circuit not to be opened
+			// any other exception can be caught and thrown as PersonServiceException for
+			// the circuit not to be opened
 			String message = THROWSTR + clientException.getClass().getName() + ": " + clientException.getMessage();
 			LOGGER.error(message, clientException);
-			throw new ClaimsServiceException("", clientException.getMessage(), MessageSeverity.WARN, HttpStatus.OK, clientException);
+			throw new ClaimsServiceException(MessageKeys.PROPAGATE, MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
+					clientException, clientException.getMessage());
 		} catch (final RuntimeException runtimeException) {
 			// RuntimeException can't be ignored as it's a candidate for circuit to be opened in Hystrix
 			String message = THROWSTR + runtimeException.getClass().getName() + ": " + runtimeException.getMessage();
