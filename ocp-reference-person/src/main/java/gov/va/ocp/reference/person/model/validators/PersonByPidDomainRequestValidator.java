@@ -6,9 +6,11 @@ import org.springframework.http.HttpStatus;
 
 import gov.va.ocp.framework.log.OcpLogger;
 import gov.va.ocp.framework.log.OcpLoggerFactory;
+import gov.va.ocp.framework.messages.MessageKeys;
 import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.framework.messages.ServiceMessage;
 import gov.va.ocp.framework.validation.AbstractStandardValidator;
+import gov.va.ocp.reference.person.messages.PersonMessageKeys;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 
 /**
@@ -23,7 +25,7 @@ public class PersonByPidDomainRequestValidator extends AbstractStandardValidator
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.va.ocp.framework.validation.AbstractStandardValidator#validate(java.lang.Object, java.util.List)
 	 */
 	@Override
@@ -32,14 +34,12 @@ public class PersonByPidDomainRequestValidator extends AbstractStandardValidator
 		Long pid = toValidate.getParticipantID();
 		if (pid == null) {
 			LOGGER.debug("PID is null");
-			messages.add(new ServiceMessage(MessageSeverity.ERROR, "",
-					super.getCallingMethodName() + "Participant ID cannot be null.",
-					HttpStatus.BAD_REQUEST));
+			messages.add(new ServiceMessage(MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
+					MessageKeys.OCP_VALIDATOR_NOT_NULL, super.getCallingMethodName() + "Participant ID"));
 		} else if (pid <= 0) {
 			LOGGER.debug("PID is <= 0");
-			messages.add(new ServiceMessage(MessageSeverity.ERROR, "",
-					super.getCallingMethodName() + "Participant ID must be greater than zero.",
-					HttpStatus.BAD_REQUEST));
+			messages.add(new ServiceMessage(MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
+					PersonMessageKeys.OCP_PERSON_INFO_REQUEST_PID_MIN));
 		}
 	}
 }

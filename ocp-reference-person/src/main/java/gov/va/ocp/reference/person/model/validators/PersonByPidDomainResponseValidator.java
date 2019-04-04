@@ -14,6 +14,7 @@ import gov.va.ocp.framework.security.PersonTraits;
 import gov.va.ocp.framework.security.SecurityUtils;
 import gov.va.ocp.framework.validation.AbstractStandardValidator;
 import gov.va.ocp.reference.person.exception.PersonServiceException;
+import gov.va.ocp.reference.person.messages.PersonMessageKeys;
 import gov.va.ocp.reference.person.model.PersonByPidDomainRequest;
 import gov.va.ocp.reference.person.model.PersonByPidDomainResponse;
 
@@ -23,7 +24,7 @@ public class PersonByPidDomainResponseValidator extends AbstractStandardValidato
 	private static final OcpLogger LOGGER = OcpLoggerFactory.getLogger(PersonByPidDomainResponseValidator.class);
 
 	/** For the message when hystrix fallback method is manually invoked */
-	private static final String INVOKE_FALLBACK_MESSAGE = "Could not get data from cache or partner.";
+//	private static final String INVOKE_FALLBACK_MESSAGE = "Could not get data from cache or partner.";
 
 	/** Reference-specific warning that a real service would handle PID requests better */
 	private static final String WARN_MESSAGE =
@@ -34,7 +35,7 @@ public class PersonByPidDomainResponseValidator extends AbstractStandardValidato
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.va.ocp.framework.validation.AbstractStandardValidator#validate(java.lang.Object, java.util.List)
 	 */
 	@Override
@@ -51,8 +52,9 @@ public class PersonByPidDomainResponseValidator extends AbstractStandardValidato
 		}
 		// check if empty response, or errors / fatals
 		if (toValidate == null || toValidate.getPersonInfo() == null) {
-			LOGGER.info("findPersonByParticipantID empty response - throwing PersonServiceException: " + INVOKE_FALLBACK_MESSAGE);
-			throw new PersonServiceException("", INVOKE_FALLBACK_MESSAGE, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
+			PersonMessageKeys key = PersonMessageKeys.OCP_PERSON_INFO_REQUEST_NOTNULL;
+			LOGGER.info(key.getKey() + " " + key.getMessage());
+			throw new PersonServiceException(key, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 		/*
@@ -69,10 +71,10 @@ public class PersonByPidDomainResponseValidator extends AbstractStandardValidato
 
 		// check requested pid = returned pid
 		if (!toValidate.getPersonInfo().getParticipantId().equals(request.getParticipantID())) {
-			LOGGER.info("findPersonByParticipantID response has different PID than the request - throwing PersonServiceException: "
-					+ INVOKE_FALLBACK_MESSAGE);
-			toValidate.addMessage(MessageSeverity.WARN, HttpStatus.OK.name(),
-					"A different Participant ID was retrieved than the one requested. " + WARN_MESSAGE, HttpStatus.OK);
+			PersonMessageKeys key = PersonMessageKeys.OCP_PERSON_INFO_REQUEST_PID_INCONSISTENT;
+
+			LOGGER.info(key.getKey() + " " + key.getMessage());
+			toValidate.addMessage(MessageSeverity.WARN, HttpStatus.OK, key);
 		}
 		// check logged in user's pid matches returned pid
 		PersonTraits personTraits = SecurityUtils.getPersonTraits();
@@ -80,18 +82,17 @@ public class PersonByPidDomainResponseValidator extends AbstractStandardValidato
 			if (toValidate.getPersonInfo() != null
 					&& toValidate.getPersonInfo().getParticipantId() != null
 					&& !personTraits.getPid().equals(toValidate.getPersonInfo().getParticipantId().toString())) {
-				LOGGER.info(
-						"findPersonByParticipantID response has different PID than the logged in user - throwing PersonServiceException: "
-								+ INVOKE_FALLBACK_MESSAGE);
-				toValidate.addMessage(MessageSeverity.WARN, HttpStatus.OK.name(),
-						"A different Participant ID was retrieved than that of the logged in user. " + WARN_MESSAGE, HttpStatus.OK);
+
+				PersonMessageKeys key = PersonMessageKeys.OCP_PERSON_INFO_REQUEST_PID_INVALID;
+				LOGGER.info(key.getKey() + " " + key.getMessage());
+				toValidate.addMessage(MessageSeverity.WARN, HttpStatus.OK, key);
 			}
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.va.ocp.framework.validation.AbstractStandardValidator#setCallingMethod(java.lang.reflect.Method)
 	 */
 	@Override
@@ -101,7 +102,7 @@ public class PersonByPidDomainResponseValidator extends AbstractStandardValidato
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gov.va.ocp.framework.validation.AbstractStandardValidator#getCallingMethod()
 	 */
 	@Override

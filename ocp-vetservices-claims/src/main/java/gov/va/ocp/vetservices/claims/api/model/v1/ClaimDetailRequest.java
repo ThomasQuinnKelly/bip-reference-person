@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * A class to represent a request for PersonInfoDomain from the Person Service.
+ * A class to represent a request for claimDetailByIdDomain from the Claims Service.
  *
  */
 @ApiModel(description = "Model for data to request ClaimDetailByIdDomain from the Claims Service")
