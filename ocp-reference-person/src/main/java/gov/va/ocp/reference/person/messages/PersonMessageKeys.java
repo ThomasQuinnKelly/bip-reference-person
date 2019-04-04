@@ -2,9 +2,10 @@ package gov.va.ocp.reference.person.messages;
 
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import gov.va.ocp.framework.config.MessageKeysConfig;
 import gov.va.ocp.framework.messages.MessageKey;
 
 /**
@@ -35,9 +36,7 @@ public enum PersonMessageKeys implements MessageKey {
 	private String key;
 	/** A default message, in case the key is not found in framework-messages.properties */
 	private String defaultMessage;
-
 	/** The spring message source */
-	@Autowired
 	private MessageSource messageSource;
 
 	/**
@@ -49,6 +48,10 @@ public enum PersonMessageKeys implements MessageKey {
 	private PersonMessageKeys(String key, String defaultMessage) {
 		this.key = key;
 		this.defaultMessage = defaultMessage;
+		// Each enumeration must manually get spring bean
+		AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext(MessageKeysConfig.class);
+		this.messageSource = ((MessageSource) appContext.getBean("messageSource"));
+		appContext.close();
 	}
 
 	/*
