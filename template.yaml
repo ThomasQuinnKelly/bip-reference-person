@@ -184,19 +184,6 @@ objects:
         deploymentconfig: ${APP_NAME}-${BRANCH}
       sessionAffinity: None
       type: ClusterIP
-  - apiVersion: extensions/v1beta1
-    kind: Ingress
-    metadata:
-      name: ${APP_NAME}-${BRANCH}
-    spec:
-      rules:
-        - http:
-            paths:
-              - backend:
-                  serviceName: ${APP_NAME}-${BRANCH}
-                  servicePort: ${{PORT}}
-                path: /
-          tls: []
   - apiVersion: v1
     kind: ConfigMap
     metadata:
