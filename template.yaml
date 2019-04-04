@@ -94,6 +94,73 @@ objects:
                   cpu: 750m
                   memory: 1024Mi
               terminationMessagePath: /dev/termination-log
+              env:
+                - name: spring.cloud.consul.discovery.enabled
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.consul.discovery.enabled
+                - name: spring.cloud.consul.discovery.register
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.consul.discovery.register
+                - name: spring.cloud.consul.host
+                  valueFrom:
+                    fieldRef:
+                      apiVersion: v1
+                      fieldPath: status.hostIP
+                - name: spring.cloud.consul.port
+                  valueFrom:
+                    configMapKeyRef:
+                      name: consul-config
+                      key: CONSUL_PORT
+                - name: spring.cloud.consul.scheme
+                  valueFrom:
+                    configMapKeyRef:
+                      name: consul-config
+                      key: CONSUL_SCHEME
+                - name: spring.cloud.vault.enabled
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.vault.enabled
+                - name: spring.cloud.vault.authentication
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.vault.authentication
+                - name: spring.cloud.vault.kubernetes.service-account-token-file
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.vault.kubernetes.service-account-token-file
+                - name: spring.cloud.vault.host
+                  valueFrom:
+                    configMapKeyRef:
+                      name: vault-config
+                      key: VAULT_HOST
+                - name: spring.cloud.vault.port
+                  valueFrom:
+                    configMapKeyRef:
+                      name: vault-config
+                      key: VAULT_PORT
+                - name: spring.cloud.vault.scheme
+                  valueFrom:
+                    configMapKeyRef:
+                      name: vault-config
+                      key: VAULT_SCHEME
+                - name: spring.cloud.vault.scheme
+                  valueFrom:
+                    configMapKeyRef:
+                      name: vault-config
+                      key: VAULT_SCHEME
+                - name: spring.cloud.vault.kubernetes.role
+                  valueFrom:
+                    configMapKeyRef:
+                      name: vault-config
+                      key: VAULT_KUBERNETES_ROLE
+                
           dnsPolicy: ClusterFirst
           restartPolicy: Always
           securityContext: {}
@@ -126,7 +193,7 @@ objects:
         - http:
             paths:
               - backend:
-                  serviceName: ${APP_NAME}
+                  serviceName: ${APP_NAME}-${BRANCH}
                   servicePort: ${{PORT}}
                 path: /
           tls: []
@@ -144,4 +211,6 @@ objects:
       spring.cloud.consul.discovery.register: "true"
       spring.cloud.vault.enabled: "true"
       spring.cloud.vault.consul.enabled: "true"
+      spring.cloud.vault.authentication: "KUBERNETES"
+      spring.cloud.vault.kubernetes.service-account-token-file: "/var/run/secrets/kubernetes.io/serviceaccount/token"
  
