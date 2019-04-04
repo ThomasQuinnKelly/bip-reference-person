@@ -2,9 +2,7 @@ package gov.va.ocp.vetservices.claims.messages;
 
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import gov.va.ocp.framework.messages.MessageKey;
 
 /**
@@ -14,6 +12,7 @@ import gov.va.ocp.framework.messages.MessageKey;
  */
 public enum ClaimsMessageKeys implements MessageKey {
 
+	
 	OCP_CLAIM_DETAIL_INFO_REQUEST_NOTNULL("ocp.vetservices.claims.claimdetail.request.NotNull",
 			"ClaimDeatilRequest Payload cannot be null"),
 	
@@ -23,18 +22,29 @@ public enum ClaimsMessageKeys implements MessageKey {
 	/** PID cannot be null validation; no args */
 	OCP_CLAIMS_INFO_REQUEST_PID_NOTNULL("ocp.vetservices.claims.request.pid.NotNull",
 			"ClaimInfoRequest.participantID cannot be null"),
-	/** PID cannot be null validation; no args */
+	/** Claim ID is not valid */
+	OCP_CLAIMS_INFO_REQUEST_CLAIMID_NOTVALID("ocp.vetservices.claims.request.claimId.NotValid",
+			"ClaimInfoRequest.claimId is not valid"),
+	/** Claim ID cannot be null validation; no args */
 	OCP_CLAIMS_INFO_REQUEST_CLAIMID_NOTNULL("ocp.vetservices.claims.request.claimId.NotNull",
 			"ClaimInfoRequest.claimId cannot be null");
+
+
+	/** The filename "name" part of the properties file to get from the classpath */
+	private static final String propertiesFile = "messages";
+	/** The message source containing properties for this enum */
+	private static ReloadableResourceBundleMessageSource messageSource;
+	/* Populate the message source from the properties file */
+	static {
+		messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasename("classpath:" + propertiesFile);
+		messageSource.setDefaultEncoding("UTF-8");
+	}
 
 	/** The key - must be identical to the key in framework-messages.properties */
 	private String key;
 	/** A default message, in case the key is not found in framework-messages.properties */
 	private String defaultMessage;
-
-	/** The spring message source */
-	@Autowired
-	private MessageSource messageSource;
 
 	/**
 	 * Construct keys with their property file counterpart key and a default message.
