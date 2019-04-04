@@ -7,8 +7,9 @@
         </encoder>
     </appender>
     
-    <logger name="gov.va.ocp.reference.service" level="ERROR"/>
-    <logger name="gov.va.ocp.reference.test" level="ERROR"/>
+    <logger name="gov.va.ocp.reference.service" level="WARN"/>
+    <logger name="gov.va.ocp.reference.test" level="WARN"/>
+    <logger name="gov.va.ocp.framework" level="WARN"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
