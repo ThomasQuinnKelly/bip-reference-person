@@ -1,9 +1,5 @@
 package gov.va.ocp.vetservices.claims.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +7,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +15,6 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import  gov.va.ocp.vetservices.claims.utils.HystrixCommandConstants;
 import gov.va.ocp.framework.exception.OcpRuntimeException;
-import gov.va.ocp.framework.messages.MessageSeverity;
-import gov.va.ocp.framework.messages.ServiceMessage;
 import gov.va.ocp.framework.cache.OcpCacheUtil;
 import gov.va.ocp.vetservices.claims.utils.CacheConstants;
 import gov.va.ocp.vetservices.claims.VetServicesClaimsService;
@@ -61,10 +54,9 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 	 * @return the claim detail by id
 	 */
 	@CachePut(value = gov.va.ocp.vetservices.claims.utils.CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE,
-			key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).createKey(#claimDetailByIdDomainRequest.id)",
-			unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
-	@HystrixCommand(fallbackMethod = "getClaimDetailByIdFallBack", commandKey = "getClaimDetailByIdCommand",
-	ignoreExceptions = { IllegalArgumentException.class })
+			key = "#root.methodName + T(gov.va.ocp.framework.cache.OcpCacheUtil).createKey(#claimDetailByIdDomainRequest.id)",
+			unless = "T(gov.va.ocp.framework.cache.OcpCacheUtil).checkResultConditions(#result)")
+	@HystrixCommand(commandKey = "getClaimDetailById", ignoreExceptions = { IllegalArgumentException.class, OcpRuntimeException.class })
 	public ClaimDetailByIdDomainResponse getClaimDetailById(ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest) {
 		String cacheKey = "getClaimDetailById" + OcpCacheUtil.createKey(claimDetailByIdDomainRequest.getId());
 
@@ -83,43 +75,17 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 			LOGGER.error(e.getMessage(), e);
 		}
 
-		claimDetailByIdDomainResponse = claimsDataHelper.getClaimDetailById(claimDetailByIdDomainRequest);
+		try {
+			claimDetailByIdDomainResponse = claimsDataHelper.getClaimDetailById(claimDetailByIdDomainRequest);
+		} catch (OcpRuntimeException ocpRuntimeException) {
+			ClaimDetailByIdDomainResponse response = new ClaimDetailByIdDomainResponse();
+			// check exception..create domain model response
+			response.addMessage(ocpRuntimeException.getSeverity(), ocpRuntimeException.getKey(), ocpRuntimeException.getMessage(),
+					ocpRuntimeException.getStatus());
+			return response;
+		}
 		return claimDetailByIdDomainResponse;
 	}
-
-	/**
-	 * Hystrix Fallback Method Which is Triggered When there Is An Unexpected Exception
-	 * in getClaimDetailById method.
-	 *
-	 * @param claimDetailByIdDomainRequest The request from the Java Service.
-	 * @param throwable the throwable
-	 * @return A JAXB element for the WS request
-	 */
-	@HystrixCommand(commandKey = "getClaimDetailByIdFallBackCommand")
-	public ClaimDetailByIdDomainResponse getClaimDetailByIdFallBack(
-			final ClaimDetailByIdDomainRequest claimDetailByIdDomainRequest, final Throwable throwable) {
-		LOGGER.info("Hystrix getClaimDetailByIdFallBack has been activated");
-		final ClaimDetailByIdDomainResponse response = new ClaimDetailByIdDomainResponse();
-		if (throwable != null) {
-			LOGGER.debug(ReflectionToStringBuilder.toString(throwable, null, true, true, Throwable.class));
-
-			final String msg = throwable.getMessage();
-			final List<ServiceMessage> serviceMessages = new ArrayList<>();
-			serviceMessages.add(newMessage(MessageSeverity.FATAL, "FATAL", msg));
-			response.setMessages(serviceMessages);
-
-			if (response != null) {
-				response.setDoNotCacheResponse(true);
-			}
-			return response;
-		} else {
-			LOGGER.error(
-					"getClaimDetailByIdFallBack - No Throwable Exception and No Cached Data. Just Raise Runtime Exception {}",
-					claimDetailByIdDomainRequest);
-			throw new OcpRuntimeException("", "There was a problem processing your request.", MessageSeverity.FATAL,
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}	
 
 	/**
 	 * Returns all claims
@@ -127,10 +93,9 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 	 * @return the claims
 	 */
 	@CachePut(value = CacheConstants.CACHENAME_VETSERVICES_CLAIMS_SERVICE, 
-			key = "#root.methodName + T(gov.va.ocp.framework.util.OcpCacheUtil).getUserBasedKey()", 
-			unless = "T(gov.va.ocp.framework.util.OcpCacheUtil).checkResultConditions(#result)")
-	@HystrixCommand(fallbackMethod = "getClaimsFallBack", commandKey = "getClaimsCommand", ignoreExceptions = {
-			IllegalArgumentException.class })
+			key = "#root.methodName + T(gov.va.ocp.framework.cache.OcpCacheUtil).getUserBasedKey()", 
+			unless = "T(gov.va.ocp.framework.cache.OcpCacheUtil).checkResultConditions(#result)")
+	@HystrixCommand(commandKey = "getClaimsCommand", ignoreExceptions = { IllegalArgumentException.class })
 	public AllClaimsDomainResponse getClaims(AllClaimsDomainRequest allClaimsDomainRequest) {
 		String cacheKey = "getClaims" + OcpCacheUtil.getUserBasedKey();
 
@@ -152,53 +117,5 @@ public class VetServicesClaimsServiceImpl implements VetServicesClaimsService {
 
 		claimsDomainResponse = claimsDataHelper.getClaims();
 		return claimsDomainResponse;
-	}
-
-	/**
-	 * Hystrix Fallback Method Which is Triggered When there Is An Unexpected Exception
-	 * in getClaims method.
-	 *
-	 * @param throwable the throwable
-	 * @return A JAXB element for the WS request
-	 */
-	@HystrixCommand(commandKey = "getClaimsFallBackCommand")
-	public AllClaimsDomainResponse getClaimsFallBack(final AllClaimsDomainRequest allClaimsDomainRequest,
-			final Throwable throwable) {
-		LOGGER.info("Hystrix getClaimsFallBack has been activated");
-		final AllClaimsDomainResponse claimsDomainResponse = new AllClaimsDomainResponse();
-		if (throwable != null) {
-			LOGGER.debug(ReflectionToStringBuilder.toString(throwable, null, true, true, Throwable.class));
-
-			final String msg = throwable.getMessage();
-			final List<ServiceMessage> serviceMessages = new ArrayList<>();
-			serviceMessages.add(newMessage(MessageSeverity.FATAL, "FATAL", msg));
-			claimsDomainResponse.setMessages(serviceMessages);
-
-			if (claimsDomainResponse != null) {
-				claimsDomainResponse.setDoNotCacheResponse(true);
-			}
-			return claimsDomainResponse;
-		} else {
-			LOGGER.error(
-					"getClaimsFallBack - No Throwable Exception and No Cached Data. Just Raise Runtime Exception");
-			throw new OcpRuntimeException("", "There was a problem processing your request.", MessageSeverity.FATAL,
-					HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
-	/**
-	 * Helper method to create a ServiceMessage object.
-	 *
-	 * @param severity the severity
-	 * @param key the key
-	 * @param text the text
-	 * @return the message
-	 */
-	private final ServiceMessage newMessage(final MessageSeverity severity, final String key, final String text) {
-		final ServiceMessage msg = new ServiceMessage();
-		msg.setSeverity(severity);
-		msg.setKey(key);
-		msg.setText(text);
-		return msg;
 	}
 }
