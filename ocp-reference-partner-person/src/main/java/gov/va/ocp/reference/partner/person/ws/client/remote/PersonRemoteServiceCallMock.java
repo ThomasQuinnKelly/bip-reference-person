@@ -90,8 +90,8 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 
 		} else {
 			// no recovery from this
-			throw new OcpPartnerRuntimeException(MessageKeys.OCP_REMOTE_MOCK_NOT_FOUND, MessageSeverity.ERROR,
-					HttpStatus.BAD_REQUEST, this.getClass().getSimpleName(), request.getClass().getName());
+			throw new OcpPartnerRuntimeException(MessageKeys.OCP_REMOTE_MOCK_NOT_FOUND, MessageSeverity.WARN,
+					HttpStatus.NOT_FOUND, this.getClass().getSimpleName(), request.getClass().getName());
 		}
 
 		/*
