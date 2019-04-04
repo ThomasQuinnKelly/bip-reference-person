@@ -7,6 +7,15 @@ parameters:
     displayName: Application Name
     description: Unique application identifier
     required: true
+  - name: PROJECT
+    displayName: Project Name
+    description: Project Name in Openshift
+    required: true
+  - name: REPOSITORY
+    displayName: Repository URL
+    description: Repository URL
+    value: "docker-registry.default.svc:5000"
+    required: true
   - name: IMAGE
     displayName: Image Name
     description: Container Image Name including repository (but not tag)
@@ -26,18 +35,36 @@ parameters:
     description: Port number to expose the service on
     value: "443"
     required: true
+  - name: BRANCH
+    displayName: Branch name from SCM
+    description: Branch name from SCM, used to label objects for pipeline detection
+    value: "master"
+    required: false
 objects:
   - apiVersion: v1
     kind: DeploymentConfig
     metadata:
       labels:
         app: ${APP_NAME}
-      name: ${APP_NAME}
+        branch: ${BRANCH}
+      name: ${APP_NAME}-${BRANCH}
     spec:
       replicas: ${REPLICA_COUNT}
       selector:
         app: ${APP_NAME}
-        deploymentconfig: ${APP_NAME}
+        deploymentconfig: ${APP_NAME}-${BRANCH}
+        branch: ${BRANCH}
+      triggers:
+        - type: "ConfigChange"
+        - type: "ImageChange"
+          imageChangeParams:
+            automatic: true
+            from:
+              kind: "ImageStreamTag"
+              name: ${IMAGE}:${IMAGE_TAG}
+              namespace: ${PROJECT}
+            containerNames:
+              - ${APP_NAME}
       strategy:
         resources: {}
         rollingParams:
@@ -52,7 +79,8 @@ objects:
           annotations: null
           labels:
             app: ${APP_NAME}
-            deploymentconfig: ${APP_NAME}
+            deploymentconfig: ${APP_NAME}-${BRANCH}
+            branch: ${BRANCH}
         spec:
           containers:
             - image: ${REPOSITORY}/${PROJECT}/${IMAGE}:${IMAGE_TAG}
@@ -76,7 +104,8 @@ objects:
     metadata:
       labels:
         app: ${APP_NAME}
-      name: ${APP_NAME}
+        branch: ${BRANCH}
+      name: ${APP_NAME}-${BRANCH}
     spec:
       ports:
         - name: ${APP_NAME}
@@ -85,34 +114,34 @@ objects:
           targetPort: 8080
       selector:
         app: ${APP_NAME}
-        deploymentconfig: ${APP_NAME}
+        deploymentconfig: ${APP_NAME}-${BRANCH}
       sessionAffinity: None
       type: ClusterIP
   - apiVersion: extensions/v1beta1
     kind: Ingress
     metadata:
-      name: ${APP_NAME}
+      name: ${APP_NAME}-${BRANCH}
     spec:
       rules:
-        - host: ${APP_NAME}.192.168.64.2.nip.io
-          http:
+        - http:
             paths:
               - backend:
                   serviceName: ${APP_NAME}
-                  servicePort: ${PORT}
+                  servicePort: ${{PORT}}
                 path: /
           tls: []
   - apiVersion: v1
     kind: ConfigMap
     metadata:
-      name: ${IMAGE}-config
+      name: ${IMAGE}-${BRANCH}-config
       labels:
         app: ${APP_NAME}
+        branch: ${BRANCH}
     data:
-      spring.cloud.consul.config.enabled: true
-      spring.cloud.consul.config.failFast: true
-      spring.cloud.consul.discovery.enabled: true
-      spring.cloud.consul.discovery.register: true
-      spring.cloud.vault.enabled: true
-      spring.cloud.vault.consul.enabled: true
+      spring.cloud.consul.config.enabled: "true"
+      spring.cloud.consul.config.failFast: "true"
+      spring.cloud.consul.discovery.enabled: "true"
+      spring.cloud.consul.discovery.register: "true"
+      spring.cloud.vault.enabled: "true"
+      spring.cloud.vault.consul.enabled: "true"
  
