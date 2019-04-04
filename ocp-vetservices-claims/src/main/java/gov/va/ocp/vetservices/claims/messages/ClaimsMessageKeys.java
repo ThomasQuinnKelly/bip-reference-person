@@ -21,10 +21,10 @@ public enum ClaimsMessageKeys implements MessageKey {
 			"ClaimsInfoRequest Payload cannot be null"),
 	
 	/** PID cannot be null validation; no args */
-	OCP_CLAIMS_INFO_REQUEST_PID_NOTNULL("ocp.reference.person.info.request.pid.NotNull",
+	OCP_CLAIMS_INFO_REQUEST_PID_NOTNULL("ocp.vetservices.claims.request.pid.NotNull",
 			"ClaimInfoRequest.participantID cannot be null"),
 	/** PID cannot be null validation; no args */
-	OCP_CLAIMS_INFO_REQUEST_CLAIMID_NOTNULL("ocp.reference.person.info.request.claimId.NotNull",
+	OCP_CLAIMS_INFO_REQUEST_CLAIMID_NOTNULL("ocp.vetservices.claims.request.claimId.NotNull",
 			"ClaimInfoRequest.claimId cannot be null");
 
 	/** The key - must be identical to the key in framework-messages.properties */

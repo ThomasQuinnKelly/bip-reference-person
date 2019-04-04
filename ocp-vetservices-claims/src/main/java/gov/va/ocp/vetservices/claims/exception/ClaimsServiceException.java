@@ -15,7 +15,7 @@ public class ClaimsServiceException extends OcpRuntimeException {
 	private static final long serialVersionUID = -7439237193647605148L;
 
 	/**
-	 * Constructs a new RuntimeException for the Person service with the specified detail key, message, severity, and status.
+	 * Constructs a new RuntimeException for the Claims service with the specified detail key, message, severity, and status.
 	 * The cause is not initialized.
 	 *
 	 * @see OcpRuntimeException#OcpRuntimeException(String, String, MessageSeverity, HttpStatus)

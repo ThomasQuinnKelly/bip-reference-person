@@ -41,7 +41,7 @@ public class ClaimsDataHelper {
 			claimDetailByIdDomainResponse
 					.setClaim(claimsRepository.findById(Long.parseLong(claimDetailByIdDomainRequest.getId())).get());
 		} catch (final NoSuchElementException clientException) {
-			// any other exception can be caught and thrown as PersonServiceException for
+			// any other exception can be caught and thrown as ClaimsServiceException for
 			// the circuit not to be opened
 			String message = THROWSTR + clientException.getClass().getName() + ": " + clientException.getMessage();
 			LOGGER.error(message, clientException);
