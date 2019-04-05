@@ -125,6 +125,11 @@ objects:
                     secretKeyRef:
                         name: consul-acl-token
                         key: CONSUL_ACL_TOKEN
+                - name: spring.cloud.consul.discovery.acl-token
+                  valueFrom:
+                    secretKeyRef:
+                        name: consul-acl-token
+                        key: CONSUL_ACL_TOKEN
                 - name: spring.cloud.vault.enabled
                   valueFrom:
                     configMapKeyRef:
