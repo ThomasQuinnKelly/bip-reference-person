@@ -1,6 +1,6 @@
 ## What is this project for? ##
 
-Claims service API provides two end points that gives the claims information for a given veteran.
+Claims service API provides end points that gives the claims information for a given veteran.
 
 ## End Points ##
 
@@ -49,4 +49,4 @@ Running start-all.sh will bring up consul, grafana, prometheus, redis, vault, or
 
 wait-for-it.sh - this script is used in docker-compose.yml file. This is used to make ocp-vetservices-claims container wait until oracle comes up. Once the ping for oracle is successful, it waits for another 30 seconds and brings up ocp-vetservices-claims container. 
 
-If the container doesn't come up becuase of database connection issue, just restart the ocp-vetservices-claims container.
+If the container doesn't come up because of database connection issue, just restart the ocp-vetservices-claims container.
