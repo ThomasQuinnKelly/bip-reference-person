@@ -61,9 +61,9 @@ spec:
     containers:
         env:
         - name: server.ssl.trust-store
-          value: /secrets/server-ssl/serverTruststore
+          value: /secrets/server-ssl/truststore
         - name: server.ssl.key-store
-          value: /secrets/server-ssl/serverKeystore
+          value: /secrets/server-ssl/keystore
         - name: server.ssl.trust-store-password
           valueFrom:
             secretKeyRef:
@@ -74,31 +74,45 @@ spec:
             secretKeyRef:
                 name: ocp-reference-person-server-ssl
                 key: server.keystore-password
+        
+        - name: javax.net.ssl.trustStore
+          value: /secrets/client-ssl/truststore
+        - name: javax.net.ssl.keyStore
+          value: /secrets/client-ssl/keystore
+        - name: javax.net.ssl.trustStorePassword
+          valueFrom:
+            secretKeyRef:
+                name: ocp-reference-person-client-ssl
+                key: client.truststore-password
+        - name: javax.net.ssl.keyStorePassword
+          valueFrom:
+            secretKeyRef:
+                name: ocp-reference-person-client-ssl
+                key: client.keystore-password
         volumeMounts:
         - name: server-ssl
           mountPath: "/secrets/server-ssl" 
           readOnly: true
+        - name: client-ssl
+          mountPath: "/secrets/client-ssl" 
+          readOnly: true
+          
     volumes:
     - name: server-ssl
       secret:
         secretName: ocp-reference-person-server-ssl
         items:
         - key: server.keystore
-          path: serverKeystore
+          path: keystore
         - key: server.truststore
-          path: serverTruststore
+          path: truststore
     - name: client-ssl
       secret:
         secretName: ocp-reference-person-client-ssl
         items:
         - key: client.keystore
-          path: clientKeystore
+          path: keystore
         - key: client.truststore
-          path: clientTruststore
+          path: truststore
        
 ```
-
--Djavax.net.ssl.keyStore=$CLIENT_KEYSTORE 
--Djavax.net.ssl.keyStorePassword=$CLIENT_KEYSTORE_PASS 
--Djavax.net.ssl.trustStore=$CLIENT_TRUSTSTORE 
--Djavax.net.ssl.trustStorePassword=$CLIENT_TRUSTSTORE_PASS
