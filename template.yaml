@@ -165,7 +165,19 @@ objects:
                     configMapKeyRef:
                       name: vault-config
                       key: VAULT_KUBERNETES_ROLE
-                
+                - name: spring.cloud.vault.ssl.trust-store
+                  value: /secrets/va-cacerts/truststore.jks
+              volumeMounts:
+                - name: va-cacerts
+                  mountPath: "/secrets/va-cacerts" 
+                  readOnly: true
+          volumes:
+            - name: va-cacerts
+              secret:
+                secretName: va-cacerts
+                items:
+                - key: va-cacerts
+                  path: truststore.jks  
           dnsPolicy: ClusterFirst
           restartPolicy: Always
           securityContext: {}
@@ -189,6 +201,19 @@ objects:
         deploymentconfig: ${APP_NAME}-${BRANCH}
       sessionAffinity: None
       type: ClusterIP
+  - apiVersion: extensions/v1beta1
+    kind: Ingress
+    metadata:
+      name: ${APP_NAME}-${BRANCH}
+    spec:
+      rules:
+        - http:
+            paths:
+              - backend:
+                  serviceName: ${APP_NAME}-${BRANCH}
+                  servicePort: ${PORT}
+                path: /
+          tls: []
   - apiVersion: v1
     kind: ConfigMap
     metadata:
