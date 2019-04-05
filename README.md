@@ -4,33 +4,33 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 ## Project Breakdown
 
-1. **ocp-reference-partner**: Partner services for reference, showing BGS with sample mock data
-1. **ocp-reference-person**: Service implementation project.  It has REST endpoints and shows various patterns for producing endpoints, swagger for the application, registering the application with Consul, Secrets from Vault calling REST endpoints through Zuul, Hystrix Circuit Breaker, logging pattern etc.
-1. **ocp-reference-inttest**: Contains the integration tests using RestAssured, Cucumber libraries. Includes Test cases against the end points for OCP demo and claims demo. 
-1. **ocp-reference-perftest**: Contains the performance JMX tests scripts for Apache JMeter
+1. **bip-reference-partner**: Partner services for reference, showing BGS with sample mock data
+1. **bip-reference-person**: Service implementation project.  It has REST endpoints and shows various patterns for producing endpoints, swagger for the application, registering the application with Consul, Secrets from Vault calling REST endpoints through Zuul, Hystrix Circuit Breaker, logging pattern etc.
+1. **bip-reference-inttest**: Contains the integration tests using RestAssured, Cucumber libraries. Includes Test cases against the end points for BIP demo and claims demo. 
+1. **bip-reference-perftest**: Contains the performance JMX tests scripts for Apache JMeter
 
 ## How to include the dependency framework libraries in your project
 
-The projects in this repository are dependent on the libraries from [OCP framework](https://github.com/department-of-veterans-affairs/ocp-framework) for  auto configuration, common shared libraries, parent pom maven configuration and test libary. These libraries can be included as shown below.
+The projects in this repository are dependent on the libraries from [BIP framework](https://github.com/department-of-veterans-affairs/bip-framework) for  auto configuration, common shared libraries, parent pom maven configuration and test libary. These libraries can be included as shown below.
 
        <dependency>
-         <groupId>gov.va.ocp.framework</groupId>
-         <artifactId>ocp-framework-autoconfigure</artifactId>
+         <groupId>gov.va.bip.framework</groupId>
+         <artifactId>bip-framework-autoconfigure</artifactId>
          <version><!-- add the appropriate version --></version>
        </dependency>
        <dependency>
-         <groupId>gov.va.ocp.framework</groupId>
-         <artifactId>ocp-framework-libraries</artifactId>
+         <groupId>gov.va.bip.framework</groupId>
+         <artifactId>bip-framework-libraries</artifactId>
          <version><!-- add the appropriate version --></version>
        </dependency>
        <dependency>
-         <groupId>gov.va.ocp.framework</groupId>
-         <artifactId>ocp-framework-parentpom</artifactId>
+         <groupId>gov.va.bip.framework</groupId>
+         <artifactId>bip-framework-parentpom</artifactId>
          <version><!-- add the appropriate version --></version>
        </dependency>
        <dependency>
-         <groupId>gov.va.ocp.framework</groupId>
-         <artifactId>ocp-framework-test-lib</artifactId>
+         <groupId>gov.va.bip.framework</groupId>
+         <artifactId>bip-framework-test-lib</artifactId>
          <version><!-- add the appropriate version --></version>
        </dependency>
 
@@ -64,7 +64,7 @@ To make these libraries available locally for the service projects to compile an
 
 **OPTION 1**
 
-1. Clone the OCP framework repository `git clone https://github.com/department-of-veterans-affairs/ocp-framework.git`
+1. Clone the BIP framework repository `git clone https://github.com/department-of-veterans-affairs/ocp-framework.git`
 1. Navigate to the folder `ocp-framework` and run `mvn clean install` command. This would build all the libraries with versions as configured in pom.xml files.
 
 **OPTION 2**
