@@ -10,10 +10,9 @@ import gov.va.ocp.framework.log.OcpLoggerFactory;
 import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.framework.messages.ServiceMessage;
 import gov.va.ocp.framework.validation.AbstractStandardValidator;
-import gov.va.ocp.vetservices.claims.model.AllClaimsDomainRequest;
-import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
 import gov.va.ocp.vetservices.claims.exception.ClaimsServiceException;
 import gov.va.ocp.vetservices.claims.messages.ClaimsMessageKeys;
+import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
 
 public class ClaimDetailByIdDomainResponseValidator extends AbstractStandardValidator<ClaimDetailByIdDomainResponse> {
 
