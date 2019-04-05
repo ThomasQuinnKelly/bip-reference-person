@@ -14,20 +14,20 @@ Claims service API provides two end points that gives the claims information for
 
 Below jars need to be included to enable jpa and data access
 
-    <dependency>
-        <groupId>com.oracle</groupId>
-        <artifactId>ojdbc7</artifactId>
-        <version>12.1.0.2</version>
-    </dependency>
-		<dependency>	
-			<groupId>com.h2database</groupId>	
-			<artifactId>h2</artifactId>	
-			<scope>runtime</scope>	
-		</dependency>        
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>	
+    	<dependency>
+		<groupId>com.oracle</groupId>
+		<artifactId>ojdbc7</artifactId>
+		<version>12.1.0.2</version>
+    	</dependency>
+	<dependency>	
+		<groupId>com.h2database</groupId>	
+		<artifactId>h2</artifactId>	
+		<scope>runtime</scope>	
+	</dependency>        
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-data-jpa</artifactId>
+	</dependency>	
 
 The app uses jpa which creates claim and attributes tables when the app comes up. There is a script file - import.sql in src/main/resources which is run when the app comes up and creates sample data in both claim and attributes tables.
 
@@ -46,4 +46,7 @@ Download sql developer and use the below connection setting to view/update the d
 	sid - ORCLCDB
 
 Running start-all.sh will bring up consul, grafana, prometheus, redis, vault, oracle and ocp-vetservices-claims containers.
-wait-for-it.sh - this script is used in docker-compose.yml file. This is used to make ocp-vetservices-claims container wait until oracle comes up. Once the ping for oracle is successful, it waits for another 30 seconds and brings up ocp-vetservices-claims container. If the container doesn't come up becuase of database connection issue, just restart the ocp-vetservices-claims container.
+
+wait-for-it.sh - this script is used in docker-compose.yml file. This is used to make ocp-vetservices-claims container wait until oracle comes up. Once the ping for oracle is successful, it waits for another 30 seconds and brings up ocp-vetservices-claims container. 
+
+If the container doesn't come up becuase of database connection issue, just restart the ocp-vetservices-claims container.
