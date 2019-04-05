@@ -4,9 +4,9 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 ## Project Breakdown
 
-1. **bip-reference-partner**: Partner services for reference, showing BGS with sample mock data
-1. **bip-reference-person**: Service implementation project.  It has REST endpoints and shows various patterns for producing endpoints, swagger for the application, registering the application with Consul, Secrets from Vault calling REST endpoints through Zuul, Hystrix Circuit Breaker, logging pattern etc.
-1. **bip-reference-inttest**: Contains the integration tests using RestAssured, Cucumber libraries. Includes Test cases against the end points for BIP demo and claims demo. 
+1. **bip-reference-partner**: Partner services for reference person, showing sample mock data for BGS
+1. **bip-reference-person**: Service implementation project.  It has REST endpoints and shows various patterns for producing endpoints, swagger for the application, registering the application with Consul, Secrets from Vault, Hystrix Circuit Breaker, logging pattern etc.
+1. **bip-reference-inttest**: Contains the integration tests using Spring Rest Template, Cucumber libraries. Includes Test cases against the end points for BIP reference person. 
 1. **bip-reference-perftest**: Contains the performance JMX tests scripts for Apache JMeter
 
 ## How to include the dependency framework libraries in your project
