@@ -23,18 +23,18 @@ Swagger provides more benefits than just helping create clear documentation.
 	      <version>${springfox.version}</version>
 	    </dependency>
 
-- add the ocp-framework-autoconfigure dependency to the project pom, with the appropriate version that will 
+- add the bip-framework-autoconfigure dependency to the project pom, with the appropriate version that will 
   include the autoconfigure projects.
   
 	   <dependency>
-             <groupId>gov.va.ocp.framework</groupId>
-             <artifactId>ocp-framework-autoconfigure</artifactId>
+             <groupId>gov.va.bip.framework</groupId>
+             <artifactId>bip-framework-autoconfigure</artifactId>
              <!-- add the appropriate version -->
            </dependency>
     
 - Update the application service yml file with the following configuration (under the default profile):
 
-	   ocp:
+	   bip.framework:
 	     swagger:
     		title: 
     		description:
@@ -50,7 +50,7 @@ Swagger provides more benefits than just helping create clear documentation.
 		@Configuration
 		@EnableConfigurationProperties(SwaggerProperties.class)
 		@EnableSwagger2
-		@ConditionalOnProperty(prefix = "ocp.swagger", name = "enabled", matchIfMissing = true)
+		@ConditionalOnProperty(prefix = "bip.framework.swagger", name = "enabled", matchIfMissing = true)
 		@Import({ BeanValidatorPluginsConfiguration.class })
 		public class SwaggerAutoConfiguration {}
 	

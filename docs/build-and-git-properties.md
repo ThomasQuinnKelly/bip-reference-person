@@ -5,7 +5,7 @@
 - Access Git properties in code via Spring Boot
 
 ## Build Properties Configuration
-- If you have included `ocp-framework-parentpom` as the parent dependency, you must already have plugin spring-boot-maven-plugin with the following configuration.
+- If you have included `bip-framework-parentpom` as the parent dependency, you must already have plugin spring-boot-maven-plugin with the following configuration.
 
 		<plugin>
 			<groupId>org.springframework.boot</groupId>
@@ -42,7 +42,7 @@
 		buildProperties.getGroup();
 	
 ## Git Properties Configuration
-- Actuator detects git.properties file, which contains useful information about your git repository. If you have included `ocp-framework-parentpom` as the parent dependency, you have access to the plugin with following configuration .
+- Actuator detects git.properties file, which contains useful information about your git repository. If you have included `bip-framework-parentpom` as the parent dependency, you have access to the plugin with following configuration .
 
         Maven pom.xml:
 	

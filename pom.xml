@@ -3,24 +3,24 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>gov.va.ocp.framework</groupId>
-		<artifactId>ocp-framework-parentpom</artifactId>
+		<groupId>gov.va.bip.framework</groupId>
+		<artifactId>bip-framework-parentpom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath/>
 	</parent>
 	
-	<groupId>gov.va.ocp.reference.person</groupId>
-	<artifactId>ocp-reference-reactor</artifactId>
+	<groupId>gov.va.bip.reference.person</groupId>
+	<artifactId>bip-reference-reactor</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
-    <description>Reactor POM for OpenShift Container Platform (OCP) Spring Boot Reference Service</description>
+    <description>Reactor POM for BIP Spring Boot Reference Service</description>
 
 	<modules>
-		<module>ocp-reference-partner-person</module>
-		<module>ocp-reference-person</module>
-		<module>ocp-reference-inttest</module>
-	    <module>ocp-reference-perftest</module>
+		<module>bip-reference-partner-person</module>
+		<module>bip-reference-person</module>
+		<module>bip-reference-inttest</module>
+	    <module>bip-reference-perftest</module>
 	</modules>
 
 	<repositories>
