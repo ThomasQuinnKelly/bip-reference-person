@@ -38,7 +38,7 @@ Consul is a service mesh solution providing a full featured control plane with s
       - spring.cloud.consul.discovery.register=true
       - spring.cloud.vault.enabled=true
       - spring.cloud.vault.consul.enabled=true
-      - ocp.security.jwt.enabled=true
+      - bip.framework.security.jwt.enabled=true
       
 ## Consul Access
 

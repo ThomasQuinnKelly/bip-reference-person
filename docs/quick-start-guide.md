@@ -6,7 +6,7 @@
 * JDK 8
 * GIT 2.18.0 or higher
 * IDE (Spring Tool Suite:STS is recommended as it plays nicely with Spring Boot. However you are free to choose.)
-* Optionally Docker (To run ocp reference person service in the container)
+* Optionally Docker (To run BIP reference person service in the container)
 * Personal Access Token to connect to GitHub: [Creating Personal Access Token](#creating-personal-access-token-to-connect-to-github)
 
 ## Installation Reference Links
@@ -23,7 +23,7 @@ To clone and run this repository you'll need Git installed on your computer.
 * From your command line: `git clone https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot`
 * Alternately, you can also clone the repository from IDE using URL `https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot`
 * Change directory to "ocp-reference-spring-boot"
-* If Docker is RUNNING, run `mvn clean install` from the reactor POM to build the project which will create the docker image for ocp-reference-person. 
+* If Docker is RUNNING, run `mvn clean install` from the reactor POM to build the project which will create the docker image for bip-reference-person. 
 * If Docker is UNAVAILABLE/OFFLINE, run `mvn clean install -Ddockerfile.skip=true` from the reactor POM to build the project. `-Ddockerfile.skip=true` will *SKIP* the docker image(s) creation. Don't use this option if you are planning to run `local-int` mode as it would require docker image(s) to run in docker container.
 
 ## Build and Test
@@ -36,16 +36,16 @@ There are 2 application profiles that you could run locally
 * local-int (Docker Engine Integrated Environment) 
 
 
-1. To run with default profile mode, clone only the `ocp-reference-spring-boot` repository, then run `ocp-reference-person` service from your IDE using [Deploy Only Mode](#ide-deploy-only-ocp-reference-person)
+1. To run with default profile mode, clone only the `bip-reference-spring-boot` repository, then run `bip-reference-person` service from your IDE using [Deploy Only Mode](#ide-deploy-only-bip-reference-person)
 1. To run local-int profile mode, go through the steps mentioned under [Using Docker Compose](#using-docker-compose)
 
-### IDE Deploy only ocp-reference-person
+### IDE Deploy only bip-reference-person
 * Assuming you are using Spring Tool Suite as suggested
 * Ensure you've imported the projects in the IDE
-* In the "Boot Dashboard" within Spring Tool Suite, highlight `ocp-reference-person` project and click the "*(Re)start*" button *
+* In the "Boot Dashboard" within Spring Tool Suite, highlight `bip-reference-person` project and click the "*(Re)start*" button *
 * URLs for testing/using this deployment approach
 
-  [OCP Reference Person Swagger](http://localhost:8080/swagger-ui.html)
+  [BIP Reference Person Swagger](http://localhost:8080/swagger-ui.html)
 
 ### Using Docker Compose
 
@@ -56,7 +56,7 @@ There are 2 application profiles that you could run locally
 * To start all the containers, execute the `./start-all.sh` command under the root directory, which will bring up all the docker containers. 
 * URLs for testing/using this deployment approach
 
-  [OCP Reference Person Swagger](http://localhost:8080/swagger-ui.html)
+  [BIP Reference Person Swagger](http://localhost:8080/swagger-ui.html)
 
   [Consul](http://localhost:8500) - Master ACL token is `7652ba4c-0f6e-8e75-5724-5e083d72cfe4`
 

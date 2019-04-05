@@ -11,7 +11,7 @@
 
 ## Inttest Pattern 
 
-This project is customized to support testing the REST Services used by Reference applications. It uses ocp-framework-test-lib project that contains all the core framework for supporting API testing. Cucumber tool is integrated to assist with the needs of Acceptance Test Driven Development (ATDD), BDD by capturing the Acceptance criteria and implementing the scenarios with automated tests. It can be easily integrated with Continuous Integration (CI) Pipeline.
+This project is customized to support testing the REST Services used by Reference applications. It uses bip-framework-test-lib project that contains all the core framework for supporting API testing. Cucumber tool is integrated to assist with the needs of Acceptance Test Driven Development (ATDD), BDD by capturing the Acceptance criteria and implementing the scenarios with automated tests. It can be easily integrated with Continuous Integration (CI) Pipeline.
 
 This project can be used as a skeleton to start writing test cases.
 
@@ -89,11 +89,11 @@ Examples:
 
 ## 	Inttest configuration
 
-- Add dependency in pom.xml to include ocp-framework-test-lib library
+- Add dependency in pom.xml to include bip-framework-test-lib library
 
      <dependency>
-		<groupId>gov.va.ocp.framework</groupId>
-		<artifactId>ocp-framework-test-lib</artifactId>
+		<groupId>gov.va.bip.framework</groupId>
+		<artifactId>bip-framework-test-lib</artifactId>
 		<version><!-- add the appropriate version --></version>
 		</dependency>
 

@@ -3,10 +3,10 @@ version: "3.3"
 services:
   
   # Fill this out once the dev team has their app code into the repo
-  ocp-reference-person:
-    image: ocpdev/ocp-reference-person
+  bip-reference-person:
+    image: ocpdev/bip-reference-person
     build:
-      context: ./ocp-reference-person
+      context: ./bip-reference-person
     environment:
       - spring.profiles.active=local-int
       - spring.cloud.consul.host=consul
@@ -18,7 +18,7 @@ services:
       - spring.cloud.consul.discovery.register=true
       - spring.cloud.vault.enabled=true
       - spring.cloud.vault.consul.enabled=true
-      - ocp.security.jwt.enabled=true
+      - bip.framework.security.jwt.enabled=true
     ports:
       - "8080:8080"
     networks:

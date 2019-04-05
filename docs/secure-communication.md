@@ -32,7 +32,7 @@ data:
 kind: Secret
 metadata:
   creationTimestamp: 2019-04-01T13:55:59Z
-  name: ocp-reference-person-server-ssl
+  name: bip-reference-person-server-ssl
   namespace: default
 type: Opaque
 ```
@@ -48,7 +48,7 @@ data:
 kind: Secret
 metadata:
   creationTimestamp: 2019-04-01T13:55:59Z
-  name: ocp-reference-person-client-ssl
+  name: bip-reference-person-client-ssl
   namespace: default
 type: Opaque
 ```
@@ -67,12 +67,12 @@ spec:
         - name: server.ssl.trust-store-password
           valueFrom:
             secretKeyRef:
-                name: ocp-reference-person-server-ssl
+                name: bip-reference-person-server-ssl
                 key: server.truststore-password
         - name: server.ssl.key-store-password
           valueFrom:
             secretKeyRef:
-                name: ocp-reference-person-server-ssl
+                name: bip-reference-person-server-ssl
                 key: server.keystore-password
         
         - name: javax.net.ssl.trustStore
@@ -82,12 +82,12 @@ spec:
         - name: javax.net.ssl.trustStorePassword
           valueFrom:
             secretKeyRef:
-                name: ocp-reference-person-client-ssl
+                name: bip-reference-person-client-ssl
                 key: client.truststore-password
         - name: javax.net.ssl.keyStorePassword
           valueFrom:
             secretKeyRef:
-                name: ocp-reference-person-client-ssl
+                name: bip-reference-person-client-ssl
                 key: client.keystore-password
         volumeMounts:
         - name: server-ssl
@@ -100,7 +100,7 @@ spec:
     volumes:
     - name: server-ssl
       secret:
-        secretName: ocp-reference-person-server-ssl
+        secretName: bip-reference-person-server-ssl
         items:
         - key: server.keystore
           path: keystore
@@ -108,7 +108,7 @@ spec:
           path: truststore
     - name: client-ssl
       secret:
-        secretName: ocp-reference-person-client-ssl
+        secretName: bip-reference-person-client-ssl
         items:
         - key: client.keystore
           path: keystore

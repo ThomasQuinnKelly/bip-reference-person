@@ -21,7 +21,7 @@ This file describes your deployment package. Modify this to set your service nam
 ### values.yaml
 This is the configuration for your Chart. The information in this file is used in the Chart Templates found in the generated `templates/` folder. Modify this file to specify the following:
 * `replicaCount` - Number of container instances to start
-* `image.repository` - The image definition in repository/project/image format. Ex. 172.30.1.1:5000/reference-spring-boot/ocp-reference-person
+* `image.repository` - The image definition in repository/project/image format. Ex. 172.30.1.1:5000/reference-spring-boot/bip-reference-person
 * `image.tag` - image tag. Ex. latest
 * `service.port` - Port number your service runs on
 * `ingress.enabled` - If true, configures an ingress route to all external requests to your service
@@ -33,7 +33,7 @@ Inside your Jenkinsfile add a line `helmPackage = 'path/to/helm/package'` with t
 ```groovy
 mavenGitflowPipeline {
     ...
-    helmPackage = 'helm/ocp-reference-person'
+    helmPackage = 'helm/bip-reference-person'
     ...
 }
 ```

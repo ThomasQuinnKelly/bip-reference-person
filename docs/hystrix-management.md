@@ -22,7 +22,7 @@
 - Server side Hystrix Pattern: Server side Hystrix design pattern is implemented with a fallBack at 
 the ServiceImpl class level. There is provision to ignore certain exceptions from invoking the fallBack method. Caching is disabled once fallBack is invoked. 
 
-- To configure Hystrix at the Server level add the following dependency in your project and add the ocp-reference-autoconfigure dependency to the project pom, with the appropriate version to get all autoconfiguration projects:
+- To configure Hystrix at the Server level add the following dependency in your project and add the bip-reference-autoconfigure dependency to the project pom, with the appropriate version to get all autoconfiguration projects:
 
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -63,7 +63,7 @@ the ServiceImpl class level. There is provision to ignore certain exceptions fro
 the FeignClient level. There is provision to ignore certain exceptions from invoking the fallBack
 method.
 
-- To configure Hystrix at the Client level add the following dependency in your project and add the ocp-reference-autoconfigure dependency to the project pom, with the appropriate version to get all autoconfiguration projects:
+- To configure Hystrix at the Client level add the following dependency in your project and add the bip-reference-autoconfigure dependency to the project pom, with the appropriate version to get all autoconfiguration projects:
 
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -77,10 +77,10 @@ method.
 - Use below configurations on the actual method in the Feign Client class. FallBack is implemented with a factory class
 
 		@FeignClient(value = "${spring.application.name}",
-		url="${ocp-reference-person.ribbon.listOfServers:}",
+		url="${bip-reference-person.ribbon.listOfServers:}",
 		name = "${spring.application.name}",
 		fallbackFactory = FeignPersonClientFallbackFactory.class,
 		configuration = ReferenceServiceFeignConfig.class)
 
-- Hystrix client configuration needs OcpFeignAutoConfiguration which is part of the framework libraries as configuration. feignBuilder is implemented as part of OcpFeignAutoConfiguration as client side Hystrix needs a seperate configuration from server side. Please see feignBuilder method in [OcpFeignAutoConfiguration.java](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/ocp-framework-autoconfigure/src/main/java/gov/va/ocp/framework/feign/autoconfigure/OcpFeignAutoConfiguration.java)
+- Hystrix client configuration needs BipFeignAutoConfiguration which is part of the framework libraries as configuration. feignBuilder is implemented as part of BipFeignAutoConfiguration as client side Hystrix needs a seperate configuration from server side. Please see feignBuilder method in [BipFeignAutoConfiguration.java](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-autoconfigure/src/main/java/gov/va/bip/framework/feign/autoconfigure/BipFeignAutoConfiguration.java)
 	
