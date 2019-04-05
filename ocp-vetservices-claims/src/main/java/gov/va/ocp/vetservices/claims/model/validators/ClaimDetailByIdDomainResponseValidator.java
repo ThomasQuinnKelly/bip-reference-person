@@ -10,9 +10,9 @@ import gov.va.ocp.framework.log.OcpLoggerFactory;
 import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.framework.messages.ServiceMessage;
 import gov.va.ocp.framework.validation.AbstractStandardValidator;
-import gov.va.ocp.vetservices.claims.model.AllClaimsDomainRequest;
-import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
 import gov.va.ocp.vetservices.claims.exception.ClaimsServiceException;
+import gov.va.ocp.vetservices.claims.messages.ClaimsMessageKeys;
+import gov.va.ocp.vetservices.claims.model.ClaimDetailByIdDomainResponse;
 
 public class ClaimDetailByIdDomainResponseValidator extends AbstractStandardValidator<ClaimDetailByIdDomainResponse> {
 
@@ -28,20 +28,15 @@ public class ClaimDetailByIdDomainResponseValidator extends AbstractStandardVali
 	@Override
 	public void validate(ClaimDetailByIdDomainResponse toValidate, List<ServiceMessage> messages) {
 		
-		Object supplemental = getSupplemental(AllClaimsDomainRequest.class);
-		AllClaimsDomainRequest request = supplemental == null ? new AllClaimsDomainRequest()
-				: (AllClaimsDomainRequest) supplemental;
-
 		// if response has errors, fatals or warnings skip validations
 		if (toValidate.hasErrors() || toValidate.hasFatals() || toValidate.hasWarnings()) {
 			return;
 		}
 		// check if empty response, or errors / fatals
 		if (toValidate == null || toValidate.getClaim() == null) {
-			LOGGER.info("getClaims empty response - throwing ClaimsServiceException: "
-					+ INVOKE_FALLBACK_MESSAGE);
-			throw new ClaimsServiceException("", INVOKE_FALLBACK_MESSAGE, MessageSeverity.FATAL,
-					HttpStatus.INTERNAL_SERVER_ERROR);
+			ClaimsMessageKeys key = ClaimsMessageKeys.OCP_CLAIM_DETAIL_INFO_REQUEST_NOTNULL;
+			LOGGER.info(key.getKey() + " " + key.getMessage());
+			throw new ClaimsServiceException(key, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	

@@ -5,6 +5,7 @@ import java.text.MessageFormat;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
@@ -12,6 +13,8 @@ import gov.va.ocp.framework.config.OcpCommonSpringProfiles;
 import gov.va.ocp.framework.exception.OcpPartnerRuntimeException;
 import gov.va.ocp.framework.log.OcpLogger;
 import gov.va.ocp.framework.log.OcpLoggerFactory;
+import gov.va.ocp.framework.messages.MessageKeys;
+import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.framework.security.PersonTraits;
 import gov.va.ocp.framework.security.SecurityUtils;
 import gov.va.ocp.framework.transfer.PartnerTransferObjectMarker;
@@ -33,12 +36,8 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	/** error message if request is null */
 	static final String ERROR_NULL_REQUEST = "getKeyForMockResponse request parameter cannot be null.";
 
-	/** Error message prefix if request type is not handled in getKeyForMockResponse(..) */
-	static final String ERROR_UNHANDLED_REQUEST_TYPE = PersonRemoteServiceCallMock.class.getSimpleName()
-			+ ".getKeyForMockResponse(..) does not have a file naming block for requests of type ";
-
 	/*
-	 * Below: Constants for mock XML file names
+	 * Below: OcpConstants for mock XML file names
 	 */
 
 	/** The {@code src/main/resources/test/mocks/*} filename prefix for the "filename.PID.xml" mock file. */
@@ -91,9 +90,8 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 
 		} else {
 			// no recovery from this
-			throw new OcpPartnerRuntimeException("",
-					this.getClass().getSimpleName() + ERROR_UNHANDLED_REQUEST_TYPE + request.getClass().getName(),
-					null, null);
+			throw new OcpPartnerRuntimeException(MessageKeys.OCP_REMOTE_MOCK_NOT_FOUND, MessageSeverity.WARN,
+					HttpStatus.NOT_FOUND, this.getClass().getSimpleName(), request.getClass().getName());
 		}
 
 		/*

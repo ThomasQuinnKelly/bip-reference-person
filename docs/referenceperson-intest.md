@@ -127,9 +127,5 @@ Provides pretty html reports for Cucumber. It works by generating html from the 
 
 ## References:
 
-Rest Assured : http://rest-assured.io
-
-Rest Assured Overview: https://semaphoreci.com/community/tutorials/testing-rest-endpoints-using-rest-assured
-
 Cucumber : https://docs.cucumber.io
 	

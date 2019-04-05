@@ -3,7 +3,7 @@ This document provides the details of **Reference Person Service Functional Test
 ## Functional test for Reference Person Service ##
 Functional test are created to make sure the end points in reference person are working as expected.
 
-Project uses Java - Maven platform, the REST-Assured jars for core API validations.
+Project uses Java - Maven platform, the REST-template jars for core API validations.
 
 ## Project Structure ##
 

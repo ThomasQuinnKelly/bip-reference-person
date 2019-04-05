@@ -11,7 +11,7 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
-import gov.va.ocp.framework.test.restassured.BaseStepDefHandler;
+import gov.va.ocp.framework.test.rest.BaseStepDefHandler;
 import gov.va.ocp.framework.test.util.JsonUtil;
 
 public class PersonInfo {
@@ -37,7 +37,7 @@ public class PersonInfo {
 
 	@And("^the service returns ParticipantID PID based on participantId (\\d+)$")
 	public void validatepartcipantId(final int participantId) throws Throwable {
-		Integer partcipantValue = JsonUtil.getInt(handler.getStrResponse(), "personInfo.'participantId'");
+		Integer partcipantValue = JsonUtil.getInt(handler.getStrResponse(), "personInfo.participantId");
 		assertThat(partcipantValue, equalTo(participantId));
 	}
 

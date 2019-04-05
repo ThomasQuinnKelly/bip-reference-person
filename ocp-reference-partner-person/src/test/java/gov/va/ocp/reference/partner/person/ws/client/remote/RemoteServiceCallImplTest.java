@@ -23,6 +23,7 @@ import org.mockito.junit.MockitoRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -43,6 +44,8 @@ import org.springframework.xml.transform.StringSource;
 
 import gov.va.ocp.framework.config.OcpCommonSpringProfiles;
 import gov.va.ocp.framework.exception.OcpPartnerRuntimeException;
+import gov.va.ocp.framework.messages.MessageKeys;
+import gov.va.ocp.framework.messages.MessageSeverity;
 import gov.va.ocp.framework.security.PersonTraits;
 import gov.va.ocp.framework.transfer.PartnerTransferObjectMarker;
 import gov.va.ocp.framework.validation.Defense;
@@ -164,9 +167,9 @@ public class RemoteServiceCallImplTest extends AbstractPersonTest {
 		try {
 			resource = new ResourceSource(new ClassPathResource(filename));
 		} catch (final IOException e) {
-			throw new OcpPartnerRuntimeException(null, "Could not read mock XML file '" + filename
-					+ "'. Please make sure this response file exists in the main/resources directory.",
-					null, null, e);
+			throw new OcpPartnerRuntimeException(MessageKeys.OCP_REMOTE_MOCK_NOT_FOUND,
+					MessageSeverity.ERROR, HttpStatus.BAD_REQUEST, e,
+					filename, MessageFormat.format(filenamePattern, replaceableParam));
 		}
 		return resource;
 	}
