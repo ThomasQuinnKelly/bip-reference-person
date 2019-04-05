@@ -211,7 +211,7 @@ objects:
             paths:
               - backend:
                   serviceName: ${APP_NAME}-${BRANCH}
-                  servicePort: ${PORT}
+                  servicePort: ${{PORT}}
                 path: /
           tls: []
   - apiVersion: v1
