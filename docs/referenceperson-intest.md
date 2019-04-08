@@ -102,8 +102,8 @@ Examples:
 
 - Add Maven Cucumber Reporting:
  
-     <groupId>net.masterthought</groupId>
-	 <artifactId>maven-cucumber-reporting</artifactId>
+        <groupId>net.masterthought</groupId>
+	    <artifactId>maven-cucumber-reporting</artifactId>
 
 -Add maven Failsafe Plugin:
        
