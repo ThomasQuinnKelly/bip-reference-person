@@ -26,7 +26,7 @@ public class PersonServiceException extends BipRuntimeException {
 	 *            <a href="https://tools.ietf.org/html/rfc7231">https://tools.ietf.org/html/rfc7231</a>
 	 * @param params - arguments to fill in any params in the MessageKey message (e.g. value for {0})
 	 */
-	public PersonServiceException(final MessageKey key, final MessageSeverity severity, HttpStatus status, Object... params) {
+	public PersonServiceException(final MessageKey key, final MessageSeverity severity, final HttpStatus status, final String... params) {
 		super(key, severity, status, params);
 	}
 
@@ -42,7 +42,7 @@ public class PersonServiceException extends BipRuntimeException {
 	 * @param cause - the throwable that caused this throwable
 	 * @param params - arguments to fill in any params in the MessageKey message (e.g. value for {0})
 	 */
-	public PersonServiceException(MessageKey key, MessageSeverity severity, HttpStatus status, Throwable cause, Object... params) {
+	public PersonServiceException(final MessageKey key, final MessageSeverity severity, final HttpStatus status, final Throwable cause, final String... params) {
 		super(key, severity, status, cause, params);
 	}
 }
