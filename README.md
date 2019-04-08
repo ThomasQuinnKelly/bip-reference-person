@@ -58,13 +58,6 @@ Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 * [Prometheus Grafana Local Dev](docs/prometheus-grafana-setup.md)
 * [Deployment Packaging](docs/deployment-package.md)
 
-## Links to sub projects
-
-* [BIP Framework Autoconfigure Project](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-autoconfigure/README.md)
-* [BIP Framework Libraries Project](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-libraries/README.md)
-* [Parent POM for spring boot and cloud enabled services](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-parentpom/README.md)
-* [Test -lib test Automation Framework](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-test-lib/README.md)
-
 ## How to make the dependency framework libraries available
 
 To make these libraries available locally for the service projects to compile and build, there are 3 options.
