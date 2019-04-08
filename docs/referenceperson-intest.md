@@ -94,6 +94,7 @@ Examples:
 
 - Add dependency in pom.xml to include bip-framework-test-lib library
 
+     
      <dependency>
 		<groupId>gov.va.bip.framework</groupId>
 		<artifactId>bip-framework-test-lib</artifactId>
@@ -102,16 +103,19 @@ Examples:
 
 - Add Maven Cucumber Reporting:
 
+     
      <groupId>net.masterthought</groupId>
 	 <artifactId>maven-cucumber-reporting</artifactId>
 
 -Add maven Failsafe Plugin:
       
+     
      <groupId>org.apache.maven.plugins</groupId>
 	 <artifactId>maven-failsafe-plugin</artifactId>
 
 -Add Spring Boot maven plugin
 
+    
      <groupId>org.springframework.boot</groupId>
      <artifactId>spring-boot-maven-plugin</artifactId>
 
