@@ -49,7 +49,7 @@ objects:
         branch: ${BRANCH}
       name: ${APP_NAME}-${BRANCH}
     spec:
-      replicas: ${REPLICA_COUNT}
+      replicas: ${{REPLICA_COUNT}}
       selector:
         app: ${APP_NAME}
         deploymentconfig: ${APP_NAME}-${BRANCH}
@@ -201,14 +201,20 @@ objects:
         deploymentconfig: ${APP_NAME}-${BRANCH}
       sessionAffinity: None
       type: ClusterIP
-  - apiVersion: v1
-    kind: Route
+
+  - apiVersion: extensions/v1beta1
+    kind: Ingress
     metadata:
       name: ${APP_NAME}-${BRANCH}
     spec:
-      to:
-        kind: Service
-        name: ${APP_NAME}-${BRANCH}
+      rules:
+        - http:
+            paths:
+              - backend:
+                  serviceName: ${APP_NAME}-${BRANCH}
+                  servicePort: ${{PORT}}
+                path: /
+          tls: []
         
   - apiVersion: v1
     kind: ConfigMap
