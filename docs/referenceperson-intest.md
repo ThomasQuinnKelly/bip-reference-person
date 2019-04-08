@@ -65,7 +65,9 @@ Then: This step is to specify an expected outcome of the test. The outcome shoul
 
 And and But: These keywords can be used to replace the above step keywords when there are multiple steps of the same type.
 
-## Scenario Outline: Same scenario can be executed for multiple sets of data using scenario outline. Variables in the Scenario Outline steps are marked up with < and >. A Scenario Outline section is always followed by one or more Examples sections, which are a container for a table. The table must have a header row corresponding to the variables in the Scenario Outline steps. Each of the rows below will create a new Scenario, filling in the variable values.
+## Scenario Outline: 
+
+Same scenario can be executed for multiple sets of data using scenario outline. Variables in the Scenario Outline steps are marked up with < and >. A Scenario Outline section is always followed by one or more Examples sections, which are a container for a table. The table must have a header row corresponding to the variables in the Scenario Outline steps. Each of the rows below will create a new Scenario, filling in the variable values.
 
 ## Step Definition:
 
@@ -82,6 +84,7 @@ It is a way to pass the list of values to step definition as input. Multiple dat
 PID based Person Info from Person Partner Service for valid PID. In the below example multiple conditions are passed against one scenario.
 
 Examples: 
+      
       | Veteran           | tokenrequestfile               | ServiceURL          | RequestFile               | participantID |
       | dev-janedoe       | dev/janedoetoken.request       | /api/v1/persons/pid | dev/janedoe.request       |       6666345 |
       | dev-russellwatson | dev/russellwatsontoken.request | /api/v1/persons/pid | dev/russellwatson.request |      13364995 |
