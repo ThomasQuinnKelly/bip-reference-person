@@ -202,19 +202,14 @@ objects:
       sessionAffinity: None
       type: ClusterIP
 
-  - apiVersion: extensions/v1beta1
-    kind: Ingress
+  - apiVersion: v1
+    kind: Route
     metadata:
       name: ${APP_NAME}-${BRANCH}
     spec:
-      rules:
-        - http:
-            paths:
-              - backend:
-                  serviceName: ${APP_NAME}-${BRANCH}
-                  servicePort: ${{PORT}}
-                path: /
-          tls: []
+      to:
+        kind: Service
+        name: ${APP_NAME}-${BRANCH}
         
   - apiVersion: v1
     kind: ConfigMap
