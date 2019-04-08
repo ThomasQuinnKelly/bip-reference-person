@@ -166,7 +166,7 @@ objects:
                       name: vault-config
                       key: VAULT_KUBERNETES_ROLE
                 - name: spring.cloud.vault.ssl.trust-store
-                  value: /secrets/va-cacerts/truststore.jks
+                  value: file:/secrets/va-cacerts/truststore.jks
               volumeMounts:
                 - name: va-cacerts
                   mountPath: "/secrets/va-cacerts" 
