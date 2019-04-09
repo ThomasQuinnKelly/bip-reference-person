@@ -20,7 +20,7 @@ This project can be used as a skeleton to start writing test cases.
 
 Cucumber is a testing framework which supports Behaviour Driven Development (BDD). It lets us define application behaviour in plain meaningful English text using a simple grammar defined by a language called Gherkin. Cucumber itself is written inRuby, but it can be used to “test” code written in Ruby or other languages including but not limited to Java, C# and Python.
 
-[Cucumber Layers](/docs/images/Cucumber-Layers.png)
+[<img src = "/images/Cucumber-Layers.png">
 
 ## Feature file: 
 
@@ -95,9 +95,9 @@ Examples:
 - Add dependency in pom.xml to include bip-framework-test-lib library
 
         <dependency>
-		<groupId>gov.va.bip.framework</groupId>
-		<artifactId>bip-framework-test-lib</artifactId>
-		<version><!-- add the appropriate version --></version>
+		  <groupId>gov.va.bip.framework</groupId>
+		  <artifactId>bip-framework-test-lib</artifactId>
+		  <version><!-- add the appropriate version --></version>
 		</dependency>
 
 - Add Maven Cucumber Reporting:
@@ -107,13 +107,13 @@ Examples:
 
 -Add maven Failsafe Plugin:
        
-     <groupId>org.apache.maven.plugins</groupId>
-	 <artifactId>maven-failsafe-plugin</artifactId>
+       <groupId>org.apache.maven.plugins</groupId>
+	   <artifactId>maven-failsafe-plugin</artifactId>
 
 -Add Spring Boot maven plugin
  
-     <groupId>org.springframework.boot</groupId>
-     <artifactId>spring-boot-maven-plugin</artifactId>
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-maven-plugin</artifactId>
 
 ## Reports
 
@@ -123,9 +123,9 @@ Maven-Cucumber Reporting
 
 Provides pretty html reports for Cucumber. It works by generating html from the cucumber json file. The result is at /target/site/cucumber-reports/cucumber-html-reports/overview-features.html
 
-[Feature Reporting](/docs/images/feature-report.png)
+[<img src = "/images/feature-report.png">
 
-[Tags Reporting](/docs/images/tag-reporting.jpg)
+[<img src = "/images/tag-reporting.png">
 
 
 ## References:

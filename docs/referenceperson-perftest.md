@@ -16,12 +16,12 @@ A Test Plan can be viewed as a container for running tests. It defines what to t
 
 Created a test plan in JMeter with Reference Person Service endpoints which can be configured individually. This document provides the details of the lists that are included in the test plan. Also, provides the detail of report that are generated after the test execution. 
 
-The Reference Person Service performance test uses JMeter Maven plugin for executing the JMeter test. Location for the test plan (ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx)
+The Reference Person Service performance test uses JMeter Maven plugin for executing the JMeter test. 
+Location for the test plan (ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx)
 
 Pom.xml has all the dependencies and user properties [Reference Person POM](/bip-reference-perftest/pom.xml)  
 
-If you need to override any of the properties please use -D argument with appropriate parameter name. Eg: -DBearerTokenCreate.threadGroup.loopCount
-[Parameter Configuration Docs](/bip-reference-perftest/README.md) 
+If you need to override any of the properties please use -D argument with appropriate parameter name. Eg: -DBearerTokenCreate.threadGroup.loopCount [Refer Parameter Configuration Docs](/bip-reference-perftest/README.md) 
 
 The Maven properties are passed to JMeter via the userProperties option. Inside a JMeter test, you can then access the properties using the function ${__P(propertyName)}.Eg: ${__P(BearerTokenCreate.threadGroup.threads,5)}
 
@@ -51,10 +51,10 @@ Also, it will hit the /token endpoint to generate JWT token for the users before
 
 ## Project Structure:
 
-src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx: JMX files are located in this folder. Location for the test plan (ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx)
+src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx: JMX files are located in this folder. 
+Location for the test plan (ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx)
 
 src/test/jmeter/users: This folder has a list of text files. Each file has JSON header info for each concurrent user that will be used in the bearer token API. CSV files have a list of values.
-
 Location for the users files (ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/users)
 
 ## Target Folder Usage:
@@ -71,9 +71,7 @@ Load testing is performed to determine a system’s behavior under both normal a
 
 ## Reference Person Service Performance Test Plan Details:
 
-Below are the lists that are included in the Reference person service Test Plan. Using the below list a test plan can be created for any services.
-
-1. HTTP Request Default
+Below are the lists that are included in the Reference person service Test Plan. This can be used as a skeleton to start writing test plan.
 
 2. User Defined Variables
 
@@ -98,6 +96,7 @@ Below are the lists that are included in the Reference person service Test Plan.
    E. View Result Tree
 
 5. Tear Down Thread Group
+
 
 
 
