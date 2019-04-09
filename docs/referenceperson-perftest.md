@@ -18,9 +18,9 @@ Created a test plan in JMeter with Reference Person Service endpoints which can 
 
 The Reference Person Service performance test uses JMeter Maven plugin for executing the JMeter test [Reference Person Test Plan](/bip-reference-perftest/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx)
 
-Pom.xml has all the dependencies and user properties [Reference Person POM](/bip-reference-perftest/pom.xml)  
+Pom.xml has all the dependencies and user properties for reference person services [Reference Person POM](/bip-reference-perftest/pom.xml)  
 
-If you need to override any of the properties please use -D argument with appropriate parameter name. Eg: -DBearerTokenCreate.threadGroup.loopCount [Refer Parameter Configuration Docs](/bip-reference-perftest/README.md) 
+If you need to override any of the properties during execution of performance test, please use -D argument with appropriate parameter name. Eg: -DBearerTokenCreate.threadGroup.loopCount=<value> [Refer Parameter Configuration Docs](/bip-reference-perftest/README.md) 
 
 The Maven properties are passed to JMeter via the userProperties option. Inside a JMeter test, you can then access the properties using the function ${__P(propertyName)}.Eg: ${__P(BearerTokenCreate.threadGroup.threads,5)}
 
@@ -50,7 +50,7 @@ Also, it will hit the /token endpoint to generate JWT token for the users before
 
 ## Project Structure:
 
-ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx: JMX files are located in this folder. 
+ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx: Reference person service JMX files are located in this folder. 
 
 ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/users: This folder has a list of text files. Each file has JSON header info for each concurrent user that will be used in the bearer token API. CSV files have a list of values.
 
@@ -58,9 +58,9 @@ ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/users: This fol
 
 After the test execution, the test report and logs can be viewed in the target folder.
 
-look in target/jmeter/report/ for the JMeter results file
+Dashboard Report: view target/jmeter/report/ for the JMeter results file.
 
-look in target/jmeter/logs / for the JMeter log file
+Log File: view target/jmeter/logs/ for the JMeter log file.
 
  ## Load Performance Test plan:
 
@@ -69,6 +69,8 @@ Load testing is performed to determine a system’s behavior under both normal a
 ## Reference Person Service Performance Test Plan Details:
 
 Below are the lists that are included in the Reference person service Test Plan. This can be used as a skeleton to start writing test plan.
+
+1. HTTP Request Default
 
 2. User Defined Variables
 
@@ -97,11 +99,11 @@ Below are the lists that are included in the Reference person service Test Plan.
 
 
 
- 1. HTTP Request Default:
+1. HTTP Request Default:
 
 If you need to test dozens of HTTP URL’s, then instead of adding the webserver's hostname or proxy details ,etc in all HTTP Request Samplers, you can put these in the Config Element HTTP Request Defaults. This will avoid repetition of data and also make the config manageable. In reference person service test plan we have used HTTP request default for protocol, server name, and port number.
 
- 2. User Defined Variables:
+2. User Defined Variables:
 
 User-defined variables are used to defined specific variables which can store some values which you need in different places. We have used this for protocol, server name, and port number to have some default values.
 
