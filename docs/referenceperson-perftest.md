@@ -2,9 +2,9 @@
 
 ## Capability and Features
 
-- Speed -Determines whether the application responds quickly
+- Speed -Determines whether the application responds quickly.
 - Scalability -Determines maximum user load the software application can handle.
-- Stability -Determines if the application is stable under varying loads
+- Stability -Determines if the application is stable under varying loads.
 - A Detailed report can be generated with the help of a dashboard report.
 - Executable in multiple environments.
 
@@ -12,14 +12,16 @@
 
 A Test Plan can be viewed as a container for running tests. It defines what to test and how to go about it. A complete test plan consists of one or more elements such as thread groups, HTTP Request Default, User Defined Variables, listeners, timers, assertions, and configuration elements. A test plan must have at least one thread group.
 
+## Reference Person Service Performance Test Plan
+
 Created a test plan in JMeter with Reference Person Service endpoints which can be configured individually. This document provides the details of the lists that are included in the test plan. Also, provides the detail of report that are generated after the test execution. 
 
-The Reference Person Service performance test uses JMeter Maven plugin for executing the JMeter test. [Reference Person Service Test Plan](/jmeter/ReferencePersonServicePerformanceTestPlan.jmx)
+The Reference Person Service performance test uses JMeter Maven plugin for executing the JMeter test. Location for the test plan (ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx)
 
-Pom.xml has all the dependencies and user properties.[Reference Person POM](/bip-reference-perftest/pom.xml) . 
+Pom.xml has all the dependencies and user properties [Reference Person POM](/bip-reference-perftest/pom.xml)  
 
-If you need to override any of the properties please use -D argument with appropriate parameter name. Eg: -DBearerTokenCreate.threadGroup.loopCount=1 
-[Parameter Configuration Docs](/bip-reference-perftest/README.md) . 
+If you need to override any of the properties please use -D argument with appropriate parameter name. Eg: -DBearerTokenCreate.threadGroup.loopCount
+[Parameter Configuration Docs](/bip-reference-perftest/README.md) 
 
 The Maven properties are passed to JMeter via the userProperties option. Inside a JMeter test, you can then access the properties using the function ${__P(propertyName)}.Eg: ${__P(BearerTokenCreate.threadGroup.threads,5)}
 
@@ -49,11 +51,11 @@ Also, it will hit the /token endpoint to generate JWT token for the users before
 
 ## Project Structure:
 
-src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx: JMX files are located in this folder. [Reference Person Service Test Plan](/jmeter/ReferencePersonServicePerformanceTestPlan.jmx)
+src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx: JMX files are located in this folder. Location for the test plan (ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx)
 
 src/test/jmeter/users: This folder has a list of text files. Each file has JSON header info for each concurrent user that will be used in the bearer token API. CSV files have a list of values.
 
-[Reference Person Service Users](/jmeter/users)
+Location for the users files (ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/users)
 
 ## Target Folder Usage:
 
@@ -67,7 +69,7 @@ look in target/jmeter/logs / for the JMeter log file
 
 Load testing is performed to determine a system’s behavior under both normal and at peak conditions. It helps to identify the maximum operating capacity of an application as well as any bottlenecks and determine which element is causing degradation. For e.g., If the number of users is increased then what is the response time, throughput time and elapsed time for requests.
 
-## Reference Person Service Performance Test Plan:
+## Reference Person Service Performance Test Plan Details:
 
 Below are the lists that are included in the Reference person service Test Plan. Using the below list a test plan can be created for any services.
 
@@ -96,6 +98,8 @@ Below are the lists that are included in the Reference person service Test Plan.
    E. View Result Tree
 
 5. Tear Down Thread Group
+
+
 
 1. HTTP Request Default:
 
@@ -168,5 +172,10 @@ It is a special form of Thread Group used to perform necessary actions after the
 For all test plan after execution of performance test, it generates a dashboard report.
 
 JMeter supports dashboard report generation to get graphs and statistics from a test plan. The dashboard generator is a modular extension of JMeter. Its default behavior is to read and process samples from CSV files to generate HTML files containing graph views. It can generate the report at the end of a load test or on demand.
+
+<img src = "/images/jmeter-summaryreport.jpg">
+
+<img src = "/images/jmeter-statisticsreport.jpg">
+
 
 For more info on Dashboard report: http://jmeter.apache.org/usermanual/generating-dashboard.html
