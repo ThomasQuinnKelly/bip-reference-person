@@ -1,12 +1,12 @@
 mavenGitflowPipeline {
     dockerBuilds = [
-        'ocp-reference-person': 'ocp-reference-person'
+        'bip-reference-person': 'bip-reference-person'
     ]
 
     deploymentTemplates = ["template.yaml"]
     deploymentParameters = [
-        'APP_NAME': 'ocp-reference-person',
-        'IMAGE': 'ocp-reference-person',
+        'APP_NAME': 'bip-reference-person',
+        'IMAGE': 'bip-reference-person',
         'IMAGE_TAG': 'master'
     ]
 }

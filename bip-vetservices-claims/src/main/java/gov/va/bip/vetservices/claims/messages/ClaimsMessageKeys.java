@@ -74,7 +74,7 @@ public enum ClaimsMessageKeys implements MessageKey {
 	 * @see gov.va.bip.framework.messages.MessageKey#getMessage(java.lang.Object[])
 	 */
 	@Override
-	public String getMessage(Object... params) {
+	public String getMessage(String... params) {
 		return messageSource.getMessage(this.getKey(), params, this.defaultMessage, Locale.getDefault());
 	}
 }

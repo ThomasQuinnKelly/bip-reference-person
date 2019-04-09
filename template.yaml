@@ -33,7 +33,7 @@ parameters:
   - name: PORT
     displayName: Port Number
     description: Port number to expose the service on
-    value: "443"
+    value: "80"
     required: true
   - name: BRANCH
     displayName: Branch name from SCM
@@ -49,7 +49,7 @@ objects:
         branch: ${BRANCH}
       name: ${APP_NAME}-${BRANCH}
     spec:
-      replicas: ${REPLICA_COUNT}
+      replicas: ${{REPLICA_COUNT}}
       selector:
         app: ${APP_NAME}
         deploymentconfig: ${APP_NAME}-${BRANCH}
@@ -165,7 +165,19 @@ objects:
                     configMapKeyRef:
                       name: vault-config
                       key: VAULT_KUBERNETES_ROLE
-                
+                - name: spring.cloud.vault.ssl.trust-store
+                  value: file:/secrets/va-cacerts/truststore.jks
+              volumeMounts:
+                - name: va-cacerts
+                  mountPath: "/secrets/va-cacerts" 
+                  readOnly: true
+          volumes:
+            - name: va-cacerts
+              secret:
+                secretName: va-cacerts
+                items:
+                - key: va-cacerts
+                  path: truststore.jks  
           dnsPolicy: ClusterFirst
           restartPolicy: Always
           securityContext: {}
@@ -181,7 +193,7 @@ objects:
     spec:
       ports:
         - name: ${APP_NAME}
-          port: ${PORT}
+          port: ${{PORT}}
           protocol: TCP
           targetPort: 8080
       selector:
@@ -189,6 +201,16 @@ objects:
         deploymentconfig: ${APP_NAME}-${BRANCH}
       sessionAffinity: None
       type: ClusterIP
+
+  - apiVersion: v1
+    kind: Route
+    metadata:
+      name: ${APP_NAME}-${BRANCH}
+    spec:
+      to:
+        kind: Service
+        name: ${APP_NAME}-${BRANCH}
+        
   - apiVersion: v1
     kind: ConfigMap
     metadata:
