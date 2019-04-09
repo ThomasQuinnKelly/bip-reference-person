@@ -52,7 +52,7 @@ public enum PersonMessageKeys implements MessageKey {
 	 * @param key - the key as declared in the properties file
 	 * @param defaultMessage - in case the key cannot be found
 	 */
-	private PersonMessageKeys(String key, String defaultMessage) {
+	private PersonMessageKeys(final String key, final String defaultMessage) {
 		this.key = key;
 		this.defaultMessage = defaultMessage;
 	}
@@ -73,7 +73,7 @@ public enum PersonMessageKeys implements MessageKey {
 	 * @see gov.va.bip.framework.messages.MessageKey#getMessage(java.lang.Object[])
 	 */
 	@Override
-	public String getMessage(Object... params) {
+	public String getMessage(final String... params) {
 		return messageSource.getMessage(this.getKey(), params, this.defaultMessage, Locale.getDefault());
 	}
 }
