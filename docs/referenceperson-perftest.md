@@ -2,7 +2,7 @@
 
 Created a test plan in JMeter with Reference Person Service end points which can be configured individually. This document provides the details of the lists that are included in the test plan. Also, provides the details of report that are generated after the test execution. This Reference Person Service uses JMeter Maven plugin for executing the JMeter test. 
 
-[Location of JMX file](/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx)
+[Location of JMX file](/jmeter/ReferencePersonServicePerformanceTestPlan.jmx)
 
 Pom.xml has all the dependencies and user properties. If you need to override any of the properties please use -D argument with appropriate parameter name.
 
