@@ -17,6 +17,7 @@ A Test Plan can be viewed as a container for running tests. It defines what to t
 Created a test plan in JMeter with Reference Person Service endpoints which can be configured individually. This document provides the details of the lists that are included in the test plan. Also, provides the detail of report that are generated after the test execution. 
 
 The Reference Person Service performance test uses JMeter Maven plugin for executing the JMeter test. 
+
 Location for the test plan (ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx)
 
 Pom.xml has all the dependencies and user properties [Reference Person POM](/bip-reference-perftest/pom.xml)  
@@ -52,9 +53,11 @@ Also, it will hit the /token endpoint to generate JWT token for the users before
 ## Project Structure:
 
 src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx: JMX files are located in this folder. 
+
 Location for the test plan (ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx)
 
 src/test/jmeter/users: This folder has a list of text files. Each file has JSON header info for each concurrent user that will be used in the bearer token API. CSV files have a list of values.
+
 Location for the users files (ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/users)
 
 ## Target Folder Usage:
@@ -172,9 +175,9 @@ For all test plan after execution of performance test, it generates a dashboard 
 
 JMeter supports dashboard report generation to get graphs and statistics from a test plan. The dashboard generator is a modular extension of JMeter. Its default behavior is to read and process samples from CSV files to generate HTML files containing graph views. It can generate the report at the end of a load test or on demand.
 
-<img src = "/images/jmeter-summaryreport.jpg">
+<img src = "/docs/images/jmeter-summaryreport.jpg">
 
-<img src = "/images/jmeter-statisticsreport.jpg">
+<img src = "/docs/images/jmeter-statisticsreport.jpg">
 
 
 For more info on Dashboard report: http://jmeter.apache.org/usermanual/generating-dashboard.html
