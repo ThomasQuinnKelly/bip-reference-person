@@ -1,7 +1,7 @@
 
 ## Class Diagrams
 
-The below pciture shows the classes that are inherited from bip-framework classes.
+The below diagram shows the classes that are inherited from bip-framework libraries.
 
 <img src = "/docs/images/framework-reference-person.jpg">
 
