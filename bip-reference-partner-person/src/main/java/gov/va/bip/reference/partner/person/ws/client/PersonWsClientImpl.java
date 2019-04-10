@@ -10,7 +10,7 @@ import org.springframework.ws.WebServiceException;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 import gov.va.bip.framework.audit.AuditEvents;
-import gov.va.bip.framework.audit.Auditable;
+import gov.va.bip.framework.audit.annotation.Auditable;
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.messages.MessageKeys;
