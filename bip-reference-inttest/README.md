@@ -34,14 +34,8 @@ src/inttest/resources/config/referenceperson-dev.properties – DEV configuratio
 src/inttest/resources/config/referenceperson-stage.properties – STAGE configuration properties such as URL are specified here.
 
 ## Execution ##
-1. In bip-reference-person/src/main/resources/bip-reference-person.yml file JWT by default is set to false, enable that to true.  
- 
- bip.framework:
-  security:
-    jwt:
-      enabled: true
 
-2. To execute the functional test in local bip-reference-person service needs to be up and running.
+To execute the functional test in local bip-reference-person service needs to be up and running.
 
 # How to Build and Test reference-person service ##
 [quick-start-guide](/docs/quick-start-guide.md)

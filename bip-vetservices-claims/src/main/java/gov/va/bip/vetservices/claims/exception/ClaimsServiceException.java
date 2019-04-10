@@ -26,7 +26,7 @@ public class ClaimsServiceException extends BipRuntimeException {
 	 *            <a href="https://tools.ietf.org/html/rfc7231">https://tools.ietf.org/html/rfc7231</a>
 	 * @param params - arguments to fill in any params in the MessageKey message (e.g. value for {0})
 	 */
-	public ClaimsServiceException(final MessageKey key, final MessageSeverity severity, HttpStatus status, Object... params) {
+	public ClaimsServiceException(final MessageKey key, final MessageSeverity severity, HttpStatus status, String... params) {
 		super(key, severity, status, params);
 	}
 
@@ -42,7 +42,7 @@ public class ClaimsServiceException extends BipRuntimeException {
 	 * @param cause - the throwable that caused this throwable
 	 * @param params - arguments to fill in any params in the MessageKey message (e.g. value for {0})
 	 */
-	public ClaimsServiceException(MessageKey key, MessageSeverity severity, HttpStatus status, Throwable cause, Object... params) {
+	public ClaimsServiceException(MessageKey key, MessageSeverity severity, HttpStatus status, Throwable cause, String... params) {
 		super(key, severity, status, cause, params);
 	}
 }
