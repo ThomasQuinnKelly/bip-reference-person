@@ -20,7 +20,7 @@ This project can be used as a skeleton to start writing test cases.
 
 Cucumber is a testing framework which supports Behaviour Driven Development (BDD). It lets us define application behaviour in plain meaningful English text using a simple grammar defined by a language called Gherkin. Cucumber itself is written inRuby, but it can be used to “test” code written in Ruby or other languages including but not limited to Java, C# and Python.
 
-[Cucumber Layers](/docs/images/Cucumber-Layers.png)
+<img src = "/docs/images/Cucumber-Layers.png">
 
 ## Feature file: 
 
@@ -65,7 +65,9 @@ Then: This step is to specify an expected outcome of the test. The outcome shoul
 
 And and But: These keywords can be used to replace the above step keywords when there are multiple steps of the same type.
 
-## Scenario Outline: Same scenario can be executed for multiple sets of data using scenario outline. Variables in the Scenario Outline steps are marked up with < and >. A Scenario Outline section is always followed by one or more Examples sections, which are a container for a table. The table must have a header row corresponding to the variables in the Scenario Outline steps. Each of the rows below will create a new Scenario, filling in the variable values.
+## Scenario Outline: 
+
+Same scenario can be executed for multiple sets of data using scenario outline. Variables in the Scenario Outline steps are marked up with < and >. A Scenario Outline section is always followed by one or more Examples sections, which are a container for a table. The table must have a header row corresponding to the variables in the Scenario Outline steps. Each of the rows below will create a new Scenario, filling in the variable values.
 
 ## Step Definition:
 
@@ -82,6 +84,7 @@ It is a way to pass the list of values to step definition as input. Multiple dat
 PID based Person Info from Person Partner Service for valid PID. In the below example multiple conditions are passed against one scenario.
 
 Examples: 
+      
       | Veteran           | tokenrequestfile               | ServiceURL          | RequestFile               | participantID |
       | dev-janedoe       | dev/janedoetoken.request       | /api/v1/persons/pid | dev/janedoe.request       |       6666345 |
       | dev-russellwatson | dev/russellwatsontoken.request | /api/v1/persons/pid | dev/russellwatson.request |      13364995 |
@@ -91,26 +94,26 @@ Examples:
 
 - Add dependency in pom.xml to include bip-framework-test-lib library
 
-     <dependency>
-		<groupId>gov.va.bip.framework</groupId>
-		<artifactId>bip-framework-test-lib</artifactId>
-		<version><!-- add the appropriate version --></version>
-		</dependency>
+       <dependency>
+		  <groupId>gov.va.bip.framework</groupId>
+		  <artifactId>bip-framework-test-lib</artifactId>
+		  <version><!-- add the appropriate version --></version>
+	   </dependency>
 
 - Add Maven Cucumber Reporting:
-
-     <groupId>net.masterthought</groupId>
-	 <artifactId>maven-cucumber-reporting</artifactId>
+ 
+       <groupId>net.masterthought</groupId>
+	   <artifactId>maven-cucumber-reporting</artifactId>
 
 -Add maven Failsafe Plugin:
-      
-     <groupId>org.apache.maven.plugins</groupId>
-	 <artifactId>maven-failsafe-plugin</artifactId>
+       
+       <groupId>org.apache.maven.plugins</groupId>
+	   <artifactId>maven-failsafe-plugin</artifactId>
 
 -Add Spring Boot maven plugin
-
-     <groupId>org.springframework.boot</groupId>
-     <artifactId>spring-boot-maven-plugin</artifactId>
+ 
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-maven-plugin</artifactId>
 
 ## Reports
 
@@ -120,9 +123,9 @@ Maven-Cucumber Reporting
 
 Provides pretty html reports for Cucumber. It works by generating html from the cucumber json file. The result is at /target/site/cucumber-reports/cucumber-html-reports/overview-features.html
 
-[Feature Reporting](/docs/images/feature-report.png)
+<img src = "/docs/images/feature-report.png">
 
-[Tags Reporting](/docs/images/tag-reporting.jpg)
+<img src = "/docs/images/tag-reporting.png">
 
 
 ## References:
