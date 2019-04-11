@@ -1,4 +1,4 @@
-package gov.va.bip.reference.person.ws.client;
+package gov.va.bip.reference.person.client.ws;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +8,12 @@ import gov.va.bip.framework.exception.BipException;
 import gov.va.bip.framework.exception.BipRuntimeException;
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
-import gov.va.bip.reference.partner.person.ws.client.PersonWsClient;
 import gov.va.bip.reference.person.exception.PersonServiceException;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
 import gov.va.bip.reference.person.transform.impl.PersonByPid_DomainToPartner;
 import gov.va.bip.reference.person.transform.impl.PersonByPid_PartnerToDomain;
+import gov.va.bip.reference.partner.person.client.ws.PersonWsClient;
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
 

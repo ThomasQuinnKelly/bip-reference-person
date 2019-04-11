@@ -1,15 +1,15 @@
-package gov.va.bip.reference.partner.person.ws.client.remote;
+package gov.va.bip.reference.partner.person.client.ws.remote;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
+import gov.va.bip.framework.client.ws.remote.RemoteServiceCall;
 import gov.va.bip.framework.config.BipCommonSpringProfiles;
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.transfer.PartnerTransferObjectMarker;
-import gov.va.bip.framework.ws.client.remote.RemoteServiceCall;
 
 /**
  * Implements the {@link RemoteServiceCall} interface for the remote client impls spring profile

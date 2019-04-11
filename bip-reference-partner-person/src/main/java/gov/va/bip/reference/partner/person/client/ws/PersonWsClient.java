@@ -1,4 +1,4 @@
-package gov.va.bip.reference.partner.person.ws.client;
+package gov.va.bip.reference.partner.person.client.ws;
 
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;

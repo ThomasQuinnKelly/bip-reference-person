@@ -1,4 +1,4 @@
-package gov.va.bip.reference.partner.person.ws.client.remote;
+package gov.va.bip.reference.partner.person.client.ws.remote;
 
 import java.text.MessageFormat;
 
@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
+import gov.va.bip.framework.client.ws.remote.AbstractRemoteServiceCallMock;
+import gov.va.bip.framework.client.ws.remote.RemoteServiceCall;
 import gov.va.bip.framework.config.BipCommonSpringProfiles;
 import gov.va.bip.framework.exception.BipPartnerRuntimeException;
 import gov.va.bip.framework.log.BipLogger;
@@ -19,8 +21,6 @@ import gov.va.bip.framework.security.PersonTraits;
 import gov.va.bip.framework.security.SecurityUtils;
 import gov.va.bip.framework.transfer.PartnerTransferObjectMarker;
 import gov.va.bip.framework.validation.Defense;
-import gov.va.bip.framework.ws.client.remote.AbstractRemoteServiceCallMock;
-import gov.va.bip.framework.ws.client.remote.RemoteServiceCall;
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 
 /**
@@ -46,7 +46,7 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see gov.va.bip.framework.ws.client.remote.RemoteServiceCall#callRemoteService( org.springframework.ws.client.core.
+	 * @see gov.va.bip.framework.client.ws.remote.RemoteServiceCall#callRemoteService( org.springframework.client.ws.core.
 	 * WebServiceTemplate, gov.va.bip.framework.transfer.PartnerTransferObjectMarker, java.lang.Class)
 	 */
 	@Override
@@ -71,7 +71,7 @@ public class PersonRemoteServiceCallMock extends AbstractRemoteServiceCallMock {
 	 * <b><i>Each implementation could differ.</i></b>
 	 * {@inheritDoc}
 	 *
-	 * @see gov.va.bip.framework.ws.client.remote.AbstractRemoteServiceCallMock#
+	 * @see gov.va.bip.framework.client.ws.remote.AbstractRemoteServiceCallMock#
 	 *      getKeyForMockResponse(gov.va.bip.framework.transfer. PartnerTransferObjectMarker)
 	 */
 	@Override

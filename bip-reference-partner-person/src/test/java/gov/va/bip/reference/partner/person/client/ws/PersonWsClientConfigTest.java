@@ -1,4 +1,4 @@
-package gov.va.bip.reference.partner.person.ws.client;
+package gov.va.bip.reference.partner.person.client.ws;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -19,7 +19,7 @@ import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 
 import gov.va.bip.framework.config.BipCommonSpringProfiles;
 import gov.va.bip.framework.log.PerformanceLogMethodInterceptor;
-import gov.va.bip.reference.partner.person.ws.client.PersonWsClientConfig;
+import gov.va.bip.reference.partner.person.client.ws.PersonWsClientConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners(inheritListeners = false, listeners = { DependencyInjectionTestExecutionListener.class,

@@ -25,11 +25,11 @@ import gov.va.bip.framework.messages.MessageKeys;
 import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.ReferencePersonService;
+import gov.va.bip.reference.person.client.ws.PersonPartnerHelper;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
 import gov.va.bip.reference.person.utils.CacheConstants;
 import gov.va.bip.reference.person.utils.HystrixCommandConstants;
-import gov.va.bip.reference.person.ws.client.PersonPartnerHelper;
 
 /**
  * Implementation class for the Reference Person Service.
