@@ -1,9 +1,9 @@
 # Application Deployment Package
 Developers need a way to tell the platform how to deploy their application as well as any services that their application depends on. This method should allow for the development team to specify all all aspects of their service deployment in a common way across all projects.
 
-The platform team has selected [Helm](https://helm.sh/docs/) as the deployment tool they would like to use. Development teams will need to build a deliver a Helm package as their deployment artifact. 
+The platform team has selected [Openshift Templates](https://docs.openshift.com/container-platform/3.6/dev_guide/templates.html) as the deployment tool they would like to use. Development teams will need to build a deliver a set of templates as their deployment artifact. 
 
-This document will give you the basics on creating a Helm deployment package for your application, but your should definately read up on the Helm documentation to get a full understanding on how to build a package.
+This document will give you the basics on creating an Openshift Template for your application, but your should definately read up on the Openshift documentation to get a full understanding on how to build a template.
 
 ## Building an Openshift Template
 Openshift templates are a collection of Object defintions. To deploy your application you will need the following objects at a mimimum:
