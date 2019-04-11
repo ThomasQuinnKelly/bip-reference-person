@@ -232,8 +232,8 @@ bgs:
     connectionTimeout: 60000
 
 bip-reference-partner-person: 
-  ws:
-    client: 
+  client:
+    ws: 
       endpoint: ${bgs.url}/PersonWebService/PersonWebService?WSDL
       username: ${bgs.username}
       password: ${bgs.password}
