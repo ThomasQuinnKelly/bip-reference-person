@@ -45,40 +45,40 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 
 	/** Location of the truststore containing the cert */
 	@Value("#{ baseWsClientUtil."
-			+ "verifyAddFilePrefix('${bip-reference-partner-person.client.ws.ssl.keystore:classpath:ssl/dev/vaebnweb1Keystore.jks}') }")
+			+ "verifyAddFilePrefix('${bip-reference-partner-person.ws.client.ssl.keystore:classpath:ssl/dev/vaebnweb1Keystore.jks}') }")
 	private Resource keystore;
 
 	/** Password for the cert */
-	@Value("${bip-reference-partner-person.client.ws.ssl.keystorePass:password}")
+	@Value("${bip-reference-partner-person.ws.client.ssl.keystorePass:password}")
 	private String keystorePass;
 
 	/** Location of the truststore containing the cert */
 	@Value("#{ baseWsClientUtil."
-			+ "verifyAddFilePrefix('${bip-reference-partner-person.client.ws.ssl.truststore:classpath:ssl/dev/vaebnTruststore.jks}') }")
+			+ "verifyAddFilePrefix('${bip-reference-partner-person.ws.client.ssl.truststore:classpath:ssl/dev/vaebnTruststore.jks}') }")
 	private Resource truststore;
 
 	/** Password for the cert */
-	@Value("${bip-reference-partner-person.client.ws.ssl.truststorePass:password}")
+	@Value("${bip-reference-partner-person.ws.client.ssl.truststorePass:password}")
 	private String truststorePass;
 
 	/** Decides if jaxb validation logs errors. */
-	@Value("${bip-reference-partner-person.client.ws.logValidation:true}")
+	@Value("${bip-reference-partner-person.ws.client.logValidation:true}")
 	private boolean logValidation;
 
 	/** Username for WS Authentication. */
-	@Value("${bip-reference-partner-person.client.ws.username}")
+	@Value("${bip-reference-partner-person.ws.client.username}")
 	private String username;
 
 	/** Password for WS Authentication. */
-	@Value("${bip-reference-partner-person.client.ws.password}")
+	@Value("${bip-reference-partner-person.ws.client.password}")
 	private String password;
 
 	/** VA Application Name Header value. */
-	@Value("${bip-reference-partner-person.client.ws.vaApplicationName}")
+	@Value("${bip-reference-partner-person.ws.client.vaApplicationName}")
 	private String vaApplicationName;
 
 	/** The VA Station ID header value */
-	@Value("${bip-reference-partner-person.client.ws.vaStationId:281}")
+	@Value("${bip-reference-partner-person.ws.client.vaStationId:281}")
 	private String vaStationId;
 
 	/**
@@ -117,9 +117,9 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 */
 	@Bean
 	WebServiceTemplate personWsClientAxiomTemplate(
-			@Value("${bip-reference-partner-person.client.ws.endpoint}") final String endpoint,
-			@Value("${bip-reference-partner-person.client.ws.readTimeout:60000}") final int readTimeout,
-			@Value("${bip-reference-partner-person.client.ws.connectionTimeout:60000}") final int connectionTimeout) {
+			@Value("${bip-reference-partner-person.ws.client.endpoint}") final String endpoint,
+			@Value("${bip-reference-partner-person.ws.client.readTimeout:60000}") final int readTimeout,
+			@Value("${bip-reference-partner-person.ws.client.connectionTimeout:60000}") final int connectionTimeout) {
 
 		Defense.hasText(endpoint, "personWsClientAxiomTemplate endpoint cannot be empty.");
 
@@ -146,7 +146,7 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 */
 	@Bean
 	PerformanceLogMethodInterceptor personWsClientPerformanceLogMethodInterceptor(
-			@Value("${bip-reference-partner-person.client.ws.methodWarningThreshhold:2500}") final Integer methodWarningThreshhold) {
+			@Value("${bip-reference-partner-person.ws.client.methodWarningThreshhold:2500}") final Integer methodWarningThreshhold) {
 		return super.getPerformanceLogMethodInterceptor(methodWarningThreshhold);
 	}
 
