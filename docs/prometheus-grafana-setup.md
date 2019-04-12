@@ -22,7 +22,7 @@ See [Quick Start Guide](quick-start-guide.md) to run docker containers for local
 
 - Click on "Add Data Source." This will open a page to add a data source. Prometheus should have been defined as a datasource already as seen ![Grafana Datasources](/docs/images/Grafana-Datasources.jpg)
 
-- Give a suitable name to this new data source, as this will be used while creating visualizations. See ![Grafana Datasource Details](/docs/images/Grafana-Datasource-Details.jpg | width=400)
+- Give a suitable name to this new data source, as this will be used while creating visualizations. See ![Grafana Datasource Details](/docs/images/Grafana-Datasource-Details.jpg | width=60%)
 	a. Select Prometheus in the "type" drop down.
 	b. Local URL `http://localhost:9090` as Prometheus runs locally on port 9090.
 	c. Fill other details if you have any security or HTTP related settings.
@@ -31,8 +31,8 @@ See [Quick Start Guide](quick-start-guide.md) to run docker containers for local
 	
 ## Dashboard
 
-- We can access the home page for the dashboard as shown in: ![Grafana Dashboard](/docs/images/Grafana-Dashboard.jpg | width=600). JVM Micrometer and Hystrix dashboards are available by default
+- We can access the home page for the dashboard as shown in: ![Grafana Dashboard](/docs/images/Grafana-Dashboard.jpg | width=60%). JVM Micrometer and Hystrix dashboards are available by default
 
 - A new dashboard can be created based on the requirement using below steps:
-	a. Click on "Create your first dashboard" tab. Then click on one of the options like Graph or Singlestat or Table etc as shown in [Grafana New Dashboard](/docs/images/Grafana-NewDashBoard.jpg | width=600)
+	a. Click on "Create your first dashboard" tab. Then click on one of the options like Graph or Singlestat or Table etc as shown in ![Grafana New Dashboard](/docs/images/Grafana-NewDashBoard.jpg | width=60%)
 	b. Select a particular option as above to look at the required stats.
