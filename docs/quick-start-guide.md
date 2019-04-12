@@ -20,9 +20,9 @@
 
 To clone and run this repository you'll need Git installed on your computer. 
 
-* From your command line: `git clone https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot`
-* Alternately, you can also clone the repository from IDE using URL `https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot`
-* Change directory to "ocp-reference-spring-boot"
+* From your command line: `git clone https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot`
+* Alternately, you can also clone the repository from IDE using URL `https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot`
+* Change directory to "bip-ocp-ref-spring-boot"
 * If Docker is RUNNING, run `mvn clean install` from the reactor POM to build the project which will create the docker image for bip-reference-person. 
 * If Docker is UNAVAILABLE/OFFLINE, run `mvn clean install -Ddockerfile.skip=true` from the reactor POM to build the project. `-Ddockerfile.skip=true` will *SKIP* the docker image(s) creation. Don't use this option if you are planning to run `local-int` mode as it would require docker image(s) to run in docker container.
 
@@ -43,9 +43,9 @@ There are 2 application profiles that you could run locally
 * Assuming you are using Spring Tool Suite as suggested
 * Ensure you've imported the projects in the IDE
 * In the "Boot Dashboard" within Spring Tool Suite, highlight `bip-reference-person` project and click the "*(Re)start*" button *
-* URLs for testing/using this deployment approach
+* Localhost URLs for testing/using this deployment approach
 
-  [BIP Reference Person Swagger](http://localhost:8080/swagger-ui.html)
+  [Swagger UI](http://localhost:8080/swagger-ui.html) (http://localhost:8080/swagger-ui.html)
 
 ### Using Docker Compose
 
@@ -54,17 +54,17 @@ There are 2 application profiles that you could run locally
 * Ensure that the Docker is running and that you have run `mvn clean install` from the reactor POM
 * Verify that the `docker-compose.yml` exists in the root directory of ocp-reference-spring-boot
 * To start all the containers, execute the `./start-all.sh` command under the root directory, which will bring up all the docker containers. 
-* URLs for testing/using this deployment approach
+* Localhost URLs for testing/using this deployment approach
 
-  [BIP Reference Person Swagger](http://localhost:8080/swagger-ui.html)
+  [Swagger UI](http://localhost:8080/swagger-ui.html) (http://localhost:8080/swagger-ui.html)
 
-  [Consul](http://localhost:8500) - Master ACL token is `7652ba4c-0f6e-8e75-5724-5e083d72cfe4`
+  [Consul](http://localhost:8500) (http://localhost:8500) - Master ACL token is `7652ba4c-0f6e-8e75-5724-5e083d72cfe4`
 
-  [Vault](http://localhost:8200) - Root token is `vaultroot`
+  [Vault](http://localhost:8200) (http://localhost:8200) - Root token is `vaultroot`
 
-  [Prometheus](http://localhos:9090)
+  [Prometheus](http://localhos:9090) (http://localhos:9090)
 
-  [Grafana](http://localhost:3000) - Username/Password is `admin/admin` by default
+  [Grafana](http://localhost:3000) (http://localhost:3000) - Username/Password is `admin/admin` by default
 
   *Note there are other URLs, such as all the actuator URLs.  Listed here are the basic minimum URLs.*
 

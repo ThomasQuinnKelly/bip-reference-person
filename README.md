@@ -11,7 +11,7 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 ## How to include the dependency framework libraries in your project
 
-The projects in this repository are dependent on the libraries from [BIP framework](https://github.ec.va.gov/EPMO/bip-ocp-framework) for  auto configuration, common shared libraries, parent pom maven configuration and test libary. These libraries can be included as shown below.
+The projects in this repository are dependent on the libraries from [BIP framework](https://github.com/department-of-veterans-affairs/ocp-framework) for  auto configuration, common shared libraries, parent pom maven configuration and test libary. These libraries can be included as shown below.
 
        <dependency>
          <groupId>gov.va.bip.framework</groupId>
@@ -64,8 +64,8 @@ To make these libraries available locally for the service projects to compile an
 
 **OPTION 1**
 
-1. Clone the BIP framework repository `git clone https://github.ec.va.gov/EPMO/bip-ocp-framework`
-1. Navigate to the folder `bip-ocp-framework` and run `mvn clean install` command. This would build all the libraries with versions as configured in pom.xml files.
+1. Clone the BIP framework repository `git clone https://github.com/department-of-veterans-affairs/ocp-framework.git`
+1. Navigate to the folder `ocp-framework` and run `mvn clean install` command. This would build all the libraries with versions as configured in pom.xml files.
 
 **OPTION 2**
 
@@ -82,7 +82,7 @@ To make these libraries available locally for the service projects to compile an
 **OPTION 3**
 **If you are NOT on VA network, a temporary solution in provided where GitHub repository acts as your nexus repository.
 
-Add the below section in the reactor (root) pom.xml of your service project. See example: https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/blob/master/pom.xml
+Add the below section in the reactor (root) pom.xml of your service project. See example: https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/pom.xml
  
 	<repositories>
 		<repository>
