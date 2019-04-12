@@ -20,9 +20,11 @@ See [Quick Start Guide](quick-start-guide.md) to run docker containers for local
 
 - Click the gear icon in the left sidebar and from the menu select "Data Sources." 
 
-- Click on "Add Data Source." This will open a page to add a data source. Prometheus should have been defined as a datasource already as seen <img alt="Grafana Datasources" src="/docs/images/Grafana-Datasources.jpg" width="60%" height="60%">
+- Click on "Add Data Source." This will open a page to add a data source. Prometheus should have been defined as a datasource already:
+<img alt="Grafana Datasources" src="/docs/images/Grafana-Datasources.jpg" width="80%" height="80%">
 
-- Give a suitable name to this new data source, as this will be used while creating visualizations. See <img alt="Grafana Datasource Details" src="/docs/images/Grafana-Datasource-Details.jpg" width="60%" height="60%">
+- Give a suitable name to this new data source, as this will be used while creating visualizations:
+<img alt="Grafana Datasource Details" src="/docs/images/Grafana-Datasource-Details.jpg" width="80%" height="80%">
 	a. Select Prometheus in the "type" drop down.
 	b. Local URL `http://localhost:9090` as Prometheus runs locally on port 9090.
 	c. Fill other details if you have any security or HTTP related settings.
@@ -32,10 +34,12 @@ See [Quick Start Guide](quick-start-guide.md) to run docker containers for local
 ## Dashboard
 
 - We can access the home page for the dashboard:
-	<img alt="Grafana Dashboard" src="/docs/images/Grafana-Dashboard.jpg" width="60%" height="60%">
+	<img alt="Grafana Dashboard" src="/docs/images/Grafana-Dashboard.jpg" width="80%" height="80%">
+	
 	JVM Micrometer and Hystrix dashboards are available by default
 
 - A new dashboard can be created based on the requirement using below steps:
 	a. Click on "Create your first dashboard" tab. Then click on one of the options like Graph or Singlestat or Table etc  
-	<img alt="Grafana New Dashboard" src="/docs/images/Grafana-NewDashBoard.jpg" width="60%" height="60%">
+	<img alt="Grafana New Dashboard" src="/docs/images/Grafana-NewDashBoard.jpg" width="80%" height="80%">
+	
 	b. Select a particular option as above to look at the required stats.
