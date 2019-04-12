@@ -1,4 +1,4 @@
-package gov.va.bip.reference.person.rest.client;
+package gov.va.bip.reference.person.client.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;

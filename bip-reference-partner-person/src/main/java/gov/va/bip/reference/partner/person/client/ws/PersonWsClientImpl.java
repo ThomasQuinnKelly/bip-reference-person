@@ -1,4 +1,4 @@
-package gov.va.bip.reference.partner.person.ws.client;
+package gov.va.bip.reference.partner.person.client.ws;
 
 import javax.annotation.PostConstruct;
 
@@ -10,15 +10,15 @@ import org.springframework.ws.WebServiceException;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 import gov.va.bip.framework.audit.AuditEvents;
-import gov.va.bip.framework.audit.Auditable;
+import gov.va.bip.framework.audit.annotation.Auditable;
+import gov.va.bip.framework.client.ws.BaseWsClientImpl;
+import gov.va.bip.framework.client.ws.remote.RemoteServiceCall;
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.messages.MessageKeys;
 import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.validation.Defense;
-import gov.va.bip.framework.ws.client.BaseWsClientImpl;
-import gov.va.bip.framework.ws.client.remote.RemoteServiceCall;
-import gov.va.bip.reference.partner.person.ws.client.remote.PersonRemoteServiceCallImpl;
+import gov.va.bip.reference.partner.person.client.ws.remote.PersonRemoteServiceCallImpl;
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
 
@@ -55,7 +55,7 @@ public class PersonWsClientImpl extends BaseWsClientImpl implements PersonWsClie
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * gov.va.bip.reference.partner.person.ws.client.PersonWsClient#getPersonInfoByPtcpntId(gov.va.bip.reference.partner.person.ws.
+	 * gov.va.bip.reference.partner.person.client.ws.PersonWsClient#getPersonInfoByPtcpntId(gov.va.bip.reference.partner.person.ws.
 	 * transfer.FindPersonByPtcpntId)
 	 */
 	@Override
@@ -74,7 +74,7 @@ public class PersonWsClientImpl extends BaseWsClientImpl implements PersonWsClie
 					personWsTemplate, findPersonByPtcpntIdRequest, findPersonByPtcpntIdRequest.getClass());
 			/*
 			 * NOTE THAT PersonWsClientConfig configures
-			 * gov.va.bip.framework.ws.client.remote.aspect.WsClientAspect
+			 * gov.va.bip.framework.client.ws.remote.aspect.WsClientAspect
 			 * that by default ignores any exceptions that implement
 			 * gov.va.bip.framework.exception.BipExceptionExtender.
 			 *

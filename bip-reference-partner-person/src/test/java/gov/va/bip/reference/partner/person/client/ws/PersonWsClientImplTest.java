@@ -1,4 +1,4 @@
-package gov.va.bip.reference.partner.person.ws.client;
+package gov.va.bip.reference.partner.person.client.ws;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -22,8 +22,8 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 import gov.va.bip.framework.config.BipCommonSpringProfiles;
 import gov.va.bip.framework.security.PersonTraits;
-import gov.va.bip.reference.partner.person.ws.client.PersonWsClient;
-import gov.va.bip.reference.partner.person.ws.client.PersonWsClientConfig;
+import gov.va.bip.reference.partner.person.client.ws.PersonWsClient;
+import gov.va.bip.reference.partner.person.client.ws.PersonWsClientConfig;
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
 

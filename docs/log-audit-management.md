@@ -60,7 +60,7 @@ Here is the code of the logback-spring.xml file from src/main/resources director
 
 		logging: 
 		   level:
-		     gov.va.bip.framework.ws.client: DEBUG
+		     gov.va.bip.framework.client.ws: DEBUG
 		     gov.va.bip.framework.rest.provider: DEBUG
 		     gov.va.bip.reference.partner: DEBUG
 	   

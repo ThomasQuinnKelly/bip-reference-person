@@ -1,4 +1,4 @@
-package gov.va.bip.reference.partner.person.ws.client;
+package gov.va.bip.reference.partner.person.client.ws;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import gov.va.bip.framework.messages.MessageKeys;
-import gov.va.bip.reference.partner.person.ws.client.PersonPartnerCheckedException;
+import gov.va.bip.reference.partner.person.client.ws.PersonPartnerCheckedException;
 
 @RunWith(JUnit4.class)
 public class PersonPartnerCheckedExceptionTest {
