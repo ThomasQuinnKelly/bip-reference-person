@@ -5,7 +5,7 @@ Spring Boot Actuator is one of the sub-projects of Spring Boot, which adds monit
 
 ## Endpoints
 
-Actuator comes with most endpoints disabled. Thus, the only two available by default are /health and /info.Endpoints exposed to and availble but some may need configuration
+Actuator comes with most endpoints disabled. Thus, the only two available by default are /health and /info.Endpoints exposed to and available but some may need configuration
 
 	/auditevents – lists security audit-related events such as user login/logout. Also, we can filter by principal or type among others fields
 	/beans – returns all available beans in our BeanFactory. Unlike /auditevents, it doesn’t support filtering
