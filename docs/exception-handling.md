@@ -25,7 +25,9 @@ The Partner (external/3rd party) client may encounter a variety of exceptions th
 - Request related problems that indicate some issue with the **input data**, such as invalid or malformed input, or requested data not found.
 
 ## Exception Hierarchy
-![BIP Exception Hierarchy](images/OCP-Exception-Class-Hierarchy.png){:height="50%" width="50%"}
+<a alt="BIP Exception Hierarchy" src="images/bip-exception-class-hierarchy.png" height="50%" width="50%" />
+
+See the BIP base exception classes in the [framework exception package](https://github.com/department-of-veterans-affairs/ocp-framework/tree/CMAPI2-131/bip-framework-libraries/src/main/java/gov/va/bip/framework/exception)
 
 ## Exception Types
 - `BipRuntimeException` and sub-classes identify conditions in which the exception should immediately propagate back to the Provider layer. Examples include validation voilations, data not found, and other 400-series conditions under which processing should be aborted.

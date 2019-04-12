@@ -3,8 +3,6 @@ package gov.va.bip.reference.person.impl;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
@@ -21,6 +19,8 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import gov.va.bip.framework.cache.BipCacheUtil;
 import gov.va.bip.framework.exception.BipException;
 import gov.va.bip.framework.exception.BipRuntimeException;
+import gov.va.bip.framework.log.BipLogger;
+import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.messages.MessageKeys;
 import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.validation.Defense;
@@ -46,7 +46,7 @@ import gov.va.bip.reference.person.utils.HystrixCommandConstants;
 @RefreshScope
 @DefaultProperties(groupKey = HystrixCommandConstants.REFERENCE_PERSON_SERVICE_GROUP_KEY)
 public class ReferencePersonServiceImpl implements ReferencePersonService {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ReferencePersonServiceImpl.class);
+	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(ReferencePersonServiceImpl.class);
 
 	/** Bean name constant */
 	public static final String BEAN_NAME = "personServiceImpl";

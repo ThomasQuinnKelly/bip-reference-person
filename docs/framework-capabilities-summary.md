@@ -1,20 +1,54 @@
-# BIP Framework Capabilities Summary
+# BIP Framework Capabilities Offerings
 
 ## Configuration
-Base config for logger properties, yaml file support, spring profiles.
+Platform capabilities are initialized in the bip-framework-autoconfigure artifact. The service application must enable these capabilities with the appropriate annotations in the application classes. Properties for managing these capabilities can be added to the application YAML. For more information, see the relevant links in the [reference README](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/CMAPI-131#application-core-concepts-and-patterns).
+
+Other framework configuration is available can be managed in the application YAML as identified in the sections below. See [bip-reference-person.yml](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/CMAPI-131/bip-reference-person/src/main/resources/bip-reference-person.yml) for an example of a functioning configuration.
+
+## Security
+The framework automatically provides configured SSL certificates, partner client certificates, and applies JWT processing at the REST interface. For more information, see the following pages:
+* [Secrets Management](secrets.md)
+* [Secure Service Communications](secure-communication.md)
+* [Application Security Management](application-security-management.md)
 
 ## Exceptions
-Base BipExceptionExtender allows exception types to conform to BIP messaging requirements.
-See ServiceMessage, and BipException / BipRuntimeException.
+The base `BipExceptionExtender` interface allows exception types to conform to BIP messaging requirements. For more information, see the [Exception Handling](exception-handling.md) page.
+
+When something goes wrong, the response to the consumer must contain a meaningful message. This is managed by the framework `BipRestGlobalExceptionHandler`. It will use the message information found in any ot the `Bip*Exception` classes, and include it. For `java.lang.Exception` types, a standard message will be added to the consumer response.
 
 ## Logging
-BipLoggerFactory creates BipLoggers which are fully compatible with slf4j and logback. The logger adds BipBanner (an ASCII-text banner) and Levels. The logger also splits and manages exceptions so they can cross the docker 16KB comm channel limitation (https://github.com/kubernetes/kubernetes/issues/52444).
+The framework offers useful extensions that help exceptions natively integrate the propagation of meaningful messages to the consumer(s) of the micro-service. When instantiating a logger, it is recommended to use the `BipLoggerFactory` to create a `BipLogger`. For example:
+
+	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(MyBipClass.class);
+
+`BipLoggerFactory` creates `BipLogger` instances which are fully compatible with slf4j and logback. The logger also provides `BipBanner` (an ASCII-text banner) and severity `Level`. The logger also splits and manages exceptions so they can cross the docker 16KB comm channel limitation (https://github.com/kubernetes/kubernetes/issues/52444).
+
+For configuration and implementation information, see [Log and Audit Management](log-audit-management.md).
 
 ## Audit Logging
-AuditLogger uses AuditEventData and implementers of AuditableData to asynchronously log audit events through the AuditLogSerializer.
+Audit events may be triggered from an aspect or interceptor, and occur automatically when:
+* A request is received at a REST resource class annotated with `@Controller`
+* A call is made to a remoted or inter-service partner
+* Data is retrieved from the Cache
 
-Audit events may be triggered from an aspect or interceptor.  Audit can manually be invoked on a class or method with the @Auditable annotation.
+Audit can manually be invoked on a class or method with the `@Auditable` annotation.
+
+`AuditLogger` uses `AuditEventData` - and implementers of the `AuditableData` interface - to asynchronously log audit events through the `AuditLogSerializer`.
+
+For configuration and implementation information, see [Log and Audit Management](log-audit-management.md).
 
 ## Model Transformation
-Simple transformer pattern to support transformation between the Provider (REST) model, Domain (service) model, and external Partner models. See the framework.transfer.transform package.
+The framework enforces separation of layers (or "tiers") and their associated model objects. Layer separation is supported with a simple transformer pattern. For more information, see [Layer and Model Separation Design](design-layer-separation.md).
+
+For SOAP partner clients, framework provides a [Date Adapter class](https://github.com/department-of-veterans-affairs/ocp-framework/blob/CMAPI2-131/bip-framework-libraries/src/main/java/gov/va/bip/framework/transfer/jaxb/adapters/DateAdapter.java) for date conversions. Other data type adapters can be added to the framework upon request. 
+
+## Validation
+Validation at the REST API should be performed using only standard JSR 303 annotations on the rest model objects. More complex validation can easily be added at the service layer interface. Currently, if validations are required prior to calling into a partner client, it must be invoked manually.
+
+For more information, see [Validation](validation.md).
+
+## Cache
+Service impelementation classes can add properly declared `@CachePut` annotations to the overridden methods of their inteface. Once configuration and annotation is done, no other intervention is needed.
+
+For more information, see [Cache Management](cache-management.md). An example of annotating a method, see the [ReferencePersonServiceImpl class](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/CMAPI-131/bip-reference-person/src/main/java/gov/va/bip/reference/person/impl/ReferencePersonServiceImpl.java).
 

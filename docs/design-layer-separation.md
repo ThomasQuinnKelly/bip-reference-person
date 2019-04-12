@@ -1,6 +1,8 @@
-# Design: Layer and Model Separation
+# Layer and Model Separation Design
 
 The separation of layers (or application "tiers") for BIP projects is enforced by the BIP Framework which defines three layers: Provider, Domain, and Partner.
+
+Separation of concerns is of primary importance for ensuring encapsulation of functional requirements. It is important that this separation of concerns also be reflected in the packages created for any application.
 
 ## Rationale
 
@@ -21,4 +23,6 @@ Framework layers are defined as:
 
 ## Model transformation between layers
 
-Layer separation, and separation of models between these layers, means that model transformation is required to bridge the interfaces between them. A simple Transformer pattern based on Spring's Converter pattern is provided by the abstract classes in `framework.transfer.transform`.
+Layer separation - and separation of models between these layers - means that model transformation is required to bridge the interfaces between them. A simple Transformer pattern based on Spring's Converter pattern is provided by the abstract classes in the [framework.transfer.transform package](https://github.com/department-of-veterans-affairs/ocp-framework/tree/CMAPI2-131/bip-framework-libraries/src/main/java/gov/va/bip/framework/transfer/transform). 
+
+Examples of transformation classes can be found in the [reference transform.impl package](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/CMAPI-131/bip-reference-person/src/main/java/gov/va/bip/reference/person/transform/impl). How these transformers are used can be found in the [ReferencePersonServiceImpl class](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/impl/ReferencePersonServiceImpl.java) and the [PersonPartnerHelper class](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/CMAPI-131/bip-reference-person/src/main/java/gov/va/bip/reference/person/client/ws/PersonPartnerHelper.java).
