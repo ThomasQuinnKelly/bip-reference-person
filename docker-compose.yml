@@ -4,7 +4,7 @@ services:
   
   # Fill this out once the dev team has their app code into the repo
   bip-reference-person:
-    image: ocpdev/bip-reference-person
+    image: bipdev/bip-reference-person
     build:
       context: ./bip-reference-person
     environment:
@@ -30,7 +30,7 @@ services:
       - vault-config
 
   consul:
-    image: ocpdev/consul:1.4.3
+    image: bipdev/consul:1.4.3
     build:
       context: ./local-dev/consul
     environment:
@@ -50,7 +50,7 @@ services:
       - bip
 
   vault-config:
-    image: ocpdev/vault-config
+    image: bipdev/vault-config
     build:
       context: ./local-dev/vault-config
     environment:
@@ -81,7 +81,7 @@ services:
       - consul
 
   grafana:
-    image:  ocpdev/grafana
+    image:  bipdev/grafana
     build:
       context: ./local-dev/grafana
     ports:
