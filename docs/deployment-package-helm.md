@@ -1,3 +1,6 @@
+# __THIS PAGE HAS BEEN ARCHIVED AND IS NO LONGER THE APPROVED DEPLOYMENT SOLUTION__
+See the [Application Deployment Package](./deployment-package.md) page for the approved solution
+
 # Application Deployment Package
 Developers need a way to tell the platform how to deploy their application as well as any services that their application depends on. This method should allow for the development team to specify all all aspects of their service deployment in a common way across all projects.
 
