@@ -75,10 +75,10 @@ bip-reference-person:
 logging: 
   level:
     # gov.va.bip: DEBUG
-    gov.va.bip.framework.ws.client: INFO
+    gov.va.bip.framework.client.ws: INFO
     gov.va.bip.framework.rest.provider: INFO
     gov.va.bip.reference.partner: INFO
-    gov.va.bip.reference.person.rest.client.feign.FeignPersonClient: INFO
+    gov.va.bip.reference.person.client.rest.feign.FeignPersonClient: INFO
     gov.va.bip.reference: INFO
     gov.va.bip.framework: INFO
     com.ecwid.consul: INFO

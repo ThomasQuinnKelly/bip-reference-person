@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import brave.sampler.Sampler;
-import gov.va.bip.reference.partner.person.ws.client.PersonWsClientConfig;
+import gov.va.bip.reference.partner.person.client.ws.PersonWsClientConfig;
 import gov.va.bip.reference.person.config.ReferencePersonConfig;
 
 /**

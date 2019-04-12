@@ -68,14 +68,19 @@ Swagger provides more benefits than just helping create clear documentation.
 
 - Swagger page has link to access the possible key-value of the errors in the REST resource responses
 
-- Reference Swagger application snapshot: Please refer: [Swagger Person Sample](/docs/images/Swagger-Person-Sample.jpg)
+- Reference Swagger application snapshot:
+<img alt="Swagger Person Sample" src="/docs/images/Swagger-Person-Sample.jpg" width=80% height="80%"/>
 
 - JWT Token Generation and Authorization:
 
-	a. Expand Token Resource end point and click on "Try it out" button as shown in - [Swagger Expand Token Resopurce](/docs/images/Swagger-Expand-Token-Resource.png)
+	a. Expand Token Resource end point and click on "Try it out" button:
+	<img alt="Swagger Expand Token Resopurce" src="/docs/images/Swagger-Expand-Token-Resource.png" width="80%" height="80%" />
 	
-	b. We can view the default Person Traits in the swagger as shown in: [Swagger JWT Token Person Traits](/docs/images/Swagger-JWTToken-PersonTraits.png) which can be edited as required.
+	b. We can view the default Person Traits in the swagger and edit as required:
+	<img alt="Swagger JWT Token Person Traits" src="/docs/images/Swagger-JWTToken-PersonTraits.png" width="80%" height="80%" />
 	
-	c. Copy the JWT token generated as shown: [JWT Copy Token](/docs/images/Swagger-Copy-JWTToken.png)
+	c. Copy the JWT token generated:
+	<img alt="JWT Copy Token" src="/docs/images/Swagger-Copy-JWTToken.png" width="80%" height="80%" />
 	
-	d. Paste the JWT token by clicking the Authorize button and use the key as "Bearer" as shown in [JWT Authorize](/docs/images/Swagger-JWTToken-Bearer.png) and click Authorize button.
+	d. Paste the JWT token by clicking the Authorize button and use the key as "Bearer", and click Authorize button: 
+	<img alt="JWT Authorize" src="/docs/images/Swagger-JWTToken-Bearer.png" width="80%" height="80%" />

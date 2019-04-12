@@ -1,4 +1,4 @@
-package gov.va.bip.reference.person.rest.client;
+package gov.va.bip.reference.person.client.rest;
 
 import javax.validation.Valid;
 
@@ -17,20 +17,19 @@ import gov.va.bip.reference.person.config.ReferenceServiceFeignConfig;
  * The Interface FeignPersonClient.
  */
 @FeignClient(value = "${spring.application.name}",
-url="${bip-reference-person.ribbon.listOfServers:}",
-name = "${spring.application.name}",
-fallbackFactory = FeignPersonClientFallbackFactory.class,
-configuration = ReferenceServiceFeignConfig.class)
+		url = "${bip-reference-person.ribbon.listOfServers:}",
+		name = "${spring.application.name}",
+		fallbackFactory = FeignPersonClientFallbackFactory.class,
+		configuration = ReferenceServiceFeignConfig.class)
 public interface FeignPersonClient { // NOSONAR not a functional interface
 
-
 	/**
-  * Person by pid.
-  *
-  * @param personInfoRequest the person info request
-  * @return the person by pid domain response
-  */
- @RequestMapping(value = PersonResource.URL_PREFIX + "/pid", 
+	 * Person by pid.
+	 *
+	 * @param personInfoRequest the person info request
+	 * @return the person by pid domain response
+	 */
+	@RequestMapping(value = PersonResource.URL_PREFIX + "/pid",
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)

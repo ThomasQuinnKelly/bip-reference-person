@@ -1,4 +1,4 @@
-package gov.va.bip.reference.partner.person.ws.client;
+package gov.va.bip.reference.partner.person.client.ws;
 
 import javax.annotation.PostConstruct;
 
@@ -15,20 +15,20 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 
+import gov.va.bip.framework.client.ws.BaseWsClientConfig;
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.log.PerformanceLogMethodInterceptor;
 import gov.va.bip.framework.validation.Defense;
-import gov.va.bip.framework.ws.client.BaseWsClientConfig;
 
 /**
  * This class represents the Spring configuration for the Person Web Service Client.
  */
 @Configuration
 @ComponentScan(basePackages = {
-		"gov.va.bip.framework.ws.client",
+		"gov.va.bip.framework.client.ws",
 		"gov.va.bip.framework.audit",
-		"gov.va.bip.reference.partner.person.ws.client" },
+		"gov.va.bip.reference.partner.person.client.ws" },
 		excludeFilters = @Filter(Configuration.class))
 public class PersonWsClientConfig extends BaseWsClientConfig {
 
@@ -51,7 +51,7 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	/** Password for the cert */
 	@Value("${bip-reference-partner-person.ws.client.ssl.keystorePass:password}")
 	private String keystorePass;
-	
+
 	/** Location of the truststore containing the cert */
 	@Value("#{ baseWsClientUtil."
 			+ "verifyAddFilePrefix('${bip-reference-partner-person.ws.client.ssl.truststore:classpath:ssl/dev/vaebnTruststore.jks}') }")

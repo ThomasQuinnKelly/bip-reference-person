@@ -1,4 +1,4 @@
-package gov.va.bip.reference.partner.person.ws.client.remote;
+package gov.va.bip.reference.partner.person.client.ws.remote;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -27,10 +27,9 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import gov.va.bip.framework.config.BipCommonSpringProfiles;
 import gov.va.bip.framework.exception.BipValidationRuntimeException;
 import gov.va.bip.framework.security.PersonTraits;
-import gov.va.bip.reference.partner.person.ws.client.AbstractPersonTest;
-import gov.va.bip.reference.partner.person.ws.client.PartnerMockFrameworkTestConfig;
-import gov.va.bip.reference.partner.person.ws.client.PersonWsClientConfig;
-import gov.va.bip.reference.partner.person.ws.client.remote.PersonRemoteServiceCallMock;
+import gov.va.bip.reference.partner.person.client.ws.AbstractPersonTest;
+import gov.va.bip.reference.partner.person.client.ws.PartnerMockFrameworkTestConfig;
+import gov.va.bip.reference.partner.person.client.ws.PersonWsClientConfig;
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
 

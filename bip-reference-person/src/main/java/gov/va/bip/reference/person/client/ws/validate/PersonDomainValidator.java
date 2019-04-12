@@ -1,4 +1,4 @@
-package gov.va.bip.reference.person.ws.client.validate;
+package gov.va.bip.reference.person.client.ws.validate;
 
 import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;

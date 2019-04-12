@@ -90,7 +90,7 @@ bip-vetservices-claims:
 #-##################################################
 logging: 
   level:
-    gov.va.bip.framework.ws.client: INFO
+    gov.va.bip.framework.client.ws: INFO
     gov.va.bip.framework.rest.provider: INFO
     gov.va.bip.vetservices.partner: INFO
     gov.va.bip.vetservices: INFO

@@ -1,4 +1,4 @@
-package gov.va.bip.reference.partner.person.ws.client.remote;
+package gov.va.bip.reference.partner.person.client.ws.remote;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -42,6 +42,7 @@ import org.springframework.xml.transform.ResourceSource;
 import org.springframework.xml.transform.StringResult;
 import org.springframework.xml.transform.StringSource;
 
+import gov.va.bip.framework.client.ws.remote.RemoteServiceCall;
 import gov.va.bip.framework.config.BipCommonSpringProfiles;
 import gov.va.bip.framework.exception.BipPartnerRuntimeException;
 import gov.va.bip.framework.messages.MessageKeys;
@@ -49,12 +50,9 @@ import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.security.PersonTraits;
 import gov.va.bip.framework.transfer.PartnerTransferObjectMarker;
 import gov.va.bip.framework.validation.Defense;
-import gov.va.bip.framework.ws.client.remote.RemoteServiceCall;
-import gov.va.bip.reference.partner.person.ws.client.AbstractPersonTest;
-import gov.va.bip.reference.partner.person.ws.client.PartnerMockFrameworkTestConfig;
-import gov.va.bip.reference.partner.person.ws.client.PersonWsClientConfig;
-import gov.va.bip.reference.partner.person.ws.client.remote.PersonRemoteServiceCallImpl;
-import gov.va.bip.reference.partner.person.ws.client.remote.PersonRemoteServiceCallMock;
+import gov.va.bip.reference.partner.person.client.ws.AbstractPersonTest;
+import gov.va.bip.reference.partner.person.client.ws.PartnerMockFrameworkTestConfig;
+import gov.va.bip.reference.partner.person.client.ws.PersonWsClientConfig;
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 
 @RunWith(SpringJUnit4ClassRunner.class)

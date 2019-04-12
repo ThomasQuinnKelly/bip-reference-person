@@ -8,7 +8,7 @@
 ## Log and Audit patterns
 - Application Framework team has proposed Logback for service application and audit logging as it's fast, light and internally Spring Boot provides a great support for console and file appending. In addition Logback provides appenders for logstash configuration, classic async and email for error notification.
 
-- JSON encoder pattern is defined in [bip-framework-logback-starter.xml](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-autoconfigure/src/main/resources/gov/va/bip/framework/starter/logger/bip-framework-logback-starter.xml)
+- JSON encoder pattern is defined in [bip-framework-logback-starter.xml](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-autoconfigure/src/main/resources/gov/va/bip/framework/starter/logger/bip-framework-logback-starter.xml)
 
 - Logback requires the [Janino library](https://logback.qos.ch/setup.html#janino) for conditional logging. You don't need it if you aren't using the structures in your config files. If you are using conditionals, you will need to add the Janino dependency. You can add this to your pom.xml file to get the dependency
 
@@ -60,7 +60,7 @@ Here is the code of the logback-spring.xml file from src/main/resources director
 
 		logging: 
 		   level:
-		     gov.va.bip.framework.ws.client: DEBUG
+		     gov.va.bip.framework.client.ws: DEBUG
 		     gov.va.bip.framework.rest.provider: DEBUG
 		     gov.va.bip.reference.partner: DEBUG
 	   

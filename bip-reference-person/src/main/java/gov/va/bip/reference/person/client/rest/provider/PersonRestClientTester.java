@@ -1,4 +1,4 @@
-package gov.va.bip.reference.person.rest.client.provider;
+package gov.va.bip.reference.person.client.rest.provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.va.bip.framework.rest.client.resttemplate.RestClientTemplate;
+import gov.va.bip.framework.client.rest.template.RestClientTemplate;
 import gov.va.bip.framework.swagger.SwaggerResponseMessages;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.api.provider.PersonResource;
+import gov.va.bip.reference.person.client.rest.FeignPersonClient;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
-import gov.va.bip.reference.person.rest.client.FeignPersonClient;
 import io.swagger.annotations.ApiOperation;
 
 /**

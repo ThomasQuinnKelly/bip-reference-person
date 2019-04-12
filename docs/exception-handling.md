@@ -16,7 +16,7 @@ The Provider (REST/API) layer must catch all Throwables and convert them to appr
 ### Service Concerns
 The Service (domain/business) layers may generate exceptions during execution, and may receive exceptions from external entities and external clients. The business layers must be able to identify and categorize exceptions before allowing them to propagate to the Provider layer.
 
-Service methods must also be able to validate method inputs and outputs at will. The [Defense]() class is used for this purpose. It is better to add generic methods as needed to the Defense class, than it is to write one-off inline value checks.
+Service methods must also be able to validate method inputs and outputs at will. The [Defense](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/validation/Defense.java) class is used for this purpose. It is better to add generic methods as needed to the Defense class, than it is to write one-off inline value checks.
 
 ### Client Concerns
 The Partner (external/3rd party) client may encounter a variety of exceptions that occur due to:
@@ -38,7 +38,7 @@ The Partner (external/3rd party) client may encounter a variety of exceptions th
 
 ### Provider Pattern
 - Spring `@RestControllerAdvice` interceptor/aspect is used ...
-	* Implemented in [BipRestGlobalExceptionHandler](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/rest/exception/BipRestGlobalExceptionHandler.java) class. In this class, each `@ExceptionHandler(value={ {{exception}}.class{{,...}} })` annotated method catches the specified exception(s) and formulates the message(s) and the HTTP `@ResponseStatus` to be returned to the consumer.
+	* Implemented in [BipRestGlobalExceptionHandler](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/rest/exception/BipRestGlobalExceptionHandler.java) class. In this class, each `@ExceptionHandler(value={ {{exception}}.class{{,...}} })` annotated method catches the specified exception(s) and formulates the message(s) and the HTTP `@ResponseStatus` to be returned to the consumer.
 	* Spring processes `@ExceptionHandler` methods in the order they appear in the class, much like a try/catch block. The methods must appear in order from most specific to most general.
 - Auto-configured by `BipRestAutoConfiguration`. 
 
