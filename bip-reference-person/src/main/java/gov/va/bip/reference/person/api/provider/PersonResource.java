@@ -47,7 +47,7 @@ public class PersonResource implements ReferencePersonApi, HealthIndicator, Swag
 
 	/** The root path to this resource */
 	public static final String URL_PREFIX = "/api/v1/persons";
-	
+
 	@Autowired
 	BuildProperties buildProperties;
 
@@ -115,7 +115,7 @@ public class PersonResource implements ReferencePersonApi, HealthIndicator, Swag
 	public PersonInfoResponse personByPid(@Valid @RequestBody final PersonInfoRequest personInfoRequest) {
 		LOGGER.debug("personByPid() method invoked");
 
-		/** TODO move transforms into an aspect */
+		/** TODO move transforms and service call into an adapter */
 
 		// transform provider request into domain request
 		LOGGER.debug("Transforming from personInfoRequest to domainRequest");
