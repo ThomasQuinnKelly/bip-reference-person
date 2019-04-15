@@ -42,7 +42,7 @@ Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 
 ## Application Core Concepts and Patterns
 * [Layer Separation Design](docs/design-layer-separation.md)
-* [Framework Capabilities Offerings](docs/framework-capabilities-summary.md)
+* [Developing with BIP Framework](docs/developing-with-bip-framework.md)
 * [Service Discovery](docs/service-discovery-guide.md)
 * [Configuration Management](docs/config-management.md)
 * [Secrets Management](docs/secrets.md)
