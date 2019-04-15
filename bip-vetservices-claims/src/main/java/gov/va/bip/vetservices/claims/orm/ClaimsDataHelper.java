@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import gov.va.bip.framework.audit.AuditEvents;
-import gov.va.bip.framework.audit.Auditable;
+import gov.va.bip.framework.audit.annotation.Auditable;
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.messages.MessageSeverity;

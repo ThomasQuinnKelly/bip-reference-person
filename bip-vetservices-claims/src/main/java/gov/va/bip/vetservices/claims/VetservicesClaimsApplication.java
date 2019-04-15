@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-import gov.va.bip.framework.aspect.AuditAnnotationAspect;
+import gov.va.bip.framework.aspect.AuditableAnnotationAspect;
+
 
 
 @SpringBootApplication
@@ -27,7 +28,7 @@ public class VetservicesClaimsApplication {
 	}
 	
 	@Bean
-	AuditAnnotationAspect myAspect() {
-		return new AuditAnnotationAspect();
+	AuditableAnnotationAspect myAspect() {
+		return new AuditableAnnotationAspect();
 	}
 }
