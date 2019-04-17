@@ -41,6 +41,13 @@ To make these libraries available for compilation, read the [section](#how-to-ma
 Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 
 ## Application Core Concepts and Patterns
+#### Design
+* [Layer Separation Design](docs/design-layer-separation.md)
+
+#### Develop
+* [Developing with BIP Framework](docs/developing-with-bip-framework.md)
+
+#### Configuration & Usage Patterns
 * [Service Discovery](docs/service-discovery-guide.md)
 * [Configuration Management](docs/config-management.md)
 * [Secrets Management](docs/secrets.md)
@@ -52,7 +59,6 @@ Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 * [Validation Management](docs/validation.md)
 * [Exception Handling](docs/exception-handling.md)
 * [Hystrix Circuit Breaker Management](docs/hystrix-management.md)
-* [Framework Capabilities Summary](docs/framework-capabilities-summary.md)
 * [Actuator Management](docs/actuator-management.md)
 * [Build Info and Git Properties Plugin](docs/build-and-git-properties.md)
 * [Prometheus Grafana Local Dev](docs/prometheus-grafana-setup.md)
@@ -82,7 +88,7 @@ To make these libraries available locally for the service projects to compile an
 **OPTION 3**
 **If you are NOT on VA network, a temporary solution in provided where GitHub repository acts as your nexus repository.
 
-Add the below section in the reactor (root) pom.xml of your service project. See example: https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/pom.xml
+Add the below section in the reactor (root) pom.xml of your service project. See example: https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/blob/master/pom.xml
  
 	<repositories>
 		<repository>

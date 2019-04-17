@@ -16,7 +16,7 @@ The Provider (REST/API) layer must catch all Throwables and convert them to appr
 ### Service Concerns
 The Service (domain/business) layers may generate exceptions during execution, and may receive exceptions from external entities and external clients. The business layers must be able to identify and categorize exceptions before allowing them to propagate to the Provider layer.
 
-Service methods must also be able to validate method inputs and outputs at will. The [Defense](https://github.ec.va.gov/EPMO/bip-ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/validation/Defense.java) class is used for this purpose. It is better to add generic methods as needed to the Defense class, than it is to write one-off inline value checks.
+Service methods must also be able to validate method inputs and outputs at will. The [Defense](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/validation/Defense.java) class is used for this purpose. It is better to add generic methods as needed to the Defense class, than it is to write one-off inline value checks.
 
 ### Client Concerns
 The Partner (external/3rd party) client may encounter a variety of exceptions that occur due to:
@@ -25,7 +25,9 @@ The Partner (external/3rd party) client may encounter a variety of exceptions th
 - Request related problems that indicate some issue with the **input data**, such as invalid or malformed input, or requested data not found.
 
 ## Exception Hierarchy
-![BIP Exception Hierarchy](images/OCP-Exception-Class-Hierarchy.png){:height="50%" width="50%"}
+<img alt="BIP Exception Hierarchy" src="images/bip-exception-class-hierarchy.png" height="50%" width="50%" />
+
+See the BIP base exception classes in the [framework exception package](https://github.com/department-of-veterans-affairs/ocp-framework/tree/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/exception)
 
 ## Exception Types
 - `BipRuntimeException` and sub-classes identify conditions in which the exception should immediately propagate back to the Provider layer. Examples include validation voilations, data not found, and other 400-series conditions under which processing should be aborted.
@@ -38,7 +40,7 @@ The Partner (external/3rd party) client may encounter a variety of exceptions th
 
 ### Provider Pattern
 - Spring `@RestControllerAdvice` interceptor/aspect is used ...
-	* Implemented in [BipRestGlobalExceptionHandler](https://github.ec.va.gov/EPMO/bip-ocp-framework/tree/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/rest/exception/BipRestGlobalExceptionHandler.java) class. In this class, each `@ExceptionHandler(value={ {{exception}}.class{{,...}} })` annotated method catches the specified exception(s) and formulates the message(s) and the HTTP `@ResponseStatus` to be returned to the consumer.
+	* Implemented in [BipRestGlobalExceptionHandler](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/rest/exception/BipRestGlobalExceptionHandler.java) class. In this class, each `@ExceptionHandler(value={ {{exception}}.class{{,...}} })` annotated method catches the specified exception(s) and formulates the message(s) and the HTTP `@ResponseStatus` to be returned to the consumer.
 	* Spring processes `@ExceptionHandler` methods in the order they appear in the class, much like a try/catch block. The methods must appear in order from most specific to most general.
 - Auto-configured by `BipRestAutoConfiguration`. 
 
@@ -51,7 +53,7 @@ The Partner (external/3rd party) client may encounter a variety of exceptions th
 	* `BipException` or sub-class only if additional actions or decisions are required in order to resume execution.
 	* `BipPartnerException` for exceptions raised due to interaction with external or inter-service services.
 - The service impl *may* need to capture checked exceptions thrown from client operations and take specific actions or convert them. It should be rare that a service would need to catch runtime exceptions.
-- The service helper (e.g. `PersonPartnerHelper`) *may* need to catch non-BIP partner exceptions, and and convert them to and appropriate BIP exception type.
+- The service helper (e.g. `PersonPartnerHelper`) *may* need to catch non-BIP partner exceptions, and convert them to and appropriate BIP exception type.
 
 ### Client Patterns
 
@@ -59,7 +61,7 @@ The Partner (external/3rd party) client may encounter a variety of exceptions th
 - Known SOAP partner exceptions can be identified by searching the WSDL for "soap:fault". Each operation named in the bindings should have a fault defined.
 - Spring AOP `ThrowsAdvise` implementation is provided in `InterceptingExceptionTranslator`
 	* the intercepetor is made available for configuring clients in `BaseWsClientConfig.getInterceptingExceptionTranslator()`.
-	* Any client implementation of `BaseWsClientConfig` should configure a spring bean that gets the InterceptingExceptionTranslator. This configuration can cause specific exception classes to be excluded from the exception translation. For example, see [PersonWsClientConfig.personWsClientExceptionInterceptor()](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/blob/master/bip-reference-partner-person/src/main/java/gov/va/bip/reference/partner/person/ws/client/PersonWsClientConfig.java)
+	* Any client implementataion of `BaseWsClientConfig` should configure a spring bean that gets the InterceptingExceptionTranslator. This configuration can cause specific exception classes to be excluded from the exception translation. For example, see [PersonWsClientConfig.personWsClientExceptionInterceptor()](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/blob/master/bip-reference-partner-person/src/main/java/gov/va/bip/reference/partner/person/ws/client/PersonWsClientConfig.java)
 	* The interceptor allows any exception under `gov.va.bip.framework.exception` to propagate untouched. All other exceptions are converted to `BipRuntimeException`. **Therefore** any exceptions that *should* propagate as checked exceptions *must* be thrown (or re-thrown) by the WsClientImpl as `BipException` or subclass.
 - **Rules** for implementers of `RemoteServiceCall` (e.g. .\*RemoteServiceCallImpl, .\*RemoteServiceCallMock):
 	* Allow **all** exceptions to propagate as-is.

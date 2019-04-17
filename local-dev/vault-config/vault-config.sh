@@ -13,7 +13,7 @@ vault login $VAULT_DEV_ROOT_TOKEN_ID
 #################### Enable Consul Secret Backend ####################
 vault secrets enable consul
 
-# Retreive ACL token from Consul
+# Retrieve ACL token from Consul
 ACL_TOKEN=$(curl -ks \
     --header "X-Consul-Token: ${CONSUL_HTTP_TOKEN}" \
     --request PUT \
@@ -29,5 +29,8 @@ consul acl policy create  -name "readonly" -description "Read Only Policy" -rule
 
 # Configure Role Mapping
 vault write consul/roles/os-svc policies=readonly
+
+# Create Sample Properties in Consul
+consul kv put config/bip-reference-person/spring.redis.port 6379
 
 ######################################################################

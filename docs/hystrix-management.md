@@ -82,5 +82,5 @@ method.
 		fallbackFactory = FeignPersonClientFallbackFactory.class,
 		configuration = ReferenceServiceFeignConfig.class)
 
-- Hystrix client configuration needs BipFeignAutoConfiguration which is part of the framework libraries as configuration. feignBuilder is implemented as part of BipFeignAutoConfiguration as client side Hystrix needs a seperate configuration from server side. Please see feignBuilder method in [BipFeignAutoConfiguration.java](https://github.ec.va.gov/EPMO/bip-ocp-framework/blob/master/bip-framework-autoconfigure/src/main/java/gov/va/bip/framework/feign/autoconfigure/BipFeignAutoConfiguration.java)
+- Hystrix client configuration needs BipFeignAutoConfiguration which is part of the framework libraries as configuration. feignBuilder is implemented as part of BipFeignAutoConfiguration as client side Hystrix needs a seperate configuration from server side. Please see feignBuilder method in [BipFeignAutoConfiguration.java](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-autoconfigure/src/main/java/gov/va/bip/framework/feign/autoconfigure/BipFeignAutoConfiguration.java)
 	

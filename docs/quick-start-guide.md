@@ -22,7 +22,7 @@ To clone and run this repository you'll need Git installed on your computer.
 
 * From your command line: `git clone https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot`
 * Alternately, you can also clone the repository from IDE using URL `https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot`
-* Change directory to "bip-ocp-ref-spring-boot"
+* Change directory to "ocp-reference-spring-boot"
 * If Docker is RUNNING, run `mvn clean install` from the reactor POM to build the project which will create the docker image for bip-reference-person. 
 * If Docker is UNAVAILABLE/OFFLINE, run `mvn clean install -Ddockerfile.skip=true` from the reactor POM to build the project. `-Ddockerfile.skip=true` will *SKIP* the docker image(s) creation. Don't use this option if you are planning to run `local-int` mode as it would require docker image(s) to run in docker container.
 
