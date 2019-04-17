@@ -167,6 +167,26 @@ objects:
                       key: VAULT_KUBERNETES_ROLE
                 - name: spring.cloud.vault.ssl.trust-store
                   value: file:/secrets/va-cacerts/truststore.jks
+                - name: spring.cloud.vault.kv.application-name
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.vault.kv.application-name
+                - name: spring.cloud.consul.config.enabled
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.consul.config.enabled
+                - name: spring.cloud.consul.config.fastFail
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.consul.config.fastFail
+                - name: spring.profiles.active
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.profiles.active
               volumeMounts:
                 - name: va-cacerts
                   mountPath: "/secrets/va-cacerts" 
@@ -227,4 +247,6 @@ objects:
       spring.cloud.vault.consul.enabled: "true"
       spring.cloud.vault.authentication: "KUBERNETES"
       spring.cloud.vault.kubernetes.service-account-token-file: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+      spring.cloud.vault.kv.application-name: "blue/bip-reference-person"
+      spring.profiles.active: "dev"
  
