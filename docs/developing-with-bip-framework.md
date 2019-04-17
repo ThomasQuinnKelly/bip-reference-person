@@ -43,7 +43,10 @@ Audit events may be triggered from an aspect or interceptor, and occur automatic
 * A call is made to a remoted or inter-service partner
 * Data is retrieved from the Cache
 
-Audit can manually be invoked on a class or method with the `@Auditable` annotation.
+Audit can manually be invoked:
+* Directly on a class or method with the `@Auditable` annotation. This is the preferred way as it is easy to use and maintain, and is asynchronous.
+* By autowiring `AuditLogSerializer`, and calling one of its asyncAudit methods.
+* In any code by making a static call to `AuditLogger`. This is the least desirable way to audit because it does not execute asynchronously.
 
 `AuditLogger` uses `AuditEventData` - and implementers of the `AuditableData` interface - to asynchronously log audit events through the `AuditLogSerializer`.
 
