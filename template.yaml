@@ -182,11 +182,11 @@ objects:
                     secretKeyRef:
                         name: consul-acl-token
                         key: CONSUL_ACL_TOKEN
-                - name: spring.cloud.consul.config.fastFail
+                - name: spring.cloud.consul.config.failFast
                   valueFrom:
                     configMapKeyRef:
                       name: ${IMAGE}-${BRANCH}-config
-                      key: spring.cloud.consul.config.fastFail
+                      key: spring.cloud.consul.config.failFast
                 - name: spring.profiles.active
                   valueFrom:
                     configMapKeyRef:
