@@ -41,8 +41,13 @@ To make these libraries available for compilation, read the [section](#how-to-ma
 Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 
 ## Application Core Concepts and Patterns
+#### Design
 * [Layer Separation Design](docs/design-layer-separation.md)
+
+#### Develop
 * [Developing with BIP Framework](docs/developing-with-bip-framework.md)
+
+#### Configuration & Usage Patterns
 * [Service Discovery](docs/service-discovery-guide.md)
 * [Configuration Management](docs/config-management.md)
 * [Secrets Management](docs/secrets.md)
