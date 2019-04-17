@@ -25,7 +25,9 @@ The Partner (external/3rd party) client may encounter a variety of exceptions th
 - Request related problems that indicate some issue with the **input data**, such as invalid or malformed input, or requested data not found.
 
 ## Exception Hierarchy
-![BIP Exception Hierarchy](images/OCP-Exception-Class-Hierarchy.png){:height="50%" width="50%"}
+<img alt="BIP Exception Hierarchy" src="images/bip-exception-class-hierarchy.png" height="50%" width="50%" />
+
+See the BIP base exception classes in the [framework exception package](https://github.com/department-of-veterans-affairs/ocp-framework/tree/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/exception)
 
 ## Exception Types
 - `BipRuntimeException` and sub-classes identify conditions in which the exception should immediately propagate back to the Provider layer. Examples include validation voilations, data not found, and other 400-series conditions under which processing should be aborted.
@@ -51,7 +53,7 @@ The Partner (external/3rd party) client may encounter a variety of exceptions th
 	* `BipException` or sub-class only if additional actions or decisions are required in order to resume execution.
 	* `BipPartnerException` for exceptions raised due to interaction with external or inter-service services.
 - The service impl *may* need to capture checked exceptions thrown from client operations and take specific actions or convert them. It should be rare that a service would need to catch runtime exceptions.
-- The service helper (e.g. `PersonPartnerHelper`) *may* need to catch non-BIP partner exceptions, and and convert them to and appropriate BIP exception type.
+- The service helper (e.g. `PersonPartnerHelper`) *may* need to catch non-BIP partner exceptions, and convert them to and appropriate BIP exception type.
 
 ### Client Patterns
 
