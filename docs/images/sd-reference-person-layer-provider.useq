@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.2.3" icons="true" automaticImage="PNG" generate-combined-fragments="true">  
+  <object id="1" language="java" name="gov.va.bip.reference.person.api.provider.PersonResource" 
+    project="bip-reference-person" 
+    file="/bip-reference-person/src/main/java/gov/va/bip/reference/person/api/provider/PersonResource.java" 
+    binary="false" label="personResource" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="139" y="0"/>    
+    <execution id="2">      
+      <position height="436" width="0" x="0" y="81"/>    
+    </execution>    
+    <execution id="4">      
+      <position height="373" width="0" x="0" y="123"/>    
+    </execution>    
+    <execution id="7">      
+      <position height="21" width="7" x="98" y="433"/>    
+    </execution>  
+  </object>  
+  <object id="8" language="java" name="gov.va.bip.reference.person.api.provider.ServiceAdapter" 
+    project="bip-reference-person" 
+    file="/bip-reference-person/src/main/java/gov/va/bip/reference/person/api/provider/ServiceAdapter.java" 
+    binary="false" label="serviceAdapter" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="6">      
+      <position height="321" width="0" x="0" y="154"/>    
+    </execution>    
+    <execution id="16">      
+      <position height="21" width="7" x="285" y="238"/>    
+    </execution>    
+    <execution id="17">      
+      <position height="21" width="7" x="285" y="355"/>    
+    </execution>    
+    <execution id="18">      
+      <position height="21" width="7" x="285" y="406"/>    
+    </execution>  
+  </object>  
+  <object id="19" language="java" name="gov.va.bip.reference.person.transform.impl.PersonByPid_ProviderToDomain" 
+    project="bip-reference-person" 
+    file="/bip-reference-person/src/main/java/gov/va/bip/reference/person/transform/impl/PersonByPid_ProviderToDomain.java" 
+    binary="false" label="personByPidProvider2Domain" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="10">      
+      <position height="63" width="0" x="0" y="217"/>    
+    </execution>  
+  </object>  
+  <object id="21" language="java" name="gov.va.bip.reference.person.transform.impl.PersonByPid_DomainToProvider" 
+    project="bip-reference-person" 
+    file="/bip-reference-person/src/main/java/gov/va/bip/reference/person/transform/impl/PersonByPid_DomainToProvider.java" 
+    binary="false" label="personByPidDomain2Provider" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="14">      
+      <position height="63" width="0" x="0" y="385"/>    
+    </execution>  
+  </object>  
+  <object id="23" language="java" name="gov.va.bip.reference.person.ReferencePersonService" 
+    project="bip-reference-person" 
+    file="/bip-reference-person/src/main/java/gov/va/bip/reference/person/ReferencePersonService.java" binary="false" 
+    label="refPersonService" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="12">      
+      <position height="96" width="0" x="0" y="301"/>    
+    </execution>    
+    <execution id="25">      
+      <position height="21" width="7" x="970" y="343"/>    
+    </execution>  
+  </object>  
+  <note id="27">    
+    <position height="76" width="244" x="435" y="82"/>    
+    <text><![CDATA[JSR 303 validation is declared by standard annotations on model objects, and is invoked with @Valid on the resource method arguments.]]>
+    </text>  
+  </note>  
+  <note id="28">    
+    <position height="79" width="105" x="985" y="197"/>    
+    <text><![CDATA[Domain Layer business logic and partner calls]]>
+    </text>  
+  </note>  
+  <message id="3" 
+    operation="personByPid(gov.va.bip.reference.person.api.model.v1.PersonInfoRequest):gov.va.bip.reference.person.api.model.v1.PersonInfoResponse" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="5" 
+    operation="personByPid(gov.va.bip.reference.person.api.model.v1.PersonInfoRequest):gov.va.bip.reference.person.api.model.v1.PersonInfoResponse" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="6"/>  
+  </message>  
+  <message id="9" 
+    operation="convert(gov.va.bip.reference.person.api.model.v1.PersonInfoRequest):gov.va.bip.reference.person.model.PersonByPidDomainRequest" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="10"/>  
+  </message>  
+  <message id="11" 
+    operation="findPersonByParticipantID(gov.va.bip.reference.person.model.PersonByPidDomainRequest):gov.va.bip.reference.person.model.PersonByPidDomainResponse" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="12"/>  
+  </message>  
+  <message id="13" 
+    operation="convert(gov.va.bip.reference.person.model.PersonByPidDomainResponse):gov.va.bip.reference.person.api.model.v1.PersonInfoResponse" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="14"/>  
+  </message>  
+  <message id="15" asynchronous="false">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="7"/>  
+  </message>  
+  <message id="20" asynchronous="false">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="16"/>  
+  </message>  
+  <message id="22" asynchronous="false">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="18"/>  
+  </message>  
+  <message id="24" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="25"/>  
+  </message>  
+  <message id="26" asynchronous="false">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="17"/>  
+  </message>  
+  <text-link id="29">    
+    <link-end type="SOURCE" refId="27"/>    
+    <link-end type="TARGET" refId="3"/>  
+  </text-link>  
+  <text-link id="30">    
+    <link-end type="SOURCE" refId="28"/>    
+    <link-end type="TARGET" refId="24"/>  
+  </text-link>
+</sequence-diagram>
