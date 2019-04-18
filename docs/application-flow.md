@@ -17,7 +17,8 @@ This is where the "public" API for the service application is exposed. Functions
 * Standard JSR 303 validations on inputs to the request mapping methods.
 * Conversion of Provider model objects into Damain model objects, calling the service, then converting the returned domain response into a Provider model response.
 
-SEQUENCE DIAGRAM HERE
+#### Sequence Diagram - Provider Layer
+<img alt="Provider Layer Sequence Diagram" src="images/sd-reference-person-layer-provider.png">
 
 ## Domain Layer
 The domain layer is where the business logic of the service takes place. Functions undertaken in this layer include:
@@ -29,7 +30,8 @@ The domain layer is where the business logic of the service takes place. Functio
 * Aggregate or manipulate data to the required state.
 * Return resulting data to the Provider layer, communicating any issues encountered during processing of the service request.
 
-SEQUENCE DIAGRAM HERE
+#### Sequence Diagram - Domain Layer
+<img alt="Domain Layer Sequence Diagram" src="sd-reference-person-layer-domain.png">
 
 ## Partner Layer
 The Partner layer is self-contained client modules that call out to other services to acquire data. BIP Framework currently provides support for accessing services exposed via SOAP and REST. Other protocol support can be added upon request. The functions undertaken in this layer are simple and direct:
@@ -45,6 +47,8 @@ Some things that the Partner layer should **NOT** do - these are the responsibil
 * Validations or filtering. The client cannot anticipate the needs of the service it is embedded within.
 * Catch runtime exceptions (non-data problems). Code or infrastructure issues must bubble back to the service layers as-is, for translation by the global exception handler.
 
-SEQUENCE DIAGRAM HERE
+#### Sequence Diagram - Partner Layer
+<img alt="Partner Layer Sequence Diagram" src="sd-reference-person-layer-partner.png">
+
 
  
