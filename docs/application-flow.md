@@ -31,7 +31,7 @@ The domain layer is where the business logic of the service takes place. Functio
 * Return resulting data to the Provider layer, communicating any issues encountered during processing of the service request.
 
 #### Sequence Diagram - Domain Layer
-<img alt="Domain Layer Sequence Diagram" src="sd-reference-person-layer-domain.png">
+<img alt="Domain Layer Sequence Diagram" src="images/sd-reference-person-layer-domain.png">
 
 ## Partner Layer
 The Partner layer is self-contained client modules that call out to other services to acquire data. BIP Framework currently provides support for accessing services exposed via SOAP and REST. Other protocol support can be added upon request. The functions undertaken in this layer are simple and direct:
@@ -48,7 +48,7 @@ Some things that the Partner layer should **NOT** do - these are the responsibil
 * Catch runtime exceptions (non-data problems). Code or infrastructure issues must bubble back to the service layers as-is, for translation by the global exception handler.
 
 #### Sequence Diagram - Partner Layer
-<img alt="Partner Layer Sequence Diagram" src="sd-reference-person-layer-partner.png">
+<img alt="Partner Layer Sequence Diagram" src="images/sd-reference-person-layer-partner.png">
 
 
  
