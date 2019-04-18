@@ -6,7 +6,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.info.BuildProperties;
@@ -20,15 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gov.va.bip.framework.swagger.SwaggerResponseMessages;
 import gov.va.bip.framework.transfer.ProviderTransferObjectMarker;
-import gov.va.bip.framework.validation.Defense;
-import gov.va.bip.reference.person.ReferencePersonService;
 import gov.va.bip.reference.person.api.ReferencePersonApi;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
-import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
-import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
-import gov.va.bip.reference.person.transform.impl.PersonByPid_DomainToProvider;
-import gov.va.bip.reference.person.transform.impl.PersonByPid_ProviderToDomain;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -49,24 +42,13 @@ public class PersonResource implements ReferencePersonApi, HealthIndicator, Swag
 	public static final String URL_PREFIX = "/api/v1/persons";
 
 	@Autowired
-	BuildProperties buildProperties;
+	ServiceAdapter serviceAdapter;
 
-	/** The service layer API contract for processing personByPid() requests */
 	@Autowired
-	@Qualifier("PERSON_SERVICE_IMPL")
-	private ReferencePersonService refPersonService;
-
-	/** Transform Provider (REST) request to Domain (service) request */
-	private PersonByPid_ProviderToDomain personByPidProvider2Domain = new PersonByPid_ProviderToDomain();
-	/** Transform Domain (service) response to Provider (REST) response */
-	private PersonByPid_DomainToProvider personByPidDomain2Provider = new PersonByPid_DomainToProvider();
+	BuildProperties buildProperties;
 
 	@PostConstruct
 	public void postConstruct() {
-		Defense.notNull(refPersonService);
-		Defense.notNull(personByPidProvider2Domain);
-		Defense.notNull(personByPidDomain2Provider);
-
 		// Print build properties
 		LOGGER.info(buildProperties.getName());
 		LOGGER.info(buildProperties.getVersion());
@@ -115,20 +97,7 @@ public class PersonResource implements ReferencePersonApi, HealthIndicator, Swag
 	public PersonInfoResponse personByPid(@Valid @RequestBody final PersonInfoRequest personInfoRequest) {
 		LOGGER.debug("personByPid() method invoked");
 
-		/** TODO move transforms and service call into an adapter */
-
-		// transform provider request into domain request
-		LOGGER.debug("Transforming from personInfoRequest to domainRequest");
-		PersonByPidDomainRequest domainRequest = personByPidProvider2Domain.convert(personInfoRequest);
-
-		// get domain response from the service (domain) layer
-		LOGGER.debug("Calling refPersonService.findPersonByParticipantID");
-		PersonByPidDomainResponse domainResponse = refPersonService.findPersonByParticipantID(domainRequest);
-
-		// transform domain response into provider response
-		LOGGER.debug("Transforming from domainResponse to providerResponse");
-		PersonInfoResponse providerResponse = personByPidDomain2Provider.convert(domainResponse);
-
+		PersonInfoResponse providerResponse = serviceAdapter.personByPid(personInfoRequest);
 		// send provider response back to consumer
 		LOGGER.debug("Returning providerResponse to consumer");
 		return providerResponse;
