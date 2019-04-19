@@ -15,6 +15,7 @@
 * [Installing Git on a Mac](installation-help-guide.md#installing-git-on-a-mac)
 * [STS Download Site](https://spring.io/tools3/sts/all)
 * [Docker Installation for MAC](https://docs.docker.com/docker-for-mac/install/)
+* [How to connect Maven with Nexus using HTTPS](installation-help-guide.md#how-to-connect-maven-with-nexus-using-https)
 
 ## To Use
 
