@@ -49,3 +49,21 @@ You will be offered to install the Command Line Developer Tools from Apple. Conf
 	brew install git
 	
 You can use Git now.
+
+## How to connect Maven with Nexus using HTTPS
+
+Maven can be set up to use Nexus repository. When the repository runs on https maven isn’t able to connect to it automatically. The solution to this is to add the server’s certificate to the default Java keystore. When connecting to your https-repository fails, Maven will show you an exception like
+
+`[WARNING] Could not transfer metadata gov.va.bip.framework:bip-framework-parentpom:0.0.1-SNAPSHOT/maven-metadata.xml from/to nexus3 (https://nexus.dev.bip.va.gov/repository/maven-public): sun.security.validator
+.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target`
+
+To resolve this, download the server’s certificate and add it to the default Java keystore. The easiest way to download the certificate is with the Java provided keytool. The following command is an example to download the certificate to a .pem file
+
+`keytool -J-Djava.net.useSystemProxies=true -printcert -rfc --sslserver \nexus.dev.bip.va.gov\:443 > cert.pem`
+
+The proxy-part is optional. Now you downloaded the certificate, you can add it to the keystore with the following command
+
+`keytool -importcert -file cert.pem -alias nexus.dev.bip.va.gov -storepass changeit -keystore $JAVA_HOME/jre/lib/security/cacerts`
+
+Note that $JAVA_HOME is the path to the JDK that is known by Maven
+
