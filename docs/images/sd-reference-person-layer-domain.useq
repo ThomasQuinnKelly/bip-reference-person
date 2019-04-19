@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.2.3" icons="true" automaticImage="PNG" generate-combined-fragments="true">  
+  <object id="1" language="java" name="gov.va.bip.reference.person.ReferencePersonService" 
+    project="bip-reference-person" 
+    file="/bip-reference-person/src/main/java/gov/va/bip/reference/person/ReferencePersonService.java" binary="false" 
+    label="referencePersonService" type="interface" autoSize="true">    
+    <position height="-1" width="-1" x="107" y="0"/>    
+    <execution id="2">      
+      <position height="541" width="0" x="0" y="84"/>    
+    </execution>  
+  </object>  
+  <object id="5" language="java" name="gov.va.bip.reference.person.impl.ReferencePersonServiceImpl" 
+    project="bip-reference-person" 
+    file="/bip-reference-person/src/main/java/gov/va/bip/reference/person/impl/ReferencePersonServiceImpl.java" 
+    binary="false" label="referencePersonServiceImpl" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="4">      
+      <position height="499" width="0" x="0" y="105"/>    
+    </execution>  
+  </object>  
+  <object id="16" language="java" name="gov.va.bip.reference.person.model.PersonByPidDomainRequest" 
+    project="bip-reference-person" 
+    file="/bip-reference-person/src/main/java/gov/va/bip/reference/person/model/PersonByPidDomainRequest.java" 
+    binary="false" label="personByPidDomainRequest" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="7">      
+      <position height="21" width="0" x="0" y="133"/>    
+    </execution>  
+  </object>  
+  <object id="17" language="java" name="gov.va.bip.framework.cache.BipCacheUtil" project="bip-framework-libraries" 
+    file="/bip-framework-libraries/src/main/java/gov/va/bip/framework/cache/BipCacheUtil.java" binary="false" 
+    label="&lt;static&gt;" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="9">      
+      <position height="21" width="0" x="0" y="166"/>    
+    </execution>  
+  </object>  
+  <object id="18" language="java" name="gov.va.bip.reference.person.client.ws.PersonPartnerHelper" 
+    project="bip-reference-person" 
+    file="/bip-reference-person/src/main/java/gov/va/bip/reference/person/client/ws/PersonPartnerHelper.java" 
+    binary="false" label="personPartnerHelper" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="11">      
+      <position height="154" width="0" x="0" y="272"/>    
+    </execution>  
+  </object>  
+  <object id="25" language="java" name="gov.va.bip.reference.person.transform.impl.PersonByPid_DomainToPartner" 
+    project="bip-reference-person" 
+    file="/bip-reference-person/src/main/java/gov/va/bip/reference/person/transform/impl/PersonByPid_DomainToPartner.java" 
+    binary="false" label="personByPidD2P" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="20">      
+      <position height="21" width="0" x="0" y="309"/>    
+    </execution>  
+  </object>  
+  <object id="26" language="java" name="gov.va.bip.reference.person.transform.impl.PersonByPid_PartnerToDomain" 
+    project="bip-reference-person" 
+    file="/bip-reference-person/src/main/java/gov/va/bip/reference/person/transform/impl/PersonByPid_PartnerToDomain.java" 
+    binary="false" label="personByPidP2D" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="24">      
+      <position height="21" width="0" x="0" y="377"/>    
+    </execution>  
+  </object>  
+  <object id="27" language="java" name="gov.va.bip.reference.person.model.PersonByPidDomainResponse" 
+    project="bip-reference-person" 
+    file="/bip-reference-person/src/main/java/gov/va/bip/reference/person/model/PersonByPidDomainResponse.java" 
+    binary="false" label="domainResponse" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="13">      
+      <position height="21" width="0" x="0" y="520"/>    
+    </execution>    
+    <execution id="15">      
+      <position height="21" width="0" x="0" y="562"/>    
+    </execution>  
+  </object>  
+  <object id="28" language="java" name="gov.va.bip.reference.partner.person.client.ws.PersonWsClient" 
+    project="bip-reference-partner-person" 
+    file="/bip-reference-partner-person/src/main/java/gov/va/bip/reference/partner/person/client/ws/PersonWsClient.java" 
+    binary="false" label="personWsClient" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="22">      
+      <position height="85" width="0" x="0" y="335"/>    
+    </execution>    
+    <execution id="30">      
+      <position height="21" width="0" x="0" y="393"/>    
+    </execution>  
+  </object>  
+  <combined-fragment id="31" interaction-operator="OPT">    
+    <interaction-operand id="32" constraint="response == null">      
+      <fragment refId="21"/>      
+      <fragment refId="33"/>      
+      <fragment refId="23"/>      
+      <fragment refId="10"/>      
+      <fragment refId="19"/>    
+    </interaction-operand>    
+    <combined-fragment id="33" interaction-operator="NEG">      
+      <interaction-operand id="34" constraint="BipException | BipRuntimeException bipException">        
+        <fragment refId="12"/>        
+        <fragment refId="14"/>      
+      </interaction-operand>    
+    </combined-fragment>  
+  </combined-fragment>  
+  <note id="35">    
+    <position height="68" width="168" x="2015" y="411"/>    
+    <text><![CDATA[Call client module (protocol enabler) to call the partner service.]]>
+    </text>  
+  </note>  
+  <message id="3" 
+    operation="findPersonByParticipantID(gov.va.bip.reference.person.model.PersonByPidDomainRequest):gov.va.bip.reference.person.model.PersonByPidDomainResponse" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="6" operation="getParticipantID():java.lang.Long" asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="7"/>  
+  </message>  
+  <message id="8" operation="createKey(java.lang.Object[]):java.lang.String" asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="9"/>  
+  </message>  
+  <message id="10" 
+    operation="findPersonByPid(gov.va.bip.reference.person.model.PersonByPidDomainRequest):gov.va.bip.reference.person.model.PersonByPidDomainResponse" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="11"/>  
+  </message>  
+  <message id="12" operation="PersonByPidDomainResponse()" asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="13"/>  
+  </message>  
+  <message id="14" 
+    operation="addMessage(gov.va.bip.framework.messages.MessageSeverity,org.springframework.http.HttpStatus,gov.va.bip.framework.messages.MessageKey,java.lang.String[]):void" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="15"/>  
+  </message>  
+  <message id="19" 
+    operation="convert(gov.va.bip.reference.person.model.PersonByPidDomainRequest):gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntId" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="20"/>  
+  </message>  
+  <message id="21" 
+    operation="getPersonInfoByPtcpntId(gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntId):gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="22"/>  
+  </message>  
+  <message id="23" 
+    operation="convert(gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse):gov.va.bip.reference.person.model.PersonByPidDomainResponse" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="24"/>  
+  </message>  
+  <message id="29" 
+    operation="getPersonInfoByPtcpntId(gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntId):gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="30"/>  
+  </message>  
+  <text-link id="36">    
+    <link-end type="SOURCE" refId="35"/>    
+    <link-end type="TARGET" refId="29"/>  
+  </text-link>
+</sequence-diagram>

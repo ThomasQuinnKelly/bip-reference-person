@@ -46,6 +46,7 @@ Follow the link to get started. [Quick Start Guide](docs/quick-start-guide.md)
 
 #### Develop
 * [Developing with BIP Framework](docs/developing-with-bip-framework.md)
+* [BIP Service Application Flow](docs/application-flow.md)
 
 #### Configuration & Usage Patterns
 * [Service Discovery](docs/service-discovery-guide.md)
