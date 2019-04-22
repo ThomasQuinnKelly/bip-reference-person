@@ -1,4 +1,4 @@
-## What is this repository for? ##
+## What is this repository for?
 
 This is a suite of projects to demonstrate various patterns required to deploy and run application spring boot and spring cloud services on the BIP Platform.  
 

@@ -1,23 +1,34 @@
-# Reference Person Service Performance Test 
+##What is this project for?
+This document provides details for **Reference Person Service Performance Testing**. The project is an example and demonstration for how to set up functioning performance tests.
 
-Performance testing configurations (jmx files) go in this directory.
+## Performance tests for Reference Person Service
+Performance tests are executed to guage if the application would be able to handle a reasonable request load.
 
-This module was created to facilitate the performance testing of reference person Service and has no other functionality.
+The project uses Apache JMeter.
 
-This test will execute requests for the rest end points available in reference person service module.
+It is recommended that JMeter GUI mode be used for developing tests, and command mode (command-line execution) for test execution.
 
--PID based Person Info from Person Partner Service - /api/v1/persons/pid
--Person service Health check endpoint - /api/v1/persons/health
+## Project Structure
 
-Additionally it will also hit the /token end point to generate JWT token for the users.
+`pom.xml` - The Maven configuration for building and deploying the project.
+
+`src/test/jmeter` - Performance testing configurations (jmx files) go in this directory.
+
+## Execution
+
+Testing executes requests against the rest end points available in Reference Person Service:
+- PID based Person Info from Person Partner Service - `/api/v1/persons/pid`
+- Person service Health check endpoint - `/api/v1/persons/health`
+
+Every request must contain a valid JWT header, so every test calls the `/token` end point to generate a JWT token for the user.
 
 ## Performance Test Configuration
 
-## Reference Person Service Perftest we can use the below configuration value to execute the test in pipeline.
-The test suite can be configure to execute each test a different number of time and with different number of threads.
-To override any of the below properties please pass them as -D arguments (ex. -Ddomain=(env))
+The test suite can be configured to:
+- execute each test a different number of times
+- execute each test with different number of threads.
 
-Below is the typical configuration values, But reference person is using the default values in JMX file.
+Below is an example of typical configuration values. To override any of the properties, pass them on the command line as `-D` arguments, e.g. `-Ddomain=(env)`.
 
 |Property|Description|Default Value|Perf Env Test Values|
 |-|-|-|-|
@@ -53,17 +64,17 @@ Below is the typical configuration values, But reference person is using the def
 |BearerTokenCreate.threadGroup.rampUp|Thead ramp up|1|50|
 |BearerTokenCreate.threadGroup.loopCount|Number of executions |1|1|
 
-## Performance Test Execution
+## Running the tests
 
-To execute test locally simply run **mvn clean verify -Pperftest**. If you need to override any of the properties please use -D arguments with the arguments mention above.
+To execute performance tests locally, navigate to the `bip-reference-perftest` directory, and run `mvn clean verify -Pperftest`. If you need to override any of the properties add the to the command using the appropriate `-Dpropety=value` argument(s).
 
-Sample Command for executing the test in performance test environment: 
+#### Sample Command
+An example for executing the test in performance test environment: 
 
      mvn clean verify -Pperftest -Dprotocol=<> -Ddomain=<> -Dport=<> -DBearerTokenCreate.threadGroup.threads=150 
       -DBearerTokenCreate.threadGroup.rampUp=50 -DBearerTokenCreate.threadGroup.loopCount=1 -DPersonHealth.threadGroup.threads=150 -DPersonHealth.threadGroup.rampUp=150 -DPersonHealth.threadGroup.loopCount=-1 -DPersonHealth.threadGroup.duration=230 -DPersonHealth.threadGroup.startUpDelay=30 -DPersonInfo.threadGroup.threads=150 -DPersonInfo.threadGroup.rampUp=150 -DPersonInfo.threadGroup.loopCount=-1 -DPersonInfo.threadGroup.duration=230 -DPersonInfo.threadGroup.startUpDelay=30 -DPersonInfoNoRecordFound.threadGroup.threads=150 -DPersonInfoNoRecordFound.threadGroup.rampUp=150 -DPersonInfoNoRecordFound.threadGroup.loopCount=-1 -DPersonInfoNoRecordFound.threadGroup.duration=230 -DPersonInfoNoRecordFound.threadGroup.startUpDelay=30 -DPersonInfoInvalidPid.threadGroup.threads=150 -DPersonInfoInvalidPid.threadGroup.rampUp=150 -DPersonInfoInvalidPid.threadGroup.loopCount=-1 -DPersonInfoInvalidPid.threadGroup.duration=230 -DPersonInfoInvalidPid.threadGroup.startUpDelay=30 -DPersonInfoNullPid.threadGroup.threads=150 -DPersonInfoNullPid.threadGroup.rampUp=150 -DPersonInfoNullPid.threadGroup.loopCount=-1 -DPersonInfoNullPid.threadGroup.duration=230 -DPersonInfoNullPid.threadGroup.startUpDelay=30
  
-For developing the performance test, use the GUI mode. For the actual test execution, use of NON-GUI mode is recommended.
 
 ## How to set up JMeter and Create Test Plan (JMX)
-[Set Up Read Guide](/docs/referenceperson-perftest.md)
+Read the [Performance Testing Guide](/docs/referenceperson-perftest.md)
 
