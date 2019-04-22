@@ -190,9 +190,6 @@ bip.framework:
 ##################################################
 # REDIS
 ##################################################
-  redis:
-    host: localhost
-    port: 6379
     cache:
       defaultExpires: 86400 # (Seconds)
       expires:
@@ -202,10 +199,9 @@ bip.framework:
       -
       name: refPersonService_@project.name@_@project.version@
       ttl: 1800
-    client:
-      #### !!! clientName VALUE MUST BE A UNIQUE APP NAME !!! ####
-      clientName: refPersonService
-      
+    redis-config:
+      host: localhost
+      port: 6379
 ##################################################
 # Sleuth configuration     
 # To skip specific patterns being exported, added few more customs on top of default skip pattern
