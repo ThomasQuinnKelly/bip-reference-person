@@ -1,7 +1,7 @@
 # Developing with BIP Framework
 This page provides a quick overview of the primary capabilities that the BIP Framework offers, and how to use them.
 
-For more information, refer to the [bip-framework README.md](https://github.com/department-of-veterans-affairs/ocp-framework).
+For more information, refer to the [bip-framework README.md](https://github.ec.va.gov/EPMO/bip-ocp-framework).
 
 ## Design Considerations
 BIP Framework provides for distinct separation of model objects between the **Provider**, **Domain**, and **Partner** layers. For more information, see [Design: Layer and Model Separation](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/tree/master/docs/design-layer-separation.md).
@@ -58,7 +58,7 @@ Performance logging is automatically invoked by the `RestProviderTimerAspect`, a
 ## Model Transformation
 The framework encourages separation of layers (or "tiers") and their associated model objects. Layer separation is supported with a simple transformer pattern. For more information, see [Layer and Model Separation Design](design-layer-separation.md).
 
-For SOAP partner clients, framework provides a [Date Adapter class](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/transfer/jaxb/adapters/DateAdapter.java) for date conversions. Other data type adapters can be added to the framework upon request. 
+For SOAP partner clients, framework provides a [Date Adapter class](https://github.ec.va.gov/EPMO/bip-ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/transfer/jaxb/adapters/DateAdapter.java) for date conversions. Other data type adapters can be added to the framework upon request. 
 
 ## Validation
 Validation at the REST API should be performed using only standard JSR 303 annotations on the rest model objects. More complex validation can easily be added at the service layer interface. Currently, if validations are required prior to calling into a partner client, it must be invoked manually.
@@ -69,4 +69,11 @@ For more information, see [Validation](validation.md).
 Service impelementation classes can add properly declared `@CachePut` annotations to the overridden methods of their inteface. Once configuration and annotation is done, no other intervention is needed.
 
 For more information, see [Cache Management](cache-management.md). An example of annotating a method, see the [ReferencePersonServiceImpl class](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/blob/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/impl/ReferencePersonServiceImpl.java).
+
+## Partner Client Support
+The framework provides support classes for RESTful and SOAP partner clients under the `framework.client.rest.template` and `framework.client.ws**` packages respectively.
+
+REST clients are audited by the existing `ProviderHttpAspect` aspect. SOAP clients are audited by the `AuditWsInterceptor` spring interceptor.
+
+For more information, see [bip-reference-partner-person](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/tree/master/bip-reference-partner-person).
 

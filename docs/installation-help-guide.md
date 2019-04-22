@@ -66,4 +66,3 @@ The proxy-part is optional. Now you downloaded the certificate, you can add it t
 `keytool -importcert -file cert.pem -alias nexus.dev.bip.va.gov -storepass changeit -keystore $JAVA_HOME/jre/lib/security/cacerts`
 
 Note that $JAVA_HOME is the path to the JDK that is known by Maven
-

@@ -16,7 +16,7 @@ The Provider (REST/API) layer must catch all Throwables and convert them to appr
 ### Service Concerns
 The Service (domain/business) layers may generate exceptions during execution, and may receive exceptions from external entities and external clients. The business layers must be able to identify and categorize exceptions before allowing them to propagate to the Provider layer.
 
-Service methods must also be able to validate method inputs and outputs at will. The [Defense](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/validation/Defense.java) class is used for this purpose. It is better to add generic methods as needed to the Defense class, than it is to write one-off inline value checks.
+Service methods must also be able to validate method inputs and outputs at will. The [Defense](https://github.ec.va.gov/EPMO/bip-ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/validation/Defense.java) class is used for this purpose. It is better to add generic methods as needed to the Defense class, than it is to write one-off inline value checks.
 
 ### Client Concerns
 The Partner (external/3rd party) client may encounter a variety of exceptions that occur due to:
@@ -27,7 +27,7 @@ The Partner (external/3rd party) client may encounter a variety of exceptions th
 ## Exception Hierarchy
 <img alt="BIP Exception Hierarchy" src="images/bip-exception-class-hierarchy.png" height="50%" width="50%" />
 
-See the BIP base exception classes in the [framework exception package](https://github.com/department-of-veterans-affairs/ocp-framework/tree/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/exception)
+See the BIP base exception classes in the [framework exception package](https://github.ec.va.gov/EPMO/bip-ocp-framework/tree/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/exception)
 
 ## Exception Types
 - `BipRuntimeException` and sub-classes identify conditions in which the exception should immediately propagate back to the Provider layer. Examples include validation voilations, data not found, and other 400-series conditions under which processing should be aborted.
@@ -40,7 +40,7 @@ See the BIP base exception classes in the [framework exception package](https://
 
 ### Provider Pattern
 - Spring `@RestControllerAdvice` interceptor/aspect is used ...
-	* Implemented in [BipRestGlobalExceptionHandler](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/rest/exception/BipRestGlobalExceptionHandler.java) class. In this class, each `@ExceptionHandler(value={ {{exception}}.class{{,...}} })` annotated method catches the specified exception(s) and formulates the message(s) and the HTTP `@ResponseStatus` to be returned to the consumer.
+	* Implemented in [BipRestGlobalExceptionHandler](https://github.ec.va.gov/EPMO/bip-ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/rest/exception/BipRestGlobalExceptionHandler.java) class. In this class, each `@ExceptionHandler(value={ {{exception}}.class{{,...}} })` annotated method catches the specified exception(s) and formulates the message(s) and the HTTP `@ResponseStatus` to be returned to the consumer.
 	* Spring processes `@ExceptionHandler` methods in the order they appear in the class, much like a try/catch block. The methods must appear in order from most specific to most general.
 - Auto-configured by `BipRestAutoConfiguration`. 
 
