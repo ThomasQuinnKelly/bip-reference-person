@@ -70,3 +70,10 @@ Service impelementation classes can add properly declared `@CachePut` annotation
 
 For more information, see [Cache Management](cache-management.md). An example of annotating a method, see the [ReferencePersonServiceImpl class](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/impl/ReferencePersonServiceImpl.java).
 
+## Partner Client Support
+The framework provides support classes for RESTful and SOAP partner clients under the `framework.client.rest.template` and `framework.client.ws**` packages respectively.
+
+REST clients are audited by the existing `ProviderHttpAspect` aspect. SOAP clients are audited by the `AuditWsInterceptor` spring interceptor.
+
+For more information, see [bip-reference-partner-person](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/master/bip-reference-partner-person).
+

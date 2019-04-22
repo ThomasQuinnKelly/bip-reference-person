@@ -4,13 +4,13 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 ## Project Breakdown
 
-1. **bip-reference-partner**: Partner services for reference person, showing sample mock data for BGS. It should be noted by service designers and tech leads that Partner projects would typically be stand-alone (in their own repo, and not part of a reactor project). The intent is for Partner projects to be freely available for use by any number of service applications that might need them by including them as a maven dependency.
-2. **bip-reference-person**: Service implementation project. This project demonstrates the recommended design patterns, configuration pointers, and coding examples. It shows how to produce a documented endpoint, how to register the app with Consul, how to use secrets from Vault, how to implement a Hystrix circuit breaker, how to get and use loggers, etc. The design consists of three layers:
+1. [bip-reference-partner](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/master/bip-reference-partner-person): Partner services for reference person, showing sample mock data for BGS. It should be noted by service designers and tech leads that Partner projects would typically be stand-alone (in their own repo, and not part of a reactor project). The intent is for Partner projects to be freely available for use by any number of service applications that might need them by including them as a maven dependency.
+2. [bip-reference-person](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/master/bip-reference-person): Service implementation project. This project demonstrates the recommended design patterns, configuration pointers, and coding examples. It shows how to produce a documented endpoint, how to register the app with Consul, how to use secrets from Vault, how to implement a Hystrix circuit breaker, how to get and use loggers, etc. The design consists of three layers:
 	- The Provider (or "web") layer contains the REST endpoints and model, JSR 303 annotations in the resource class and the model, and the use of an adapter class to transform models and call the service interface.
 	- The Domain (or "service") layer contains examples of business validation, business logic to call Partner services and process the returned data, and exception handling.
 	- The Partner (or "client") layer shows how to set up calls to a partner client interface, and how to handle exceptions thrown by the partner client.
-3. **bip-reference-inttest**: Contains the integration tests using the framework Test Library: Spring Rest Template, Cucumber libraries, and other capabilities. It includes functioning test cases that run against the end points in `bip-reference-person`. 
-4. **bip-reference-perftest**: Contains functioning performance JMX test scripts for Apache JMeter.
+3. [bip-reference-inttest](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/master/bip-reference-inttest): Contains the integration tests using the framework Test Library: Spring Rest Template, Cucumber libraries, and other capabilities. It includes functioning test cases that run against the end points in `bip-reference-person`. 
+4. [bip-reference-perftest](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/master/bip-reference-perftest): Contains functioning performance JMX test scripts for Apache JMeter.
 
 ## How to include the framework libraries in your project
 
