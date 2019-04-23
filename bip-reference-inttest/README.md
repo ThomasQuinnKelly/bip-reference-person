@@ -32,9 +32,11 @@ The annotations provided in the cucumber runner class will assist in bridging th
 
 `src/inttest/resources/logback-test.xml` - Logback Console Appender pattern and loggers defined for this project
 
-`src/inttest/resources/config/referenceperson-dev.properties` – DEV configuration properties such as URL are specified here.
+`src/inttest/resources/config/vetservices-inttest-dev.properties` – DEV configuration properties such as URL are specified here.
 
-`src/inttest/resources/config/referenceperson-stage.properties` – STAGE configuration properties such as URL are specified here.
+`src/inttest/resources/config/vetservices-inttest-stage.properties` – STAGE configuration properties such as URL are specified here.
+**Note: All the configurations are defined external to the code and is per profile/environment. The naming conversion of the file
+vetservices-inttest-<env>.properties**
 
 ## Execution
 
