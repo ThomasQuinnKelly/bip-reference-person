@@ -3,15 +3,16 @@
 ## Capability (Webservices Contract : Swagger)
 - Swagger is a framework for describing your API using a common language that everyone can understand. 
 Swagger provides more benefits than just helping create clear documentation.
-	a. It's comprehensible for developers and non-developers. 
-	b. It's human readable and machine readable. This means that not only can this be shared with your team internally, but the same documentation can be used to automate API-dependent processes.
-	c. It's easily adjustable. This makes it great for testing and debugging API problems.
-- We are using Bottom-up approach 
+	- It's comprehensible for developers and non-developers. 
+	- It's human readable and machine readable. This means that not only can this be shared with your team internally, but the same documentation can be used to automate API-dependent processes.
+	- It's easily adjustable. This makes it great for testing and debugging API problems.
+- We are using Bottom-up approach (swagger is declared by java annotations, not in a yaml file).
 
 ## Swagger configuration
 
 - Swagger has the following dependency in autoconfigure project:
 
+```xml
 	    <dependency>
 	      <groupId>io.springfox</groupId>
 	      <artifactId>springfox-swagger2</artifactId>
@@ -22,18 +23,22 @@ Swagger provides more benefits than just helping create clear documentation.
 	      <artifactId>springfox-swagger-ui</artifactId>
 	      <version>${springfox.version}</version>
 	    </dependency>
+```
 
-- add the bip-framework-autoconfigure dependency to the project pom, with the appropriate version that will 
+- Add the bip-framework-autoconfigure dependency to the project pom, with the appropriate version that will 
   include the autoconfigure projects.
   
+```xml
 	   <dependency>
              <groupId>gov.va.bip.framework</groupId>
              <artifactId>bip-framework-autoconfigure</artifactId>
              <!-- add the appropriate version -->
            </dependency>
-    
+```
+
 - Update the application service yml file with the following configuration (under the default profile):
 
+```yaml
 	   bip.framework:
 	     swagger:
     		title: 
@@ -41,27 +46,31 @@ Swagger provides more benefits than just helping create clear documentation.
     		groupName: "@project.name@-@project.version@"
     		version: ${info.build.version}
     		securePaths: /api/v?.*/persons/.*
-    			
+```
    securePaths above secures the swagger URL's access and forwards the Security Context(JWT) to 
    actual Service API calls.  
 
 - Add the @EnableSwagger2 annotation to the Spring Boot Application class 
 
+```java
 		@Configuration
 		@EnableConfigurationProperties(SwaggerProperties.class)
 		@EnableSwagger2
 		@ConditionalOnProperty(prefix = "bip.framework.swagger", name = "enabled", matchIfMissing = true)
 		@Import({ BeanValidatorPluginsConfiguration.class })
 		public class SwaggerAutoConfiguration {}
-	
+```
+
 - Add ApiOperations and ApiMethod annotations on the resource class methods to describe about the 
   method and responses
-  
+
+```java
 		@ApiOperation(value = "A health check of this endpoint",
 				notes = "Will perform a basic health check to see if the operation is running.")
 		@ApiResponses(value = {
 				@ApiResponse(code = 200, message = MESSAGE_200) })
-	
+```
+
 ## Swagger Page Security and Errors
 
 - Security to access the Swagger page is through the JWT token generated. Need to generate the token using Token-Resource on the swagger page and add it to the Authorize section using "Bearer" as key for the JWT token.

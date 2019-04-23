@@ -1,7 +1,7 @@
 #  Prometheus Metrics access via Grafana
 
 ## Capability (Metrics Monitoring : Prometheus and Grafana)
-- Prometheus and Grafana can be used to monitor a vast range of applications. For collecting metrics, we shall be targeting the Spring Boot and Spring Cloud enabled REST application. The application exposes a metrics endpoint for Prometheus at "http://localhost:8080/actuator/prometheus" via Spring Boot Actuator.
+Prometheus and Grafana can be used to monitor a vast range of applications. For collecting metrics, we shall be targeting the Spring Boot and Spring Cloud enabled REST application. The application exposes a metrics endpoint for Prometheus at "http://localhost:8080/actuator/prometheus" via Spring Boot Actuator.
 
 #### Local Endpoints
 
@@ -25,12 +25,12 @@ See [Quick Start Guide](quick-start-guide.md) to run docker containers for local
 
 - Give a suitable name to this new data source, as this will be used while creating visualizations:
 <img alt="Grafana Datasource Details" src="/docs/images/Grafana-Datasource-Details.jpg" width="80%" height="80%"/>
-	a. Select Prometheus in the "type" drop down.
-	b. Local URL `http://localhost:9090` as Prometheus runs locally on port 9090.
-	c. Fill other details if you have any security or HTTP related settings.
-	d. Click "Save & Test."
-	e. If Grafana is able to make connections to Prometheus instance with the details provided, then you will get a message saying "Data source is working." If you get any errors, review your values.
-	
+	- Select Prometheus in the "type" drop down.
+	- Local URL `http://localhost:9090` as Prometheus runs locally on port 9090.
+	- Fill other details if you have any security or HTTP related settings.
+	- Click "Save & Test."
+	- If Grafana is able to make connections to Prometheus instance with the details provided, then you will get a message saying "Data source is working." If you get any errors, review your values.
+
 ## Dashboard
 
 - We can access the home page for the dashboard:
@@ -39,7 +39,7 @@ See [Quick Start Guide](quick-start-guide.md) to run docker containers for local
 	JVM Micrometer and Hystrix dashboards are available by default
 
 - A new dashboard can be created based on the requirement using below steps:
-	a. Click on "Create your first dashboard" tab. Then click on one of the options like Graph or Singlestat or Table etc  
+	- Click on "Create your first dashboard" tab. Then click on one of the options like Graph or Singlestat or Table etc  
 	<img alt="Grafana New Dashboard" src="/docs/images/Grafana-NewDashBoard.jpg" width="80%" height="80%"/>
 	
-	b. Select a particular option as above to look at the required stats.
+	- Select a particular option as above to look at the required stats.

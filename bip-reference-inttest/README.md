@@ -44,7 +44,9 @@ To execute the functional test in local bip-reference-person service needs to be
 [quick-start-guide](/docs/quick-start-guide.md)
 
 **Command Line:** Use this command(s) to execute the reference person service Functional test. 
+```bash
 	mvn verify -Pinttest -Dcucumber.options="--tags @DEV"
+```
  
 
 ## More Details For Functional Test

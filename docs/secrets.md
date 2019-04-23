@@ -10,6 +10,7 @@ The management of secrets in Vault is handled by the BIP Platform team. Work wit
 The BIP Platform team recommends using [Vault's Kubernetes Authenication](https://www.vaultproject.io/docs/auth/kubernetes.html) method. This amounts to setting up a [Kubernetes service account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/) for you application and then configuring Vault to associate an access policy with that service account. 
 
 You application then configures the Spring Cloud Vault library to use [Kubernetes authentication](https://cloud.spring.io/spring-cloud-vault/single/spring-cloud-vault.html#vault.config.authentication.kubernetes) referencing the filepath to the service account token. Kuberenetes will handle mounting the token file into your pod container.
+
 ```yaml
 spring.cloud.vault:
     authentication: KUBERNETES
@@ -21,10 +22,11 @@ spring.cloud.vault:
 
 ## Retreiving Secrets
 By Default the following secret paths in Vault are looked at and all secrets found at those paths are loaded as Properties. Spring Cloud Vault allows using the Application name and a default context name (application) in combination with active profiles.
-* /secret/{application}/{profile}
-* /secret/{application}
-* /secret/{default-context}/{profile}
-* /secret/{default-context}
+
+* `/secret/{application}/{profile}`
+* `/secret/{application}`
+* `/secret/{default-context}/{profile}`
+* `/secret/{default-context}`
 
 The application name is determined by the properties:
 ```
@@ -34,8 +36,8 @@ spring.application.name
 ```
 Secrets can be obtained from other contexts within the generic backend by adding their paths to the application name, separated by commas. For example, given the application name usefulapp,mysql1,projectx/aws, each of these folders will be used:
 
-* /secret/usefulapp
-* /secret/mysql1
-* /secret/projectx/aws
+* `/secret/usefulapp`
+* `/secret/mysql1`
+* `/secret/projectx/aws`
 
 Secret values are loaded as Properties by the key name in Vault. For example if your secret was `database.username=bob` then you would access that secrets value in your application by refering to the property matching the secret key name `${database.username}`

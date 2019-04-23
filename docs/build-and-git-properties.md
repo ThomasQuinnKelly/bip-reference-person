@@ -7,6 +7,7 @@
 ## Build Properties Configuration
 - If you have included `bip-framework-parentpom` as the parent dependency, you must already have plugin spring-boot-maven-plugin with the following configuration.
 
+```xml
 		<plugin>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-maven-plugin</artifactId>
@@ -19,17 +20,21 @@
 				</execution>    
 			</executions>
 		 </plugin>
+```
 
  - Above command instructs the plugin to execute also `build-info` goal, which isn't run by default. This generates build meta-data for the application, which includes artifact version, build time and additional information.
  
 ## Accessing Build Properties
 - After building your application, you can access information about your application's build through BuildProperties object. Let the Spring inject it for you:
 
+```java
 	    @Autowired
 	    BuildProperties buildProperties;
-	
-     Now you can access various information from this object.
+```
 
+   Now you can access various information from this object.
+
+```java
 	       // Artifact's name from the pom.xml file
 		buildProperties.getName();
 		// Artifact version
@@ -40,12 +45,14 @@
 		buildProperties.getArtifact();
 		// Group ID from the pom file
 		buildProperties.getGroup();
-	
+```
+
 ## Git Properties Configuration
 - Actuator detects git.properties file, which contains useful information about your git repository. If you have included `bip-framework-parentpom` as the parent dependency, you have access to the plugin with following configuration .
 
-        Maven pom.xml:
-	
+   Maven pom.xml:
+
+```xml
 		<plugin>
 		    <groupId>pl.project13.maven</groupId>
 	            <artifactId>git-commit-id-plugin</artifactId>
@@ -58,10 +65,12 @@
 			<failOnNoGitDirectory>false</failOnNoGitDirectory>
 		    </configuration>
 		</plugin>
+```
 
 ## Accessing Git Properties	
 - After rebuilding and restarting the /info endpoint displays Git via `GitInfoContributor` class info as shown below
 
+```json
 		{
 		  "git": {
 		    "commit": {
@@ -71,3 +80,4 @@
 		    "branch": "master"
 		  }
 		}
+```

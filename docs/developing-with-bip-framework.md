@@ -30,8 +30,9 @@ When something goes wrong, the response to the consumer must contain a meaningfu
 
 ## Logging
 The framework offers useful extensions that help exceptions natively integrate the propagation of meaningful messages to the consumer(s) of the micro-service. When instantiating a logger, it is recommended to use the `BipLoggerFactory` to create a `BipLogger`. For example:
-
+```java
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(MyBipClass.class);
+```
 
 `BipLoggerFactory` creates `BipLogger` instances which are fully compatible with slf4j and logback. The logger also provides `BipBanner` (an ASCII-text banner) and severity `Level`. The logger also splits and manages exceptions so they can cross the docker 16KB comm channel limitation (https://github.com/kubernetes/kubernetes/issues/52444).
 
