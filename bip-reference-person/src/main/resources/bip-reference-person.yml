@@ -21,9 +21,41 @@ spring.profiles.include: remote_client_sims
 spring: 
   cache:
     type: redis
-  redis: 
+  # Properties for org.springframework.boot.autoconfigure.data.redis.RedisProperties
+  redis:
+    ssl: false
     host: localhost
     port: 6379
+    # If host takes a password
+    # password: 
+    # URL overrides host/port/password
+    # url: 
+    # The database index to use
+    # database: 0
+    # Connection timeout (millis)
+    # timeout: 
+    # Jedis is activated by being on the classpath
+    jedis:
+      # At least one variable *must* be set in order to enable the pool
+      pool:
+        # Max number of idle connections in the pool
+        # max-idle: 8
+        # Min number of idle connections to maintain
+        # min-idle: 0
+        # Max number of allocated connections (-1 for unlimited)
+        # max-active: 8
+        # Max wait millis when pool is exhausted (-1 for unlimited)
+        max-wait: -1
+    # cluster:
+      # Maximum number of redirects to follow when executing commands across the cluster
+      # max-redirects: 
+      # Comma-separated list of "host:port" pairs to bootstrap from
+      # nodes:
+    # sentinel:
+      # Name of the Redis server
+      # master: 
+      # Comma-separated list of "host:port" pairs
+      # nodes: 
   sleuth:
     stream:
       enabled: false 
@@ -74,30 +106,39 @@ bip-reference-person:
 #-##################################################
 logging: 
   level:
-    # gov.va.bip: DEBUG
-    gov.va.bip.framework.client.ws: INFO
-    gov.va.bip.framework.rest.provider: INFO
-    gov.va.bip.reference.partner: INFO
-    gov.va.bip.reference.person.client.rest.feign.FeignPersonClient: INFO
-    gov.va.bip.reference: INFO
-    gov.va.bip.framework: INFO
-    com.ecwid.consul: INFO
-    # org.springframework: DEBUG
-    org.springframework.cloud.openfeign: INFO
-    org.springframework.security.web: INFO
-    org.springframework.cloud.consul.config: INFO
-    org.springframework.cloud.consul: INFO
-    org.springframework.client.discovery: INFO
-    org.springframework.cloud.sleuth: INFO 
-    org.springframework.cloud.sleuth.log: INFO
-    org.springframework.security: INFO
-    org.springframework.ws: INFO
-    org.springframework.web.client: INFO
-    org.springframework.cache: INFO 
-    org.apache.http.impl.client: INFO
-    org.springframework.retry: INFO
-    sun.net.www.protocol: INFO
-    feign: INFO
+    gov: DEBUG
+    org: DEBUG
+    com: DEBUG
+    net: DEBUG
+    redis: DEBUG
+    sun: DEBUG
+    java: DEBUG
+#    gov.va.bip: DEBUG
+##    gov.va.bip.framework.client.ws: INFO
+##    gov.va.bip.framework.rest.provider: INFO
+##    gov.va.bip.reference.partner: INFO
+##    gov.va.bip.reference.person.client.rest.feign.FeignPersonClient: INFO
+##    gov.va.bip.reference: INFO
+##    gov.va.bip.framework: INFO
+#    org.springframework: DEBUG
+##    org.springframework.cloud.openfeign: INFO
+##    org.springframework.security.web: INFO
+##    org.springframework.cloud.consul.config: INFO
+##    org.springframework.cloud.consul: INFO
+##    org.springframework.client.discovery: INFO
+##    org.springframework.cloud.sleuth: INFO 
+##    org.springframework.cloud.sleuth.log: INFO
+##    org.springframework.security: INFO
+##    org.springframework.ws: INFO
+##    org.springframework.web.client: INFO
+##    org.springframework.cache: INFO 
+##    org.springframework.retry: INFO
+#    com.ecwid.consul: INFO
+#    org.apache: DEBUG
+##    org.apache.http.impl.client: INFO
+#    redis: DEBUG
+#    sun.net.www.protocol: INFO
+#    feign: INFO
 ##################################################
 # Ribbon timeout, server refresh interval, retry
 # settings for the requests
@@ -180,15 +221,15 @@ bip.framework:
 # when making inter-service or external REST calls
 ##################################################
   rest:
-   client:
-     connectionTimeout: 30000
-     readTimeout: 60000
-     maxTotalPool: 5
-     defaultMaxPerRoutePool: 10
-     validateAfterInactivityPool: 10000
-     connectionBufferSize: 4128
+    client:
+      connectionTimeout: 30000
+      readTimeout: 60000
+      maxTotalPool: 5
+      defaultMaxPerRoutePool: 10
+      validateAfterInactivityPool: 10000
+      connectionBufferSize: 4128
 ##################################################
-# REDIS
+# Cache
 ##################################################
   cache:
     defaultExpires: 86400 # (Seconds)
@@ -199,9 +240,6 @@ bip.framework:
       -
         name: refPersonService_@project.name@_@project.version@
         ttl: 1800
-  redis:
-    host: localhost
-    port: 6379
 ##################################################
 # Sleuth configuration     
 # To skip specific patterns being exported, added few more customs on top of default skip pattern
