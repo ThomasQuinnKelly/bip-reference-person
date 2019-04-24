@@ -3,8 +3,6 @@ package gov.va.bip.reference.person.api.provider;
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -17,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import gov.va.bip.framework.log.BipLogger;
+import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.swagger.SwaggerResponseMessages;
 import gov.va.bip.framework.transfer.ProviderTransferObjectMarker;
 import gov.va.bip.reference.person.api.ReferencePersonApi;
@@ -36,7 +36,7 @@ import io.swagger.annotations.ApiResponses;
 public class PersonResource implements ReferencePersonApi, HealthIndicator, SwaggerResponseMessages {
 
 	/** Logger instance */
-	private static final Logger LOGGER = LoggerFactory.getLogger(PersonResource.class);
+	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(PersonResource.class);
 
 	/** The root path to this resource */
 	public static final String URL_PREFIX = "/api/v1/persons";

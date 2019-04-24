@@ -1,7 +1,5 @@
 package gov.va.bip.reference.person.client.rest.provider;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -15,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.va.bip.framework.client.rest.template.RestClientTemplate;
+import gov.va.bip.framework.log.BipLogger;
+import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.swagger.SwaggerResponseMessages;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 public class PersonRestClientTester implements SwaggerResponseMessages {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(PersonRestClientTester.class);
+	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(PersonRestClientTester.class);
 
 	@Autowired
 	private RestClientTemplate personUsageRestTemplate;
