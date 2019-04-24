@@ -69,7 +69,7 @@ For more information, see [Validation](validation.md).
 ## Cache
 Service impelementation classes can add properly declared `@CachePut` annotations to the overridden methods of their inteface. Once configuration and annotation is done, no other intervention is needed.
 
-For more information, see [Cache Management](cache-management.md). An example of annotating a method, see the [ReferencePersonServiceImpl class](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/impl/ReferencePersonServiceImpl.java).
+For more information about cache and redis configuration, see [Cache Management](cache-management.md). An example of annotating a method, see the [ReferencePersonServiceImpl class](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/impl/ReferencePersonServiceImpl.java) and [bip-framework-autoconfigure cache.autoconfigure](https://github.com/department-of-veterans-affairs/ocp-framework/tree/master/bip-framework-autoconfigure#govvabipframeworkcacheautoconfigure).
 
 ## Partner Client Support
 The framework provides support classes for RESTful and SOAP partner clients under the `framework.client.rest.template` and `framework.client.ws**` packages respectively.

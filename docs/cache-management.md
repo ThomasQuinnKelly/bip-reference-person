@@ -20,15 +20,22 @@ add the `bip-reference-autoconfigure` dependency to the project pom, with the ap
     </dependency>
 ```
 
-- Update the application service yml file with the following configuration (under the default profile):
+- Update the application service yml file with the following configuration (under the default profile). Any properties that do not appear in the appropriate hierarchy will be silently ignored, so default values, or nulls will be substituted for properties that were believed to be configured
 
 ```yaml
 	spring: 
 	  cache:
 	    type: redis
 	  redis: 
+	    ssl: false
 	    host: localhost
 	    port: 6379
+		...
+	    jedis:
+	      ...
+	      pool:
+	        ...
+	        max-wait: -1
 ```
 
 - Add the `@EnableCaching` annotation to the Spring Boot Application class (Please note there will most likely be many other annotations on this class):
@@ -50,15 +57,12 @@ add the `bip-reference-autoconfigure` dependency to the project pom, with the ap
 	  cache:
 	    defaultExpires: 86400 # (Seconds)
 	    expires:
-	\#     -
-	\#       name: Cache Name
-	\#       ttl:  TTL (In Seconds)
+	#     -
+	#       name: Cache Name
+	#       ttl:  TTL (In Seconds)
 	      -
 	        name: refPersonService_@project.name@_@project.version@
 	        ttl: 1800
-	    redis-config:
-	      host: localhost
-	      port: 6379
 ```
 
 ## Cache Design Standards
