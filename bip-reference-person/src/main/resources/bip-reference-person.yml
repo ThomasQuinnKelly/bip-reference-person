@@ -106,39 +106,30 @@ bip-reference-person:
 #-##################################################
 logging: 
   level:
-    gov: DEBUG
-    org: DEBUG
-    com: DEBUG
-    net: DEBUG
-    redis: DEBUG
-    sun: DEBUG
-    java: DEBUG
-#    gov.va.bip: DEBUG
-##    gov.va.bip.framework.client.ws: INFO
-##    gov.va.bip.framework.rest.provider: INFO
-##    gov.va.bip.reference.partner: INFO
-##    gov.va.bip.reference.person.client.rest.feign.FeignPersonClient: INFO
-##    gov.va.bip.reference: INFO
-##    gov.va.bip.framework: INFO
-#    org.springframework: DEBUG
-##    org.springframework.cloud.openfeign: INFO
-##    org.springframework.security.web: INFO
-##    org.springframework.cloud.consul.config: INFO
-##    org.springframework.cloud.consul: INFO
-##    org.springframework.client.discovery: INFO
-##    org.springframework.cloud.sleuth: INFO 
-##    org.springframework.cloud.sleuth.log: INFO
-##    org.springframework.security: INFO
-##    org.springframework.ws: INFO
-##    org.springframework.web.client: INFO
-##    org.springframework.cache: INFO 
-##    org.springframework.retry: INFO
-#    com.ecwid.consul: INFO
-#    org.apache: DEBUG
-##    org.apache.http.impl.client: INFO
-#    redis: DEBUG
-#    sun.net.www.protocol: INFO
-#    feign: INFO
+     # gov.va.bip: DEBUG
+    gov.va.bip.framework.client.ws: INFO
+    gov.va.bip.framework.rest.provider: INFO
+    gov.va.bip.reference.partner: INFO
+    gov.va.bip.reference.person.client.rest.feign.FeignPersonClient: INFO
+    gov.va.bip.reference: INFO
+    gov.va.bip.framework: INFO
+    com.ecwid.consul: INFO
+    # org.springframework: DEBUG
+    org.springframework.cloud.openfeign: INFO
+    org.springframework.security.web: INFO
+    org.springframework.cloud.consul.config: INFO
+    org.springframework.cloud.consul: INFO
+    org.springframework.client.discovery: INFO
+    org.springframework.cloud.sleuth: INFO 
+    org.springframework.cloud.sleuth.log: INFO
+    org.springframework.security: INFO
+    org.springframework.ws: INFO
+    org.springframework.web.client: INFO
+    org.springframework.cache: INFO 
+    org.apache.http.impl.client: INFO
+    org.springframework.retry: INFO
+    sun.net.www.protocol: INFO
+    feign: INFO
 ##################################################
 # Ribbon timeout, server refresh interval, retry
 # settings for the requests
