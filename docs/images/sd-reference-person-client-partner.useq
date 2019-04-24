@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.2.3" icons="true" automaticImage="PNG" generate-combined-fragments="true">  
+  <object id="1" language="java" name="gov.va.bip.reference.partner.person.client.ws.PersonWsClient" 
+    project="bip-reference-partner-person" 
+    file="/bip-reference-partner-person/src/main/java/gov/va/bip/reference/partner/person/client/ws/PersonWsClient.java" 
+    binary="false" label="personWsClient" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="2">      
+      <position height="607" width="0" x="0" y="83"/>    
+    </execution>  
+  </object>  
+  <object id="5" language="java" name="gov.va.bip.reference.partner.person.client.ws.PersonWsClientImpl" 
+    project="bip-reference-partner-person" 
+    file="/bip-reference-partner-person/src/main/java/gov/va/bip/reference/partner/person/client/ws/PersonWsClientImpl.java" 
+    binary="false" label="personWsClientImpl" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="4">      
+      <position height="565" width="0" x="0" y="104"/>    
+    </execution>  
+  </object>  
+  <object id="16" language="java" name="gov.va.bip.framework.validation.Defense" project="bip-framework-libraries" 
+    file="/bip-framework-libraries/src/main/java/gov/va/bip/framework/validation/Defense.java" binary="false" 
+    label="&lt;static&gt;" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="7">      
+      <position height="21" width="0" x="0" y="125"/>    
+    </execution>    
+    <execution id="13">      
+      <position height="21" width="0" x="0" y="585"/>    
+    </execution>    
+    <execution id="15">      
+      <position height="21" width="0" x="0" y="627"/>    
+    </execution>  
+  </object>  
+  <object id="17" language="java" name="gov.va.bip.reference.partner.person.client.ws.PersonPartnerCheckedException" 
+    project="bip-reference-partner-person" 
+    file="/bip-reference-partner-person/src/main/java/gov/va/bip/reference/partner/person/client/ws/PersonPartnerCheckedException.java" 
+    binary="false" label="personPartnerCheckedException" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="-317" y="0"/>    
+    <execution id="11">      
+      <position height="21" width="245" x="757" y="493"/>    
+    </execution>  
+  </object>  
+  <object id="18" language="java" name="gov.va.bip.framework.client.ws.remote.RemoteServiceCall" 
+    project="bip-framework-libraries" 
+    file="/bip-framework-libraries/src/main/java/gov/va/bip/framework/client/ws/remote/RemoteServiceCall.java" 
+    binary="false" label="remoteServiceCall" type="interface" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="9">      
+      <position height="259" width="0" x="0" y="208"/>    
+    </execution>  
+  </object>  
+  <object id="23" language="java" 
+    name="gov.va.bip.reference.partner.person.client.ws.remote.PersonRemoteServiceCallMock" 
+    project="bip-reference-partner-person" 
+    file="/bip-reference-partner-person/src/main/java/gov/va/bip/reference/partner/person/client/ws/remote/PersonRemoteServiceCallMock.java" 
+    binary="false" label="personRemoteServiceCallMock" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="20">      
+      <position height="77" width="0" x="0" y="285"/>    
+    </execution>  
+  </object>  
+  <object id="26" language="java" name="gov.va.bip.framework.client.ws.remote.AbstractRemoteServiceCallMock" 
+    project="bip-framework-libraries" 
+    file="/bip-framework-libraries/src/main/java/gov/va/bip/framework/client/ws/remote/AbstractRemoteServiceCallMock.java" 
+    binary="false" label="abstractRemoteServiceCallMock" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="25">      
+      <position height="21" width="0" x="0" y="320"/>    
+    </execution>  
+  </object>  
+  <object id="27" language="java" 
+    name="gov.va.bip.reference.partner.person.client.ws.remote.PersonRemoteServiceCallImpl" 
+    project="bip-reference-partner-person" 
+    file="/bip-reference-partner-person/src/main/java/gov/va/bip/reference/partner/person/client/ws/remote/PersonRemoteServiceCallImpl.java" 
+    binary="false" label="personRemoteServiceCallImpl" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="22">      
+      <position height="21" width="0" x="0" y="425"/>    
+    </execution>  
+  </object>  
+  <combined-fragment id="28" interaction-operator="OPT">    
+    <interaction-operand id="29">      
+      <fragment refId="8"/>      
+      <fragment refId="30"/>    
+    </interaction-operand>    
+    <combined-fragment id="30" interaction-operator="BREAK">      
+      <interaction-operand id="31">        
+        <fragment refId="10"/>      
+      </interaction-operand>    
+    </combined-fragment>  
+  </combined-fragment>  
+  <combined-fragment id="32" interaction-operator="ALT">    
+    <interaction-operand id="33">      
+      <fragment refId="34"/>      
+      <fragment refId="19"/>    
+    </interaction-operand>    
+    <combined-fragment id="34" interaction-operator="NEG">      
+      <interaction-operand id="35">        
+        <fragment refId="21"/>      
+      </interaction-operand>    
+    </combined-fragment>  
+  </combined-fragment>  
+  <note id="36">    
+    <position height="51" width="344" x="1480" y="486"/>    
+    <text><![CDATA[Calls spring’s WebServiceTemplate.marshalSendAndReceive(..)
+    ]]>
+    </text>  
+  </note>  
+  <note id="37">    
+    <position height="75" width="330" x="1436" y="322"/>    
+    <text><![CDATA[Mocks spring’s 
+WebServiceTemplate.marshalSendAndReceive(..)
+by retrieving from the file system a static 
+/test/mock/{response-file}.xml 
+    ]]>
+    </text>  
+  </note>  
+  <message id="3" 
+    operation="getPersonInfoByPtcpntId(gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntId):gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="6" operation="notNull(java.lang.Object,java.lang.String):void" asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="7"/>  
+  </message>  
+  <message id="8" 
+    operation="callRemoteService(org.springframework.ws.client.core.WebServiceTemplate,gov.va.bip.framework.transfer.PartnerTransferObjectMarker,java.lang.Class&lt;? extends gov.va.bip.framework.transfer.PartnerTransferObjectMarker&gt;):gov.va.bip.framework.transfer.PartnerTransferObjectMarker" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="9"/>  
+  </message>  
+  <message id="10" 
+    operation="PersonPartnerCheckedException(gov.va.bip.framework.messages.MessageKey,gov.va.bip.framework.messages.MessageSeverity,org.springframework.http.HttpStatus,java.lang.String[])" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="11"/>  
+  </message>  
+  <message id="12" operation="notNull(java.lang.Object,java.lang.String):void" asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="13"/>  
+  </message>  
+  <message id="14" operation="isInstanceOf(java.lang.Class&lt;?&gt;,java.lang.Object):void" asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="15"/>  
+  </message>  
+  <message id="19" 
+    operation="callRemoteService(org.springframework.ws.client.core.WebServiceTemplate,gov.va.bip.framework.transfer.PartnerTransferObjectMarker,java.lang.Class&lt;? extends gov.va.bip.framework.transfer.PartnerTransferObjectMarker&gt;):gov.va.bip.framework.transfer.PartnerTransferObjectMarker" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="20"/>  
+  </message>  
+  <message id="21" 
+    operation="callRemoteService(org.springframework.ws.client.core.WebServiceTemplate,gov.va.bip.framework.transfer.PartnerTransferObjectMarker,java.lang.Class&lt;? extends gov.va.bip.framework.transfer.PartnerTransferObjectMarker&gt;):gov.va.bip.framework.transfer.PartnerTransferObjectMarker" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="22"/>  
+  </message>  
+  <message id="24" 
+    operation="callMockService(org.springframework.ws.client.core.WebServiceTemplate,gov.va.bip.framework.transfer.PartnerTransferObjectMarker,java.lang.Class&lt;? extends gov.va.bip.framework.transfer.PartnerTransferObjectMarker&gt;):gov.va.bip.framework.transfer.PartnerTransferObjectMarker" 
+    asynchronous="false">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="25"/>  
+  </message>  
+  <text-link id="38">    
+    <link-end type="SOURCE" refId="36"/>    
+    <link-end type="TARGET" refId="22"/>  
+  </text-link>  
+  <text-link id="39">    
+    <link-end type="SOURCE" refId="37"/>    
+    <link-end type="TARGET" refId="25"/>  
+  </text-link>
+</sequence-diagram>

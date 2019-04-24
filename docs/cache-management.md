@@ -10,25 +10,30 @@
 
 ## Redis configuration
 - To configure Redis as the cache provider add the following dependency in your project,
-add the bip-reference-autoconfigure dependency to the project pom, with the appropriate version:
+add the `bip-reference-autoconfigure` dependency to the project pom, with the appropriate version:
 
+```xml
 	<dependency>
         <groupId>gov.va.bip.framework</groupId>
         <artifactId>bip-framework-autoconfigure</artifactId>
         <!-- add the appropriate version -->
     </dependency>
-    
+```
+
 - Update the application service yml file with the following configuration (under the default profile):
 
+```yaml
 	spring: 
 	  cache:
 	    type: redis
 	  redis: 
 	    host: localhost
 	    port: 6379
+```
 
-- Add the @EnableCaching annotation to the Spring Boot Application class (Please note there will most likely be many other annotations on this class):
+- Add the `@EnableCaching` annotation to the Spring Boot Application class (Please note there will most likely be many other annotations on this class):
 
+```java
 	@SpringBootApplication
 	@EnableCaching
 	public class MySweetServiceApplication {
@@ -36,9 +41,11 @@ add the bip-reference-autoconfigure dependency to the project pom, with the appr
 	    public static void main(String[] args) {
 	        SpringApplication.run(MySweetServiceApplication.class, args);
 	    }
+```
 
 - Add the following properties and set the to appropriate values to configure Redis caching properties. The reference.cache.defaultExpires property is the default ttl for a cache bucket if it is unspecified. The list reference.cache.expires is a list of cacheNames and the corresponding ttls:
 
+```yaml
 	reference:
 	  cache:
 	    defaultExpires: 86400 # (Seconds)
@@ -52,14 +59,15 @@ add the bip-reference-autoconfigure dependency to the project pom, with the appr
 	    redis-config:
 	      host: localhost
 	      port: 6379
-	
+```
+
 ## Cache Design Standards
-- Do NOT use @Cacheable annotation with @HystrixCommand. @Cacheable skips the method invocation if the key is already in the cache and hence when used with @HystrixCommand, it skips execution of hystrix annotation as well.
+- Do **NOT** use `@Cacheable` annotation with `@HystrixCommand`. @Cacheable skips the method invocation if the key is already in the cache and hence when used with @HystrixCommand, it skips execution of hystrix annotation as well.
 
-- Use @CachePut annotation with @HystrixCommand. @CachePut annotation does not cause the advised method to be skipped. Hystrix captures the execution of method each time its called. Cache existence to be checked in the business methods to make a decision of returning cached data vs calling partner / third party services
+- Use `@CachePut` annotation with `@HystrixCommand`. @CachePut annotation does not cause the advised method to be skipped. Hystrix captures the execution of method each time its called. Cache existence *must* be checked in the business methods to make a decision of returning cached data vs calling partner / third party services
 
-- The class `gov.va.bip.framework.cache.BipCacheUtil` in [bip-framework-libraries](https://github.com/department-of-veterans-affairs/ocp-framework/tree/master/bip-framework-libraries) project has functions to generate keys and conditionals for @CachePut operations using Spring Expression Language (SpEL). Add more such methods as required and use them accordingly.
+- The class `gov.va.bip.framework.cache.BipCacheUtil` in [bip-framework-libraries](https://github.com/department-of-veterans-affairs/ocp-framework/tree/master/bip-framework-libraries) project has functions to generate keys and conditionals for `@CachePut` operations using Spring Expression Language (SpEL). Add more such methods as required and use them accordingly.
 
 ## Clearing the Cache
-Developers needing to clear the cache for local testing purposes have a tool available, as outlined in [Clearing the cache](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-autoconfigure/README.md#clearing-the-cache).
+Developers needing to clear the cache for local testing purposes have a tool available, as outlined in [Clearing the Redis Cache](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/master/local-dev#clearing-the-redis-cache).
 

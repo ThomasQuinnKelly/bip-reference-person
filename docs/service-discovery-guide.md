@@ -6,8 +6,9 @@ Consul is a service mesh solution providing a full featured control plane with s
 
 ## Consul Service Discovery Configuration
 
-- Need to use @EnableDiscoveryClient annotation on the Spring Boot Application to enable service registry and discovery in Consul
+- Need to use `@EnableDiscoveryClient` annotation on the Spring Boot Application to enable service registry and discovery in Consul
 
+```java
 		@SpringBootApplication
 		@EnableDiscoveryClient 
 		@EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -17,13 +18,15 @@ Consul is a service mesh solution providing a full featured control plane with s
 		@EnableAsync
 		@Import(ReferencePersonConfig.class)
 		public class ReferencePersonApplication {
-	
+```
+
 - Update the application service yml file with the following configuration (under the default profile):
 
+```yaml
 	  discovery: 
 	   enabled: true  
 	   register: true 
-	
+```
 
 - Docker mode has a set of variables configured under docker-compose file as listed below which override the values in the application yml file:
 
@@ -39,11 +42,11 @@ Consul is a service mesh solution providing a full featured control plane with s
       - spring.cloud.vault.enabled=true
       - spring.cloud.vault.consul.enabled=true
       - bip.framework.security.jwt.enabled=true
-      
+
 ## Consul Access
 
 - Services registered with Consul can be viewed locally at http://localhost:8500/ and the port is configured in the application yml and docker-compose files which can be overridden if needed.
 
-- Need to enter the MASTER_ACL_TOKEN in the ACL Tab under SecretID or Token before we can get access to Consul Services. Please see image at docs/images/Consul-Token.png
+- Need to enter the MASTER_ACL_TOKEN in the ACL Tab under SecretID or Token before we can get access to Consul Services. Please see [this image](docs/images/Consul-Token.png) for the token.
 
-- Sample services registered under Consul can be viewed at docs/images/Consul-Services.png
+- Sample services registered under Consul can be [viewed here](docs/images/Consul-Services.png).

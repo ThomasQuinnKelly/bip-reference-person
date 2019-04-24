@@ -34,7 +34,7 @@ public class PersonPartnerCheckedExceptionTest {
 
 	@Test
 	public void testPersonWsClientExceptionString() {
-		testException = new PersonPartnerCheckedException(MessageKeys.NO_KEY, null, null, null);
+		testException = new PersonPartnerCheckedException(MessageKeys.NO_KEY, null, null, new String[] { null });
 		assertNotNull(testException);
 		assertEquals(TEST_MESSAGE, testException.getMessage());
 	}

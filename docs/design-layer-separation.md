@@ -19,7 +19,8 @@ The BIP development approach separates code into layers to:
 Framework layers are defined as:
 * **Provider layer** (also known as "the web tier") is the service apps "public" API module, handling the interface exposed to external consumers. Provider packages are `framework.rest.*` and `framework.swagger`. The Provider tier also depends on `framework.security.**` to enforce consumer access security (see [Application Security Management](./application-security-management.md). Model objects must be of type `ProviderTransferObjectMarker`.
 * **Domain layer** (also known as "the service layer") is where all business validations and execution of business logic takes place. Domain packages are all those which are not for the Provider or Partner layers. Model objects must be of type `DomainTransferObjectMarker`.
-* **Partner layer** is the client module for making remote calls to other services that are external to the service app.  Partner packages are `framework.client.**`, with support for Web Service (SOAP) clients, and for RESTful (Feign) client calls. Model objects for remote client implementations must be of type `PartnerTransferObjectMarker`.
+* **Partner layer** is the service implementation code that interacts with the Partner ***client*** module. It isolates data model conversion and exception handling. The framework provides transformation interfaces in `framework.transfer.transform`.
+* **Partner client** provides core capabilities for Partner client projects/JARs. Partner client packages are under `framework.client.**`, with support for Web Service (SOAP) clients, and for RESTful (Feign or RestTemplate) client calls. Model objects for remote client implementations must be of type `PartnerTransferObjectMarker`.
 
 ## Model transformation between layers
 

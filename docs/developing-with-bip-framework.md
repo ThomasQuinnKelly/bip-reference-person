@@ -30,8 +30,9 @@ When something goes wrong, the response to the consumer must contain a meaningfu
 
 ## Logging
 The framework offers useful extensions that help exceptions natively integrate the propagation of meaningful messages to the consumer(s) of the micro-service. When instantiating a logger, it is recommended to use the `BipLoggerFactory` to create a `BipLogger`. For example:
-
+```java
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(MyBipClass.class);
+```
 
 `BipLoggerFactory` creates `BipLogger` instances which are fully compatible with slf4j and logback. The logger also provides `BipBanner` (an ASCII-text banner) and severity `Level`. The logger also splits and manages exceptions so they can cross the docker 16KB comm channel limitation (https://github.com/kubernetes/kubernetes/issues/52444).
 
@@ -69,4 +70,11 @@ For more information, see [Validation](validation.md).
 Service impelementation classes can add properly declared `@CachePut` annotations to the overridden methods of their inteface. Once configuration and annotation is done, no other intervention is needed.
 
 For more information, see [Cache Management](cache-management.md). An example of annotating a method, see the [ReferencePersonServiceImpl class](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/impl/ReferencePersonServiceImpl.java).
+
+## Partner Client Support
+The framework provides support classes for RESTful and SOAP partner clients under the `framework.client.rest.template` and `framework.client.ws**` packages respectively.
+
+REST clients are audited by the existing `ProviderHttpAspect` aspect. SOAP clients are audited by the `AuditWsInterceptor` spring interceptor.
+
+For more information, see [bip-reference-partner-person](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/master/bip-reference-partner-person).
 

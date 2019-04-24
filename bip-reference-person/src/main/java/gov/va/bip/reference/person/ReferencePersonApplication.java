@@ -42,7 +42,7 @@ public class ReferencePersonApplication {
 	}
 
 	/**
-	 * Always sampler.
+	 * Always sampler for Zipkin traces.
 	 *
 	 * @return the sampler
 	 */
