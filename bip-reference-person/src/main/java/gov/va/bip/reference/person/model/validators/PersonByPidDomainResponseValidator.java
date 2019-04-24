@@ -23,13 +23,6 @@ public class PersonByPidDomainResponseValidator extends AbstractStandardValidato
 	/** Class logger */
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(PersonByPidDomainResponseValidator.class);
 
-	/** For the message when hystrix fallback method is manually invoked */
-//	private static final String INVOKE_FALLBACK_MESSAGE = "Could not get data from cache or partner.";
-
-	/** Reference-specific warning that a real service would handle PID requests better */
-	private static final String WARN_MESSAGE =
-			"In a real service, this condition should throw a service exception (in this case, PersonServiceException) with INVOKE_FALLBACK_MESSAGE.";
-
 	/** The method that caused this validator to be invoked */
 	private Method callingMethod;
 
