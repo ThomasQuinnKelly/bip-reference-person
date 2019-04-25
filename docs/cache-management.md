@@ -4,9 +4,9 @@
 - In memory data structure store used as a cache
 
 ## Cache pattern
-- Cache bucket values to follow the naming convention as "cacheName\_ProjectName\_MavenVersion" or "ProjectName\_MavenVersion". See [How Version Numbers Work in Maven](https://docs.oracle.com/middleware/1212/core/MAVEN/maven_version.htm#MAVEN400). This would avoid cache collisions in the REDIS cache server. For example, "getCountries\_refdataService\_1.0" or "refdataService\_1.0".
+- Cache bucket values to follow the naming convention as `cacheName_ProjectName_MavenVersion` or `ProjectName_MavenVersion`. See [How Version Numbers Work in Maven](https://docs.oracle.com/middleware/1212/core/MAVEN/maven_version.htm#MAVEN400). This would avoid cache collisions in the REDIS cache server. For example, `getCountries\_refdataService\_1.0` or `refdataService\_1.0`.
 
-- The project name and the version can be obtained and added through one of the source files using the [templating-maven-plugin](https://www.mojohaus.org/templating-maven-plugin/). See the pom.xml file of the [bip-reference-person](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/bip-reference-person/pom.xml) project, under the build.plugins section, for more details.
+- The project name and the version can be obtained and added through one of the source files using the [templating-maven-plugin](https://www.mojohaus.org/templating-maven-plugin/). See the `pom.xml` file of the [bip-reference-person](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/bip-reference-person/pom.xml) project, under the `<build><plugins>...` section, for more details.
 
 ## Redis configuration
 - To configure Redis as the cache provider add the following dependency in your project,
@@ -20,7 +20,11 @@ add the `bip-reference-autoconfigure` dependency to the project pom, with the ap
     </dependency>
 ```
 
-- Update the application service yml file with the following configuration (under the default profile). Any properties that do not appear in the appropriate hierarchy will be silently ignored, so default values, or nulls will be substituted for properties that were believed to be configured
+- Update the application service yml file with the following configuration (under the default profile). See also [gov.va.bip.framework.cache.autoconfigure](https://github.com/department-of-veterans-affairs/ocp-framework/tree/CMAPI2-211_JedisPoolConfig/bip-framework-autoconfigure#govvabipframeworkcacheautoconfigure).
+    - Any properties that do not appear in the appropriate hierarchy will be silently ignored, so default values, or nulls will be substituted for properties that were believed to be configured.
+    - Redis connection configuration is declared under `spring:redis:*`. The host and port properties should always be declared. SSL is disabled on the local EmbeddedRedisServer, so the property should be false. In hosted environments, devops can override the setting if necessary.
+    - Jedis Connection Pooling is enabled simply by adding one or more properties under `spring:redis:jedis:pool:*`. At least one property must be declared under the pool property.
+    - It is possible to configure teh environment to support Redis Cluster and Sentinel if needed, however this is not necessary for local environments, and should be driven by devops and their hosted environments.
 
 ```yaml
 	spring: 
