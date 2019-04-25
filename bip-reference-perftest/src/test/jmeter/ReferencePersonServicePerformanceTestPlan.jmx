@@ -221,6 +221,7 @@ f.close();</stringProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="TestPlan.comments">Person Info Health Status</stringProp>
         </HTTPSamplerProxy>
         <hashTree>
           <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
@@ -460,7 +461,7 @@ f.close();</stringProp>
         <boolProp name="ThreadGroup.scheduler">true</boolProp>
         <stringProp name="ThreadGroup.duration">${__P(PersonInfoNoRecordFound.threadGroup.duration,200)}</stringProp>
         <stringProp name="ThreadGroup.delay">${__P(PersonInfoNoRecordFound.threadGroup.startUpDelay,5)}</stringProp>
-        <stringProp name="TestPlan.comments">A different Participant ID is used in the request body </stringProp>
+        <stringProp name="TestPlan.comments"> PID based Person Info with No Record Found PID</stringProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Person Info No Record Found" enabled="true">
@@ -594,7 +595,7 @@ f.close();</stringProp>
         <boolProp name="ThreadGroup.scheduler">true</boolProp>
         <stringProp name="ThreadGroup.duration">${__P(PersonInfoInvalidPid.threadGroup.duration,200)}</stringProp>
         <stringProp name="ThreadGroup.delay">${__P(PersonInfoInvalidPid.threadGroup.startUpDelay,5)}</stringProp>
-        <stringProp name="TestPlan.comments">PID based Person Info from Person Partner Service for invalid PID</stringProp>
+        <stringProp name="TestPlan.comments"> PID based Person Info with Invalid PID</stringProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Person Info Invalid Pid" enabled="true">
@@ -728,7 +729,7 @@ f.close();</stringProp>
         <boolProp name="ThreadGroup.scheduler">true</boolProp>
         <stringProp name="ThreadGroup.duration">${__P(PersonInfoNullPid.threadGroup.duration,200)}</stringProp>
         <stringProp name="ThreadGroup.delay">${__P(PersonInfoNullPid.threadGroup.startUpDelay,5)}</stringProp>
-        <stringProp name="TestPlan.comments">PID based Person Info from Person Partner Service for null PID</stringProp>
+        <stringProp name="TestPlan.comments">PID based Person Info with null PID</stringProp>
       </ThreadGroup>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Person Info Null Pid" enabled="true">
