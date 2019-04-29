@@ -12,17 +12,17 @@ See [Spring Cloud Vault Consul](https://cloud.spring.io/spring-cloud-vault/singl
 
 ## Retreiving Key/Values
 By default the following paths in Consul are looked at and all k/v pairs found at those paths are loaded as Properties. Spring Cloud Consul allows using the Application name and a default context name (application) in combination with active profiles.
-* /config/{application}/{profile}
-* /config/{application}
-* /config/{default-context}/{profile}
-* /config/{default-context}
+* `/config/{application}/{profile}`
+* `/config/{application}`
+* `/config/{default-context}/{profile}`
+* `/config/{default-context}`
 
 The application name is determined by the properties:
 ```
-spring.application.name
+	spring.application.name
 ```
 
-K/V pairs are loaded as Properties by the key name in Consul. For example if your key/value pair was `database.username=bob` then you would access that value in your application by refering to the property matching the key name `${database.username}
+K/V pairs are loaded as Properties by the key name in Consul. For example if your key/value pair was `database.username=bob` then you would access that value in your application by refering to the property matching the key name `${database.username}`
 
 ## Watching for Config Changes
 The Spring Cloud Consul library will monitor Consul for changes to the afore mentioned paths. If there is a change detected, a Refresh Event is published; the equivalent of calling the `/refresh` endpoint. Refer to the [Spring Cloud Consul](https://cloud.spring.io/spring-cloud-consul/single/spring-cloud-consul.html#spring-cloud-consul-config-watch) documentation on this for more details.

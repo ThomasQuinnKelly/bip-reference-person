@@ -16,20 +16,22 @@
 ## Security configuration
 - Add dependency in pom.xml to include bip-framework-autoconfigure library
 
+```xml
       <dependency>
         <groupId>gov.va.bip.framework</groupId>
         <artifactId>bip-framework-autoconfigure</artifactId>
         <version><!-- add the appropriate version --></version>
       </dependency>
-     
+```
+
  - Java source file from BIP Framework library that does AutoConfiguration for JWT. [BipSecurityAutoConfiguration.java](https://github.ec.va.gov/EPMO/bip-ocp-framework/blob/master/bip-framework-autoconfigure/src/main/java/gov/va/bip/framework/security/autoconfigure/BipSecurityAutoConfiguration.java)
  
  - JWT authentication properties are set via prefix "bip.framework.security.jwt". Java source file: [JwtAuthenticationProperties.java](https://github.ec.va.gov/EPMO/bip-ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/security/jwt/JwtAuthenticationProperties.java)
  
  - By default in ${spring.config.name}.yml file, BIP framework security is enabled for all the application profiles. To disable the security, developer would have to set the property bip.framework.security.jwt.enabled to false
- 	
-		Example from bip-reference-person service is shown below.
-		
+
+    An Example from bip-reference-person service is shown below.
+```yaml
 		###############################################################################
 		#Property configuration to enable or disable JWT security for the service calls 
 		#JWT security is enabled by default. So to disable it you have to
@@ -44,6 +46,8 @@
 		        - /api/v2/persons/**
 		      excludeUrls:
 		        - /**
+```
+
 -  All the properties for JWT Security with prefix `bip.framework.security.jwt` that are configurable are listed below.
 
      **bip.framework.security.jwt.enabled**: Boolean property to enable or disable JWT security on the service end points. Defaults to "**true**"

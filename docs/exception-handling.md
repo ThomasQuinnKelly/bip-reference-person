@@ -13,16 +13,18 @@ The Provider (REST/API) layer must catch all Throwables and convert them to appr
 - Response messages must be meaningful to the service consumer and the maintainers (support/development staff).
 - The Provider layer must have enough information to determine appropriate severity, HTTP status codes, message keys, and text.
 
-### Service Concerns
+### Domain Concerns
 The Service (domain/business) layers may generate exceptions during execution, and may receive exceptions from external entities and external clients. The business layers must be able to identify and categorize exceptions before allowing them to propagate to the Provider layer.
 
 Service methods must also be able to validate method inputs and outputs at will. The [Defense](https://github.ec.va.gov/EPMO/bip-ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/validation/Defense.java) class is used for this purpose. It is better to add generic methods as needed to the Defense class, than it is to write one-off inline value checks.
 
-### Client Concerns
-The Partner (external/3rd party) client may encounter a variety of exceptions that occur due to:
+### Partner and Client Concerns
+The service implementation `*PartnerName*Helper` class for the Partner client client may encounter a variety of exceptions that occur due to:
 - Environment/System related problems beyond control of the application such as glitching network, failing hardware, partner service problems, service unavailable, etc. These typically resolve to 500-series http status code.
 - Bugs in the BIP coding or schema interpretation inside the partner client jar/package should also be surfaced as 500-series codes.
 - Request related problems that indicate some issue with the **input data**, such as invalid or malformed input, or requested data not found.
+
+The `*Helper` class should trap legitimate faults that are returned from the client, and convert them to a `BipRuntimeException` (or subclass). Unexpected runtime exceptions can be allowed to bubble up to the `BipRestGlobalExceptionHandler`.
 
 ## Exception Hierarchy
 <img alt="BIP Exception Hierarchy" src="images/bip-exception-class-hierarchy.png" height="50%" width="50%" />

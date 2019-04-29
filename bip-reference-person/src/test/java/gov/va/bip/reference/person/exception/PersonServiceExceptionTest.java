@@ -21,7 +21,6 @@ import gov.va.bip.reference.person.exception.PersonServiceException;
 public class PersonServiceExceptionTest {
 	PersonServiceException instance;
 
-	private static final MessageKeys KEY = MessageKeys.NO_KEY;
 	private static final String NAME = "NO_KEY";
 	private static final String MESSAGE = "NO_KEY";
 

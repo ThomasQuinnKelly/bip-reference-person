@@ -30,8 +30,9 @@ When something goes wrong, the response to the consumer must contain a meaningfu
 
 ## Logging
 The framework offers useful extensions that help exceptions natively integrate the propagation of meaningful messages to the consumer(s) of the micro-service. When instantiating a logger, it is recommended to use the `BipLoggerFactory` to create a `BipLogger`. For example:
-
+```java
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(MyBipClass.class);
+```
 
 `BipLoggerFactory` creates `BipLogger` instances which are fully compatible with slf4j and logback. The logger also provides `BipBanner` (an ASCII-text banner) and severity `Level`. The logger also splits and manages exceptions so they can cross the docker 16KB comm channel limitation (https://github.com/kubernetes/kubernetes/issues/52444).
 
@@ -68,7 +69,7 @@ For more information, see [Validation](validation.md).
 ## Cache
 Service impelementation classes can add properly declared `@CachePut` annotations to the overridden methods of their inteface. Once configuration and annotation is done, no other intervention is needed.
 
-For more information, see [Cache Management](cache-management.md). An example of annotating a method, see the [ReferencePersonServiceImpl class](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/blob/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/impl/ReferencePersonServiceImpl.java).
+For more information about cache and redis configuration, see [Cache Management](cache-management.md). An example of annotating a method, see the [ReferencePersonServiceImpl class](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/blob/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/impl/ReferencePersonServiceImpl.java) and [bip-framework-autoconfigure cache.autoconfigure](https://github.ec.va.gov/EPMO/bip-ocp-framework/tree/master/bip-framework-autoconfigure#govvabipframeworkcacheautoconfigure).
 
 ## Partner Client Support
 The framework provides support classes for RESTful and SOAP partner clients under the `framework.client.rest.template` and `framework.client.ws**` packages respectively.

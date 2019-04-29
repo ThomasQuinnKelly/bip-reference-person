@@ -32,9 +32,12 @@ The annotations provided in the cucumber runner class will assist in bridging th
 
 `src/inttest/resources/logback-test.xml` - Logback Console Appender pattern and loggers defined for this project
 
-`src/inttest/resources/config/referenceperson-dev.properties` – DEV configuration properties such as URL are specified here.
+`src/inttest/resources/config/vetservices-inttest-dev.properties` – DEV configuration properties such as URL are specified here.
 
-`src/inttest/resources/config/referenceperson-stage.properties` – STAGE configuration properties such as URL are specified here.
+`src/inttest/resources/config/vetservices-inttest-stage.properties` – STAGE configuration properties such as URL are specified here.
+
+**Note: All the configurations are defined external to the code and is per profile/environment. The naming conversion of the file
+vetservices-inttest-<env>.properties**
 
 ## Execution
 
@@ -44,7 +47,9 @@ To execute the functional test in local bip-reference-person service needs to be
 [quick-start-guide](/docs/quick-start-guide.md)
 
 **Command Line:** Use this command(s) to execute the reference person service Functional test. 
+```bash
 	mvn verify -Pinttest -Dcucumber.options="--tags @DEV"
+```
  
 
 ## More Details For Functional Test

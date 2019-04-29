@@ -20,10 +20,12 @@ Domain model objects entering into the service layer are subject to business val
 
 This approach to validation requires discipline from the developer. It is their responsibility to demonstrate good logic and coding practices to ensure the validating code is air tight.
 
-### Partner Clients
-Object models for external APIs that BIP calls are under the control of the external provider. For SOAP services, a WSDL and schema are provided. For REST, the model might be communicated by OpenAPI, or by nothing more than the JSON expected in the request and response. These external models are typically generated at build time with XJC, Swagger, or some other tool - or are provided statically in a client JAR.
+### Partner (PARTNER) Layer, and Partner Clients
+Object models for external APIs that BIP calls are under the control of the external provider. For SOAP services, a WSDL and schema are provided. For REST, the model might be communicated by OpenAPI, or by nothing more than the JSON expected in the request and response. These external models are typically generated at build time with XJC, Swagger, or some other tool - or are provided statically in a client JAR. In any case, validating these external models presents its own challenges, and depends on what the needs and requirements are.
 
-In any case, validating these external models presents its own challenges, and depends on what the needs and requirements are.
-- Inputs to partner clients should originate with validated consumer inputs to the BIP endpoints.
-- BIP service layer business logic should valid inputs to the partner (or throw an exception before the partner call is made).
-- If there is need to validate inputs prior to calling the partner, the [Validator](https://github.ec.va.gov/EPMO/bip-ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/validation/Validator.java) interface can be implemented in partner model validators.
+Validations for Partner clients should occur in the related service imiplementation's `*PartnerName*Helper `class. In BIP applications, you can use the Framework `Validator` interface.
+
+Some pointers to consider with Partner client validations:
+- Inputs to partner clients typically originate with consumer inputs to the BIP endpoints. JSR 303 validations (in the Provider layer) and business validations (in the service layer) are important.
+- Validations should *fail-fast*. There is no point continuing with service processes if the data is invalid.
+- Service implementation Helper classes can use the [Validator](https://github.ec.va.gov/EPMO/bip-ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/validation/Validator.java) interface in partner model validators.

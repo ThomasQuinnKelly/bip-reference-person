@@ -27,7 +27,7 @@ Cucumber is a testing framework which supports Behaviour Driven Development (BDD
 A feature file describes the features of the system or a particular aspect of a feature. Cucumber test are grouped in to features.
 
 ## Sample Feature Definition Template 
-
+```
 @tag
          Feature: Title of your feature
          I want to use this template for my feature file
@@ -52,18 +52,19 @@ A feature file describes the features of the system or a particular aspect of a 
              | name  | value | status  |
              | name1 |     5 | success |
              | name2 |     7 | Fail    |
+```
 
 ## Scenario:
 
 Each Cucumber test is called a scenario, and each scenario contains steps that tell Cucumber what to do. Every scenario consists of a list of steps, which must start with one of the keywords Given, When, Then, But or And .
 
-Given: This step is to put the system into a well-defined state before users start interacting with the application. A Given clause can by considered a precondition for the use case.
+**Given**: This step is to put the system into a well-defined state before users start interacting with the application. A Given clause can by considered a precondition for the use case.
 
-When: A When step is used to describe an event that happens to the application. This can be an action taken by users, or an event triggered by another system.
+**When**: A When step is used to describe an event that happens to the application. This can be an action taken by users, or an event triggered by another system.
 
-Then: This step is to specify an expected outcome of the test. The outcome should be related to business values of the feature under test.
+**Then**: This step is to specify an expected outcome of the test. The outcome should be related to business values of the feature under test.
 
-And and But: These keywords can be used to replace the above step keywords when there are multiple steps of the same type.
+**And** and **But**: These keywords can be used to replace the above step keywords when there are multiple steps of the same type.
 
 ## Scenario Outline: 
 
@@ -84,44 +85,52 @@ It is a way to pass the list of values to step definition as input. Multiple dat
 PID based Person Info from Person Partner Service for valid PID. In the below example multiple conditions are passed against one scenario.
 
 Examples: 
-      
+```
       | Veteran           | tokenrequestfile               | ServiceURL          | RequestFile               | participantID |
       | dev-janedoe       | dev/janedoetoken.request       | /api/v1/persons/pid | dev/janedoe.request       |       6666345 |
       | dev-russellwatson | dev/russellwatsontoken.request | /api/v1/persons/pid | dev/russellwatson.request |      13364995 |
-
+```
 
 ## 	Inttest configuration
 
 - Add dependency in pom.xml to include bip-framework-test-lib library
 
+```xml
        <dependency>
 		  <groupId>gov.va.bip.framework</groupId>
 		  <artifactId>bip-framework-test-lib</artifactId>
 		  <version><!-- add the appropriate version --></version>
 	   </dependency>
+```
 
 - Add Maven Cucumber Reporting:
- 
+
+```xml
        <groupId>net.masterthought</groupId>
 	   <artifactId>maven-cucumber-reporting</artifactId>
+```
 
 -Add maven Failsafe Plugin:
-       
+
+```xml
        <groupId>org.apache.maven.plugins</groupId>
 	   <artifactId>maven-failsafe-plugin</artifactId>
+```
 
 -Add Spring Boot maven plugin
  
+```xml
        <groupId>org.springframework.boot</groupId>
        <artifactId>spring-boot-maven-plugin</artifactId>
+```
 
 ## Reports
 
-Cucumber JVM reports is configured to show the execution status of the tests run on Jenkins job.
+#### Cucumber JVM reporting
+Maven is configured to show the execution status of the tests run by Jenkins jobs on the build server.
 
-Maven-Cucumber Reporting
-
-Provides pretty html reports for Cucumber. It works by generating html from the cucumber json file. The result is at /target/site/cucumber-reports/cucumber-html-reports/overview-features.html
+#### Maven-Cucumber Reporting
+Provides pretty html reports for Cucumber. It works by generating html from the cucumber json file. The result is at `/target/site/cucumber-reports/cucumber-html-reports/overview-features.html`
 
 <img src = "/docs/images/feature-report.png">
 

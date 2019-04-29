@@ -21,6 +21,7 @@
 
 Here is the code of the logback-spring.xml file from src/main/resources directory.
 
+```xml
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!DOCTYPE xml>
 	<configuration scan="false" debug="false">
@@ -38,9 +39,11 @@ Here is the code of the logback-spring.xml file from src/main/resources director
 	        </if>
 	    </root>
 	</configuration>
-	
+```
+
 - In the logback-spring.xml file, resource  `gov/va/bip/framework/starter/logger/bip-framework-logback-starter.xml` is available from shared auto configuration library. Logback dependency comes from spring boot starter, so add only the Logstash logback encoder and also requires the Janino library for conditional logging. Libraries added via pom.xml dependencies as shown below.
   
+```xml
 	  <dependency>
 	    <groupId>gov.va.bip.framework</groupId>
 	    <artifactId>bip-framework-autoconfigure</artifactId>
@@ -55,15 +58,18 @@ Here is the code of the logback-spring.xml file from src/main/resources director
 	    <groupId>org.codehaus.janino</groupId>
 	    <artifactId>janino</artifactId>
 	  </dependency>  
-	    
+```
+
 - Modify application service YML file to change logging levels for the application packages, classes
 
+```yaml
 		logging: 
 		   level:
 		     gov.va.bip.framework.client.ws: DEBUG
 		     gov.va.bip.framework.rest.provider: DEBUG
 		     gov.va.bip.reference.partner: DEBUG
-	   
+```
+
 ## Sample JSON Output for application and audit logs
 
 - Log type as Audit. "logType":"auditlogs"
