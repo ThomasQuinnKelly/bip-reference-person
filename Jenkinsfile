@@ -1,4 +1,5 @@
 mavenGitflowPipeline {
+    //Add comment for PR
     dockerBuilds = [
         'bip-reference-person': 'bip-reference-person'
     ]
