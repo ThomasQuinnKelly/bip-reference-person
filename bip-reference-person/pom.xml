@@ -20,7 +20,7 @@
     	<dependency>
             <groupId>gov.va.bip.framework</groupId>
             <artifactId>bip-framework-libraries</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
 		 <dependency>
             <groupId>gov.va.bip.reference.person</groupId>
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>gov.va.bip.framework</groupId>
             <artifactId>bip-framework-autoconfigure</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
     	<!-- spring-boot dependencies -->
         <dependency>
