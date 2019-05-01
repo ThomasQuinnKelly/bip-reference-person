@@ -15,8 +15,8 @@ helm create my-chart-name
 ```
 
 This will give you a basic Helm package that will the following important files:
-* Chart.yaml
-* values.yaml
+* `Chart.yaml`
+* `values.yaml`
 
 ### Chart.yaml
 This file describes your deployment package. Modify this to set your service name, description and version.

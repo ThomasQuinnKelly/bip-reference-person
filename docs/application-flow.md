@@ -7,7 +7,7 @@ This page does not specifically address configuration of the environment or capa
 BIP applications can be thought of as being comprised of three layers (or "tiers"), each of which encapsulates functionality for the layer:
 * Provider layer (or "web tier", or "exposed api")
 * Domain layer (or "service tier", or "business")
-* Partner layer (or "client layer", or "services outside this app")
+* Partner layer (or "client access layer", or "calls to services outside this app")
 
 The topic of layer separation is discussed in more detail in [Layer and Model Separation Design](design-layer-separation.md).
 
@@ -34,21 +34,20 @@ The domain layer is where the business logic of the service takes place. Functio
 <img alt="Domain Layer Sequence Diagram" src="images/sd-reference-person-layer-domain.png">
 
 ## Partner Layer
-The Partner layer is self-contained client modules that call out to other services to acquire data. BIP Framework currently provides support for accessing services exposed via SOAP and REST. Other protocol support can be added upon request. The functions undertaken in this layer are simple and direct:
-* Receive the request from the service layer
-* Assemble the protocol-specific request and call the external service partner
-* Deliver the partner response back to the service layer
-* Wrap request related exceptions/faults received from the partner into a BIP checked esxception. This allows the domain to catch and handle it.
+The Partner Layer is comprised of a helper class and any other support classes needed to interact with a Partner Client module.
 
-Partner clients are intended to be stand-alone, and should be capable of being JAR'd and made available to *any* BIP service as a dependency. As such, one partner client could be used by many different services, for different purposes, and with different expectations. Therefore the client *must* be data transparent, and serve only as a protocol enabler. 
+This layer is concerned with
+1. accepting a request from the service implementation
+2. transforming the service request to the partner's data model as provided by the Partner Client JAR
+3. calling the Partner Client JAR to execute the request
+4. transforming the response - and catching and transforming any exceptions - from the Partner Client
+5. returning the response (or exception) to the service layer
 
-Some things that the Partner layer should **NOT** do - these are the responsibility of the calling service:
-* Any form of translation or modification of data accepted by or returned from the partner.  The client cannot anticipate the needs of the service it is embedded within.
-* Validations or filtering. The client cannot anticipate the needs of the service it is embedded within.
-* Catch runtime exceptions (non-data problems). Code or infrastructure issues must bubble back to the service layers as-is, for translation by the global exception handler.
+The partner layer should have at least one Helper class for each partner client that is called.
+
+For information about the Partner Client, see [bip-reference-partner-person](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/master/bip-reference-partner-person)
 
 #### Sequence Diagram - Partner Layer
 <img alt="Partner Layer Sequence Diagram" src="images/sd-reference-person-layer-partner.png">
-
 
  

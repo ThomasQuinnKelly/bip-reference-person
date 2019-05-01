@@ -18,17 +18,23 @@ Created a test plan in JMeter with Reference Person Service endpoints which can 
 
 The Reference Person Service performance test uses JMeter Maven plugin for executing the JMeter test [Reference Person Test Plan](/bip-reference-perftest/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx)
 
-Pom.xml has all the dependencies and user properties for reference person services [Reference Person POM](/bip-reference-perftest/pom.xml)  
+Pom.xml has all the dependencies and user properties for reference person services [Reference Person POM](/bip-reference-perftest/pom.xml)
 
-If you need to override any of the properties during execution of performance test, please use -D argument with appropriate parameter name. Eg: -DBearerTokenCreate.threadGroup.loopCount=<value> [Refer Parameter Configuration Docs](/bip-reference-perftest/README.md) 
+If you need to override any of the properties during execution of performance test, use `-D` arguments with appropriate parameter names. For example:
+```bash
+-DBearerTokenCreate.threadGroup.loopCount=<value> [Refer Parameter Configuration Docs](/bip-reference-perftest/README.md) 
+```
 
-The Maven properties are passed to JMeter via the userProperties option. Inside a JMeter test, you can then access the properties using the function ${__P(propertyName)}.Eg: ${__P(BearerTokenCreate.threadGroup.threads,5)}
+The Maven properties are passed to JMeter via the `userProperties` option. Inside a JMeter test, you can then access the properties using the function `${__P(propertyName)`}. For example: 
+```
+	${__P(BearerTokenCreate.threadGroup.threads,5)}
+```
 
 This test will execute requests for the person service REST endpoints available in the reference person module.
 
- -PID based Person Info from Person Partner Service - /api/v1/persons/pid
+ -PID based Person Info from Person Partner Service - `/api/v1/persons/pid`
 
- -Person service Health check endpoint - /api/v1/persons/health
+ -Person service Health check endpoint - `/api/v1/persons/health`
 
 Also, it will hit the /token endpoint to generate JWT token for the users before hits REST end point.
 
@@ -50,17 +56,17 @@ Also, it will hit the /token endpoint to generate JWT token for the users before
 
 ## Project Structure:
 
-ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx: Reference person service JMX files are located in this folder. 
+`bip-reference-perftest/src/test/jmeter/ReferencePersonServicePerformanceTestPlan.jmx`: Reference person service JMX files are located in this folder. 
 
-ocp-reference-spring-boot/bip-reference-perftest/src/test/jmeter/users: This folder has a list of text files. Each file has JSON header info for each concurrent user that will be used in the bearer token API. CSV files have a list of values.
+`bip-reference-perftest/src/test/jmeter/users`: This folder has a list of text files. Each file has JSON header info for each concurrent user that will be used in the bearer token API. CSV files have a list of values.
 
 ## Target Folder Usage:
 
 After the test execution, the test report and logs can be viewed in the target folder.
 
-Dashboard Report: view target/jmeter/report/ for the JMeter results file.
+Dashboard Report: view `/target/jmeter/report/` for the JMeter results file.
 
-Log File: view target/jmeter/logs/ for the JMeter log file.
+Log File: view `/target/jmeter/logs/` for the JMeter log file.
 
  ## Load Performance Test plan:
 
@@ -70,6 +76,7 @@ Load testing is performed to determine a system’s behavior under both normal a
 
 Below are the lists that are included in the Reference person service Test Plan. This can be used as a skeleton to start writing test plan.
 
+```
 1. HTTP Request Default
 
 2. User Defined Variables
@@ -95,7 +102,7 @@ Below are the lists that are included in the Reference person service Test Plan.
    E. View Result Tree
 
 5. Tear Down Thread Group
-
+```
 
 
 
