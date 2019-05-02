@@ -7,9 +7,8 @@
         </encoder>
     </appender>
     
-    <logger name="gov.va.bip.reference.service" level="WARN"/>
-    <logger name="gov.va.bip.reference.test" level="WARN"/>
-    <logger name="gov.va.bip.framework" level="WARN"/>
+    <logger name="gov.va.bip.reference.service" level="${LOG_LEVEL_BIP_REFERENCE_TEST:-WARN}"/>
+    <logger name="gov.va.bip.framework.test" level="${LOG_LEVEL_BIP_FRAMEWORK_TEST:-WARN}"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
