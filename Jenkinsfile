@@ -1,5 +1,4 @@
 mavenGitflowPipeline {
-    //Add comment for PR
     dockerBuilds = [
         'bip-reference-person': 'bip-reference-person'
     ]
@@ -10,4 +9,6 @@ mavenGitflowPipeline {
         'IMAGE': 'bip-reference-person',
         'IMAGE_TAG': 'master'
     ]
+
+    cucumberOpts = "--tags @DEV"
 }
