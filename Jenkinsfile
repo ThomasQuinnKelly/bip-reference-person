@@ -9,4 +9,6 @@ mavenGitflowPipeline {
         'IMAGE': 'bip-reference-person',
         'IMAGE_TAG': 'master'
     ]
+
+    cucumberOpts = "--tags @DEV"
 }
