@@ -48,7 +48,7 @@ To execute the functional test in local bip-reference-person service needs to be
 
 **Command Line:** Use this command(s) to execute the reference person service Functional test. 
 ```bash
-	Default Local: mvn verify -Pinttest -Dcucumber.options="--tags @DEV"
+    Default Local: mvn verify -Pinttest -Dcucumber.options="--tags @DEV"
 ```
     DEV: mvn verify -Pinttest -Dtest.env=dev -Ddockerfile.skip=true -Dcucumber.options="--tags @DEV"
 
