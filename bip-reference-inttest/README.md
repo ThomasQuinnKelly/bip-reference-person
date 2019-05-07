@@ -30,7 +30,7 @@ The annotations provided in the cucumber runner class will assist in bridging th
 `src/test/resources/users/va` - All the property files for VA users should go under this folder.
 
 `src/inttest/resources/logback-test.xml` - Logback Console Appender pattern and loggers defined for this project.
-Various packakges and their corresponding log levels are specified here. By Default, the log level is WARN but it can be overridden by runtime parameter. For e.g., -DLOG_LEVEL_BIP_FRAMEWORK_TEST=INFO
+Various packages and their corresponding log levels are specified here. By Default, the log level is WARN and it can be overridden by runtime environment variable. For e.g., -DLOG_LEVEL_BIP_FRAMEWORK_TEST=INFO
 
 `src/inttest/resources/config/vetservices-inttest-dev.properties` – DEV configuration properties such as URL are specified here.
 
