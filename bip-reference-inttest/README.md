@@ -51,7 +51,7 @@ To execute the functional test in local bip-reference-person service needs to be
 	Default Local: mvn verify -Pinttest -Dcucumber.options="--tags @DEV"
 ```
     DEV: mvn verify -Pinttest -Dtest.env=dev -Ddockerfile.skip=true -Dcucumber.options="--tags @DEV"
-``` 
+
 
 ## More Details For Functional Test
 Read the [Integration Testing Guide](/docs/referenceperson-intest.md)
