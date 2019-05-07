@@ -1,0 +1,695 @@
+openapi: 3.0.1
+info:
+  title: Claims API
+  description: >-
+    <p>This API provides functionality around the C&P Benefit Claim and seeks to provide simple and concise mechanisms to create and view claim information. The functionality falls within three primary areas.<br/>
+    <ul><li>Claim - The ability to create, list, and view summaries for a Veteran's claims.</li><li>Contention - The ability to list and view conention summaries for a given claim.</li><li>Associations - The ability to view other items that are associated with a claim.</li></ul>
+    </p>
+    <p>The consumers of this service are expected to participate with other authoritative systems in the VA context. A key design principle with the Claims API is to avoid the one-call-does-everything pattern that has proven to reduce reusability of services and to stovepipe functionality for individual use case. Within the BIP service paradigm, this API would be considered a Process API, designed to encapsulate the specific domain actions around claims.</p>
+  version: 1.0.0beta2
+paths:
+  '/claims':
+    post:
+      operationId: createClaim
+      tags:
+        - claims
+      summary: Create a new claim
+      description: >-
+        Create a new claim with only the minimal information. The Claims API assumes the consumer will have
+        ensured CorpDB contains the Veteran, Claimant (if different than Veteran), and Address.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateClaimRequest'
+      parameters:
+        - in: header
+          name: X-VA-User
+          schema:
+            $ref: '#/components/headers/X-VA-User'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  claimId:
+                    type: string
+                    description: The ID of the created claim
+          links:
+            GetClaimById:
+              description: >-
+                Access claim summary information for a specific claim, using the claimId
+              operationId: getClaim
+              parameters:
+                claimId: '$response.body#/[claimId]'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json: {}
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json: {}
+        '412':
+          description: Precondition Failed
+          content:
+            application/problem+json: {}
+        '500':
+          description: Server Error
+          content:
+            application/problem+json: {}
+    get:
+      tags:
+        - claims
+      summary: Get claims for a given Veteran
+      operationId: getClaimsByVeteran
+      parameters:
+        - in: query
+          name: include_closed
+          schema:
+            type: boolean
+            default: false
+          required: false
+          description: Whether or not to list closed claims. Default is false.
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: '0'
+          description: >-
+            The number of items to skip before starting to collect the claims to
+            list
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: '20'
+          description: The number of items to include in the page of results
+        - in: query
+          name: veteran_participant_id
+          required: true
+          schema:
+            type: string
+          description: The veteran's CorpDB Participant ID.
+        - in: query
+          name: veteran_first_name
+          required: true
+          schema:
+            type: string
+          description: The veteran's first name.
+        - in: query
+          name: veteran_last_name
+          required: true
+          schema:
+            type: string
+          description: The veteran's last name.
+
+      responses:
+        '200':
+          description: A list of claim summaries for the given veteran.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClaimSummary'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json: {}
+        '500':
+          description: Server Error
+          content:
+            application/problem+json: {}
+  '/claims/{claimIds}':
+    description: The resource representing specific claims.
+    get:
+      tags:
+        - claims
+      summary: >-
+        Access claim summary information for one or more claims, using the claimId
+      description: >-
+        Get the claim summaries for one or more claim IDs. TODO: this is the use case for getting claim information regardless of veteran
+      operationId: getClaimsById
+      parameters:
+        - in: path
+          name: claimIds
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+          examples:
+            oneId:
+              summary: To get a single claim summary
+              value:
+                - 1
+            multipleIds:
+              summary: To get a list of claim summaries
+              value:
+                - 1
+                - 2
+                - 3
+        - in: header
+          name: X-VA-User
+          schema:
+            $ref: '#/components/headers/X-VA-User'
+      responses:
+        '200':
+          description: A list of claim id values.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClaimSummary'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json: {}
+        '404':
+          description: Could not derive claim from request
+          content:
+            application/problem+json: {}
+        '500':
+          description: Server Error
+          content:
+            application/problem+json: {}
+  '/claims/{claimId}/contentions':
+    description: The resource representing contentions within a given claim.
+    get:
+      tags:
+        - contentions
+      summary: List summaries for contentions associated with a given claim.
+      operationId: getContentionsForClaim
+      parameters:
+        - in: path
+          name: claimId
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: X-VA-User
+          schema:
+            $ref: '#/components/headers/X-VA-User'
+      responses:
+        '501':
+          description: This resource is not yet implemented.
+#        '200':
+#          description: A list of contention summary objects
+#          content:
+#            application/json:
+#              schema:
+#                type: array
+#                items:
+#                  $ref: '#/components/schemas/ContentionSummary'
+#        '401':
+#          description: Unauthorized
+#          content:
+#            application/problem+json: {}
+#        '404':
+#          description: Could not derive claim from request path
+#          content:
+#            application/problem+json: {}
+#        5XX:
+#          description: Server Error
+#          content:
+#            application/problem+json: {}
+  '/claims/{claimId}/associations':
+    description: The resource representing all things associated with a claim.
+    get:
+      tags:
+        - associations
+      summary: 'Access claim summary information for a specific claim, using the claimId'
+      description: >-
+        Get a list of all things associated with this claim. For example, an association could
+        be the documents associated with the claim. The list items are general associations, and
+        the assumption is accessing the associated objects will be achieved by means of a different
+        service.
+      operationId: getClaimAssociations
+      parameters:
+        - in: path
+          name: claimId
+          required: true
+          schema:
+            type: string
+          examples:
+            oneId:
+              summary: To get a single claim summary
+              value:
+                - '/claims/1234/associations'
+        - in: query
+          name: filter
+          schema:
+            type: string
+          examples:
+            onlyContentions:
+              summary: to show only contention associations listed in the array
+              value: '?filter=["document","tracked_item"]'
+        - in: header
+          name: X-VA-User
+          schema:
+            $ref: '#/components/headers/X-VA-User'
+      responses:
+        '501':
+          description: This resource is not yet implemented.
+#        '200':
+#          description: A successful GET returns a list of claim id values.
+#          content:
+#            application/json:
+#              schema:
+#                type: array
+#                items:
+#                  $ref: '#/components/schemas/ClaimAssociation'
+#        '401':
+#          description: Unauthorized
+#          content:
+#            application/problem+json: {}
+#        '404':
+#          description: Could not derive claim from request
+#          content:
+#            application/problem+json: {}
+#        5XX:
+#          description: Server Error
+#          content:
+#            application/problem+json: {}
+
+  '/claims/benefit_claim_types':
+    get:
+      tags:
+        - lookup
+        - claims
+      operationId: benefitClaimTypeLookup
+      parameters:
+        - in: query
+          name: service_type_code
+          description: Allows filtering on a given service type
+          schema:
+            type: string
+          examples:
+            comp and pension:
+              summary: To show only the programs within Compensation and Pension
+              value: '?service_type_code="CP"'
+        - in: query
+          name: program_type_code
+          description: Allows filtering on a given program type
+          schema:
+            type: string
+          examples:
+            comp and pension:
+              summary: To show only the programs within Compensation and Pension
+              value: '?program_type_code="COMP"'
+        - in: header
+          name: X-VA-User
+          schema:
+            $ref: '#/components/headers/X-VA-User'
+      responses:
+        '200':
+          description: A list of claim id values.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BenefitClaimType'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json: {}
+        '500':
+          description: Server Error
+          content:
+            application/problem+json: {}
+  '/claims/pre_discharge_types':
+    get:
+      tags:
+        - lookup
+        - claims
+      operationId: preDischargeTypeLookup
+      parameters:
+        - in: header
+          name: X-VA-User
+          schema:
+            $ref: '#/components/headers/X-VA-User'
+      responses:
+        '200':
+          description: A list of active pre-discharge values. For example, "BDD", "IDES", "Quick Start"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CodeNamePair'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json: {}
+        '500':
+          description: Server Error
+          content:
+            application/problem+json: {}
+  '/service_types':
+    description: A resource representing the VA service types. For example, "Education", "Compensation and Pension", "Insurance", etc
+    get:
+      tags:
+        - lookup
+      operationId: serviceTypeLookup
+      parameters:
+        - in: header
+          name: X-VA-User
+          schema:
+            $ref: '#/components/headers/X-VA-User'
+      responses:
+        '200':
+          description: A list of service type CodeNamePair objects (code, name, description).
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CodeNamePair'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json: {}
+        '500':
+          description: Server Error
+          content:
+            application/problem+json: {}
+  '/program_types':
+    description: A resource representing the VA program types. For example, "Chapter 33", "Compensation", "Pension", etc
+    get:
+      tags:
+        - lookup
+      operationId: programTypeLookup
+      parameters:
+        - in: query
+          name: service_type_code
+          description: Allows filtering on a given service_type
+          schema:
+            type: string
+          examples:
+            comp and pension:
+              summary: To show only the programs within Compensation and Pension
+              value: '?service_type_code="CP"'
+        - in: header
+          name: X-VA-User
+          schema:
+            $ref: '#/components/headers/X-VA-User'
+      responses:
+        '200':
+          description: A list of service type CodeNamePair objects (code, name, description).
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CodeNamePair'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json: {}
+        '500':
+          description: Server Error
+          content:
+            application/problem+json: {}
+components:
+  schemas:
+    ClaimAssociation:
+      description: A general purpose association with a given claim. This object provides enough information to identify and access the referent object. Examples of use might include tracked items, documents, etc.
+      type: object
+      properties:
+        associationId:
+          type: string
+          format: uuid
+        claimId:
+          type: string
+        associationType:
+          description: A filterable value that identifies the type of reference. For example, it could be "document" or "tracked_item".
+          type: string
+        associatedObjectId:
+          description: The id of the associated object according to the authoritative system. For example, in a document reference, this would show the eFolder document version reference id.
+          type: string
+        associatedObjectLabel:
+          description: The label to use to present the associated object
+          type: string
+        associatedObjectUrl:
+          description: The resource location of the referent object.
+          type: string
+          format: url
+        associatedObjectSystem:
+          type: string
+    BenefitClaimType:
+      description: >-
+        The object used to specify a claim type. This object gives a higher level of granularity to claim types,
+        especially when there are only 9 modifiers. Using this object will remove the need to specify EP code or label in
+        separate fields. The values reflected in this object reflect the values that go into the m21-4 manuals, the
+        authoritative specifications for claims.
+      type: object
+      properties:
+        name:
+          description: The name of the BeneifitClaimType.
+          type: string
+        code:
+          type: string
+        description:
+          type: string
+        attribute_one:
+          description: An additional discriminator key name to give further resolution on a 3-digit code. The value is typically "CLAIM_TYPE_LABEL"
+          type: string
+        attribute_one_text:
+          description: The value of the attribute_one key. For example, it could be "Work Item", "Compensation", "Predetermination", etc
+          type: string
+        attribute_two:
+          description: A second field attribute key name. This value is typically "USER_DISPLAY"
+          type: string
+        attribute_two_text:
+          description: The value of the attribute_two key.
+          type: string
+        attribute_three:
+          description: A third field attribute key name. It usually relates to whether the BenefitClaimType is Ratings
+          type: string
+        attribute_three_text:
+          description: The value of the attribute_three key.
+          type: string
+    CreateClaimRequest:
+      type: object
+      properties:
+        serviceTypeCode:
+          description: Value selected from serviceTypeLookup result's CodeNamePair.code
+          type: string
+        programTypeCode:
+          description: Value selected from programTypeLookup results's CodeNamePair.code
+          type: string
+        benefitClaimTypeCode:
+          description: Value selected from lookup service CodeNamePair.code
+          type: string
+        benefitTypeCode:
+          description: Value selected from benefitClaimTypeLookup result's BenefitClaimType.code
+          type: string
+        claimant:
+          $ref: '#/components/schemas/Claimant'
+        veteran:
+          $ref: '#/components/schemas/Veteran'
+        recipient:
+          $ref: '#/components/schemas/Recipient'
+        thirdDigitModifier:
+          type: string
+        preDischargeTypeCode:
+          description: Value selected from preDischargeTypeLookup CodeNamePair.code
+          type: string
+        dateOfClaim:
+          type: string
+          format: date-time
+      required:
+        - serviceTypeCode
+        - programTypeCode
+        - benefitClaimTypeCode
+        - veteran
+        - claimant
+        - recipient
+        - dateOfClaim
+    ClaimSummary:
+      description: An object to summarize the data in a claim. This data will not include any associations.
+      type: object
+      properties:
+        summaryDateTime:
+          type: string
+          format: date-time
+        claimId:
+          description: The CorpDB BNFT_CLAIM_ID
+          type: string
+        benefitClaimType:
+          $ref: '#/components/schemas/BenefitClaimType'
+        benefitTypeCode:
+          $ref: '#/components/schemas/BenefitTypeCode'
+        phase:
+          $ref: '#/components/schemas/PhaseType'
+        phaseLastChangedDate:
+          type: string
+          format: date-time
+        claimLifecycleStatus:
+          type: string
+        completedDate:
+          type: string
+          format: date-time
+        claimant:
+          $ref: '#/components/schemas/Claimant'
+        veteran:
+          $ref: '#/components/schemas/Veteran'
+        recipient:
+          $ref: '#/components/schemas/Recipient'
+        waiverSubmitted:
+          type: boolean
+    ContentionTypeCode:
+      description: >-
+        Contention type code indicates what kind of contention it is.
+        <table>
+        <thead><tr><td>Code</td><td>Name</td></tr></thead>
+        <tbody>
+        <tr><td>INC</td><td>Increase</td></tr>
+        <tr><td>NEW</td><td>New</td></tr>
+        <tr><td>RFE</td><td>RFE</td></tr>
+        <tr><td>REP</td><td>Reopen</td></tr>
+        <tr><td>SEC</td><td>Secondary</td></tr>
+        </tbody>
+        </table>
+      type: string
+      enum:
+        - INC
+        - NEW
+        - RFE
+        - REP
+        - SEC
+    ContentionStatusCode:
+      description: >-
+        <table>
+        <thead><tr><td>Code</td><td>Name</td></tr></thead>
+        <tbody>
+        <tr><td>C</td><td>Complete</td></tr>
+        <tr><td>D</td><td>Deferred</td></tr>
+        <tr><td>P</td><td>Pending</td></tr>
+        </tbody>
+        </table>
+      type: string
+      enum:
+        - C
+        - D
+        - P
+    CodeNamePair:
+      type: object
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        description:
+          type: string
+      required:
+        - name
+        - code
+    ContentionSummary:
+      type: object
+      properties:
+        contentionId:
+          type: string
+        summaryDateTime:
+          type: string
+          format: date-time
+        contentionClaimantText:
+          type: string
+        contentionClassification:
+          type: string
+        contentionTypeCode:
+          $ref: '#/components/schemas/ContentionTypeCode'
+        contentionStatusCode:
+          $ref: '#/components/schemas/ContentionStatusCode'
+        diagnosticCode:
+          $ref: '#/components/schemas/CodeNamePair'
+    Claimant:
+      description: An object holding the basic identifying information for a claimant.
+      type: object
+      properties:
+        participantId:
+          description: The CorpDB Participant ID. The Claims API assumes the caller will have obtained this value from MVI.
+          type: string
+      required:
+        - participantId
+    Recipient:
+      description: An object holding the basic identifying information for a recipient. Note that the recipient relationship to the veteran must have already been established in CorpDB.
+      type: object
+      properties:
+        participantId:
+          description: The CorpDB Participant ID. The Claims API assumes the caller will have obtained this value from MVI.
+          type: string
+      required:
+        - particpantId
+    BenefitTypeCode:
+      description: >-
+        <p>The BenefitTypeCode designates what kind of benefit the Veteran is seeking.<br/>
+        <table>
+          <thead><tr><td>Code</td><td>Name</td><td>Description</td></tr></thead>
+          <tbody>
+          <tr><td>CP</td><td>Compensation</td><td>CPL_CP</td></tr>
+          <tr><td>CIP</td><td>Compensation and Improved Pension</td><td>CPL_CIP</td></tr>
+          <tr><td>IP</td><td>Improved Pension</td><td>CPL_IP</td></tr>
+        </table>
+        </p>
+      type: string
+      enum:
+        - CP
+        - CIP
+        - IP
+    PhaseType:
+      type: string
+      description: The PhaseType is the status value that used to populate the EVSS ClaimStatus
+      enum:
+        - Claim Received
+        - Initial Review
+        - Evidence Gathering
+        - Review
+        - Decision
+        - Preparation for Notification
+        - Complete
+    Veteran:
+      description: The minimal information to reference a Veteran in CorpDB.
+      type: object
+      properties:
+        participantId:
+          description: The CorpDB Participant ID. The Claims API assumes the caller will have obtained this value from MVI.
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required:
+        - participantId
+        - firstName
+        - lastName
+    X-VA-User:
+      description: VA username of the person making the request
+      type: string
+  headers:
+    X-VA-User:
+      required: true
+      description: VA username of the person making the request
+      schema:
+        type: string
+  links: {}
+security: []
+tags:
+  - name: claims
+    description: A tag that organizes resources directly associated with a claim.
+  - name: lookup
+    description: A tag that organizes resources dedicated solely as lookup data
+  - name: contentions
+    description: A tag that organizes resources for contentions within a given claim.
+  - name: associations
+    description: A tag that organizes resources for associations, things associated with a given claim.

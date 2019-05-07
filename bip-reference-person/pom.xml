@@ -113,36 +113,6 @@
 		    <groupId>org.codehaus.janino</groupId>
 		    <artifactId>janino</artifactId>
 		</dependency>
-        <!-- additional jackson dependencies not brought in via spring-boot starters -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.jaxrs</groupId>
-            <artifactId>jackson-jaxrs-base</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.jaxrs</groupId>
-            <artifactId>jackson-jaxrs-json-provider</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-jaxb-annotations</artifactId>
-        </dependency>
-		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-annotations</artifactId>
-		</dependency>
-        
-        <!-- jolokia for JMX over HTTP via /jolokia -->
-        <dependency>
-		    <groupId>org.jolokia</groupId>
-		    <artifactId>jolokia-core</artifactId>
-		</dependency>
-		
-        <!-- misc dependencies -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        
         <!-- test dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -159,7 +129,6 @@
     <build>
     	<plugins>
     		 <plugin>
-
 				<!-- 
 				 * Meta-information about the web application.<br/><br/>
 				 * 
@@ -209,4 +178,57 @@
     	</plugins>
     </build>
     
+    <profiles>
+		<profile>
+			<id>openapi-generator-project</id>
+			<activation>
+				<file><!-- add a file named .docker-jar-project-marker to war projects 
+						to activate this profile -->
+					<exists>${basedir}/src/main/resources/swagger/api.yml</exists>
+				</file>
+			</activation>
+			<properties>
+				<!-- Only unit tests are run when the docker-jar-project profile is active -->
+				<skipTests>true</skipTests>
+				<skipITs>true</skipITs>
+			</properties>
+			<build>
+				<plugins>
+				 <!-- activate the plugin -->
+		            <plugin>
+		                <groupId>org.openapitools</groupId>
+		                <artifactId>openapi-generator-maven-plugin</artifactId>
+		                <version>3.3.4</version>
+		                <executions>
+		                    <execution>
+		                        <goals>
+		                            <goal>generate</goal>
+		                        </goals>
+		                        <configuration>
+		                            <!-- specify the swagger yaml -->
+		                            <inputSpec>${basedir}/src/main/resources/swagger/api.yml</inputSpec>
+		
+		                            <!-- target to generate java client code -->
+		                            <!-- hint: if you want to generate java server code, e.g. based on Spring Boot,
+		                                 you can use the following target: <generatorName>spring</generatorName> -->
+		                            <generatorName>spring</generatorName>
+		                            
+		                            <apiPackage>gov.va.reference.person.api</apiPackage>
+                                	<modelPackage>gov.va.reference.person.api.model.v1</modelPackage>
+                                	<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+                                	<validateSpec>true</validateSpec>
+		
+		                            <!-- pass any necessary config options -->
+		                            <configOptions>
+		                            	<delegatePattern>true</delegatePattern>
+		                            </configOptions>
+		                            
+		                        </configuration>
+		                    </execution>
+		                </executions>
+		            </plugin>
+				</plugins>
+			</build>
+		</profile>
+    </profiles>
 </project>
