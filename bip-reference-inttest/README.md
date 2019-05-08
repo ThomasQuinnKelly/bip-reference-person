@@ -25,12 +25,12 @@ The annotations provided in the cucumber runner class will assist in bridging th
 
 `src/inttest/resources/response` – This folder contains response files that you may need to compare output, you can store the Response files in this folder. 
 
-
 `src/test/resources/users/dev` - All the property files for DEV users should go under this folder.
 
 `src/test/resources/users/va` - All the property files for VA users should go under this folder.
 
-`src/inttest/resources/logback-test.xml` - Logback Console Appender pattern and loggers defined for this project
+`src/inttest/resources/logback-test.xml` - Logback Console Appender pattern and loggers defined for this project.
+Various packages and their corresponding log levels are specified here. By Default, the log level is WARN and it can be overridden by runtime environment variable. For e.g., -DLOG_LEVEL_BIP_FRAMEWORK_TEST=INFO
 
 `src/inttest/resources/config/vetservices-inttest-dev.properties` – DEV configuration properties such as URL are specified here.
 
@@ -48,9 +48,10 @@ To execute the functional test in local bip-reference-person service needs to be
 
 **Command Line:** Use this command(s) to execute the reference person service Functional test. 
 ```bash
-	mvn verify -Pinttest -Dcucumber.options="--tags @DEV"
+    Default Local: mvn verify -Pinttest -Dcucumber.options="--tags @DEV"
 ```
- 
+    DEV: mvn verify -Pinttest -Dtest.env=dev -Ddockerfile.skip=true -Dcucumber.options="--tags @DEV"
+
 
 ## More Details For Functional Test
 Read the [Integration Testing Guide](/docs/referenceperson-intest.md)
