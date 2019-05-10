@@ -11,8 +11,7 @@ mavenGitflowPipeline {
     deploymentTemplates = ["template.yaml"]
     deploymentParameters = [
         'APP_NAME': 'bip-reference-person',
-        'IMAGE': 'bip-reference-person',
-        'IMAGE_TAG': 'master'
+        'IMAGE': 'bip-reference-person'
     ]
 
     cucumberOpts = "--tags @DEV"
