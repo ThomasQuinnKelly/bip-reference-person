@@ -38,7 +38,7 @@ parameters:
   - name: IMAGE_TAG
     displayName: Image Tag
     description: Tag of the container image to deploy
-    value: "latest"
+    value: "master"
     required: true
 objects:
   - apiVersion: v1
