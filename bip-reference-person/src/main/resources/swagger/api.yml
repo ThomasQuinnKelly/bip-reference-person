@@ -26,14 +26,14 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/PersonInfoRequest"
+                '$ref': '#/components/schemas/PersonInfoRequest'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/PersonInfoResponse"
+                '$ref': '#/components/schemas/PersonInfoResponse'
         '400':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -41,14 +41,14 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
         '403':
           description: The request is not authorized.  Please verify credentials used
             in the request.
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
         '500':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -57,7 +57,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
       security:
       - Authorization:
         - global
@@ -70,19 +70,19 @@ paths:
         remote echo operation.
       operationId: callPersonByPidUsingRestTemplateUsingPOST
       requestBody:
-        description: personByPidDomainRequest
+        description: personInfoRequest
         required: true
         content:
             application/json:
               schema:
-                "$ref": "#/definitions/PersonByPidDomainRequest"
+                '$ref': '#/components/schemas/PersonInfoRequest'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/PersonByPidDomainResponse"
+                '$ref': '#/components/schemas/PersonInfoResponse'
         '400':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -90,14 +90,14 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
         '403':
           description: The request is not authorized.  Please verify credentials used
             in the request.
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
         '500':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -106,7 +106,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
       security:
       - Authorization:
         - global
@@ -125,7 +125,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/Health"
+                '$ref': '#/components/schemas/Health'
         '400':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -133,14 +133,14 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
         '403':
           description: The request is not authorized.  Please verify credentials used
             in the request.
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
         '500':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -149,7 +149,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
       security:
       - Authorization:
         - global
@@ -167,14 +167,14 @@ paths:
         content:
             application/json:
               schema:
-                "$ref": "#/definitions/PersonInfoRequest"
+                '$ref': '#/components/schemas/PersonInfoRequest'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/PersonInfoResponse"
+                '$ref': '#/components/schemas/PersonInfoResponse'
         '400':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -182,14 +182,14 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
         '403':
           description: The request is not authorized.  Please verify credentials used
             in the request.
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
         '500':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -198,10 +198,9 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
       security:
-      - Authorization:
-        - global
+        - bearerAuth: []
       deprecated: false
   "/token":
     post:
@@ -219,7 +218,7 @@ paths:
         content:
             application/json:
               schema:
-                "$ref": "#/definitions/Person"
+                '$ref': '#/components/schemas/Person'
       responses:
         '200':
           description: A Response which indicates a successful Request.  The Response
@@ -235,14 +234,14 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
         '403':
           description: The request is not authorized.  Please verify credentials used
             in the request.
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
         '500':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -251,7 +250,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/definitions/ProviderResponse"
+                '$ref': '#/components/schemas/ProviderResponse'
       deprecated: false
 components:
   securitySchemes:
@@ -259,6 +258,10 @@ components:
       type: apiKey
       name: Authorization
       in: header
+    bearerAuth:
+      type: http
+      bearerFormat: JWT
+      scheme: bearer
   schemas:
     Health:
       type: object
@@ -343,31 +346,6 @@ components:
           type: string
       title: Person
       description: Model that identifies a single individual used in the security context
-    PersonByPidDomainRequest:
-      type: object
-      required:
-      - participantID
-      properties:
-        participantID:
-          type: integer
-          format: int64
-          example: 6666345
-          description: The Participant ID of the person for whom to retrieve data
-      title: PersonByPidDomainRequest
-      xml:
-        name: serviceRequest
-        attribute: false
-        wrapped: false
-    PersonByPidDomainResponse:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            "$ref": "#/definitions/ServiceMessage"
-        personInfo:
-          "$ref": "#/definitions/PersonInfoDomain"
-      title: PersonByPidDomainResponse
     PersonInfo:
       type: object
       properties:
@@ -398,87 +376,43 @@ components:
           description: The persons SSN
       title: PersonInfo
       description: Model for data contained in the response from the Person Service
-    PersonInfoDomain:
+    ProviderTransferObjectMarker:
       type: object
-      properties:
-        fileNumber:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        middleName:
-          type: string
-        participantId:
-          type: integer
-          format: int64
-        socSecNo:
-          type: string
-      title: PersonInfoDomain
+#      allOf:
+#        - $ref: '#/components/schemas/PersonInfoRequest'
     PersonInfoRequest:
-      type: object
-      required:
-      - participantID
-      properties:
-        participantID:
-          type: integer
-          format: int64
-          example: 6666345
-          description: The Participant ID of the person for whom to retrieve data
-          minimum: 1
-          exclusiveMinimum: false
       title: PersonInfoRequest
-      description: Model for data to request PersonInfoDomain from the Person Service
+      description: Model for data to request person information from the Person Service
+      anyOf:
+        - '$ref': '#/components/schemas/ProviderTransferObjectMarker'
+        - type: object
+          properties:
+            participantID:
+              type: integer
+              format: int64
+              example: 6666345
+              description: The Participant ID of the person for whom to retrieve data
+              minimum: 1
+              exclusiveMinimum: false
+              required:
+              - participantID
     PersonInfoResponse:
-      type: object
-      properties:
-        messages:
-          type: array
-          items:
-            "$ref": "#/definitions/Message"
-        personInfo:
-          description: The object representing the person information
-          "$ref": "#/definitions/PersonInfo"
       title: PersonInfoResponse
       description: Model for the response from the Person Service
+      allOf:
+       - '$ref': '#/components/schemas/ProviderResponse'
+       - type: object
+         # all other properties specific to PersonInfoResponse
+         properties:
+            personInfo:
+              description: The object representing the person information
+              '$ref': '#/components/schemas/PersonInfo'
     ProviderResponse:
       type: object
       properties:
         messages:
           type: array
           items:
-            "$ref": "#/definitions/Message"
+            '$ref': '#/components/schemas/Message'
       title: ProviderResponse
-    ServiceMessage:
-      type: object
-      required:
-      - key
-      - severity
-      properties:
-        key:
-          type: string
-          xml:
-            name: key
-            attribute: false
-            wrapped: false
-        severity:
-          type: string
-          xml:
-            name: severity
-            attribute: false
-            wrapped: false
-          enum:
-          - TRACE
-          - DEBUG
-          - INFO
-          - WARN
-          - ERROR
-          - FATAL
-        status:
-          type: string
-        text:
-          type: string
-        timestamp:
-          type: string
-          example: yyyy-MM-dd'T'HH:mm:ss.SSS
-      title: ServiceMessage
+    

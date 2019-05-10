@@ -216,11 +216,29 @@
 		                            <apiPackage>gov.va.reference.person.api</apiPackage>
                                 	<modelPackage>gov.va.reference.person.api.model.v1</modelPackage>
                                 	<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
+                                	<generateApiDocumentation>true</generateApiDocumentation>
                                 	<validateSpec>true</validateSpec>
+                                	<withXml>true</withXml>
+									
 		
 		                            <!-- pass any necessary config options -->
 		                            <configOptions>
-		                            	<delegatePattern>true</delegatePattern>
+		           <!--               		<artifactId>foo</artifactId>
+										<artifactDescription>Test API</artifactDescription>
+										<title>Test API</title>
+										<artifactUrl>https://api.example.com</artifactUrl>
+										<groupId>com.example.api</groupId>
+										<artifactVersion>1</artifactVersion>								
+										<sourceFolder>src/gen/java/main</sourceFolder> -->
+										<serializableModel>true</serializableModel>
+										<dateLibrary>java8</dateLibrary>
+										<java8>true</java8>
+										<async>false</async> 
+										<delegatePattern>true</delegatePattern>
+ 										<useBeanValidation>true</useBeanValidation>
+										<useOptional>true</useOptional>	
+										<hideGenerationTimestamp>true</hideGenerationTimestamp> 
+										<interfaceOnly>true</interfaceOnly>
 		                            </configOptions>
 		                            
 		                        </configuration>
