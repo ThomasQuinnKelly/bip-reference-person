@@ -82,6 +82,7 @@ spring:
 # Route Path
 # service.context: http://localhost:8080
 
+#management.endpoints.enabled-by-default: true
 # expose all endpoints:
 management.endpoints.web.exposure.include: "*"
 # disable beans endpoint  
@@ -106,30 +107,33 @@ bip-reference-person:
 #-##################################################
 logging: 
   level:
-     # gov.va.bip: DEBUG
+    com.ecwid.consul: INFO
+    feign: INFO
+#    gov.va.bip: DEBUG
     gov.va.bip.framework.client.ws: INFO
     gov.va.bip.framework.rest.provider: INFO
     gov.va.bip.reference.partner: INFO
     gov.va.bip.reference.person.client.rest.feign.FeignPersonClient: INFO
     gov.va.bip.reference: INFO
     gov.va.bip.framework: INFO
-    com.ecwid.consul: INFO
-    # org.springframework: DEBUG
-    org.springframework.cloud.openfeign: INFO
-    org.springframework.security.web: INFO
+#    org.apache.http: DEBUG
+    org.apache.http.impl.client: INFO
+#    org.springframework: DEBUG
+    org.springframework.cache: INFO 
     org.springframework.cloud.consul.config: INFO
     org.springframework.cloud.consul: INFO
     org.springframework.client.discovery: INFO
+    org.springframework.cloud.openfeign: INFO
     org.springframework.cloud.sleuth: INFO 
     org.springframework.cloud.sleuth.log: INFO
-    org.springframework.security: INFO
-    org.springframework.ws: INFO
-    org.springframework.web.client: INFO
-    org.springframework.cache: INFO 
-    org.apache.http.impl.client: INFO
+    org.springframework.core.convert: WARN
+    org.springframework.format: WARN
     org.springframework.retry: INFO
+    org.springframework.security: INFO
+    org.springframework.security.web: INFO
+    org.springframework.web.client: INFO
+    org.springframework.ws: INFO
     sun.net.www.protocol: INFO
-    feign: INFO
 ##################################################
 # Ribbon timeout, server refresh interval, retry
 # settings for the requests

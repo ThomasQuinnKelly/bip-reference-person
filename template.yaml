@@ -20,11 +20,6 @@ parameters:
     displayName: Image Name
     description: Container Image Name including repository (but not tag)
     required: true
-  - name: IMAGE_TAG
-    displayName: Image Tag
-    description: Tag of the container image to deploy
-    value: "latest"
-    required: true
   - name: REPLICA_COUNT
     displayName: Number of Replicas
     description: Number of replicas to run
@@ -40,6 +35,11 @@ parameters:
     description: Branch name from SCM, used to label objects for pipeline detection
     value: "master"
     required: false
+  - name: IMAGE_TAG
+    displayName: Image Tag
+    description: Tag of the container image to deploy
+    value: "master"
+    required: true
 objects:
   - apiVersion: v1
     kind: DeploymentConfig
