@@ -1,5 +1,7 @@
 package gov.va.bip.reference.person.client.rest.provider;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -52,14 +54,14 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 	@ApiOperation(value = "An endpoint which uses a REST client using RestTemplate to call the remote echo operation.")
 	@RequestMapping(value = URL_PREFIX + "/callPersonByPidUsingRestTemplate", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PersonByPidDomainResponse>
-			callPersonByPidUsingRestTemplate(@RequestBody final PersonByPidDomainRequest personByPidDomainRequest) {
+	public ResponseEntity<PersonInfoResponse>
+			callPersonByPidUsingRestTemplate(@Valid @RequestBody final PersonInfoRequest personInfoRequest) {
 		// invoke the service using classic REST Template from Spring, but load balanced through Consul
-		HttpEntity<PersonByPidDomainRequest> requestEntity = new HttpEntity<>(personByPidDomainRequest);
-		ResponseEntity<PersonByPidDomainResponse> exchange = null;
+		HttpEntity<PersonInfoRequest> requestEntity = new HttpEntity<>(personInfoRequest);
+		ResponseEntity<PersonInfoResponse> exchange = null;
 		exchange =
 				personUsageRestTemplate.executeURL("http://localhost:8080" + PersonResource.URL_PREFIX + "/pid",
-						HttpMethod.POST, requestEntity, new ParameterizedTypeReference<PersonByPidDomainResponse>() {
+						HttpMethod.POST, requestEntity, new ParameterizedTypeReference<PersonInfoResponse>() {
 						});
 		LOGGER.info("Invoked os-reference-person service using REST template: " + exchange);
 		return exchange;
@@ -75,7 +77,7 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 	@RequestMapping(value = URL_PREFIX + "/callPersonByPidUsingFeignClient", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PersonInfoResponse>
-			callPersonByPidUsingFeignClient(@RequestBody final PersonInfoRequest personInfoRequest) {
+			callPersonByPidUsingFeignClient(@Valid @RequestBody final PersonInfoRequest personInfoRequest) {
 
 		// use this in case of feign hystrix to test fallback handler invocation
 		// NOSONAR ConfigurationManager.getConfigInstance().setProperty("hystrix.command.default.circuitBreaker.forceOpen", "true");
