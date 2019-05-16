@@ -44,6 +44,8 @@ spring.cloud.vault:
     role: os-svc
     backend: consul
     token-property: spring.cloud.consul.token
+  generic:
+    enabled: false
 # Bean overriding has been disabled by default to prevent a bean being accidentally overridden. 
 # If you are relying on overriding, you will need to set spring.main.allow-bean-definition-overriding to true.
 # https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.1-Release-Notes
