@@ -1,7 +1,7 @@
 # Local Development Environment
 This local development environment is strickly for demonstration and local testing of the BIP Platform.
 
-For information about the BIP Framework and Reference Application, see this [README](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot).
+For information about the BIP Framework and Reference Application, see this [README](https://github.com/department-of-veterans-affairs/bip-reference-person).
 
 ## Starting the Environment
 To start the environment first build the BIP reference service by running `mvn clean package`. The platform can then be started by running `docker-compose up -d --build`. 

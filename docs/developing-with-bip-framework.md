@@ -1,19 +1,19 @@
 # Developing with BIP Framework
 This page provides a quick overview of the primary capabilities that the BIP Framework offers, and how to use them.
 
-For more information, refer to the [bip-framework README.md](https://github.com/department-of-veterans-affairs/ocp-framework).
+For more information, refer to the [bip-framework README.md](https://github.com/department-of-veterans-affairs/bip-framework).
 
 ## Design Considerations
-BIP Framework provides for distinct separation of model objects between the **Provider**, **Domain**, and **Partner** layers. For more information, see [Design: Layer and Model Separation](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/master/docs/design-layer-separation.md).
+BIP Framework provides for distinct separation of model objects between the **Provider**, **Domain**, and **Partner** layers. For more information, see [Design: Layer and Model Separation](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/docs/design-layer-separation.md).
 
-Refer to the [bip-reference-spring-boot](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot) application for detailed information. It demonstrate suggested patterns, packaging, and framework usage when developing a new application for the BIP platform.
+Refer to the [bip-reference-spring-boot](https://github.com/department-of-veterans-affairs/bip-reference-person) application for detailed information. It demonstrate suggested patterns, packaging, and framework usage when developing a new application for the BIP platform.
 
 The BIP Framework makes use of the Spring AOP implementation of AspectJ for audit and performance logging. Compile-time code weaving is not used.
 
 ## Configuration
-Platform capabilities are initialized in the bip-framework-autoconfigure artifact. The service application must enable these capabilities with the appropriate annotations in the application classes. Properties for managing these capabilities can be added to the application YAML. The [bip-reference README](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/master#application-core-concepts-and-patterns) section provides links for more detailed information.
+Platform capabilities are initialized in the bip-framework-autoconfigure artifact. The service application must enable these capabilities with the appropriate annotations in the application classes. Properties for managing these capabilities can be added to the application YAML. The [bip-reference README](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master#application-core-concepts-and-patterns) section provides links for more detailed information.
 
-Application configuration of framework capabilities can be managed in the application YAML as identified in the sections below. See [bip-reference-person.yml](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/mastaer/bip-reference-person/src/main/resources/bip-reference-person.yml) for an example of a functioning configuration.
+Application configuration of framework capabilities can be managed in the application YAML as identified in the sections below. See [bip-reference-person.yml](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/mastaer/bip-reference-person/src/main/resources/bip-reference-person.yml) for an example of a functioning configuration.
 
 Remaining application configuration should conform to normal spring configuration with a `@SpringBootApplication` class and other classes annotated with `@Configuration`.
 
@@ -59,7 +59,7 @@ Performance logging is automatically invoked by the `RestProviderTimerAspect`, a
 ## Model Transformation
 The framework encourages separation of layers (or "tiers") and their associated model objects. Layer separation is supported with a simple transformer pattern. For more information, see [Layer and Model Separation Design](design-layer-separation.md).
 
-For SOAP partner clients, framework provides a [Date Adapter class](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/transfer/jaxb/adapters/DateAdapter.java) for date conversions. Other data type adapters can be added to the framework upon request. 
+For SOAP partner clients, framework provides a [Date Adapter class](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/transfer/jaxb/adapters/DateAdapter.java) for date conversions. Other data type adapters can be added to the framework upon request. 
 
 ## Validation
 Validation at the REST API should be performed using only standard JSR 303 annotations on the rest model objects. More complex validation can easily be added at the service layer interface. Currently, if validations are required prior to calling into a partner client, it must be invoked manually.
@@ -69,12 +69,12 @@ For more information, see [Validation](validation.md).
 ## Cache
 Service impelementation classes can add properly declared `@CachePut` annotations to the overridden methods of their inteface. Once configuration and annotation is done, no other intervention is needed.
 
-For more information about cache and redis configuration, see [Cache Management](cache-management.md). An example of annotating a method, see the [ReferencePersonServiceImpl class](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/impl/ReferencePersonServiceImpl.java) and [bip-framework-autoconfigure cache.autoconfigure](https://github.com/department-of-veterans-affairs/ocp-framework/tree/master/bip-framework-autoconfigure#govvabipframeworkcacheautoconfigure).
+For more information about cache and redis configuration, see [Cache Management](cache-management.md). An example of annotating a method, see the [ReferencePersonServiceImpl class](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/impl/ReferencePersonServiceImpl.java) and [bip-framework-autoconfigure cache.autoconfigure](https://github.com/department-of-veterans-affairs/bip-framework/tree/master/bip-framework-autoconfigure#govvabipframeworkcacheautoconfigure).
 
 ## Partner Client Support
 The framework provides support classes for RESTful and SOAP partner clients under the `framework.client.rest.template` and `framework.client.ws**` packages respectively.
 
 REST clients are audited by the existing `ProviderHttpAspect` aspect. SOAP clients are audited by the `AuditWsInterceptor` spring interceptor.
 
-For more information, see [bip-reference-partner-person](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/master/bip-reference-partner-person).
+For more information, see [bip-reference-partner-person](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-partner-person).
 

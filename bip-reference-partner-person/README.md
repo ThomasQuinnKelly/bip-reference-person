@@ -31,7 +31,7 @@ The Partner client design presents a `RemoteServiceCall` interface that has 2 im
 - the real implementation using the appropriate protocol to make the call to the partner
 - a mock implementation that retrieves static data from `/test/mock/[response-file].xml`.
 
-Configuration to invoke the mock simulator is done through the `remote_client_sims` spring profile. Search [bip-reference-person.yml](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/blob/master/bip-reference-person/src/main/resources/bip-reference-person.yml) for *remote_client_sims* to see example configuration.
+Configuration to invoke the mock simulator is done through the `remote_client_sims` spring profile. Search [bip-reference-person.yml](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/resources/bip-reference-person.yml) for *remote_client_sims* to see example configuration.
 
 ## How to add the dependency
 In the POM file for your service application project, add this to the `<dependencies>` section:

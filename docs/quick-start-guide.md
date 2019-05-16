@@ -23,10 +23,10 @@ To clone and run this repository you'll need Git installed on your computer.
 
 * From your command line:
 ```bash
-   git clone https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot`
+   git clone https://github.com/department-of-veterans-affairs/bip-reference-person`
 ```
-* Alternately, you can also clone the repository from IDE using URL `https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot`
-* Change directory to `ocp-reference-spring-boot`
+* Alternately, you can also clone the repository from IDE using URL `https://github.com/department-of-veterans-affairs/bip-reference-person`
+* Change directory to `bip-reference-person`
 * If Docker is RUNNING, run `mvn clean install` from the reactor POM to build the project which will create the docker image for bip-reference-person. 
 * If Docker is UNAVAILABLE/OFFLINE, run `mvn clean install -Ddockerfile.skip=true` from the reactor POM to build the project. `-Ddockerfile.skip=true` will *SKIP* the docker image(s) creation. Don't use this option if you are planning to run `local-int` mode as it would require docker image(s) to run in docker container.
 
@@ -56,7 +56,7 @@ There are 2 application profiles that you could run locally
 ##### Running the services in local-int profile
 
 * Ensure that the Docker is running and that you have run `mvn clean install` from the reactor POM
-* Verify that the `docker-compose.yml` exists in the root directory of ocp-reference-spring-boot
+* Verify that the `docker-compose.yml` exists in the root directory of bip-reference-person
 * To start all the containers, execute the `./start-all.sh` command under the root directory, which will bring up all the docker containers. 
 * Localhost URLs for testing/using this deployment approach (you must start the spring boot application!)
 

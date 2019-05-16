@@ -15,8 +15,8 @@ Provider-level validations are intentionally kept simple. More complex validatio
 Domain model objects entering into the service layer are subject to business validations.
 - Service validations are invoked on any class that uses the spring @Service annotation.
 - Business validators are
-  - implementations of the [Validator](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/validation/Validator.java) interface.
-- Validator implementations **must** appear in a `**.validators` package under the package in which the validated object model appears. For example, see the classes in the [reference model validators package](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/model/validators). The model object to be validated could be located in any package - the requirement is that the validator appear in a `validators` package under it.
+  - implementations of the [Validator](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/validation/Validator.java) interface.
+- Validator implementations **must** appear in a `**.validators` package under the package in which the validated object model appears. For example, see the classes in the [reference model validators package](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/model/validators). The model object to be validated could be located in any package - the requirement is that the validator appear in a `validators` package under it.
 
 This approach to validation requires discipline from the developer. It is their responsibility to demonstrate good logic and coding practices to ensure the validating code is air tight.
 
@@ -28,4 +28,4 @@ Validations for Partner clients should occur in the related service imiplementat
 Some pointers to consider with Partner client validations:
 - Inputs to partner clients typically originate with consumer inputs to the BIP endpoints. JSR 303 validations (in the Provider layer) and business validations (in the service layer) are important.
 - Validations should *fail-fast*. There is no point continuing with service processes if the data is invalid.
-- Service implementation Helper classes can use the [Validator](https://github.com/department-of-veterans-affairs/ocp-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/validation/Validator.java) interface in partner model validators.
+- Service implementation Helper classes can use the [Validator](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/validation/Validator.java) interface in partner model validators.
