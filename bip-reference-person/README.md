@@ -7,7 +7,7 @@ The service application consists of:
 - Exposure of an API with request validation and exception management.
 - Service capabilities to process requests and acquire data from external partners.
 
-The responsibilities and capabilities of the service application are talked about throughout the documentation. See [Developing with BIP Framework](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/blob/master/docs/developing-with-bip-framework.md), [BIP Service Application Flow](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/blob/master/docs/application-flow.md), and the other links at [Application Core Concepts and Patterns](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot#application-core-concepts-and-patterns).
+The responsibilities and capabilities of the service application are talked about throughout the documentation. See [Developing with BIP Framework](https://github.ec.va.gov/EPMO/bip-reference-person/blob/master/docs/developing-with-bip-framework.md), [BIP Service Application Flow](https://github.ec.va.gov/EPMO/bip-reference-person/blob/master/docs/application-flow.md), and the other links at [Application Core Concepts and Patterns](https://github.ec.va.gov/EPMO/bip-reference-person#application-core-concepts-and-patterns).
 
 ## How to add the dependency
 The service application project is one of the sub-project `<modules>` in a reactor project.  Add the service project to the reactor POM.

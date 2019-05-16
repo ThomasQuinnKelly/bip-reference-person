@@ -15,7 +15,7 @@ Openshift templates are a collection of Object defintions. To deploy your applic
 For an example template see the [BIP Reference Deployment Template](../template.yaml)
 
 ### Pipeline Provided Parameters
-The Jenkins pipeline will supply some parameters to your template during deployment. These are documented in the [BIP Jenkins Library documentation](https://github.com/department-of-veterans-affairs/os-svc-jenkins-lib/blob/master/docs/common/deployment.md#pipeline-provided-parameters)
+The Jenkins pipeline will supply some parameters to your template during deployment. These are documented in the [BIP Jenkins Library documentation](https://github.ec.va.gov/EPMO/os-svc-jenkins-lib/blob/master/docs/common/deployment.md#pipeline-provided-parameters)
 
 ### Platform Provided ConfigMaps
 The platform team will provide the following ConfigMaps and properties for use in bootstrapping your application container.
@@ -39,4 +39,4 @@ The platform team will provide the following ConfigMaps and properties for use i
 
 
 ## Configuring the pipeline with your deployment information
-For information on writing your Jenkinsfile to support application deployment see the [BIP Jenkins Library documentation](https://github.com/department-of-veterans-affairs/os-svc-jenkins-lib/blob/master/docs/common/deployment.md#deployment-pipeline-configuration)
+For information on writing your Jenkinsfile to support application deployment see the [BIP Jenkins Library documentation](https://github.ec.va.gov/EPMO/os-svc-jenkins-lib/blob/master/docs/common/deployment.md#deployment-pipeline-configuration)

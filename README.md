@@ -4,17 +4,17 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 
 ## Project Breakdown
 
-1. [bip-reference-partner-person](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/tree/master/bip-reference-partner-person): Partner service for reference person, showing sample mock data for BGS. It should be noted by service designers and tech leads that Partner projects would typically be stand-alone (in their own repo, and not part of a reactor project). The intent is for Partner projects to be freely available for use by any number of service applications that might need them by including them as a maven dependency.
-2. [bip-reference-person](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/tree/master/bip-reference-person): Service implementation project. This project demonstrates the recommended design patterns, configuration pointers, and coding examples. It shows how to produce a documented endpoint, how to register the app with Consul, how to use secrets from Vault, how to implement a Hystrix circuit breaker, how to get and use loggers, etc. The design consists of three layers:
+1. [bip-reference-partner-person](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-partner-person): Partner service for reference person, showing sample mock data for BGS. It should be noted by service designers and tech leads that Partner projects would typically be stand-alone (in their own repo, and not part of a reactor project). The intent is for Partner projects to be freely available for use by any number of service applications that might need them by including them as a maven dependency.
+2. [bip-reference-person](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-person): Service implementation project. This project demonstrates the recommended design patterns, configuration pointers, and coding examples. It shows how to produce a documented endpoint, how to register the app with Consul, how to use secrets from Vault, how to implement a Hystrix circuit breaker, how to get and use loggers, etc. The design consists of three layers:
 	- The Provider (or "web") layer contains the REST endpoints and model, JSR 303 annotations in the resource class and the model, and the use of an adapter class to transform models and call the service interface.
 	- The Domain (or "service") layer contains examples of business validation, business logic,  to call Partner services and process the returned data, and exception handling.
 	- The Partner (or "client") layer shows how to perform model transformation, how to call a partner client interface, and how to handle responses (or exceptions thrown) from the partner client.
-3. [bip-reference-inttest](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/tree/master/bip-reference-inttest): Contains the integration tests using the framework Test Library ()Spring Rest Template, Cucumber libraries, and other capabilities). It includes functioning test cases that run against the endpoints in `bip-reference-person`. 
-4. [bip-reference-perftest](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/tree/master/bip-reference-perftest): Contains functioning performance JMX test scripts for Apache JMeter that run against the endpoints in `bip-reference-person`. 
+3. [bip-reference-inttest](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-inttest): Contains the integration tests using the framework Test Library ()Spring Rest Template, Cucumber libraries, and other capabilities). It includes functioning test cases that run against the endpoints in `bip-reference-person`. 
+4. [bip-reference-perftest](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-perftest): Contains functioning performance JMX test scripts for Apache JMeter that run against the endpoints in `bip-reference-person`. 
 
 ## How to include the framework libraries in your project
 
-The projects in this repository are dependent on the libraries from [BIP framework](https://github.ec.va.gov/EPMO/bip-ocp-framework) and [BIP framework test library](https://github.ec.va.gov/EPMO/bip-ocp-framework/tree/master/bip-framework-test-lib) for  auto configuration, common shared libraries, parent pom maven configuration and test libary. These libraries can be included as shown below.
+The projects in this repository are dependent on the libraries from [BIP framework](https://github.ec.va.gov/EPMO/bip-framework) and [BIP framework test library](https://github.ec.va.gov/EPMO/bip-framework/tree/master/bip-framework-test-lib) for  auto configuration, common shared libraries, parent pom maven configuration and test libary. These libraries can be included as shown below.
 
 ```xml
        <dependency>
@@ -77,8 +77,8 @@ To make the framework libraries available locally for the service projects to co
 #### Option 1 - Clone the libraries from GitHub
 This option downloads the bip-framework code to your local workstation to be built.
 
-1. Clone the BIP framework repository `git clone https://github.ec.va.gov/EPMO/bip-ocp-framework.git`
-2. Navigate to the folder `ocp-framework` and run the `mvn clean install` command. This builds all the libraries with versions as configured in `pom.xml` files.
+1. Clone the BIP framework repository `git clone https://github.ec.va.gov/EPMO/bip-framework.git`
+2. Navigate to the folder `bip-framework` and run the `mvn clean install` command. This builds all the libraries with versions as configured in `pom.xml` files.
 
 #### OPTION 2 - Retrieve the libraries from the VA Nexus repo
 This option requires that your workstation is connected to the VA network. It allows maven to retrieve the libraries from nexus, so you don't need to build them.
@@ -100,14 +100,14 @@ This is a temporary work-around for those who are not connected to the VA networ
 
 There are two steps to make this work.
 
-1. Add the below section in the reactor (root) `pom.xml` of your service project. A complete and functioning example can be seen in the [bip-reference-reactor pom.xml](https://github.ec.va.gov/EPMO/bip-ocp-ref-spring-boot/blob/master/pom.xml).
+1. Add the below section in the reactor (root) `pom.xml` of your service project. A complete and functioning example can be seen in the [bip-reference-reactor pom.xml](https://github.ec.va.gov/EPMO/bip-reference-person/blob/master/pom.xml).
 
 ```xml
 	<repositories>
 		<repository>
 			<id>github</id>
 			<name>GitHub Repository</name>
-			<url>https://raw.github.com/department-of-veterans-affairs/ocp-framework/mvn-repo</url>
+			<url>https://raw.github.com/department-of-veterans-affairs/bip-framework/mvn-repo</url>
 		</repository>
 	</repositories>
 ```
