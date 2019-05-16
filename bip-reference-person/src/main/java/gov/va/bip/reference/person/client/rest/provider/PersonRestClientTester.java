@@ -22,8 +22,6 @@ import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.api.provider.PersonResource;
 import gov.va.bip.reference.person.client.rest.FeignPersonClient;
-import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
-import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
 import io.swagger.annotations.ApiOperation;
 
 /**
