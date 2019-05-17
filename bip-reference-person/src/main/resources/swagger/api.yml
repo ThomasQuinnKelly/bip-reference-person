@@ -383,7 +383,7 @@ components:
     PersonInfoRequest:
       title: PersonInfoRequest
       description: Model for data to request person information from the Person Service
-      anyOf:
+      allOf:
         - '$ref': '#/components/schemas/ProviderTransferObjectMarker'
         - type: object
           properties:

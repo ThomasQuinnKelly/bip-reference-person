@@ -16,6 +16,14 @@
     <name>${project.artifactId}</name>
     <description>Reference Person Service Implementation for BIP Spring Boot Project</description>
     
+    <properties>
+	    <yaml.file>${basedir}/src/main/resources/swagger/api.yml</yaml.file>
+	    <generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
+	    <generated-sources-java-path>main/java</generated-sources-java-path>
+	    <version.swagger.codegen>3.0.8</version.swagger.codegen>
+	    <!-- TODO add the properties from target/generated-sources/pom.xml here -->
+	</properties>
+    
     <dependencies>
     	<dependency>
             <groupId>gov.va.bip.framework</groupId>
@@ -180,11 +188,11 @@
     
     <profiles>
 		<profile>
-			<id>openapi-generator-project</id>
+			<id>io.swagger.codegen.v3-project</id>
 			<activation>
 				<file><!-- add a file named .docker-jar-project-marker to war projects 
 						to activate this profile -->
-					<exists>${basedir}/src/main/resources/swagger/api.yml</exists>
+					<exists>${yaml.file}</exists>
 				</file>
 			</activation>
 			<properties>
@@ -196,56 +204,86 @@
 				<plugins>
 				 <!-- activate the plugin -->
 		            <plugin>
-		                <groupId>org.openapitools</groupId>
-		                <artifactId>openapi-generator-maven-plugin</artifactId>
-		                <version>3.3.4</version>
+		                <groupId>io.swagger.codegen.v3</groupId>
+					    <artifactId>swagger-codegen-maven-plugin</artifactId>
+					    <version>${version.swagger.codegen}</version>
 		                <executions>
 		                    <execution>
 		                        <goals>
 		                            <goal>generate</goal>
 		                        </goals>
 		                        <configuration>
+		                        	 <language>spring</language>
+		                        	 <generateApis>false</generateApis>
 		                            <!-- specify the swagger yaml -->
-		                            <inputSpec>${basedir}/src/main/resources/swagger/api.yml</inputSpec>
-		
-		                            <!-- target to generate java client code -->
-		                            <!-- hint: if you want to generate java server code, e.g. based on Spring Boot,
-		                                 you can use the following target: <generatorName>spring</generatorName> -->
-		                            <generatorName>spring</generatorName>
-		                            
+		                            <inputSpec>${yaml.file}</inputSpec>
+		                            <output>${generated-sources-path}</output>
 		                            <apiPackage>gov.va.reference.person.api</apiPackage>
                                 	<modelPackage>gov.va.reference.person.api.model.v1</modelPackage>
-                                	<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
-                                	<generateApiDocumentation>true</generateApiDocumentation>
-                                	<validateSpec>true</validateSpec>
-                                	<withXml>true</withXml>
-									
-		
-		                            <!-- pass any necessary config options -->
-		                            <configOptions>
-		           <!--               		<artifactId>foo</artifactId>
-										<artifactDescription>Test API</artifactDescription>
-										<title>Test API</title>
-										<artifactUrl>https://api.example.com</artifactUrl>
-										<groupId>com.example.api</groupId>
-										<artifactVersion>1</artifactVersion>								
-										<sourceFolder>src/gen/java/main</sourceFolder> -->
-										<serializableModel>true</serializableModel>
-										<dateLibrary>java8</dateLibrary>
-										<java8>true</java8>
-										<async>false</async> 
-										<delegatePattern>true</delegatePattern>
- 										<useBeanValidation>true</useBeanValidation>
-										<useOptional>true</useOptional>	
-										<hideGenerationTimestamp>true</hideGenerationTimestamp> 
-										<interfaceOnly>true</interfaceOnly>
-		                            </configOptions>
+                                	
+									<configOptions>
+							          <sourceFolder>${generated-sources-java-path}</sourceFolder>
+							          <library>spring-mvc</library>
+							          <interfaceOnly>true</interfaceOnly>
+							          <useBeanValidation>true</useBeanValidation>
+							          <dateLibrary>java8</dateLibrary>
+							          <java8>true</java8>
+							        </configOptions>
 		                            
 		                        </configuration>
 		                    </execution>
 		                </executions>
 		            </plugin>
+		            <plugin>
+				        <groupId>org.codehaus.mojo</groupId>
+				        <artifactId>build-helper-maven-plugin</artifactId>
+				        <version>1.9.1</version>
+				        <executions>
+				            <!-- TODO for eclipse/m2e users: install the m2e connector 'buildhelper' by selecting 'Discover new m2e connectors' while hovering over the follwoing execution tag -->
+				            <execution>
+				                <id>add-generated-source</id>
+				                <phase>initialize</phase>
+				                <goals>
+				                    <goal>add-source</goal>
+				                </goals>
+				                <configuration>
+				                    <sources>
+				                        <source>${generated-sources-path}/${generated-sources-java-path}</source>
+				                    </sources>
+				                </configuration>
+				            </execution>
+				        </executions>
+				    </plugin>
 				</plugins>
+				<!-- the following is only necessary if you are using eclipse and m2e -->
+				<pluginManagement>
+				    <plugins>
+				        <plugin>
+				            <groupId>org.eclipse.m2e</groupId>
+				            <artifactId>lifecycle-mapping</artifactId>
+				            <version>1.0.0</version>
+				            <configuration>
+				                <lifecycleMappingMetadata>
+				                    <pluginExecutions>
+				                        <pluginExecution>
+				                            <pluginExecutionFilter>
+				                                <groupId>io.swagger.codegen.v3</groupId>
+											    <artifactId>swagger-codegen-maven-plugin</artifactId>
+				                                <versionRange>[${3.0.8},)</versionRange>
+				                                <goals>
+				                                    <goal>generate</goal>
+				                                </goals>
+				                            </pluginExecutionFilter>
+				                            <action>
+				                                <execute />
+				                            </action>
+				                        </pluginExecution>
+				                    </pluginExecutions>
+				                </lifecycleMappingMetadata>
+				            </configuration>
+				        </plugin>
+				    </plugins>
+				</pluginManagement>
 			</build>
 		</profile>
     </profiles>
