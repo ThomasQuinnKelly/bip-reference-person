@@ -1,10 +1,10 @@
 package gov.va.bip.reference.service.steps;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
@@ -14,9 +14,13 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import gov.va.bip.framework.test.rest.BaseStepDefHandler;
 import gov.va.bip.framework.test.util.JsonUtil;
-/*
- *person health feature and scenarios Implementation for the API needs are specified here.
- *For more details please Read the Integration Testing Guide {@link https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/docs/referenceperson-intest.md}
+
+/**
+ * The person health feature and scenario implementations for the API needs are specified here.
+ * <p>
+ * For more details please Read the <a
+ * href="https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/docs/referenceperson-intest.md">Integration
+ * Testing Guide</a>
  */
 public class PersonHealth {
 
@@ -31,11 +35,12 @@ public class PersonHealth {
 	public void setUpREST() {
 		handler.initREST();
 	}
-	
+
 	@Given("^the claimant is not a \"([^\"]*)\"$")
 	public void setHeader(String users) throws Throwable {
 		handler.setHeader(users);
 	}
+
 	@When("^client request health info \"([^\"]*)\"$")
 	public void makingGetRequest(final String strURL) throws Throwable {
 		String baseUrl = handler.getRestConfig().getProperty("baseURL", true);
