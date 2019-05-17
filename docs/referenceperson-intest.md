@@ -124,6 +124,9 @@ Examples:
        <artifactId>spring-boot-maven-plugin</artifactId>
 ```
 
+## Running Integration Tests
+See [bip-reference-inttest](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-inttest).
+
 ## Reports
 
 #### Cucumber JVM reporting
