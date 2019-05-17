@@ -16,7 +16,7 @@ import gov.va.bip.framework.test.rest.BaseStepDefHandler;
 import gov.va.bip.framework.test.util.JsonUtil;
 /*
  *person health feature and scenarios Implementation for the API needs are specified here.
- *For more details please Read the Integration Testing Guide {@linktourl https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/docs/referenceperson-intest.md}
+ *For more details please Read the Integration Testing Guide {@link https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/docs/referenceperson-intest.md}
  */
 public class PersonHealth {
 

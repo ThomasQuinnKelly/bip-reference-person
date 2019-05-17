@@ -13,7 +13,10 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import gov.va.bip.framework.test.rest.BaseStepDefHandler;
 import gov.va.bip.framework.test.util.JsonUtil;
-
+/*
+ *person info feature and scenarios Implementation for the API needs are specified here.
+ *For more details please Read the Integration Testing Guide {@link https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/docs/referenceperson-intest.md}
+ */
 public class PersonInfo {
 
 	final static Logger LOGGER = LoggerFactory.getLogger(PersonInfo.class);
