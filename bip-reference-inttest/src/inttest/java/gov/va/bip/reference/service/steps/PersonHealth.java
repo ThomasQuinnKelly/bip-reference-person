@@ -10,6 +10,7 @@ import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import gov.va.bip.framework.test.rest.BaseStepDefHandler;
 import gov.va.bip.framework.test.util.JsonUtil;
@@ -27,7 +28,11 @@ public class PersonHealth {
 	public void setUpREST() {
 		handler.initREST();
 	}
-
+	
+	@Given("^the claimant is not a \"([^\"]*)\"$")
+	public void setHeader(String users) throws Throwable {
+		handler.setHeader(users);
+	}
 	@When("^client request health info \"([^\"]*)\"$")
 	public void makingGetRequest(final String strURL) throws Throwable {
 		String baseUrl = handler.getRestConfig().getProperty("baseURL", true);
