@@ -30,11 +30,6 @@ parameters:
     description: Port number to expose the service on
     value: "80"
     required: true
-  - name: BRANCH
-    displayName: Branch name from SCM
-    description: Branch name from SCM, used to label objects for pipeline detection
-    value: "master"
-    required: false
   - name: IMAGE_TAG
     displayName: Image Tag
     description: Tag of the container image to deploy
@@ -51,14 +46,12 @@ objects:
     metadata:
       labels:
         app: ${APP_NAME}
-        branch: ${BRANCH}
-      name: ${APP_NAME}-${BRANCH}
+      name: ${APP_NAME}
     spec:
       replicas: ${{REPLICA_COUNT}}
       selector:
         app: ${APP_NAME}
-        deploymentconfig: ${APP_NAME}-${BRANCH}
-        branch: ${BRANCH}
+        deploymentconfig: ${APP_NAME}
       triggers:
         - type: "ConfigChange"
         - type: "ImageChange"
@@ -84,8 +77,7 @@ objects:
           annotations: null
           labels:
             app: ${APP_NAME}
-            deploymentconfig: ${APP_NAME}-${BRANCH}
-            branch: ${BRANCH}
+            deploymentconfig: ${APP_NAME}
         spec:
           containers:
             - image: ${REPOSITORY}/${PROJECT}/${IMAGE}:${IMAGE_TAG}
@@ -103,12 +95,12 @@ objects:
                 - name: spring.cloud.consul.discovery.enabled
                   valueFrom:
                     configMapKeyRef:
-                      name: ${IMAGE}-${BRANCH}-config
+                      name: ${APP_NAME}-config
                       key: spring.cloud.consul.discovery.enabled
                 - name: spring.cloud.consul.discovery.register
                   valueFrom:
                     configMapKeyRef:
-                      name: ${IMAGE}-${BRANCH}-config
+                      name: ${APP_NAME}-config
                       key: spring.cloud.consul.discovery.register
                 - name: spring.cloud.consul.host
                   valueFrom:
@@ -138,17 +130,17 @@ objects:
                 - name: spring.cloud.vault.enabled
                   valueFrom:
                     configMapKeyRef:
-                      name: ${IMAGE}-${BRANCH}-config
+                      name: ${APP_NAME}-config
                       key: spring.cloud.vault.enabled
                 - name: spring.cloud.vault.authentication
                   valueFrom:
                     configMapKeyRef:
-                      name: ${IMAGE}-${BRANCH}-config
+                      name: ${APP_NAME}-config
                       key: spring.cloud.vault.authentication
                 - name: spring.cloud.vault.kubernetes.service-account-token-file
                   valueFrom:
                     configMapKeyRef:
-                      name: ${IMAGE}-${BRANCH}-config
+                      name: ${APP_NAME}-config
                       key: spring.cloud.vault.kubernetes.service-account-token-file
                 - name: spring.cloud.vault.host
                   valueFrom:
@@ -175,12 +167,12 @@ objects:
                 - name: spring.cloud.vault.kv.application-name
                   valueFrom:
                     configMapKeyRef:
-                      name: ${IMAGE}-${BRANCH}-config
+                      name: ${APP_NAME}-config
                       key: spring.cloud.vault.kv.application-name
                 - name: spring.cloud.consul.config.enabled
                   valueFrom:
                     configMapKeyRef:
-                      name: ${IMAGE}-${BRANCH}-config
+                      name: ${APP_NAME}-config
                       key: spring.cloud.consul.config.enabled
                 - name: spring.cloud.consul.config.acl-token
                   valueFrom:
@@ -190,12 +182,12 @@ objects:
                 - name: spring.cloud.consul.config.failFast
                   valueFrom:
                     configMapKeyRef:
-                      name: ${IMAGE}-${BRANCH}-config
+                      name: ${APP_NAME}-config
                       key: spring.cloud.consul.config.failFast
                 - name: spring.profiles.active
                   valueFrom:
                     configMapKeyRef:
-                      name: ${IMAGE}-${BRANCH}-config
+                      name: ${APP_NAME}-config
                       key: spring.profiles.active
               volumeMounts:
                 - name: va-cacerts
@@ -218,8 +210,7 @@ objects:
     metadata:
       labels:
         app: ${APP_NAME}
-        branch: ${BRANCH}
-      name: ${APP_NAME}-${BRANCH}
+      name: ${APP_NAME}
     spec:
       ports:
         - name: ${APP_NAME}
@@ -228,26 +219,25 @@ objects:
           targetPort: 8080
       selector:
         app: ${APP_NAME}
-        deploymentconfig: ${APP_NAME}-${BRANCH}
+        deploymentconfig: ${APP_NAME}
       sessionAffinity: None
       type: ClusterIP
 
   - apiVersion: v1
     kind: Route
     metadata:
-      name: ${APP_NAME}-${BRANCH}
+      name: ${APP_NAME}
     spec:
       to:
         kind: Service
-        name: ${APP_NAME}-${BRANCH}
+        name: ${APP_NAME}
         
   - apiVersion: v1
     kind: ConfigMap
     metadata:
-      name: ${IMAGE}-${BRANCH}-config
+      name: ${APP_NAME}-config
       labels:
         app: ${APP_NAME}
-        branch: ${BRANCH}
     data:
       spring.cloud.consul.config.enabled: "true"
       spring.cloud.consul.config.failFast: "true"
