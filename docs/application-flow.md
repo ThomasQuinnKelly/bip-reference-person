@@ -1,7 +1,7 @@
 # BIP Service Application Flow
-This page is primarily concerned with describing the typical flow of a service application built on the [BIP Framework](https://github.com/department-of-veterans-affairs/ocp-framework). The spring boot [Reference Person](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot) application provides a valuable example of many of the mechanics involved in preparing for development of a project.
+This page is primarily concerned with describing the typical flow of a service application built on the [BIP Framework](https://github.com/department-of-veterans-affairs/bip-framework). The spring boot [Reference Person](https://github.com/department-of-veterans-affairs/bip-reference-person) application provides a valuable example of many of the mechanics involved in preparing for development of a project.
 
-This page does not specifically address configuration of the environment or capabilities provided by the platform. For configuration and usage, see the links at [Application Core Concepts and Patterns](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot#application-core-concepts-and-patterns).
+This page does not specifically address configuration of the environment or capabilities provided by the platform. For configuration and usage, see the links at [Application Core Concepts and Patterns](https://github.com/department-of-veterans-affairs/bip-reference-person#application-core-concepts-and-patterns).
 
 ## Overview
 BIP applications can be thought of as being comprised of three layers (or "tiers"), each of which encapsulates functionality for the layer:
@@ -45,7 +45,7 @@ This layer is concerned with
 
 The partner layer should have at least one Helper class for each partner client that is called.
 
-For information about the Partner Client, see [bip-reference-partner-person](https://github.com/department-of-veterans-affairs/ocp-reference-spring-boot/tree/master/bip-reference-partner-person)
+For information about the Partner Client, see [bip-reference-partner-person](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-partner-person)
 
 #### Sequence Diagram - Partner Layer
 <img alt="Partner Layer Sequence Diagram" src="images/sd-reference-person-layer-partner.png">

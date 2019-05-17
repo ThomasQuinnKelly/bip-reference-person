@@ -19,6 +19,9 @@ import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdRespo
 
 /**
  * Make external calls to the partner using the partner client.
+ * <p>
+ * This Helper isolates references to partner clients. There should not be
+ * references to partner client classes outside of this class.
  *
  * @author aburkholder
  */
