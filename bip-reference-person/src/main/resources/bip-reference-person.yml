@@ -207,7 +207,13 @@ bip.framework:
         - /**
   swagger:
     title: BIP Reference Person Spring Boot Service v1 API Documentation
-    description: 
+    description: Reference Person API to demonstrate the microservice patterns on BIP Platform
+    contactName: va.gov
+    contactUrl: https://www.va.gov/
+    contactEmail: test@va.gov
+    termsOfServiceUrl: https://developer.va.gov/terms-of-service
+    licenseUrl: https://www.apache.org/licenses/LICENSE-2.0
+    license: Apache 2.0
     groupName: "@project.name@-@project.version@"
     version: ${info.build.version}
     securePaths: /api/v?.*/persons/.*
