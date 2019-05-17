@@ -207,7 +207,7 @@ bip.framework:
         - /**
   swagger:
     title: BIP Reference Person Spring Boot Service v1 API Documentation
-    description: BIP Reference Person API to demonstrate the microservice patterns on BIP Platform
+    description: Reference Person API to demonstrate the microservice patterns on BIP Platform
     contactName: va.gov
     contactUrl: https://www.va.gov/
     contactEmail: test@va.gov
