@@ -5,7 +5,7 @@ import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 
 /**
- * Transform a service Domain {@link PersonByPidDomainRequest} object to a Partner client {@link FindPersonByPtcpntId} requets object.
+ * Transform a service Domain {@link PersonByPidDomainRequest} object to a Partner client {@link FindPersonByPtcpntId} request object.
  *
  * @author aburkholder
  */
