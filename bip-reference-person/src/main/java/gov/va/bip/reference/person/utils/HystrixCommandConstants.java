@@ -9,7 +9,7 @@ public final class HystrixCommandConstants {
 	public static final String REFERENCE_PERSON_SERVICE_GROUP_KEY = "ReferencePersonServiceGroup";
 
 	/**
-	 * Instantiates a new letter generator constants.
+	 * Instantiates a new hystrix command constants.
 	 */
 	private HystrixCommandConstants() {
 

@@ -1,7 +1,5 @@
 package gov.va.bip.reference.person.utils;
 
-import gov.va.bip.reference.person.utils.ApplicationInfo;
-
 /**
  * <p>
  * Cache constants and utilities.
@@ -16,17 +14,14 @@ import gov.va.bip.reference.person.utils.ApplicationInfo;
  */
 public class CacheConstants {
 
-	/**
-	 * cache name separator
-	 */
+	/** Cache name separator */
 	private static final String CACHE_NAME_SEPARATOR = "_";
 
-	/**
-	 * cache name suffix
-	 */
+	/** Cache name suffix */
 	private static final String CACHE_NAME_SUFFIX =
 			CACHE_NAME_SEPARATOR + ApplicationInfo.PROJECT_NAME + CACHE_NAME_SEPARATOR + ApplicationInfo.VERSION;
 
+	/** Cache name for the reference-person service */
 	public static final String CACHENAME_REFERENCE_PERSON_SERVICE = "refPersonService" + CACHE_NAME_SUFFIX;
 
 	/**
