@@ -22,7 +22,7 @@
         <dependency>
             <groupId>gov.va.bip.framework</groupId>
             <artifactId>bip-framework-libraries</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
     
     	<!-- spring framework project dependencies -->
