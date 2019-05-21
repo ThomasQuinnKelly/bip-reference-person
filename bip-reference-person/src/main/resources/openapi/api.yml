@@ -1,19 +1,24 @@
 openapi: 3.0.1
 info:
-  version: 0.0.1-SNAPSHOT
-  title: BIP Reference Person Spring Boot Service v1 API Documentation
+   version: 1.0.1-SNAPSHOT
+   title: BIP Reference Person Spring Boot Service v1 API Documentation
+   description: A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification
+   termsOfService: https://developer.va.gov/terms-of-service
+   license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: http://localhost:8080/
+  - url: http://localhost:8080/api/v1
     description: Local server
 tags:
-  - name: person-resource
-    description: Person Resource
+  - name: reference-person
+    description: Reference Person Resource
   - name: person-rest-client-tester
     description: Person Rest Client Tester
   - name: token-resource
     description: Token Resource
 paths:
-  "/api/v1/persons/clientTests/callPersonByPidUsingFeignClient":
+  "/persons/clientTests/callPersonByPidUsingFeignClient":
     post:
       tags:
       - person-rest-client-tester
@@ -62,7 +67,7 @@ paths:
       - Authorization:
         - global
       deprecated: false
-  "/api/v1/persons/clientTests/callPersonByPidUsingRestTemplate":
+  "/persons/clientTests/callPersonByPidUsingRestTemplate":
     post:
       tags:
       - person-rest-client-tester
@@ -111,56 +116,13 @@ paths:
       - Authorization:
         - global
       deprecated: false
-  "/api/v1/persons/health":
-    get:
-      tags:
-      - person-resource
-      summary: A health check of this endpoint
-      description: Will perform a basic health check to see if the operation is running.
-      operationId: healthUsingGET
-      responses:
-        '200':
-          description: A Response which indicates a successful Request.  The Response
-            may contain "messages" that could describe warnings or further information.
-          content:
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/Health'
-        '400':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  This request shouldn't be retried until corrected.
-          content:
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '403':
-          description: The request is not authorized.  Please verify credentials used
-            in the request.
-          content:
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '500':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  Please retry.  If problem persists, please contact support
-            with a copy of the Response.
-          content:
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-      security:
-      - Authorization:
-        - global
-      deprecated: false
-  "/api/v1/persons/pid":
+  "/persons/pid":
     post:
       tags:
-      - person-resource
+      - reference-person
       summary: Retrieve person information by PID from Person Service .
       description: Will return a person info object based on search by PID.
-      operationId: personByPidUsingPOST
+      operationId: personByPid
       requestBody: 
         description: personInfoRequest
         required: true
@@ -212,8 +174,7 @@ paths:
       operationId: getTokenUsingPOST
       requestBody: 
         description: |-
-          Identity information for the authenticated user. CorrelationIds may be null or an empty array if the target API does not require it. Otherwise, correlationIds must be the list as retrieved from MVI:
-          <table style="table-layout:auto;width:700px;text-align:left;background-color:#efefef;"><tr><th>Common ID Name</th><th>Example ID</th><th>Type</th><th>Source</th><th>Issuer</th><th>Status</th><th </tr><tr><td>Participant ID (PID)</td><td>12345678</td><td>PI</td><td>200CORP</td><td>USVBA</td><td>A</td></tr><tr><td>File Number</td><td>123456789</td><td>PI</td><td>200BRLS</td><td>USVBA</td><td>A</td></tr><tr><td>ICN</td><td>1234567890V123456</td><td>NI</td><td>200M</td><td>USVHA</td><td>A</td></tr><tr><td>EDIPI / PNID</td><td>1234567890</td><td>NI</td><td>200DOD</td><td>USDOD</td><td>A</td></tr><tr><td>SSN</td><td>123456789</td><td>SS</td><td></td><td></td><td></td></tr></table>
+          Identity information for the authenticated user. CorrelationIds may be null or an empty array if the target API does not require it. Otherwise, correlationIds must be the list as retrieved from MVI: <table style=\"table-layout:auto;width:700px;text-align:left;background-color:#efefef;\"><tr><th>Common ID Name</th><th>Example ID</th><th>Type</th><th>Source</th><th>Issuer</th><th>Status</th><th </tr><tr><td>Participant ID (PID)</td><td>12345678</td><td>PI</td><td>200CORP</td><td>USVBA</td><td>A</td></tr><tr><td>File Number</td><td>123456789</td><td>PI</td><td>200BRLS</td><td>USVBA</td><td>A</td></tr><tr><td>ICN</td><td>1234567890V123456</td><td>NI</td><td>200M</td><td>USVHA</td><td>A</td></tr><tr><td>EDIPI / PNID</td><td>1234567890</td><td>NI</td><td>200DOD</td><td>USDOD</td><td>A</td></tr><tr><td>SSN</td><td>123456789</td><td>SS</td><td></td><td></td><td></td></tr></table>
         required: true
         content:
             application/json:
@@ -263,16 +224,6 @@ components:
       bearerFormat: JWT
       scheme: bearer
   schemas:
-    Health:
-      type: object
-      properties:
-        description:
-          type: string
-        details:
-          type: object
-        status:
-          type: string
-      title: Health
     Message:
       type: object
       required:
@@ -376,15 +327,11 @@ components:
           description: The persons SSN
       title: PersonInfo
       description: Model for data contained in the response from the Person Service
-    ProviderTransferObjectMarker:
-      type: object
-#      allOf:
-#        - $ref: '#/components/schemas/PersonInfoRequest'
     PersonInfoRequest:
       title: PersonInfoRequest
       description: Model for data to request person information from the Person Service
       allOf:
-        - '$ref': '#/components/schemas/ProviderTransferObjectMarker'
+        - '$ref': '#/components/schemas/ProviderRequest'
         - type: object
           properties:
             participantID:
@@ -407,7 +354,7 @@ components:
             personInfo:
               description: The object representing the person information
               '$ref': '#/components/schemas/PersonInfo'
-    ProviderResponse:
+    ProviderResponse: 
       type: object
       properties:
         messages:
@@ -415,4 +362,7 @@ components:
           items:
             '$ref': '#/components/schemas/Message'
       title: ProviderResponse
+    ProviderRequest: 
+      type: object
+      title: ProviderRequest
     

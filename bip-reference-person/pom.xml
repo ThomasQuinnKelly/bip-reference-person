@@ -17,10 +17,10 @@
     <description>Reference Person Service Implementation for BIP Spring Boot Project</description>
     
     <properties>
-	    <yaml.file>${basedir}/src/main/resources/swagger/api.yml</yaml.file>
+	    <yaml.file>${basedir}/src/main/resources/openapi/api.yml</yaml.file>
 	    <generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
-	    <generated-sources-java-path>main/java</generated-sources-java-path>
-	    <version.swagger.codegen>3.0.8</version.swagger.codegen>
+	    <generated-sources-java-path>openapi</generated-sources-java-path>
+	    <openapi.codegen.version>3.3.4</openapi.codegen.version>
 	    <!-- TODO add the properties from target/generated-sources/pom.xml here -->
 	</properties>
     
@@ -121,6 +121,11 @@
 		    <groupId>org.codehaus.janino</groupId>
 		    <artifactId>janino</artifactId>
 		</dependency>
+		<dependency>
+		    <groupId>org.openapitools</groupId>
+		    <artifactId>jackson-databind-nullable</artifactId>
+		    <version>0.1.0</version>
+		</dependency>
         <!-- test dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -188,46 +193,88 @@
     
     <profiles>
 		<profile>
-			<id>io.swagger.codegen.v3-project</id>
+			<id>org.openapitools.codegen.project</id>
 			<activation>
 				<file><!-- add a file named .docker-jar-project-marker to war projects 
 						to activate this profile -->
 					<exists>${yaml.file}</exists>
 				</file>
 			</activation>
-			<properties>
-				<!-- Only unit tests are run when the docker-jar-project profile is active -->
-				<skipTests>true</skipTests>
-				<skipITs>true</skipITs>
-			</properties>
 			<build>
 				<plugins>
-				 <!-- activate the plugin -->
+				 	<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-resources</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${generated-sources-path}</outputDirectory>
+									<resources>
+										<resource>
+											<directory>${basedir}/src/main/resources/openapi</directory>
+											<includes>
+												<include>.openapi-generator-ignore</include>
+											</includes>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				    <!-- activate the plugin -->
 		            <plugin>
-		                <groupId>io.swagger.codegen.v3</groupId>
-					    <artifactId>swagger-codegen-maven-plugin</artifactId>
-					    <version>${version.swagger.codegen}</version>
+		                <groupId>org.openapitools</groupId>
+		                <artifactId>openapi-generator-maven-plugin</artifactId>
+					    <version>${openapi.codegen.version}</version>
 		                <executions>
 		                    <execution>
 		                        <goals>
 		                            <goal>generate</goal>
 		                        </goals>
 		                        <configuration>
-		                        	 <language>spring</language>
-		                        	 <generateApis>false</generateApis>
-		                            <!-- specify the swagger yaml -->
-		                            <inputSpec>${yaml.file}</inputSpec>
+		                        	<inputSpec>${yaml.file}</inputSpec>
 		                            <output>${generated-sources-path}</output>
-		                            <apiPackage>gov.va.reference.person.api</apiPackage>
-                                	<modelPackage>gov.va.reference.person.api.model.v1</modelPackage>
-                                	
+		                            
+		                            <apiPackage>gov.va.bip.reference.person.api</apiPackage>
+                                	<modelPackage>gov.va.bip.reference.person.api.model.v1</modelPackage>
+                                	<invokerPackage>gov.va.bip.reference.person.api.client</invokerPackage>
+                                	<importMappings>
+                                		ProviderResponse=gov.va.bip.framework.rest.provider.ProviderResponse,
+                                		ProviderRequest=gov.va.bip.framework.rest.provider.ProviderRequest,
+                                		Message=gov.va.bip.framework.rest.provider.Message,
+                                		Person=gov.va.bip.framework.security.model.Person,
+                                		ProviderTransferObjectMarker=gov.va.bip.framework.transfer.ProviderTransferObjectMarker,
+                                		Health=org.springframework.boot.actuate.health.Health
+                                	</importMappings>
+		                            
+		                            <addCompileSourceRoot>false</addCompileSourceRoot>
+		                            <configHelp>false</configHelp>
+		                            <verbose>false</verbose>
+		                            <generatorName>spring</generatorName>
+		                            <generateApiDocumentation>false</generateApiDocumentation>
+		                            <generateApiTests>false</generateApiTests>
+		                            <generateApis>true</generateApis>
+		                            <generateModels>true</generateModels>
+		                            <generateModelTests>false</generateModelTests>
+		                            <generateModelDocumentation>false</generateModelDocumentation>
+		                            <generateSupportingFiles>false</generateSupportingFiles>
+		                            <languageSpecificPrimitives>true</languageSpecificPrimitives>
+									
 									<configOptions>
+									  <library>spring-boot</library>
+									  <serializableModel>true</serializableModel>
 							          <sourceFolder>${generated-sources-java-path}</sourceFolder>
-							          <library>spring-mvc</library>
 							          <interfaceOnly>true</interfaceOnly>
+							          <implicitHeaders>false</implicitHeaders>
+							          <java8>false</java8>
 							          <useBeanValidation>true</useBeanValidation>
-							          <dateLibrary>java8</dateLibrary>
-							          <java8>true</java8>
+                                	  <useTags>true</useTags>
+							 		  <swaggerDocketConfig>false</swaggerDocketConfig>
 							        </configOptions>
 		                            
 		                        </configuration>
@@ -237,12 +284,12 @@
 		            <plugin>
 				        <groupId>org.codehaus.mojo</groupId>
 				        <artifactId>build-helper-maven-plugin</artifactId>
-				        <version>1.9.1</version>
 				        <executions>
-				            <!-- TODO for eclipse/m2e users: install the m2e connector 'buildhelper' by selecting 'Discover new m2e connectors' while hovering over the follwoing execution tag -->
+				            <!-- TODO for eclipse/m2e users: install the m2e connector 'buildhelper' by selecting 'Discover new m2e connectors' while 
+				            hovering over the following execution tag -->
 				            <execution>
 				                <id>add-generated-source</id>
-				                <phase>initialize</phase>
+				                <phase>generate-sources</phase>
 				                <goals>
 				                    <goal>add-source</goal>
 				                </goals>
@@ -267,9 +314,9 @@
 				                    <pluginExecutions>
 				                        <pluginExecution>
 				                            <pluginExecutionFilter>
-				                                <groupId>io.swagger.codegen.v3</groupId>
-											    <artifactId>swagger-codegen-maven-plugin</artifactId>
-				                                <versionRange>[${3.0.8},)</versionRange>
+				                                <groupId>org.openapitools</groupId>
+		                						<artifactId>openapi-generator-maven-plugin</artifactId>
+				                                <versionRange>[${openapi.codegen.version},)</versionRange>
 				                                <goals>
 				                                    <goal>generate</goal>
 				                                </goals>

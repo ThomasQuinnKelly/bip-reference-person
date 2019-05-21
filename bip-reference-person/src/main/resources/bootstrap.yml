@@ -2,7 +2,8 @@ spring:
   application: 
     name: "@project.name@"
   config: 
-    name: "@project.name@"
+    name: "@project.name@, api"
+    location: "classpath:/, classpath:/swagger/"
 spring.cloud.consul: 
   config:
     enabled: false

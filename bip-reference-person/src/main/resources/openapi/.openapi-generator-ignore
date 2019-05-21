@@ -1,0 +1,9 @@
+# Swagger Codegen Ignore
+# Lines beginning with a # are comments
+
+# Exclude all recursively
+# src/**
+
+# swagger/**/**Api*.java
+swagger/**/client/*.java
+swagger/**/**ApiController*.java
