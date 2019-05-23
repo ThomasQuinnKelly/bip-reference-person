@@ -11,13 +11,11 @@ Project is built on Java and Maven, and uses the Sring RestTemplate jars for cor
 `pom.xml` - The Maven configuration for building and deploying the project.
 
 `src/inttest/resources/gov/va/referenceperson/feature` - This is where you will create the cucumber feature files that contain the Feature
-and Scenarios for the Reference service you are testing.
+and Scenarios for the Reference service you are testing. As a good practice, it is suggested to group all the similar business functionality in one feature file.
 
-`src/inttest/java/gov/va/bip/reference/service/steps` - The implementation steps related to the feature
-and scenarios mentioned in the cucumber file for the API needs to be created in this location. 
+`src/inttest/java/gov/va/bip/reference/service/steps` - The implementation steps related to the feature and scenarios mentioned in the cucumber file for the API needs to be created in this location. In GenericSteps.java class Generic steps like validating the status code, setting header for the service are implemented here to avoid duplication of steps implementation. 
 
-`src/inttest/java/gov/va/bip/reference/service/runner` - Cucumber runner class that contains all feature file entries that needs to be executed at runtime.
-The annotations provided in the cucumber runner class will assist in bridging the features to step definitions.
+`src/inttest/java/gov/va/bip/reference/service/runner` - Cucumber runner class that contains all feature file entries that needs to be executed at runtime. The annotations provided in the cucumber runner class will assist in bridging the features to step definitions.
 
 `src/inttest/resources/request/dev` – This folder contains DEV request files if the body of your API call is static and needs to be sent as a XML/JSON file.
 
