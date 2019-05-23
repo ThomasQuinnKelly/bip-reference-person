@@ -170,9 +170,12 @@ The View Results Tree listener displays samples that the JMeter samplers generat
 
 It is a special form of Thread Group used to perform necessary actions after the execution of regular thread group completes. In our case, we delete the token.CSV file once the test is completed.
 
+## Running performance Tests
+See [bip-reference-perftest](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-perftest).
+
 ## Reporting:
 
-## Dashboard Report:
+### Dashboard Report:
 
 For all test plan after execution of performance test, it generates a dashboard report.
 

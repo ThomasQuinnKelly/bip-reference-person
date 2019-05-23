@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class PersonInfoRequest implements ProviderTransferObjectMarker {
 	public static final String MODEL_NAME = PersonInfoRequest.class.getSimpleName();
 
-	/** A String representing a social security number. */
+	/** A String representing a participant ID. */
 	@ApiModelProperty(value = "The Participant ID of the person for whom to retrieve data", required = true,
 			example = "6666345")
 	@NotNull(message = "{bip.reference.person.info.request.pid.NotNull}")

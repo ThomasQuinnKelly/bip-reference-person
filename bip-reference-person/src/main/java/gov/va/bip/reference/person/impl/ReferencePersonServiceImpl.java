@@ -34,11 +34,10 @@ import gov.va.bip.reference.person.utils.HystrixCommandConstants;
 /**
  * Implementation class for the Reference Person Service.
  * The class demonstrates the implementation of hystrix circuit breaker
- * pattern for read operations. When there is a failure the fallback method is invoked and the response is
- * returned from the cache
+ * pattern for read operations. When there is a failure the fallback
+ * method is invoked and the response is returned from the cache
  *
  * @author akulkarni
- *
  */
 @Service(value = ReferencePersonServiceImpl.BEAN_NAME)
 @Component
@@ -70,6 +69,10 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 
 	/**
 	 * Implementation of the service (domain) layer API.
+	 * <p>
+	 * If graceful degredation is possible, add
+	 * {@code fallbackMethod = "sampleFindByParticipantIDFallBack"}
+	 * to the {@code @HystrixCommand}.
 	 * <p>
 	 * {@inheritDoc}
 	 *
@@ -117,14 +120,24 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 
 	/**
 	 * Support graceful degradation in a Hystrix command by adding a fallback method that Hystrix will call to obtain a
-	 * default value or values in case the main command fails for findPersonByParticipantID <br/>
-	 * <br/>
+	 * default value or values in case the main command fails for {@link #findPersonByParticipantID(PersonByPidDomainRequest)}.
+	 * <p>
+	 * See {https://github.com/Netflix/Hystrix/wiki/How-To-Use#fallback} for Hystrix Fallback usage
+	 * <p>
+	 * Hystrix doesn't REQUIRE you to set this method. However, if it is possible to degrade gracefully
+	 * - perhaps by returning static data, or performing some other process - the degraded process should
+	 * be performed in the fallback method. In order to enable a fallback such as this, on the main method,
+	 * add to its {@code @HystrixCommand} the {@code fallbackMethod} attribute. So for
+	 * {@link #findPersonByParticipantID(PersonByPidDomainRequest)}
+	 * you would add the attribute to its {@code @HystrixCommand}:<br/>
 	 *
-	 * See {https://github.com/Netflix/Hystrix/wiki/How-To-Use#fallback} for Hystrix Fallback usage <br/>
-	 * <br/>
+	 * <pre>
+	 * fallbackMethod = "sampleFindByParticipantIDFallBack"
+	 * </pre>
 	 *
-	 * Hystrix doesn't REQUIRE you to set this method. Unless you want to return a default data or add business logic for that case,
-	 * .* If you throw an exception you'll "confuse" Hystrix and it will throw an HystrixRuntimeException.
+	 * <b>Note that exceptions should not be thrown from any fallback method.</b>
+	 * It will "confuse" Hystrix and cause it to throw an HystrixRuntimeException.
+	 * <p>
 	 *
 	 * @param personByPidDomainRequest The request from the Java Service.
 	 * @param throwable the throwable

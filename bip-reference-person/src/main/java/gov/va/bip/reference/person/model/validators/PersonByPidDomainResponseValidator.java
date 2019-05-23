@@ -18,6 +18,12 @@ import gov.va.bip.reference.person.messages.PersonMessageKeys;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
 
+/**
+ * Validates the PID input on the {@link PersonByPidDomainResponse}.
+ *
+ * @see AbstractStandardValidator
+ * @author aburkholder
+ */
 public class PersonByPidDomainResponseValidator extends AbstractStandardValidator<PersonByPidDomainResponse> {
 
 	/** Class logger */

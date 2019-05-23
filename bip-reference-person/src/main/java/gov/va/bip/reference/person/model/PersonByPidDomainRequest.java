@@ -14,7 +14,7 @@ public class PersonByPidDomainRequest extends DomainRequest {
 	/** version id. */
 	private static final long serialVersionUID = 1593666859950183199L;
 
-	/** A String representing a social security number. */
+	/** A String representing a participant ID. */
 	@ApiModelProperty(value = "The Participant ID of the person for whom to retrieve data", required = true,
 			example = "6666345")
 	private Long participantID;

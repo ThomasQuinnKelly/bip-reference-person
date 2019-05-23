@@ -15,6 +15,9 @@ This project is customized to support testing the REST Services used by Referenc
 
 This project can be used as a skeleton to start writing test cases.
 
+## Rest Template:
+
+The RestTemplate is the basic Spring class for simultaneous client-side HTTP access. It simplifies the interaction with HTTP servers and enforces RESTful systems. It executes the HTTP method for the given URI. It returns ResponseEntity object and can interact using any HTTP method.
 
 ## Cucumber:
 
@@ -123,6 +126,9 @@ Examples:
        <groupId>org.springframework.boot</groupId>
        <artifactId>spring-boot-maven-plugin</artifactId>
 ```
+
+## Running Integration Tests
+See [bip-reference-inttest](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-inttest).
 
 ## Reports
 
