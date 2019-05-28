@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
    version: 1.0.1-SNAPSHOT
-   title: BIP Reference Person Spring Boot Service v1 API Documentation
+   title: BIP Reference Person Spring Boot Service v1 API Documentation Updated
    description: A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification
    termsOfService: https://developer.va.gov/terms-of-service
    license:
@@ -64,8 +64,7 @@ paths:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
       security:
-      - Authorization:
-        - global
+        - bearerAuth: []
       deprecated: false
   "/persons/clientTests/callPersonByPidUsingRestTemplate":
     post:
@@ -113,8 +112,7 @@ paths:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
       security:
-      - Authorization:
-        - global
+        - bearerAuth: []
       deprecated: false
   "/persons/pid":
     post:
@@ -185,7 +183,7 @@ paths:
           description: A Response which indicates a successful Request.  The Response
             may contain "messages" that could describe warnings or further information.
           content:
-            application/json:
+            text/plain:
               schema:
                 type: string
         '400':

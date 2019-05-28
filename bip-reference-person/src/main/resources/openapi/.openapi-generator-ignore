@@ -5,5 +5,5 @@
 # src/**
 
 # swagger/**/**Api*.java
-swagger/**/client/*.java
-swagger/**/**ApiController*.java
+openapi/**/client/*.java
+openapi/**/**ApiController*.java
