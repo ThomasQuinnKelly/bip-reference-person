@@ -193,13 +193,10 @@
 			work -->
 		<profile>
 			<id>org-openapitools-codegen-reference-person</id>
-			<properties>
-				<!-- Only unit tests are run when the docker-jar-project profile is active -->
-				<skipTests>true</skipTests>
-				<skipITs>true</skipITs>
-			</properties>
 			<activation>
-				<file><!-- File location to activate this profile -->
+				<file><!-- Existence of API YML file to activate the profile. DO NOT 
+						MODIFY LOCATION AND FILE NAME AS FRAMEWORK USES THE SAME FOR ACTIVATION, 
+						SPEC GENERATE -->
 					<exists>${basedir}/src/main/resources/openapi/api.yml</exists>
 				</file>
 			</activation>
@@ -212,7 +209,7 @@
 						<version>${openapi.codegen.version}</version>
 						<executions>
 							<execution>
-								<id>generate-openapi-code</id>
+								<id>generate-openapi-reference-person</id>
 								<goals>
 									<goal>generate</goal>
 								</goals>
@@ -222,7 +219,6 @@
 
 									<apiPackage>gov.va.bip.reference.person.api</apiPackage>
 									<modelPackage>gov.va.bip.reference.person.api.model.v1</modelPackage>
-									<invokerPackage>gov.va.bip.reference.person.api.client</invokerPackage>
 									<importMappings>
 										ProviderResponse=gov.va.bip.framework.rest.provider.ProviderResponse,
 										ProviderRequest=gov.va.bip.framework.rest.provider.ProviderRequest,
@@ -252,6 +248,7 @@
 										<implicitHeaders>false</implicitHeaders>
 										<java8>false</java8>
 										<useBeanValidation>true</useBeanValidation>
+										<performBeanValidation>true</performBeanValidation>
 										<useTags>true</useTags>
 										<swaggerDocketConfig>false</swaggerDocketConfig>
 									</configOptions>
@@ -260,7 +257,8 @@
 						</executions>
 					</plugin>
 				</plugins>
-				<!-- the following is only necessary if you are using eclipse, STS and m2e -->
+				<!-- the following is only necessary if you are using eclipse, STS and 
+					m2e -->
 				<pluginManagement>
 					<plugins>
 						<plugin>

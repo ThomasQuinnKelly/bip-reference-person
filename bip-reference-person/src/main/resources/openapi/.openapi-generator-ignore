@@ -2,8 +2,8 @@
 # Lines beginning with a # are comments
 
 # Exclude all recursively
-# src/**
+# openapi/**
 
-# swagger/**/**Api*.java
+# Exclude specific patterns
 openapi/**/client/*.java
 openapi/**/**ApiController*.java
