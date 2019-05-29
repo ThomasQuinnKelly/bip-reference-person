@@ -26,3 +26,5 @@ OpenAPI is a way of describing your APIs in a YAML (or JSON) file. You model the
 #### $refs are great, but inherently limited
 #### Generated SDKs are going to closely match you API Structure
 #### There’s no consistent way to break down and structure your OpenAPI definitions
+
+## Summary and Recommendations
