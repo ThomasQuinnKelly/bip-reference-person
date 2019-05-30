@@ -61,6 +61,11 @@ public class PersonInfo {
 		String textMessage = JsonUtil.getString(handler.getStrResponse(), "messages[0].text");
 		assertThat(textMessage, equalTo(text));
 	}
+	@And("^the service returns content type \"([^\"]*)\"$")
+	public void validateContentType(final String type) throws Throwable {
+		String contentType = handler.getRestUtil().getResponseHttpHeaders().getContentType().toString();
+		assertThat(contentType, equalTo(type));
+	}
 
 	@After({})
 	public void cleanUp(Scenario scenario) {
