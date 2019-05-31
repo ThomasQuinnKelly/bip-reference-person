@@ -18,7 +18,7 @@ OpenAPI is a way of describing your APIs in a YAML (or JSON) file. You model the
 
 ## OpenAPI V3 Tooling
 
-#### swagger-cli
+### swagger-cli
 
 swagger-cli is one of the important tools in the tooling chain. swagger-cli is a tool which pre-dates the OpenAPI specification, but has been updated to be compatible with OpenAPI V3.
 
@@ -40,11 +40,11 @@ In 2018, William Cheng, top contributor to Swagger Codegen, informed about a big
 
 The founding members felt that Swagger Codegen 3.0.0 was diverging too much from the philosophy of Swagger Codegen 2.x. The founding members wanted a more rapid release cycle (weekly patch release, monthly minor release) so users do not need to wait for several months to get a stable release. Having a community-driven version allows for innovation, reliability, and a roadmap owned by the community. OpenAPI Generator is a fork of swagger-codegen between version 2.3.1 and 2.4.0.
 
-#### openapi code generator
+### openapi code generator
 
 "OpenAPI Generator" is a comprehensive Java application which can generate client and server side code from your OpenAPI models. It’s a large code base with support for generating client-side SDKs in over 20 languages as well as nearly the same number of server-side implementations. It's a community-driven version which provides similar functionalities as that of Swagger Codegen and can be used as drop-in replacement. If a team already use swagger-codegen then it's recommended want to migrate from Swagger Codegen to OpenAPI Generator sooner rather than later.
 
-While OpenAPI Generator is very comprehensive, there are rough edges when trying to use it ourselves; documentation can be inconsistent and the error messaging difficult to follow. This coupled with being a large Java code base with liberal usage of abstract classes and inheritance means that debugging why something isn’t working the way you’d expect can be incredibly challenging
+While OpenAPI Generator is very comprehensive, there are rough edges when trying to use it ourselves; documentation can be inconsistent and the error messaging difficult to follow. This coupled with being a large Java code base with liberal usage of abstract classes and inheritance means that debugging why something isn’t working the way you’d expect can be incredibly challenging.
 
 There are two main components to how OpenAPI Generator generates source code:
 
@@ -58,6 +58,8 @@ Each language (or framework) you can generate has a java class which defines the
 
 It is very helpful to familiarize yourself with the inner workings of each of the generator classes that you want to work with. [Here’s the Java class which generates a Java Spring client SDK](https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator/src/main/java/org/openapitools/codegen/languages/SpringCodegen.java). Much of the business logic which defines the behaviour of the code generation is embedded in this Java. The drawback of this approach is that if want modify the business logic for code generation, you can’t just change the Mustache templates, you’ll have maintain your own fork of the OpenAPI Generator code base.
 
+For the BIP framework Proof of Concept v3.3.4 was used vs newer version 4 as we noticed some issues mentioned in the #Challenges encountered section. 
+
 **Reference Links**
 
 [Why was it decided to fork Swagger Codegen?](https://github.com/OpenAPITools/openapi-generator/blob/master/docs/qna.md)
@@ -66,15 +68,42 @@ It is very helpful to familiarize yourself with the inner workings of each of th
 
 [OpenAPI Generator](https://github.com/OpenAPITools/openapi-generator)
 
-#### swagger ui
+### swagger ui
+
+Swagger UI is a collection of HTML, Javascript, and CSS assets that dynamically generates documentation from an OAS-compliant API. It allows your development team and end consumers — to visualize and interact with the API’s resources without having any of the implementation logic in place. It’s automatically generated from your OpenAPI (formerly known as Swagger) specification, with the visual documentation making it easy for back end implementation and client side consumption.
+
+To generate Swagger UI from OAS 3.0 specification in yaml format, there are set of configuration changes required. At a high level, listed below are the steps needed. **BIP Blue Framework** would execute these steps during the application build process via Maven Parent POM configuration.
+
+1. Download "swagger-ui" webjar and unpack it under the build directory.
+2. Convert YAML specification to JSON format and copy it to swagger-ui webjar directory.
+3. Set specification JSON path in Swagger UI index.html. Copy the files to the root swagger ui directory and delete version specific folder.
+4. Serve the swagger ui resources with the framework Swagger Auto Configuration via Spring Resource Handler.
 
 ## Challenges encountered
 
 #### Tooling support for OpenAPI V3 is very inconsistent
+OpenAPI Generator’s support for OpenAPI V3 has some hurdles to overcome: it doesn’t play nice with YAML definitions that make use of `$ref`. $ref is a great way to break down the OpenAPI definitions, but if you want to be able to use these definitions with OpenAPI Generator, you’ll need to use swagger-cli combine to create one, combined JSON file with all your references embedded. You can then point OpenAPI Generator at this JSON file and code generation should mostly work as expected.
+
+I verified OpenAPI Generator latest version 4 and discovered that the OpenAPI files are no-longer valid. OpenAPI Generator 4 is using an updated version of swagger-parser, which unfortunately introduced an issue where any OpenAPI files using  $ref parameters in paths would no-longer pass validation. The issue has since been resolved on swagger-parser’s issue tracker, and is currently awaiting a dependency update in OpenAPI Generator. Unfortunately this meant disabling validation to be able to continue our experiments with OpenAPI Generator 4.
+
 #### Polymorphism in OpenAPI Generator isn’t consistent
+
+The model generated using Maven plugin 4.0.0 version doesn't use inheritance. There are multiple issues reported already related to this behavior. 
+
+https://github.com/OpenAPITools/openapi-generator/issues/2888
+https://github.com/OpenAPITools/openapi-generator/issues/2692
+https://github.com/OpenAPITools/openapi-generator/issues/2576
+
+One of the highly touted features of OpenAPI V3 was support for this type of polymorphism via the oneOf or anyOf features. Unfortunately OpenAPI Generator V3 did not yet support these features. When OpenAPI Generator 4 betas were announced, we spotted in the release notes that there was support for polymorphism.
+
+Discovered that this support has only been added to the core of OpenAPI Generator, and not yet supported in the vast majority of the languages and frameworks that OpenAPI Generator can output.
+
+Until there is a full polymorphism support in the languages we’re generating, most likely solution is to expose the more comprehensive version of each API call to make sure that you’re still able to access every feature of the framework and service.
+
 #### OpenAPI Generator falls back to Inline types
 #### $refs are great, but inherently limited
 #### Generated SDKs are going to closely match you API Structure
 #### There’s no consistent way to break down and structure your OpenAPI definitions
+#### JSR 303 
 
 ## Summary and Recommendations
