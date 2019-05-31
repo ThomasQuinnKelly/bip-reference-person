@@ -264,7 +264,7 @@ components:
               format: int64
               example: 6666345
               description: The Participant ID of the person for whom to retrieve data
-              maxLength: 1
+              minimum: 1
               exclusiveMinimum: false
               required:
               - participantID
