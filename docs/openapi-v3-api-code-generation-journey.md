@@ -6,6 +6,7 @@ Traditionally, writing SDKs (Models, Interfaces) can be a slow and painstaking p
 When it comes to using API description formats, two important schools of thoughts have emerged: The “Design First” and the “Build First” approach to API development. The Build First approach is a more traditional approach to building APIs, with development of code happening after the business requirements are laid out, eventually generating the documentation from the code. The Design First approach advocates for designing the API’s contract first before writing any code. This is a relatively new approach, but is fast catching on, especially with the use of API description formats. To understand the two approaches better, let’s look at the general process followed during the API lifecycle. Like any product, the concept of the API starts with the business team identifying an opportunity. The opportunity is analyzed and a plan to capitalize on it is created in a text document by strategists, analysts and other business folks. This document is then passed along to the development team, which is where the plan takes some tangible form. There are two possibilities from here on to develop the API:
 
 **Design First:** The plan is converted to a human and machine readable contract, such as a Swagger document, from which the code is built
+
 **Build First:** Based on the business plan, API is directly coded, from which a human or machine readable document, such as a Swagger document can be generated
 
 There are advantages and disadvantages associated with both approaches, and at the end of the day, choosing the right approach boils down to your immediate technological and strategic needs that you wish to solve with your APIs.
@@ -23,8 +24,9 @@ swagger-cli is one of the important tools in the tooling chain. swagger-cli is a
 
 You may end up using the two operations swagger-cli provides frequently while working with OpenAPI:
 
-swagger-cli validate <file>
-swagger-cli bundle <file>
+`swagger-cli validate <file>`
+
+`swagger-cli bundle <file>`
   
 validate is used to validate the contents of an OpenAPI YAML file performing some checks against the OpenAPI specification. 
 
@@ -57,6 +59,7 @@ Each language (or framework) you can generate has a java class which defines the
 It is very helpful to familiarize yourself with the inner workings of each of the generator classes that you want to work with. [Here’s the Java class which generates a Java Spring client SDK](https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator/src/main/java/org/openapitools/codegen/languages/SpringCodegen.java). Much of the business logic which defines the behaviour of the code generation is embedded in this Java. The drawback of this approach is that if want modify the business logic for code generation, you can’t just change the Mustache templates, you’ll have maintain your own fork of the OpenAPI Generator code base.
 
 **Reference Links**
+
 [Why was it decided to fork Swagger Codegen?](https://github.com/OpenAPITools/openapi-generator/blob/master/docs/qna.md)
 
 [Migration from Swagger Codegen](https://github.com/OpenAPITools/openapi-generator/blob/master/docs/migration-from-swagger-codegen.md)
