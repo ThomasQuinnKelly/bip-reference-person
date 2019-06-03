@@ -197,11 +197,15 @@ And we’d map this onto our HTTP API as follows:
 
 Typically you would end up using `$ref` to break up OpenAPI definitions and refer to the common objects, including the framework provided ones. Bigger question is to design and implement layout for these files. There is an article about good ways to break down your Swagger definitions into a more sensible directory structure, but not much has been written about doing the same with OpenAPI.
 
-The big challenge here is that, we can only use $ref in a limited number of places in our OpenAPI definitions (Swagger was much more liberal). Much more time would need to be invested for design and layout of the OpenAPI YAML directory / repository. 
+The big challenge here is that, we can only use $ref in a limited number of places in our OpenAPI definitions (Swagger was much more liberal). Much more time would need to be invested for the design and layout of OpenAPI YAML directory / repository. 
 
 #### No feature to support JSR 303 custom messages
 
-During the initial POC work with Reference Person Sample API service, I can conclude that the OAS and maven code generator plugin out of the box doesn't support can't configuration for the JSR 303 validation messages. The only way you can customize the messages is to override mustache templates for BIP framework.
-
+Based on the Proof of Concept work for Reference Person Sample API service, I can conclude that OAS and maven code generator plugin out of the box doesn't support additional configuration for the JSR 303 validation messages. One option to customize the messages is likely to override mustache templates. But this would require additional time to be spent by framework team to demosntrate via another task if its feasible option.
 
 ## Summary and Recommendations
+
+OpenAPI is now a popular standard for modeling the APIs, and the tooling to generate SDKs from it works well across a variety of languages. However it's  still evolving, we can’t expect everything to work perfectly the first time. Team must invest time in developing the toolchain, and see if it works across the board for multiple teams. 
+
+The speed of development of the SDKs would surely be effective and elegant to generate updated SDKs when adding new API calls to already existing products.
+
