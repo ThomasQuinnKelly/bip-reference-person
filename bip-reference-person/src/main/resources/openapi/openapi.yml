@@ -266,8 +266,8 @@ components:
               description: The Participant ID of the person for whom to retrieve data
               minimum: 1
               exclusiveMinimum: false
-              required:
-              - participantID
+          required:
+            - participantID
     PersonInfoResponse:
       title: PersonInfoResponse
       description: Model for the response from the Person Service
