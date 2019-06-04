@@ -8,7 +8,7 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: http://localhost:8080/api/v1
+  - url: http://localhost:8080
     description: Local server
 tags:
   - name: reference-person
@@ -18,7 +18,7 @@ tags:
   - name: token-resource
     description: Token Resource
 paths:
-  "/persons/clientTests/callPersonByPidUsingFeignClient":
+  "/api/v1/persons/clientTests/callPersonByPidUsingFeignClient":
     post:
       tags:
       - person-rest-client-tester
@@ -66,7 +66,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
-  "/persons/clientTests/callPersonByPidUsingRestTemplate":
+  "/api/v1/persons/clientTests/callPersonByPidUsingRestTemplate":
     post:
       tags:
       - person-rest-client-tester
@@ -114,7 +114,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
-  "/persons/pid":
+  "/api/v1/persons/pid":
     post:
       tags:
       - reference-person
@@ -162,7 +162,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
-  "/token":
+  "/api/v1/token":
     post:
       tags:
       - token-resource
