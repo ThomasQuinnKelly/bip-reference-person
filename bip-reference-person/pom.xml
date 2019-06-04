@@ -130,7 +130,14 @@
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-annotations</artifactId>
 		</dependency>
-        
+ <!--        <dependency>
+		    <groupId>org.openapitools</groupId>
+		    <artifactId>openapi-generator-cli</artifactId>
+		</dependency> -->
+		<dependency>
+		    <groupId>org.openapitools</groupId>
+		    <artifactId>openapi-generator</artifactId>
+		</dependency>
         <!-- jolokia for JMX over HTTP via /jolokia -->
         <dependency>
 		    <groupId>org.jolokia</groupId>
@@ -265,6 +272,7 @@
                                     <generateModelDocumentation>false</generateModelDocumentation>
                                     <generateSupportingFiles>false</generateSupportingFiles>
                                     <languageSpecificPrimitives>true</languageSpecificPrimitives>
+                                    <templateDirectory>${basedir}/src/main/resources/openapi/mustache</templateDirectory>
 
                                     <configOptions>
                                         <serializableModel>true</serializableModel>
