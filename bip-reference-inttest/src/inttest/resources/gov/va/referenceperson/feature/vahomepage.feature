@@ -9,7 +9,7 @@ Feature: Validate VA home page to check the header, banner, containers and links
     And verify the crisis line banner 
     And verify the other links in the navigation menu
 
-    @vahomepae @DEV
+    @vahomepae 
     Examples: 
       | ServiceURL          |
       | https://www.va.gov/ |
