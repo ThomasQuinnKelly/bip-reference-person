@@ -16,7 +16,7 @@ import cucumber.api.testng.AbstractTestNGCucumberTests;
  */
 @RunWith(Cucumber.class)
 @CucumberOptions(strict = false, plugin = { "pretty",
-		"html:target/site/cucumber-pretty", "json:target/site/cucumber.json" },
+		"html:target/site/cucumber-pretty", "json:target/site/cucumber.json" },tags= {"@vahomepae"},
 		features = { "src/inttest/resources/gov/va/referenceperson/feature" },
 		glue = { "gov.va.bip.reference.service.steps" })
 public class ReferencePersonRunner extends AbstractTestNGCucumberTests {
