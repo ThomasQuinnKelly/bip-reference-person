@@ -13,6 +13,8 @@ Project is built on Java and Maven, and uses the Sring RestTemplate jars for cor
 `src/inttest/resources/gov/va/referenceperson/feature` - This is where you will create the cucumber feature files that contain the Feature
 and Scenarios for the Reference service you are testing. As a good practice, it is suggested to group all the similar business functionality in one feature file.
 
+`src/inttest/java/gov/va/bip/reference/service/pages` - Page Object Model is a design pattern to create Object Repository for web UI elements. Under this model, for each web page in the application, there should be corresponding page class. This Page class will find the WebElements of that web page and also contains Page methods which perform operations on those WebElements.
+
 `src/inttest/java/gov/va/bip/reference/service/steps` - The implementation steps related to the feature and scenarios mentioned in the cucumber file for the API needs to be created in this location. In GenericSteps.java class Generic steps like validating the status code, setting header for the service are implemented here to avoid duplication of steps implementation. 
 
 `src/inttest/java/gov/va/bip/reference/service/runner` - Cucumber runner class that contains all feature file entries that needs to be executed at runtime. The annotations provided in the cucumber runner class will assist in bridging the features to step definitions.
@@ -49,8 +51,11 @@ To execute the functional test in local bip-reference-person service needs to be
     Default Local: mvn verify -Pinttest -Dcucumber.options="--tags @DEV"
 ```
     DEV: mvn verify -Pinttest -Dtest.env=dev -Ddockerfile.skip=true -Dcucumber.options="--tags @DEV"
-
-
+```
+    To execute the UI test cases please use this command: mvn verify -Pinttest -Dcucumber.options="--tags @DEVUI"
+``` 
+    To execute both UI test case and person service end point functional test cases use this command : mvn verify -Pinttest - Dcucumber.options="--tags @DEV,@DEVUI"
+    
 ## More Details For Functional Test
 Read the [Integration Testing Guide](/docs/referenceperson-intest.md)
 

@@ -14,6 +14,10 @@ import cucumber.api.java.en.When;
 import gov.va.bip.framework.test.selenium.BrowserDI;
 import gov.va.bip.reference.service.pages.VaHomePage;
 
+/*
+ * Step definition File for VA HomePage. Browser web driver will be injected thru constructor for navigating to any web page.
+ * Each step in the feature file implementation is specified here.
+ */
 public class VaHomePageStepDefs {
 
 	final static Logger LOGGER = LoggerFactory.getLogger(VaHomePageStepDefs.class);
@@ -27,7 +31,6 @@ public class VaHomePageStepDefs {
 
 	@Given("^the veteran navigates to VA homepage URL \"([^\"]*)\"$")
 	public void ClientRequestPOSTWithJsondata(String ServiceUrl) throws Throwable {
-		// System.out.println("==============="+ServiceUrl);
 		browserDI.getDriver().get(ServiceUrl);
 	}
 
@@ -53,15 +56,40 @@ public class VaHomePageStepDefs {
 		boolean isBannerCrisisDisplayed = pagegObject.isBannerCrisisDisplayed();
 		assertEquals(true, isBannerCrisisDisplayed);
 	}
-	@And("^verify the other links in the navigation menu$")
-	public void validateOtherLinks() throws Throwable {
-	//	pagegObject.clickSearchButton();
-		//boolean isnSearchDisplayed = pagegObject.isSearchMenuDisplayed();
-		//assertEquals(true, isnSearchDisplayed); 
+
+	@Then("^verify the title in the home page hub container$")
+	public void validateContainerHubTitle() throws Throwable {
 		boolean isContainerTitleDisplayed = pagegObject.isContainerTitleDisplayed();
 		assertEquals(true, isContainerTitleDisplayed);
+
+	}
+
+	@And("^verify the other links inside the health care container$")
+	public void validateHealthContainerLinks() throws Throwable {
 		boolean isRefillAndTrackDisplayed = pagegObject.isRefillAndTrackDisplayed();
 		assertEquals(true, isRefillAndTrackDisplayed);
+		boolean isSendandSecureDisplayed = pagegObject.isSendandSecureDisplayed();
+		assertEquals(true, isSendandSecureDisplayed);
+		boolean isScheduleViewDisplayed = pagegObject.isScheduleViewDisplayed();
+		assertEquals(true, isScheduleViewDisplayed);
+		boolean isViewLabDisplayed = pagegObject.isViewLabDisplayed();
+		assertEquals(true, isViewLabDisplayed);
+		boolean isApplyNowDisplayed = pagegObject.isApplyNowDisplayed();
+		assertEquals(true, isApplyNowDisplayed);
+	}
+
+	@And("^verify the other links inside the disablity container$")
+	public void validateDisablityContainerLinks() throws Throwable {
+		boolean isCheckYourClaimDisplayed = pagegObject.isCheckYourClaimDisplayed();
+		assertEquals(true, isCheckYourClaimDisplayed);
+		boolean isPaymentClaimDisplayed = pagegObject.isPaymentClaimDisplayed();
+		assertEquals(true, isPaymentClaimDisplayed);
+		boolean isUploadEvidenceDisplayed = pagegObject.isUploadEvidenceDisplayed();
+		assertEquals(true, isUploadEvidenceDisplayed);
+		boolean isFileVaDisablityDisplayed = pagegObject.isFileVaDisablityDisplayed();
+		assertEquals(true, isFileVaDisablityDisplayed);
+		boolean isClaimForCompDisplayed = pagegObject.isClaimForCompDisplayed();
+		assertEquals(true, isClaimForCompDisplayed);
 
 	}
 

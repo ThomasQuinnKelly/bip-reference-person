@@ -9,6 +9,11 @@ public class VaHomePage {
 
 	protected WebDriver driver;
 
+	/*
+	 * This class is a page object for VA home page. This Page class will find the
+	 * WebElements of that VA home page and also contains Page methods which perform
+	 * operations on those WebElements.
+	 */
 	public VaHomePage(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
@@ -31,34 +36,6 @@ public class VaHomePage {
 	@FindBy(xpath = "//div[@class='va-header-logo-wrapper']")
 	WebElement logo;
 
-	// Search dropdown in the header
-	@FindBy(xpath = "//div[@class='profile-nav']/div[1]/button")
-	WebElement searchButton;
-
-	// search menu in the nav menu in header
-	@FindBy(xpath = "//div[@id='search-menu']")
-	WebElement searchMenu;
-
-	// Contactus dropdown in the header
-	@FindBy(xpath = "//div[@class='profile-nav']/div[2]")
-	WebElement contactus;
-
-	// Signin button in the header
-	@FindBy(xpath = "//BUTTON[@class='sign-in-link']")
-	WebElement signin;
-
-	// VA benefits and health care link in the nav menu in header
-	@FindBy(xpath = "//ul[@id='vetnav-menu']/li[2]")
-	WebElement vabenefitsandhealthcarelink;
-
-	// About VA link in the nav menu in header
-	@FindBy(xpath = "//ul[@id='vetnav-menu']/li[3]")
-	WebElement aboutvalink;
-
-	// Find VA location link in the nav menu in header
-	@FindBy(xpath = "//ul[@id='vetnav-menu']/li[4]")
-	WebElement valocationlink;
-
 	// Container title
 	@FindBy(xpath = "//H1[@class='heading-level-2 homepage-heading']")
 	WebElement containertitle;
@@ -66,10 +43,6 @@ public class VaHomePage {
 	// Health care container
 	@FindBy(xpath = "(//DIV[@class='hub-links-container'])[1]")
 	WebElement healthcarecontainer;
-
-	// Health care container title
-	@FindBy(xpath = "(//H2[@class='heading-level-3 hub-links-title'])[1]")
-	WebElement healthcarecontainertitle;
 
 	// Refill and track your prescriptions in health care in health care container
 	// link
@@ -95,10 +68,6 @@ public class VaHomePage {
 	// Disablity container
 	@FindBy(xpath = "(//DIV[@class='hub-links-container'])[2]")
 	WebElement disablitycontainer;
-
-	// Disablity container title
-	@FindBy(xpath = "(//H2[@class='heading-level-3 hub-links-title'])[2]")
-	WebElement disablitycontainertitle;
 
 	// Check your claim or appeal status in diasblity container link
 	@FindBy(xpath = "(//ul[@class='hub-links-list'])[2]/li[1]")
@@ -132,57 +101,51 @@ public class VaHomePage {
 		return noticebanner.isDisplayed();
 	}
 
-	public void clickSearchButton() {
-		searchButton.click();
-	}
-
-	public boolean isSearchMenuDisplayed() {
-		return searchMenu.isDisplayed();
-	}
-
-	public boolean isContactusDisplayed() {
-		return contactus.isDisplayed();
-	}
-
-	public boolean isSignInDisplayed() {
-		return signin.isDisplayed();
-	}
-
-	public boolean isBenefitsandHealthLinkDisplayed() {
-		return vabenefitsandhealthcarelink.isDisplayed();
-	}
-
-	public boolean isAboutUsDisplayed() {
-		return aboutvalink.isDisplayed();
-	}
-	public boolean isFindVALocationDisplayed() {
-		return valocationlink.isDisplayed();
-	}
 	public boolean isContainerTitleDisplayed() {
 		return containertitle.isDisplayed();
 	}
+
 	public boolean isHealthCareDisplayed() {
 		return healthcarecontainer.isDisplayed();
 	}
-	public boolean isHealthCareContainerTitleDisplayed() {
-		return healthcarecontainertitle.isDisplayed();
-	}
+
 	public boolean isRefillAndTrackDisplayed() {
 		return refillandtracklink.isDisplayed();
 	}
+
 	public boolean isSendandSecureDisplayed() {
 		return sendandsecuremessagge.isDisplayed();
 	}
+
 	public boolean isScheduleViewDisplayed() {
 		return scheduleviewappt.isDisplayed();
 	}
+
 	public boolean isViewLabDisplayed() {
 		return viewlabtestandresult.isDisplayed();
 	}
+
 	public boolean isApplyNowDisplayed() {
 		return applynow.isDisplayed();
 	}
+
 	public boolean isCheckYourClaimDisplayed() {
 		return checkyourclaim.isDisplayed();
+	}
+
+	public boolean isPaymentClaimDisplayed() {
+		return paymenthistory.isDisplayed();
+	}
+
+	public boolean isUploadEvidenceDisplayed() {
+		return uploadevidence.isDisplayed();
+	}
+
+	public boolean isFileVaDisablityDisplayed() {
+		return filevadisablity.isDisplayed();
+	}
+
+	public boolean isClaimForCompDisplayed() {
+		return claimforcomp.isDisplayed();
 	}
 }
