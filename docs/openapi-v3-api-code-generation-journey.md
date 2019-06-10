@@ -1,9 +1,8 @@
 # OpenAPI V3 code generation journey
-
-Traditionally, writing SDKs (Models, Interfaces) can be a slow and painstaking process, with the need to manually develop a lot of code in languages. There has been an increase in the number of companies using code generation to create their SDKs for a variety of languages. For BIP framework team, intent of this journey is to investigate possible tools to generate SDKs that meets "Design First" Approach for API development
+Traditionally, writing SDKs (Models, Interfaces) can be a slow and painstaking process, with the need to manually develop a lot of code in languages. There has been an increase in the number of companies using code generation to create their SDKs for a variety of languages. For the BIP framework, intent of this journey is to investigate possible tools to generate SDKs that meets "Design First" Approach for API development.
 
 ## Design First vs Build First API Development
-When it comes to using API description formats, two important schools of thoughts have emerged: The “Design First” and the “Build First” approach to API development. The Build First approach is a more traditional approach to building APIs, with development of code happening after the business requirements are laid out, eventually generating the documentation from the code. The Design First approach advocates for designing the API’s contract first before writing any code. This is a relatively new approach, but is fast catching on, especially with the use of API description formats. To understand the two approaches better, let’s look at the general process followed during the API lifecycle. Like any product, the concept of the API starts with the business team identifying an opportunity. The opportunity is analyzed and a plan to capitalize on it is created in a text document by strategists, analysts and other business folks. This document is then passed along to the development team, which is where the plan takes some tangible form. There are two possibilities from here on to develop the API:
+When it comes to using API description formats, two important schools of thoughts have emerged: “Design First” and the “Build First” approach to API development. The Build First approach is a more traditional approach to building APIs, with development of code happening after the business requirements are laid out, eventually generating the documentation from the code. The Design First approach advocates for designing the API’s contract first before writing any code. This is a relatively new approach, but is fast catching on, especially with the use of API description formats. To understand the two approaches better, let’s look at the general process followed during the API lifecycle. Like any product, the concept of the API starts with the business team identifying an opportunity. The opportunity is analyzed and a plan to capitalize on it is created in a text document by strategists, analysts and other business folks. This document is then passed along to the development team, which is where the plan takes some tangible form. There are two possibilities from here on to develop the API:
 
 **Design First:** The plan is converted to a human and machine readable contract, such as a Swagger document, from which the code is built
 
@@ -12,9 +11,9 @@ When it comes to using API description formats, two important schools of thought
 There are advantages and disadvantages associated with both approaches, and at the end of the day, choosing the right approach boils down to your immediate technological and strategic needs that you wish to solve with your APIs.
 
 ## OpenAPI V3
-In July 2017, the first version of the OpenAPI V3 specification was released. OpenAPI is a standard for describing RESTful HTTP APIs which grew out of the older Swagger Specification, after it was donated to the OpenAPI Initiative following SmartBear's acquisition of Reverb Technologies.
-
 OpenAPI is a way of describing your APIs in a YAML (or JSON) file. You model the data structures exposed and accepted by your API, and tie them to the HTTP calls that a client can make to your services. We found that a great way to get started with OpenAPI is to understand and experiment with the simple [Petstore example](https://github.com/OAI/OpenAPI-Specification/blob/master/examples/v3.0/petstore.yaml) which is part of the OpenAPI specification. If you prefer a tutorial rather than experimenting, [then you may want to start here.](https://idratherbewriting.com/learnapidoc/pubapis_openapi_tutorial_overview)
+
+In July 2017, the first version of the OpenAPI V3 specification was released. OpenAPI is a standard for describing RESTful HTTP APIs which grew out of the older Swagger Specification, after it was donated to the OpenAPI Initiative following SmartBear's acquisition of Reverb Technologies.
 
 ## OpenAPI V3 Tooling
 
@@ -28,17 +27,21 @@ You may end up using the two operations swagger-cli provides frequently while wo
 
 `swagger-cli bundle <file>`
   
-validate is used to validate the contents of an OpenAPI YAML file performing some checks against the OpenAPI specification. 
+*validate* is used to validate the contents of an OpenAPI YAML file performing some checks against the OpenAPI specification. 
 
-bundle* is used to combine together a set of OpenAPI YAML files which are linked by $ref parameters into a single JSON file. $ref parameters are great because they allow you to use composition in your data models, as well as letting you break down your API descriptions into multiple files for a more maintainable codebase. It’s useful to combine your definitions together when you want to distribute a single file defining your APIs, or for use in other tools which don’t fully support the OpenAPI specification.
+*bundle* is used to combine together a set of OpenAPI YAML files which are linked by `$ref` parameters into a single JSON file. `$ref` parameters are great because they allow you to use composition in your data models, as well as letting you break down your API descriptions into multiple files for a more maintainable codebase. It’s useful to combine your definitions together when you want to distribute a single file defining your APIs, or for use in other tools which don’t fully support the OpenAPI specification. 
+
+On BIP platform, further investigation needs to happen if there is a need to of this tool to support breaking down the service specification YAML using common mappings from framework and common schemas. Data Services team must define these requirements and identify the common schemas to be defined. 
 
 ### swagger code generator
 
 Swagger Codegen is driven by SmartBear Software. Swagger Codegen can simplify your build process by generating server stubs and client SDKs for any API, defined with the OpenAPI (formerly known as Swagger) specification, so the team can focus better on API’s implementation and adoption.
 
+The founding members felt that Swagger Codegen 3.0.0 was diverging too much from the philosophy of Swagger Codegen 2.x. The founding members wanted a more rapid release cycle (weekly patch release, monthly minor release), so users do not need to wait for several months to get a stable release. Having a community-driven version allows for innovation, reliability, and a roadmap owned by the community. OpenAPI Generator is a fork of swagger-codegen between version 2.3.1 and 2.4.0.
+
 In 2018, William Cheng, top contributor to Swagger Codegen, informed about a big change for the swagger community. William and other top contributors (40+) of Swagger Codegen have decided to fork the project to maintain a community-driven version called "OpenAPI Generator", which supports both OpenAPI spec v2 and v3. 
 
-The founding members felt that Swagger Codegen 3.0.0 was diverging too much from the philosophy of Swagger Codegen 2.x. The founding members wanted a more rapid release cycle (weekly patch release, monthly minor release) so users do not need to wait for several months to get a stable release. Having a community-driven version allows for innovation, reliability, and a roadmap owned by the community. OpenAPI Generator is a fork of swagger-codegen between version 2.3.1 and 2.4.0.
+To summarize, BIP framework team recommends NOT to use this code generator and instead use OpenAPI code generator, details for which are mentioned in the next section. 
 
 ### openapi code generator
 
@@ -87,7 +90,6 @@ OpenAPI Generator’s support for OpenAPI V3 has some hurdles to overcome: it do
 OpenAPI Generator latest version 4.0.0 uses an updated version of swagger-parser, which unfortunately introduced an issue where any OpenAPI files using `$ref` parameters in paths would no-longer pass validation. The issue has since been resolved on swagger-parser’s issue tracker, and is currently awaiting a dependency update in OpenAPI Generator. Unfortunately this meant disabling validation to be able to continue if using OpenAPI Generator 4. Other viable and recommended option is to stay on version 3.3.4. 
 
 #### Polymorphism in OpenAPI Generator isn’t consistent
-
 The model generated using Maven plugin 4.0.0 version doesn't use inheritance. There are multiple issues reported already related to this behavior. 
 
 https://github.com/OpenAPITools/openapi-generator/issues/2888
@@ -106,7 +108,6 @@ Until there is a full polymorphism support in the languages we’re generating, 
 You can use `$ref` to modularize your OpenAPI definitions. This is great, but one of the major changes between Swagger V2, and OpenAPI V3 is that `$ref` can no-longer be used everywhere.
 
 **From the OpenAPI documentation:**
-
 `A common misconception is that $ref is allowed anywhere in an OpenAPI specification file. Actually $ref is only allowed in places where the OpenAPI 3.0 Specification explicitly states that the value may be a reference. For example, $ref cannot be used in the info section and directly under paths`
 
 While it makes sense to limit the places $ref can be used, there is a problem that arise from the limitations that have been put in place. There’s no definitive list of where `$ref` can be used in the OpenAPI V3 specification or on the documentation website. This makes the barrier to entry for OpenAPI much higher, and encourages developers not to modularize their definitions because they don’t understand where you can use `$ref` and where you can’t. We appreciate that reading the specification is important, but we’re talking about extensive pages to understand it. 
@@ -201,7 +202,24 @@ The big challenge here is that, we can only use $ref in a limited number of plac
 
 #### No feature to support JSR 303 custom messages
 
-Based on the Proof of Concept work for Reference Person Sample API service, I can conclude that OAS and maven code generator plugin out of the box doesn't support additional configuration for the JSR 303 validation messages. One option to customize the messages is likely to override mustache templates. But this would require additional time to be spent by framework team to demosntrate via another task if its feasible option.
+Based on the Proof of Concept work for Reference Person Sample API service, I can conclude that OpenAPI Specification and maven code generator plugin out of the box doesn't support custom configuration for JSR 303 validation annotations `javax.validation.constraints.*`. 
+
+- BIP framework provides solution and supports configuration of the validation messages namely `messages.properties` to be placed under `src/main/resources`
+    
+      #####################################################################
+      # Messages for JSR 303 Validation annotations
+      #####################################################################
+      # no args
+      Min.personInfoRequest.participantID=Participant ID must be greater than zero.
+      # no args
+      NotNull.personInfoRequest.participantID=PersonInfoRequest.participantID cannot be null.
+      # no args
+      NotNull.personInfoRequest=PersonInfoRequest Payload cannot be null.
+    
+  For example, `@Min` above is an annotation element, `personInfoRequest` is class that has `@Min` annotation and   
+  `participantID` is the field name.
+
+- Another option is to modify the generated code by overriding mustache templates. This however requires maintaining the custom templates for each API service and hence not recommended unless the above solution provided by framework has any limitation. 
 
 ## Summary and Recommendations
 
