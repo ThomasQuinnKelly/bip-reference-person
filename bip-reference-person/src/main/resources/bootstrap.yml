@@ -10,7 +10,7 @@ spring.cloud.consul:
     prefix: config
     defaultContext: application
     profileSeparator: ','
-    format: KEY_VALUE
+    format: FILES
     failFast: false #Set value as 'true' to throw exceptions during consul config lookup
     watch:
       wait-time: 30 #defaults to 55 seconds
@@ -39,7 +39,7 @@ spring.cloud.vault:
     backend: secret
     profile-separator: '/'
     default-context: application
-    application-name: "@project.name@"
+    application-name: "blue/@project.name@"
   consul: 
     enabled: false  
     role: os-svc
