@@ -69,6 +69,7 @@ The fastest way to get set up is to visit the [Quick Start Guide](docs/quick-sta
 * [Build Info and Git Properties Plugin](docs/build-and-git-properties.md)
 * [Prometheus Grafana Local Dev](docs/prometheus-grafana-setup.md)
 * [Deployment Packaging](docs/deployment-package.md)
+* [OpenAPI Code Generation](docs/openapi-v3-api-code-generation-journey.md) 
 
 ## How to make the dependency framework libraries available
 
