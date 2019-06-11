@@ -19,7 +19,7 @@
 	</appender>
 
 	<root level="INFO">
-
+		<!-- To test async/json logging locally, force the use of BIP_ASYNC appender -->
 		<if condition='"local-int,ci,dev,stage,prod".contains("${spring.profiles.active}")'>
 			<then>
  				<appender-ref ref="BIP_ASYNC" />
