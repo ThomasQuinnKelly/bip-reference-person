@@ -2,8 +2,6 @@
 <!DOCTYPE xml>
 <configuration scan="false" debug="false">
 	<!-- Resource is available in shared auto-configure included via pom.xml dependency -->
-	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
-	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 	<include resource="gov/va/bip/framework/starter/logger/bip-framework-logback-starter.xml" />
 
 	<appender name="BIP_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
