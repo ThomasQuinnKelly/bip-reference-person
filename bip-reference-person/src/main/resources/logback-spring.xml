@@ -11,7 +11,7 @@
 		<!-- Additional Log Masking Filters -->
 		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
 			<evaluator class="gov.va.bip.framework.log.logback.BipMaskingFilter">
-				<name>File_Number_0</name>
+				<name>File Number</name>
 				<pattern>\d{9}</pattern>
 				<unmasked>4</unmasked>
 			</evaluator>
