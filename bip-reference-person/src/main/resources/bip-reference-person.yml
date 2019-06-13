@@ -142,7 +142,7 @@ ribbon:
   ReadTimeout: 10000
   ConnectTimeout: 5000
   ServerListRefreshInterval: 10000
-  MaxAutoRetries: 10
+  MaxAutoRetries: 2
   MaxAutoRetriesNextServer: 2
   OkToRetryOnAllOperations: true
 ##################################################
