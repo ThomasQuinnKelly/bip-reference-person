@@ -1,4 +1,4 @@
-package gov.va.bip.framework.log.logback;
+package gov.va.bip.reference.person.log.logback;
 
 import static org.junit.Assert.assertTrue;
 
@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.rule.OutputCapture;
+
+import gov.va.bip.framework.log.logback.BipMaskingFilter;
 
 public class BipBaseMaskingFilterTest {
 
