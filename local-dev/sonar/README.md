@@ -3,7 +3,7 @@
 ## Setup
 
 #### To Start...
-To fire up your sonar environment, navigate to the root directory of this project and execute one of the following:
+To fire up your sonar environment, navigate to the `local-dev/sonar` directory and execute one of the following:
 
 ```
 # Each of these commands starts the SonarQube environment, just in different ways.
