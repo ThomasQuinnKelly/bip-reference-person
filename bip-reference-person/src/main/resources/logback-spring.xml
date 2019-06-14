@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 <configuration scan="false" debug="false">
-	<!-- Resource is available in shared auto-configure included via pom.xml dependency-->
-    <include resource="gov/va/bip/framework/starter/logger/bip-framework-logback-starter.xml" />
-    
-    <root level="INFO">
-    	<if condition='"local-int,ci,dev,stage,prod".contains("${spring.profiles.active}")'>
-           <then>
-                <appender-ref ref="BIP_FRAMEWORK_ASYNC_CONSOLE_APPENDER" />
-           </then>
-           <else>
-                <appender-ref ref="CONSOLE" />
-           </else>
-        </if>
-    </root>
+	<!-- Resource is available in shared auto-configure included via pom.xml dependency -->
+	<include resource="gov/va/bip/framework/starter/logger/bip-framework-logback-starter.xml" />
+
+	<appender name="BIP_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="BIP_FRAMEWORK_ASYNC_CONSOLE_APPENDER" />
+		<!-- Additional Log Masking Filters -->
+		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+			<evaluator class="gov.va.bip.framework.log.logback.BipMaskingFilter">
+				<name>File Number</name>
+				<pattern>\d{9}</pattern>
+				<unmasked>4</unmasked>
+			</evaluator>
+		</filter>
+	</appender>
+
+	<root level="INFO">
+		<!-- To test async/json logging locally, force the use of BIP_ASYNC appender -->
+		<if condition='"local-int,ci,dev,stage,prod".contains("${spring.profiles.active}")'>
+			<then>
+ 				<appender-ref ref="BIP_ASYNC" />
+			</then>
+			<else>
+				<appender-ref ref="CONSOLE" />
+			</else>
+		</if>
+	</root>
 </configuration>
