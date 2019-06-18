@@ -215,7 +215,9 @@ BIP service applications should leverage the framework configuration to minimize
 
 #### Service Application POM
 
-- The service POM (e.g. `bip-[application-name]/pom.xml`) contains the build directives for OpenAPI. The directives are in a profile that is activated only when the openapi.yml file is available. It is important to note that the path to the openapi.yml file is also used by framework, so cannot be changed.
+- The service POM (e.g. `bip-[application-name]/pom.xml`) contains the build directives for OpenAPI. The directives are in a profile that is activated only when the `openapi.yml` file is available.
+
+	It is important to note that the path to the openapi.yml file is also used by framework, so cannot be changed.
 
 	<details><summary>XML Snippet</summary>
 
@@ -288,28 +290,28 @@ BIP service applications should leverage the framework configuration to minimize
 
 	<details><summary>XML Snippet</summary>
 
-		```xml
-		<inputSpec>${basedir}/src/main/resources/openapi/openapi.yml</inputSpec>
-		<output>${project.build.directory}/generated-sources</output>
-		```
-		</details>
+	```xml
+	<inputSpec>${basedir}/src/main/resources/openapi/openapi.yml</inputSpec>
+	<output>${project.build.directory}/generated-sources</output>
+	```
+	</details>
 
 - **Alter the packaging values** to specify the application API java packages
 
 	<details><summary>XML Snippet</summary>
 
-		```xml
-		<apiPackage>gov.va.bip.[application.package].api</apiPackage>
-		<modelPackage>gov.va.bip.[application.package].api.model.v1</modelPackage>
-		<importMappings>
-						ProviderResponse=gov.va.bip.framework.rest.provider.ProviderResponse,
-						ProviderRequest=gov.va.bip.framework.rest.provider.ProviderRequest,
-						Message=gov.va.bip.framework.rest.provider.Message,
-						Person=gov.va.bip.framework.security.model.Person,
-						ProviderTransferObjectMarker=gov.va.bip.framework.transfer.ProviderTransferObjectMarker
-		</importMappings>
-		```
-		</details>
+	```xml
+	<apiPackage>gov.va.bip.[application.package].api</apiPackage>
+	<modelPackage>gov.va.bip.[application.package].api.model.v1</modelPackage>
+	<importMappings>
+		ProviderResponse=gov.va.bip.framework.rest.provider.ProviderResponse,
+		ProviderRequest=gov.va.bip.framework.rest.provider.ProviderRequest,
+		Message=gov.va.bip.framework.rest.provider.Message,
+		Person=gov.va.bip.framework.security.model.Person,
+		ProviderTransferObjectMarker=gov.va.bip.framework.transfer.ProviderTransferObjectMarker
+	</importMappings>
+	```
+	</details>
 
 - The import mappings must include the framework base model classes. **Classes from elsewhere can be added as required.**
 
@@ -327,7 +329,7 @@ BIP service applications should leverage the framework configuration to minimize
 	</details>
 
 - The remaining configuration items can remain as they are, but are available for debugging and/or modification purposes.
-	The options are set to produce only the interface classes and model classes. This allows flexibility for coding the resource class and dependent functionality.
+	The options are set to produce only the interface classes and model classes, and not the resource implementation. This allows flexibility for coding the resource class and dependent functionality.
 
 	<details><summary>XML Snippet</summary>
 
@@ -364,7 +366,7 @@ BIP service applications should leverage the framework configuration to minimize
 
 ## How to specify the API
 
-- The API specification should be wholly contained within the `bip-[application-name]/src/main/resources/openapi/openapi.yml` file, without any external "ref" files. OpenAPI v3 still has outstanding issues around when and where `ref` can be used.
+- The API specification should be wholly contained within the `bip-[application-name]/src/main/resources/openapi/openapi.yml` file, without any external "ref" files. OpenAPI v3 still has outstanding issues around when and where references to external specifications can be used.
 
 - The opening sections of the YAML file (api version, info, servers, tags) should retain the formatting, but must be updated to reflect the application. **The tags section can be added to as desired.**
 
@@ -390,7 +392,7 @@ BIP service applications should leverage the framework configuration to minimize
 		- name: [functional-name]-rest-client-tester
 			description: [Functional Name] Rest Client Tester
 		- name: token-resource
-				description: Token Resource
+			description: Token Resource
 	# ...
 	```
 	</details>
@@ -435,7 +437,7 @@ BIP service applications should leverage the framework configuration to minimize
 
 	- Declare the schemas inherited from the framework. No changes should be made in this section.
 
-	<details><summary>YAML Snippet</summary>
+		<details><summary>YAML Snippet</summary>
 
 		```yml
 		schemas:
@@ -590,8 +592,7 @@ BIP service applications should leverage the framework configuration to minimize
 
 ### messages.properties and MessageKeys
 
-Add messages to src/main/resources/messages.properties and reflect them in the MessageKeys enum.
--
+- Add messages to src/main/resources/messages.properties and reflect them in the MessageKeys enum.
 
 	<details><summary>XML Snippet</summary>
 

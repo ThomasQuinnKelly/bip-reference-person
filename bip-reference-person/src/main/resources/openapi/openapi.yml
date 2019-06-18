@@ -225,6 +225,8 @@ components:
   schemas:
     PersonInfo:
       type: object
+      title: PersonInfo
+      description: Model for data contained in the response from the Person Service
       properties:
         fileNumber:
           type: string
@@ -251,8 +253,6 @@ components:
           type: string
           example: 912444689
           description: The persons SSN
-      title: PersonInfo
-      description: Model for data contained in the response from the Person Service
     PersonInfoRequest:
       title: PersonInfoRequest
       description: Model for data to request person information from the Person Service
@@ -286,6 +286,8 @@ components:
     # for these classes
     Message:
       type: object
+      title: Message
+      description: Model that identifies a single individual used in the security context
       required:
       - key
       - severity
@@ -293,7 +295,11 @@ components:
         key:
           type: string
         severity:
-          type: string
+          # derived from gov.va.bip.framework.messages.MessageSeverity
+          type: enum
+            - INFO
+            - WARN
+            - ERROR
         status:
           type: string
         text:
@@ -301,9 +307,10 @@ components:
         timestamp:
           type: string
           example: yyyy-MM-dd'T'HH:mm:ss.SSS
-      title: Message
     Person:
       type: object
+      title: Person
+      description: Model that identifies a single individual used in the security context
       properties:
         assuranceLevel:
           type: integer
@@ -355,8 +362,6 @@ components:
           description: The suffix for the person's full name
         user:
           type: string
-      title: Person
-      description: Model that identifies a single individual used in the security context
     ProviderResponse: 
       type: object
       properties:
