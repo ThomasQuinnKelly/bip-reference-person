@@ -27,6 +27,8 @@ The service implementation `*PartnerName*Helper` class for the Partner client cl
 The `*Helper` class should trap legitimate faults that are returned from the client, and convert them to a `BipRuntimeException` (or subclass). Unexpected runtime exceptions can be allowed to bubble up to the `BipRestGlobalExceptionHandler`.
 
 ## Exception Hierarchy
+
+The Bip*Exception classes provide a means of extending the java Exception and RuntimeException classes. Because these JVM classes are final, a simple "extend" is not possible, so the BIP base classes wrap the JVM classes and expose all the same methods as well as methods for BIP-specific messages. The data is maintained in the shared BipExceptionData class.
 <img alt="BIP Exception Hierarchy" src="images/bip-exception-class-hierarchy.png" height="50%" width="50%" />
 
 See the BIP base exception classes in the [framework exception package](https://github.com/department-of-veterans-affairs/bip-framework/tree/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/exception)
