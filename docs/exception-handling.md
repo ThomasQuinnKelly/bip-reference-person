@@ -1,5 +1,5 @@
 # BIP Exception Management
-This docoument is primarily concerned with exceptions generated in the course of executing business processes in the service and partner layers. For discussion of Provider layer validations and Service layer validations, see [validation.md](./validation.md).
+This document is primarily concerned with exceptions generated in the course of executing business processes in the service and partner layers. For discussion of Provider layer validations and Service layer validations, see [validation.md](./validation.md).
 
 ## Layer Concerns
 Each layer of an BIP micro-service has different exception handling needs. Understanding layer concerns is necessary.
@@ -32,7 +32,7 @@ The `*Helper` class should trap legitimate faults that are returned from the cli
 See the BIP base exception classes in the [framework exception package](https://github.com/department-of-veterans-affairs/bip-framework/tree/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/exception)
 
 ## Exception Types
-- `BipRuntimeException` and sub-classes identify conditions in which the exception should immediately propagate back to the Provider layer. Examples include validation voilations, data not found, and other 400-series conditions under which processing should be aborted.
+- `BipRuntimeException` and sub-classes identify conditions in which the exception should immediately propagate back to the Provider layer. Examples include validation violations, data not found, and other 400-series conditions under which processing should be aborted.
 - `BipException` and sub-classes are checked exceptions that identify known conditions that may require some intervention or decision by the application logic. These exceptions might:
 	- be handled, and processing allowed to continue;
 	- be transformed to an BipRuntimeException and propagated immediately to the Provider layer. 
