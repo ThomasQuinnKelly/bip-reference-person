@@ -31,6 +31,7 @@ consul acl policy create  -name "readonly" -description "Read Only Policy" -rule
 vault write consul/roles/os-svc policies=readonly
 
 # Create Sample Properties in Consul
-consul kv put config/bip-reference-person/spring.redis.port 6379
+consul kv put config/bip-reference-person.yml @/consul/bip-reference-person.yml
+consul kv put config/application.yml @/consul/application.yml
 
 ######################################################################

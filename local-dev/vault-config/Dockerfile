@@ -19,5 +19,7 @@ RUN chmod 755 /usr/bin/jq
 
 ADD vault-config.sh /vault-config.sh
 ADD token-policy.hcl /token-policy.hcl
+RUN mkdir -p /consul
+ADD consul /consul
 
 ENTRYPOINT ["/vault-config.sh"]
