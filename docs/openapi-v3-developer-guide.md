@@ -12,6 +12,18 @@ This document describes how to use OpenAPI v3 in service applications built on B
 - What code gets generated, and best practices for integrating that code into your application
 - Steps to migrate Code First applications to the new API paradigm
 
+If you are migrating a BIP application from an earlier version of the framework, please see [Migrating from BIP Framework 1.x to BIP Framework 2.x](./openapi-v3-migration-guide.md).
+
+## Reference Information
+
+These sites should be considered "must read" for developers and tech leads.
+
+- [OpenAPI Specification v 3.0.1](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md)
+- [OpenAPI Tools](https://github.com/OpenAPITools) - of particular interest:
+	- [openapi-generator-maven-plugin](https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin)
+	- [openapi-generator](https://github.com/OpenAPITools/openapi-generator)
+	- There is also an [openapi-petstore](https://github.com/OpenAPITools/openapi-petstore)
+
 ## Framework build responsibilities
 
 Framework reduces application configuration burden by providing an opinionated approach to acquiring and building the API model and interface classes, and the swagger UI documentation.
@@ -164,7 +176,7 @@ Configuration is in [`bip-framework-parentpom/pom.xml`](https://github.com/depar
 		```
 		</details>
 
-- For eclipse / STS users, the POM also uses the m2e connector to add the generated artifacts to the source factory path. If the eclipse install does not already have the required connector, the developer can open the [`bip-framework-parentpom/pom.xml`](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-parentpom/pom.xml) in the IDE, hover over the `<execution>` tag, and select to "Discover new m2e connectors" option.
+- For eclipse / STS users, the POM also uses the m2e connector to add the generated artifacts to the source classpath. If the eclipse install does not already have the required connector, the developer can open the [`bip-framework-parentpom/pom.xml`](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-parentpom/pom.xml) in the IDE, hover over the `<execution>` tag, and select to "Discover new m2e connectors" option.
 
 	<details><summary>XML Snippet</summary>
 
@@ -233,8 +245,8 @@ BIP service applications should leverage the framework configuration to minimize
 			<id>org-openapitools-codegen-reference-person</id>
 			<activation>
 				<file><!-- Existence of API YML file to activate the profile. DO NOT
-							MODIFY LOCATION AND FILE NAME AS FRAMEWORK USES THE SAME FOR ACTIVATION,
-							SPEC GENERATE -->
+					MODIFY LOCATION AND FILE NAME AS FRAMEWORK USES THE SAME FOR ACTIVATION,
+					SPEC GENERATE -->
 					<exists>${basedir}/src/main/resources/openapi/openapi.yml</exists>
 				</file>
 			</activation>
@@ -303,13 +315,6 @@ BIP service applications should leverage the framework configuration to minimize
 	```xml
 	<apiPackage>gov.va.bip.[application.package].api</apiPackage>
 	<modelPackage>gov.va.bip.[application.package].api.model.v1</modelPackage>
-	<importMappings>
-		ProviderResponse=gov.va.bip.framework.rest.provider.ProviderResponse,
-		ProviderRequest=gov.va.bip.framework.rest.provider.ProviderRequest,
-		Message=gov.va.bip.framework.rest.provider.Message,
-		Person=gov.va.bip.framework.security.model.Person,
-		ProviderTransferObjectMarker=gov.va.bip.framework.transfer.ProviderTransferObjectMarker
-	</importMappings>
 	```
 	</details>
 
@@ -366,7 +371,9 @@ BIP service applications should leverage the framework configuration to minimize
 
 ## How to specify the API
 
-- The API specification should be wholly contained within the `bip-[application-name]/src/main/resources/openapi/openapi.yml` file, without any external "ref" files. OpenAPI v3 still has outstanding issues around when and where references to external specifications can be used.
+BIP framework supports the
+
+The API specification for a BIP service application should be wholly contained within the [`bip-[application-name]/src/main/resources/openapi/openapi.yml`](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/resources/openapi/openapi.yml) file, without any external "ref" files. OpenAPI v3 still has outstanding issues around when and where references to external specifications can be used.
 
 - The opening sections of the YAML file (api version, info, servers, tags) should retain the formatting, but must be updated to reflect the application. **The tags section can be added to as desired.**
 
@@ -404,6 +411,8 @@ BIP service applications should leverage the framework configuration to minimize
 
 		```yml
 		components:
+			# securitySchemes are defined by the framework.
+			# Service applications must configure as below.
 			securitySchemes:
 				Authorization:
 					type: apiKey
@@ -417,11 +426,14 @@ BIP service applications should leverage the framework configuration to minimize
 		</details>
 
 	- **Declare the application model schemas** for the data model classes and their properties.
+		-
 
 		<details><summary>YAML Snippet</summary>
 
 		```yml
 		schemas:
+			# Define API (provider) model objects. Use type, format and example;
+			# use standard JSR303 constraints (required, min, max, etc) where it makes sense
 			[ClassName]:
 				type: object
 				title: [ClassName]
@@ -441,38 +453,52 @@ BIP service applications should leverage the framework configuration to minimize
 
 		```yml
 		schemas:
+			# ... app model schemas inserted here ...
+
 			# Schema objects below are from BIP Framework to be declared.
 			# These objects need to be mapped in <importMappings> section
 			# of openapi-generator-maven-plugin so that no code is generated
 			# for these classes
 			Message:
 				type: object
+				title: Message
+				description: Model that identifies a single individual used in the security context
 				required:
 				- key
 				- severity
 				properties:
 					key:
+						# possible values enumerated by gov.va.bip.framework.messages.MessageKeys
 						type: string
 					severity:
-						type: string
+						# derived from gov.va.bip.framework.messages.MessageSeverity
+						type: enum
+							- INFO
+							- WARN
+							- ERROR
 					status:
-						type: string
+						type: integer
+						format: int32
 					text:
 						type: string
 					timestamp:
 						type: string
+						format: date-time
 						example: yyyy-MM-dd'T'HH:mm:ss.SSS
-				title: Message
 			Person:
 				type: object
+				title: Person
+				description: Model that identifies a single individual used in the security context
 				properties:
 					assuranceLevel:
 						type: integer
 						format: int32
 						example: 2
+						minimum: 0
 						description: The person's access assurance level
 					birthDate:
 						type: string
+						format: date
 						example: '1978-05-20'
 						description: The person's birth date
 					correlationIds:
@@ -516,8 +542,6 @@ BIP service applications should leverage the framework configuration to minimize
 						description: The suffix for the person's full name
 					user:
 						type: string
-				title: Person
-				description: Model that identifies a single individual used in the security context
 			ProviderResponse:
 				type: object
 				properties:
@@ -534,6 +558,8 @@ BIP service applications should leverage the framework configuration to minimize
 
 - **Define the application API in the path section.** See [Paths Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#pathsObject) in the specification, and the [reference application yml](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-person/src/main/resources/openapi/openapi.yml) for a working example.
 
+	- The structure of the `responses:` section should remain relatively static, with `schema:` ref appropriately adjusted
+	- Any service path that is secured must replicate the `security:` section as-is
 
 	<details><summary>YAML Snippet</summary>
 
@@ -589,124 +615,215 @@ BIP service applications should leverage the framework configuration to minimize
 	```
 	</details>
 
+- Include the **/token** path as-is
 
-### messages.properties and MessageKeys
+	<details><summary>YAML Snippet</summary>
 
-- Add messages to src/main/resources/messages.properties and reflect them in the MessageKeys enum.
+	```yml
+	paths:
+		# ... application paths inserted here ...
 
-	<details><summary>XML Snippet</summary>
-
-	```xml
-
+		# The token path should not require any changes
+		"/api/v1/token":
+			post:
+				tags:
+				- token-resource
+				summary: Get JWT Token
+				description: Get a JWT bearer token with 'person' data. Include MVI correlationIds if required by the target API.
+				operationId: getTokenUsingPOST
+				requestBody:
+					description: |-
+						Identity information for the authenticated user. CorrelationIds may be null or an empty array if the target API does not require it. Otherwise, correlationIds must be the list as retrieved from MVI: <table style=\"table-layout:auto;width:700px;text-align:left;background-color:#efefef;\"><tr><th>Common ID Name</th><th>Example ID</th><th>Type</th><th>Source</th><th>Issuer</th><th>Status</th><th </tr><tr><td>Participant ID (PID)</td><td>12345678</td><td>PI</td><td>200CORP</td><td>USVBA</td><td>A</td></tr><tr><td>File Number</td><td>123456789</td><td>PI</td><td>200BRLS</td><td>USVBA</td><td>A</td></tr><tr><td>ICN</td><td>1234567890V123456</td><td>NI</td><td>200M</td><td>USVHA</td><td>A</td></tr><tr><td>EDIPI / PNID</td><td>1234567890</td><td>NI</td><td>200DOD</td><td>USDOD</td><td>A</td></tr><tr><td>SSN</td><td>123456789</td><td>SS</td><td></td><td></td><td></td></tr></table>
+					required: true
+					content:
+							application/json:
+								schema:
+									'$ref': '#/components/schemas/Person'
+				responses:
+					'200':
+						description: A Response which indicates a successful Request.	The Response
+							may contain "messages" that could describe warnings or further information.
+						content:
+							text/plain:
+								schema:
+									type: string
+					'400':
+						description: There was an error encountered processing the Request.	Response
+							will contain a	"messages" element that will provide further information
+							on the error.	This request shouldn't be retried until corrected.
+						content:
+							application/problem+json:
+								schema:
+									'$ref': '#/components/schemas/ProviderResponse'
+					'403':
+						description: The request is not authorized.	Please verify credentials used
+							in the request.
+						content:
+							application/problem+json:
+								schema:
+									'$ref': '#/components/schemas/ProviderResponse'
+					'500':
+						description: There was an error encountered processing the Request.	Response
+							will contain a	"messages" element that will provide further information
+							on the error.	Please retry.	If problem persists, please contact support
+							with a copy of the Response.
+						content:
+							application/problem+json:
+								schema:
+									'$ref': '#/components/schemas/ProviderResponse'
+				deprecated: false
 	```
 	</details>
 
-### .openapi-generator.ignore
+#### JSR303 message overrides in messages.properties
 
--
+For constraints declared in the API specification, add messages to [`src/main/resources/messages.properties`](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/resources/messages.properties).
 
-	<details><summary>XML Snippet</summary>
+- To override messages for [JSR303 messages](https://beanvalidation.org/1.0/spec/#d0e5601), the property must follow the syntax shown below.
+- For a message to be activated, the relevant constraints must exist in the model definition of `openapi.yml`.
 
-	```xml
+```text
+Property Name Syntax
+	Syntax: ConstraintName[.className][.fieldName]
 
-	```
-	</details>
+	ConstraintName: the name of the JSR303 constraint name
+		Required. First letter capitalized, camel-case, equivalent to the annotation name
+		Effect: filters constraint violations by the constraint name
+		Example: NotNull
+	className: the class to which the message specifically applies
+		Optional. First letter lowercase, camel-case
+		Effect: filters 'ConstraintName' violations that are generated by the specified class
+		Example: someProviderModelClassname
+	fieldName: filters 'ConstraintName'
+		Optional. First letter lowercase, camel-case
+		Effect: filters 'ConstraintName' violations that are generated by the specified field
+			If no 'className' was specified, provides the message for any class with 'fieldName'
+		Example: someFieldName
+```
 
-## Generated code
+<details><summary>JSR303 Properties Snippet</summary>
 
--
-
-	<details><summary>XML Snippet</summary>
-
-	```xml
-
-	```
-	</details>
-
-### The interface
-
--
-
-	<details><summary>XML Snippet</summary>
-
-	```xml
-
-	```
-	</details>
-
-### Integrating the application code
-
--
-
-<details><summary>XML Snippet</summary>
-
-```xml
-
+```properties
+#####################################################################
+# Messages for JSR 303 Validation annotations
+#####################################################################
+# no args
+Min.personInfoRequest.participantID=Participant ID must be greater than zero.
+# no args
+NotNull.personInfoRequest.participantID=PersonInfoRequest.participantID cannot be null.
+# no args
+NotNull.personInfoRequest=PersonInfoRequest Payload cannot be null.
 ```
 </details>
 
-# Migrating from Code First to Design First
+#### .openapi-generator-ignore
 
--
+The openapi-generator may at times overwrite files that we do not want overwritten.
+To prevent this behavior, edit the [`bip-[service-name]/src/main/resources/openapi/.openapi-generator-ignore`](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-person/src/main/resources/openapi/.openapi-generator-ignore) file.
 
-	<details><summary>XML Snippet</summary>
+- The `.openapi-generator-ignore` file was created by openapi-generator, but will not overwrite additive edits to it.
+- The file is hidden, so (for example) users of eclipse / STS can find this file using the _Navigator_ view.
+- The format and wildcards is similar to the git ignore file
 
-	```xml
+<details><summary>Ignore File Snippet</summary>
 
-	```
-	</details>
+```properties
+# Swagger Codegen Ignore
+# Lines beginning with a # are comments
 
-## Get the current API definition
+# Exclude all recursively
+# openapi/**
 
--
+# Exclude specific patterns
+openapi/**/client/*.java
+openapi/**/**ApiController*.java
+```
+</details>
 
-	<details><summary>XML Snippet</summary>
+## Generated code
 
-	```xml
+Each time a maven build runs for a service project, the API interface classes and model classes are rebuilt.
+The final location of the generated classes is `target/generated-sources/openapi/**`.
+This path is added to the classpath.
 
-	```
-	</details>
+The interface classes declare the API for clients and the service, and contain the request mappings (paths), JSR303 annotations, and API documentation annotations.
+The service must implement the generated interface(s) in its `@RestController` resource classes.
 
-## Modify the current definition
+The model classes, are likewise annotated with the JSR303 and API documentation annotations.
 
--
 
-	<details><summary>XML Snippet</summary>
+### Integrating the application code
 
-	```xml
+As discussed in [Developing with BIP Framework](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/docs/developing-with-bip-framework.md) and [Layer and Model Separation Design](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/docs/design-layer-separation.md), normal spring provider resource classes are used to present the OpenAPI interface(s) and model object(s) to the consumer. Service patterns should be upheld by accessing the service through a `ServiceAdapter` class. See the bip-reference-person [PersonResource](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/api/provider/PersonResource.java) class.
 
-	```
-	</details>
+<details><summary>Java Snippet</summary>
 
-## Update maven configuration
+```java
+@RestController
+public class PersonResource implements ReferencePersonApi, SwaggerResponseMessages {
 
--
+	/** Logger instance */
+	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(PersonResource.class);
 
-	<details><summary>XML Snippet</summary>
+	/** The root path to this resource */
+	public static final String URL_PREFIX = "/api/v1/persons";
 
-	```xml
+	@Autowired
+	ServiceAdapter serviceAdapter;
 
-	```
-	</details>
+	@Autowired
+	BuildProperties buildProperties;
 
-## Update classes and config
+	@PostConstruct
+	public void postConstruct() {
+		// Print build properties
+		LOGGER.info(buildProperties.getName());
+		LOGGER.info(buildProperties.getVersion());
+		LOGGER.info(buildProperties.getArtifact());
+		LOGGER.info(buildProperties.getGroup());
+	}
 
-- REST Resource classes Model objects and dependents messages.properties / MessageKeys and dependents
+	/**
+	 * Registers fields that should be allowed for data binding.
+	 *
+	 * @param binder  Spring-provided data binding context object.
+	 */
+	@InitBinder
+	public void initBinder(final WebDataBinder binder) {
+		binder.setAllowedFields(new String[] { "[fieldOne]", "[fieldTwo]", "[etc]" });
+	}
 
-	<details><summary>XML Snippet</summary>
+	/**
+	 * [Description of the purpose for the method]
+	 * <p>
+	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two
+	 * return types.
+	 * <ol>
+	 * <li>An object that implements ProviderTransferObjectMarker, e.g.:
+	 * PersonInfoResponse
+	 * <li>An object of type ResponseEntity&lt;ProviderTransferObjectMarker&gt;,
+	 * e.g. a ResponseEntity that wraps some class that implements
+	 * ProviderTransferObjectMarker.
+	 * </ol>
+	 * The auditing aspect won't be triggered if the return type in not one of
+	 * the above.
+	 *
+	 * @param [openapiModel]Request the person request
+	 * @return the response
+	 */
+	@Override
+	public ResponseEntity<[openapiModel]Response> methodName(
+			@ApiParam(value = "[openapiModel]Request", required = true) @Valid @RequestBody final [PpenapiModel]Request [openapiModel]Request) {
+		LOGGER.debug("method invoked");
 
-	```xml
+		// call service through the service adapter
+		[OpenapiModel]Response providerResponse = serviceAdapter.[methodName]Pid([openapiModel]Request);
 
-	```
-	</details>
+		// send provider response back to consumer
+		LOGGER.debug("Returning providerResponse to consumer");
+		return new ResponseEntity<>(providerResponse, HttpStatus.OK);
+	}
 
-## Clean up
-
-- Remove old annotations ?
-
-	<details><summary>XML Snippet</summary>
-
-	```xml
-
-	```
-	</details>
+}
+```
+</details>
