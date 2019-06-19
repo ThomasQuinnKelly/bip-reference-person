@@ -36,7 +36,9 @@ The `*Helper` class should trap legitimate faults that are returned from the cli
 
 ## Exception Hierarchy
 
-Custom application exceptions should extend `BipException` for checked exceptions, and `BipRuntimeException` for runtime exceptions.
+Custom application exceptions should extend:
+- `BipException` for checked exceptions that must be handled within the application
+- `BipRuntimeException` for runtime exceptions that should propagate directly back to the [`BipRestGlobalExceptionHandler`](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/rest/exception/BipRestGlobalExceptionHandler.java)
 
 <img alt="BIP Exception Hierarchy" src="images/bip-exception-class-hierarchy.png" height="66%" width="66%" />
 
