@@ -1,6 +1,14 @@
 # BIP Exception Management
 This document is primarily concerned with exceptions generated in the course of executing business processes in the service and partner layers. For discussion of Provider layer validations and Service layer validations, see [validation.md](./validation.md).
 
+## BIP Exception Implementation
+
+Business service applications need to be able to return meaningful information to consumers. The framework has chosen to leverage Java exception propagation to carry this information.
+
+[`BipException`](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/exception/BipException.java) and [`BipRuntimeException`](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/exception/BipRuntimeException.java) are the base exception classes for BIP service applications. Theses two classes extend their respective JVM exception classes (Exception and RuntimeException) to maintain JVM behaviors. They add BIP data by implementing [`BipExceptionExtender`](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/exception/BipExceptionExtender.java). This interface introduces the [`BipExceptionData`](https://github.com/department-of-veterans-affairs/bip-framework/blob/cmapi2-327/bip-framework-libraries/src/main/java/gov/va/bip/framework/exception/BipExceptionData.java) class, which should be populated to provide menaingful information to the service consumer.
+
+See the class diagram at https://github.com/department-of-veterans-affairs/bip-framework/tree/master/bip-framework-libraries/#exception.
+
 ## Layer Concerns
 Each layer of an BIP micro-service has different exception handling needs. Understanding layer concerns is necessary.
 
@@ -28,8 +36,9 @@ The `*Helper` class should trap legitimate faults that are returned from the cli
 
 ## Exception Hierarchy
 
-The Bip*Exception classes provide a means of extending the java Exception and RuntimeException classes. Because these JVM classes are final, a simple "extend" is not possible, so the BIP base classes wrap the JVM classes and expose all the same methods as well as methods for BIP-specific messages. The data is maintained in the shared BipExceptionData class.
-<img alt="BIP Exception Hierarchy" src="images/bip-exception-class-hierarchy.png" height="50%" width="50%" />
+Custom application exceptions should extend `BipException` for checked exceptions, and `BipRuntimeException` for runtime exceptions.
+
+<img alt="BIP Exception Hierarchy" src="images/bip-exception-class-hierarchy.png" height="66%" width="66%" />
 
 See the BIP base exception classes in the [framework exception package](https://github.com/department-of-veterans-affairs/bip-framework/tree/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/exception)
 
