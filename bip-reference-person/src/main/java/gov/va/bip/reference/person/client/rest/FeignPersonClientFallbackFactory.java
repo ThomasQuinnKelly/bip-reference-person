@@ -27,7 +27,7 @@ public class FeignPersonClientFallbackFactory implements FallbackFactory<FeignPe
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(FeignPersonClientFallbackFactory.class);
 
 	@Override
-	public FeignPersonClient create(Throwable cause) {
+	public FeignPersonClient create(final Throwable cause) {
 
 		return new FeignPersonClient() {
 			@Override
@@ -47,9 +47,9 @@ public class FeignPersonClientFallbackFactory implements FallbackFactory<FeignPe
 					BipFeignRuntimeException exception = (BipFeignRuntimeException) cause;
 					PersonInfoResponse response = new PersonInfoResponse();
 					response.addMessage(MessageSeverity.ERROR,
-							exception.getKey(),
+							exception.getExceptionData().getKey(),
 							exception.getMessage(),
-							exception.getStatus());
+							exception.getExceptionData().getStatus());
 					return response;
 				}
 
