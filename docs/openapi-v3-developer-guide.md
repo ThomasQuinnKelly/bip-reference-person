@@ -16,7 +16,7 @@ If you are migrating a BIP application from an earlier version of the framework,
 
 ## Reference Information
 
-These sites should be considered "must read" for developers and tech leads.
+In addition to the [bip-reference-person] application and documentation, these sites provide excellent background for developers and tech leads:
 
 - [OpenAPI Specification v 3.0.1](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md)
 - [OpenAPI Tools](https://github.com/OpenAPITools) - of particular interest:
@@ -371,8 +371,6 @@ BIP service applications should leverage the framework configuration to minimize
 
 ## How to specify the API
 
-BIP framework supports the
-
 The API specification for a BIP service application should be wholly contained within the [`bip-[application-name]/src/main/resources/openapi/openapi.yml`](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/resources/openapi/openapi.yml) file, without any external "ref" files. OpenAPI v3 still has outstanding issues around when and where references to external specifications can be used.
 
 - The opening sections of the YAML file (api version, info, servers, tags) should retain the formatting, but must be updated to reflect the application. **The tags section can be added to as desired.**
@@ -426,7 +424,6 @@ The API specification for a BIP service application should be wholly contained w
 		</details>
 
 	- **Declare the application model schemas** for the data model classes and their properties.
-		-
 
 		<details><summary>YAML Snippet</summary>
 
