@@ -7,22 +7,18 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.va.bip.framework.client.rest.template.RestClientTemplate;
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.swagger.SwaggerResponseMessages;
+import gov.va.bip.reference.person.api.PersonRestClientTesterApi;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.api.provider.PersonResource;
 import gov.va.bip.reference.person.client.rest.FeignPersonClient;
-import io.swagger.annotations.ApiOperation;
 
 /**
  * The purpose of this class is to make REST client calls. These are REST clients to our own
@@ -31,7 +27,7 @@ import io.swagger.annotations.ApiOperation;
  * @author akulkarni
  */
 @RestController
-public class PersonRestClientTester implements SwaggerResponseMessages {
+public class PersonRestClientTester implements PersonRestClientTesterApi, SwaggerResponseMessages {
 
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(PersonRestClientTester.class);
 
@@ -43,40 +39,9 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 
 	public static final String URL_PREFIX = PersonResource.URL_PREFIX + "/clientTests";
 
-	/**
-	 * This method demonstrates the use of RestTemplate to make REST calls on the service endpoints.
-	 *
-	 * @param personByPidDomainRequest the person by pid domain request
-	 * @return a ResponseEntity
-	 */
-	@ApiOperation(value = "An endpoint which uses a REST client using RestTemplate to call the remote echo operation.")
-	@RequestMapping(value = URL_PREFIX + "/callPersonByPidUsingRestTemplate", method = RequestMethod.POST,
-			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PersonInfoResponse>
-			callPersonByPidUsingRestTemplate(@Valid @RequestBody final PersonInfoRequest personInfoRequest) {
-		// invoke the service using classic REST Template from Spring, but load balanced through Consul
-		HttpEntity<PersonInfoRequest> requestEntity = new HttpEntity<>(personInfoRequest);
-		ResponseEntity<PersonInfoResponse> exchange = null;
-		exchange =
-				personUsageRestTemplate.executeURL("http://localhost:8080" + PersonResource.URL_PREFIX + "/pid",
-						HttpMethod.POST, requestEntity, new ParameterizedTypeReference<PersonInfoResponse>() {
-						});
-		LOGGER.info("Invoked os-reference-person service using REST template: " + exchange);
-		return exchange;
-	}
-
-	/**
-	 * This method demonstrates the use of Feign Client to make REST calls.
-	 *
-	 * @param personInfoRequest the person info request
-	 * @return a ResponseEntity
-	 */
-	@ApiOperation(value = "An endpoint which uses a REST client using Feign to call the remote person by pid operation.")
-	@RequestMapping(value = URL_PREFIX + "/callPersonByPidUsingFeignClient", method = RequestMethod.POST,
-			produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PersonInfoResponse>
-			callPersonByPidUsingFeignClient(@Valid @RequestBody final PersonInfoRequest personInfoRequest) {
-
+	@Override
+	public ResponseEntity<PersonInfoResponse> callPersonByPidUsingFeignClientUsingPOST(
+			@Valid PersonInfoRequest personInfoRequest) {
 		// use this in case of feign hystrix to test fallback handler invocation
 		// NOSONAR ConfigurationManager.getConfigInstance().setProperty("hystrix.command.default.circuitBreaker.forceOpen", "true");
 		PersonInfoResponse personInfoResponse = null;
@@ -95,5 +60,19 @@ public class PersonRestClientTester implements SwaggerResponseMessages {
 		} else {
 			return new ResponseEntity<>(personInfoResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	@Override
+	public ResponseEntity<PersonInfoResponse> callPersonByPidUsingRestTemplateUsingPOST(
+			@Valid PersonInfoRequest personInfoRequest) {
+		// invoke the service using classic REST Template from Spring, but load balanced through Consul
+		HttpEntity<PersonInfoRequest> requestEntity = new HttpEntity<>(personInfoRequest);
+		ResponseEntity<PersonInfoResponse> exchange = null;
+		exchange =
+				personUsageRestTemplate.executeURL("http://localhost:8080" + PersonResource.URL_PREFIX + "/pid",
+						HttpMethod.POST, requestEntity, new ParameterizedTypeReference<PersonInfoResponse>() {
+						});
+		LOGGER.info("Invoked os-reference-person service using REST template: " + exchange);
+		return exchange;
 	}
 }
