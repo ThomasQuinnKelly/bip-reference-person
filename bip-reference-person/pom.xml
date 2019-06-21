@@ -16,16 +16,20 @@
     <name>${project.artifactId}</name>
     <description>Reference Person Service Implementation for BIP Spring Boot Project</description>
     
+    <properties>
+    	<bip-framework.version>1.0.3-SNAPSHOT</bip-framework.version>
+    </properties>
+    
     <dependencies>
     	<dependency>
             <groupId>gov.va.bip.framework</groupId>
             <artifactId>bip-framework-libraries</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>${bip-framework.version}</version>
         </dependency>
         <dependency>
             <groupId>gov.va.bip.framework</groupId>
             <artifactId>bip-framework-autoconfigure</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>${bip-framework.version}</version>
         </dependency>
 		<dependency>
             <groupId>gov.va.bip.reference.person</groupId>
