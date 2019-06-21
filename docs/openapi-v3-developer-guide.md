@@ -298,13 +298,14 @@ BIP service applications should leverage the framework configuration to minimize
 	```
 	</details>
 
-- The inputSpec and output directory must remain unchanged
+- The inputSpec, output, and ignoreFileOverride directories must remain unchanged
 
 	<details><summary>XML Snippet</summary>
 
 	```xml
 	<inputSpec>${basedir}/src/main/resources/openapi/openapi.yml</inputSpec>
 	<output>${project.build.directory}/generated-sources</output>
+	<ignoreFileOverride>${basedir}/.openapi-generator-ignore</ignoreFileOverride>
 	```
 	</details>
 
@@ -715,11 +716,12 @@ NotNull.personInfoRequest=PersonInfoRequest Payload cannot be null.
 
 #### .openapi-generator-ignore
 
-The openapi-generator may at times overwrite files that we do not want overwritten.
-To prevent this behavior, edit the [`bip-[service-name]/src/main/resources/openapi/.openapi-generator-ignore`](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-person/src/main/resources/openapi/.openapi-generator-ignore) file.
+OpenAPI Generator supports a .openapi-generator-ignore file, similar to .gitignore or .dockerignore you're probably already familiar with. With the ignore file, you can specify individual files or directories can be ignored. 
+
+The openapi-generator may at times overwrite files that we do not want overwritten. To prevent this behavior, edit the [`bip-[service-name]/.openapi-generator-ignore`](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-person/.openapi-generator-ignore) file.
 
 - The `.openapi-generator-ignore` file was created by openapi-generator, but will not overwrite additive edits to it.
-- The file is hidden, so (for example) users of eclipse / STS can find this file using the _Navigator_ view.
+- The file is hidden, so (for example) users of Eclipse / STS can find this file using the _Navigator_ view.
 - The format and wildcards is similar to the git ignore file
 
 <details><summary>Ignore File Snippet</summary>
@@ -729,11 +731,12 @@ To prevent this behavior, edit the [`bip-[service-name]/src/main/resources/opena
 # Lines beginning with a # are comments
 
 # Exclude all recursively
-# openapi/**
+# target/generated-sources/openapi/**
 
 # Exclude specific patterns
-openapi/**/client/*.java
-openapi/**/**ApiController*.java
+target/generated-sources/openapi/**/client/*.java
+target/generated-sources/openapi/**/**ApiController*.java
+target/generated-sources/openapi/**/TokenResourceApi.java
 ```
 </details>
 
