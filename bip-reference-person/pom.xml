@@ -253,6 +253,7 @@
                                 	<!-- See https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin -->
                                     <inputSpec>${basedir}/src/main/resources/openapi/openapi.yml</inputSpec>
                                     <output>${project.build.directory}/generated-sources</output>
+                                    <ignoreFileOverride>${basedir}/.openapi-generator-ignore</ignoreFileOverride>
 
                                     <apiPackage>gov.va.bip.reference.person.api</apiPackage>
                                     <modelPackage>gov.va.bip.reference.person.api.model.v1</modelPackage>

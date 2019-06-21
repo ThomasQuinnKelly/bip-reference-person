@@ -1,9 +1,0 @@
-# Swagger Codegen Ignore
-# Lines beginning with a # are comments
-
-# Exclude all recursively
-# openapi/**
-
-# Exclude specific patterns
-openapi/**/client/*.java
-openapi/**/**ApiController*.java
