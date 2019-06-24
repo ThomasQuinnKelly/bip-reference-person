@@ -1,0 +1,9 @@
+<settings>
+  <servers>
+     <server>
+        <id>nexus3</id>
+        <username>${bip.nexus.username}</username>
+        <password>${bip.nexus.password}</password>
+     </server>
+  </servers>
+</settings>

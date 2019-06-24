@@ -18,4 +18,12 @@ mavenGitflowPipeline {
     ]
 
     cucumberOpts = "--tags @DEV"
+
+    //Credential for Nexus Deployment
+    nexusCredentialId = 'blue-dev-nexus-login'
+
+    //Below config is for local pipeline testing
+    skipSonar = true
+    skipMavenDeploy = true
+    mvnSettingsFile = 'settings.xml'
 }
