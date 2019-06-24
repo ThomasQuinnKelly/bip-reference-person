@@ -10,7 +10,7 @@
 		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
 			<evaluator class="gov.va.bip.framework.log.logback.BipMaskingFilter">
 				<name>Date</name>
-				<pattern>\d{4}-\d{1,2}-\d{1,2}</pattern>
+				<pattern>\b\d{4}-\d{1,2}-\d{1,2}\b</pattern>
 				<unmasked>2</unmasked>
 			</evaluator>
 		</filter>
