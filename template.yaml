@@ -20,6 +20,11 @@ parameters:
     displayName: Image Name
     description: Container Image Name including repository (but not tag)
     required: true
+  - name: IMAGE_TAG
+    displayName: Image Tag
+    description: Tag of the container image to deploy
+    value: "latest"
+    required: true
   - name: REPLICA_COUNT
     displayName: Number of Replicas
     description: Number of replicas to run
@@ -35,21 +40,16 @@ parameters:
     description: Branch name from SCM, used to label objects for pipeline detection
     value: "master"
     required: false
-  - name: IMAGE_TAG
-    displayName: Image Tag
-    description: Tag of the container image to deploy
+  - name: CONFIG_BRANCH
+    displayName: Configuration branch name from SCM
+    description: Configuration branch name from SCM, used to label objects for pipeline detection
     value: "master"
-    required: true
+    required: false
   - name: SPRING_PROFILES
     displayName: Spring Profiles
     description: Comma separated list of spring profiles to activate
     value: "dev"
-    required: false
-  - name: CONFIG_BRANCH
-    displayName: Config Branch
-    description: Branch of the external configuration repository to use from Consul
-    value: "master"
-    required: false
+    required: true
 objects:
   - apiVersion: v1
     kind: DeploymentConfig
@@ -130,11 +130,36 @@ objects:
                     configMapKeyRef:
                       name: consul-config
                       key: CONSUL_SCHEME
+                - name: spring.cloud.vault.kv.application-name
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.vault.kv.application-name
+                - name: spring.cloud.consul.config.enabled
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.consul.config.enabled
                 - name: spring.cloud.consul.config.acl-token
                   valueFrom:
                     secretKeyRef:
-                        name: consul-acl-token
-                        key: CONSUL_ACL_TOKEN
+                      name: consul-acl-token
+                      key: CONSUL_ACL_TOKEN
+                - name: spring.cloud.consul.config.failFast
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.consul.config.failFast
+                - name: spring.cloud.consul.config.prefix
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.cloud.consul.config.prefix
+                - name: spring.profiles.active
+                  valueFrom:
+                    configMapKeyRef:
+                      name: ${IMAGE}-${BRANCH}-config
+                      key: spring.profiles.active
                 - name: spring.cloud.consul.discovery.acl-token
                   valueFrom:
                     secretKeyRef:
@@ -177,31 +202,8 @@ objects:
                       key: VAULT_KUBERNETES_ROLE
                 - name: spring.cloud.vault.ssl.trust-store
                   value: file:/secrets/va-cacerts/truststore.jks
-                - name: spring.cloud.vault.kv.application-name
-                  valueFrom:
-                    configMapKeyRef:
-                      name: ${IMAGE}-${BRANCH}-config
-                      key: spring.cloud.vault.kv.application-name
-                - name: spring.cloud.consul.config.enabled
-                  valueFrom:
-                    configMapKeyRef:
-                      name: ${IMAGE}-${BRANCH}-config
-                      key: spring.cloud.consul.config.enabled
-                - name: spring.cloud.consul.config.acl-token
-                  valueFrom:
-                    secretKeyRef:
-                        name: consul-acl-token
-                        key: CONSUL_ACL_TOKEN
-                - name: spring.cloud.consul.config.failFast
-                  valueFrom:
-                    configMapKeyRef:
-                      name: ${IMAGE}-${BRANCH}-config
-                      key: spring.cloud.consul.config.failFast
-                - name: spring.profiles.active
-                  valueFrom:
-                    configMapKeyRef:
-                      name: ${IMAGE}-${BRANCH}-config
-                      key: spring.profiles.active
+                - name: LOGGING_LEVEL_COM_ZAXXER_HIKARI
+                  value: debug
               volumeMounts:
                 - name: va-cacerts
                   mountPath: "/secrets/va-cacerts" 
@@ -256,7 +258,6 @@ objects:
     data:
       spring.cloud.consul.config.enabled: "true"
       spring.cloud.consul.config.failFast: "true"
-      spring.cloud.consul.config.prefix: "config/blue/${CONFIG_BRANCH}"
       spring.cloud.consul.discovery.enabled: "true"
       spring.cloud.consul.discovery.register: "true"
       spring.cloud.vault.enabled: "true"
@@ -265,3 +266,5 @@ objects:
       spring.cloud.vault.kubernetes.service-account-token-file: "/var/run/secrets/kubernetes.io/serviceaccount/token"
       spring.cloud.vault.kv.application-name: "blue/bip-reference-person"
       spring.profiles.active: ${SPRING_PROFILES}
+      spring.cloud.consul.config.prefix: "config/blue/${CONFIG_BRANCH}"
+ 
