@@ -29,10 +29,5 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 		<name>BIP Nexus Repository</name>
 		<url>https://nexus.dev.bip.va.gov/repository/maven-public</url>
 	  </repository>
-	  <repository>
-	   	<id>github</id>
-	    <name>GitHub Repository</name>
-	    <url>https://raw.github.com/department-of-veterans-affairs/ocp-framework/mvn-repo</url>
-	  </repository>
 	</repositories>
 </project>

@@ -4,9 +4,11 @@ This local development environment is strickly for demonstration and local testi
 For information about the BIP Framework and Reference Application, see this [README](https://github.com/department-of-veterans-affairs/bip-reference-person).
 
 ## Starting the Environment
-To start the environment first build the BIP reference service by running `mvn clean package`. The platform can then be started by running `docker-compose up -d --build`. 
+
+To start the environment first build the BIP reference service by running `mvn clean package`. The platform can then be started by running `docker-compose up -d --build`.
 
 ## Service Links
+
 The `bip-reference-person` spring boot app must be running for these links to be accessible.
 
 * [BIP Reference App](http://localhost:8080)
@@ -39,7 +41,7 @@ The cache auto-configuration registers `BipCacheOpsMBean` and its implementation
 
 If you run the app in default profile, it uses emebedded redis server for caching. To clear cache, follow the below steps.
 
-* Download Redis from https://redis.io/download
+* Download [Redis](https://redis.io/download)
 * Go to src folder and run `redis-cli`
 * To see the cache entries - `KEYS *`
 * To clear cache entries - `FLUSHALL`
