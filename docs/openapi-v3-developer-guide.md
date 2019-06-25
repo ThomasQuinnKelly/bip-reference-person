@@ -716,7 +716,7 @@ NotNull.personInfoRequest=PersonInfoRequest Payload cannot be null.
 
 #### .openapi-generator-ignore
 
-OpenAPI Generator supports a .openapi-generator-ignore file, similar to .gitignore or .dockerignore you're probably already familiar with. With the ignore file, you can specify individual files or directories can be ignored. 
+OpenAPI Generator supports a .openapi-generator-ignore file, similar to .gitignore or .dockerignore you're probably already familiar with. With the ignore file, you can specify individual files or directories can be ignored.
 
 The openapi-generator may at times overwrite files that we do not want overwritten. To prevent this behavior, edit the [`bip-[service-name]/.openapi-generator-ignore`](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-person/.openapi-generator-ignore) file.
 
@@ -740,6 +740,16 @@ target/generated-sources/openapi/**/TokenResourceApi.java
 ```
 </details>
 
+## Build
+
+When maven builds are performed, if you find service classes get overwritten, you can tell openapi-generator to ignore (not overwrite) the files. See [BIP OpenAPI v3 Developer Guide - .openapi-generator-ignore](./openapi-v3-developer-guide.md#openapi-generator-ignore)
+
+It may be necessary at times to tell Maven to update the artifacts in its local repo. Force maven to update libraries:
+- In STS, right-click your reactor project and select _Maven > Update Project... > Force Update of Snapshots/Releases_.
+- At command line, add `-U`, for example: `$ mvn clean install -U`
+
+It may be necessary to run the build more than one time for necessary artifacts to get generated correctly.
+
 ## Generated code
 
 Each time a maven build runs for a service project, the API interface classes and model classes are rebuilt.
@@ -752,7 +762,7 @@ The service must implement the generated interface(s) in its `@RestController` r
 The model classes, are likewise annotated with the JSR303 and API documentation annotations.
 
 
-### Integrating the application code
+## Integrating the application code
 
 As discussed in [Developing with BIP Framework](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/docs/developing-with-bip-framework.md) and [Layer and Model Separation Design](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/docs/design-layer-separation.md), normal spring provider resource classes are used to present the OpenAPI interface(s) and model object(s) to the consumer. Service patterns should be upheld by accessing the service through a `ServiceAdapter` class. See the bip-reference-person [PersonResource](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/api/provider/PersonResource.java) class.
 

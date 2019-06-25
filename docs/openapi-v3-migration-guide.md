@@ -95,9 +95,17 @@ Also, Junit tests may need to be modified later after the maven build runs - `@I
 
 - Update `messages.properties` to conform to the JSR303 standards as documented in [BIP OpenAPI v3 Developer Guide - JSR303 message overrides in messages.properties](./openapi-v3-developer-guide.md#jsr303-message-overrides-in-messagesproperties)
 
-## Test and refine
+## Build
 
 When maven builds are performed, if you find service classes get overwritten, you can tell openapi-generator to ignore (not overwrite) the files. See [BIP OpenAPI v3 Developer Guide - .openapi-generator-ignore](./openapi-v3-developer-guide.md#openapi-generator-ignore)
+
+It may be necessary at times to tell Maven to update the artifacts in its local repo. Force maven to update libraries:
+- In STS, right-click your reactor project and select _Maven > Update Project... > Force Update of Snapshots/Releases_.
+- At command line, add `-U`, for example: `$ mvn clean install -U`
+
+It may be necessary to run the build more than one time for necessary artifacts to get generated correctly.
+
+## Test and refine
 
 - Build the project and run it. Resolve any issues.
 - Test through the swagger-ui http://localhost:8080/swagger-ui.html. Resolve any issues.
