@@ -7,9 +7,16 @@
 		<!-- Log Masking Filters -->
 		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
 			<evaluator class="gov.va.bip.framework.log.logback.BipMaskingFilter">
-				<name>File Number</name>
-				<pattern>\d{9}</pattern>
-				<unmasked>4</unmasked>
+				<name>Test Pattern 1</name>
+				<pattern>\d{3}-\d{3}</pattern>
+				<unmasked>3</unmasked>
+			</evaluator>
+		</filter>
+		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+			<evaluator class="gov.va.bip.framework.log.logback.BipMaskingFilter">
+				<name>Date</name>
+				<pattern>\d{4}-\d{1,2}-\d{1,2}</pattern>
+				<unmasked>2</unmasked>
 			</evaluator>
 		</filter>
 		<encoder>
