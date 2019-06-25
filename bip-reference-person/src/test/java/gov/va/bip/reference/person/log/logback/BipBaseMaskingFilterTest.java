@@ -28,13 +28,24 @@ public class BipBaseMaskingFilterTest {
 	}
 
 	@Test
-	public final void testEvaluate() {
+	public final void testEvaluatePattern() {
 		capture.reset();
 
-		String msg = "Test File Number 123456789 value";
+		String msg = "Test Pattern 123-456 value";
 		Logger logger = LoggerFactory.getLogger(BipMaskingFilter.class);
 		logger.error(msg);
 		String log = capture.toString();
-		assertTrue(log.contains("Test File Number *****6789 value"));
+		assertTrue(log.contains("Test Pattern ****456 value"));
+	}
+
+	@Test
+	public final void testEvaluateDate() {
+		capture.reset();
+
+		String msg = "Test Date Pattern 1234-56-78 value";
+		Logger logger = LoggerFactory.getLogger(BipMaskingFilter.class);
+		logger.error(msg);
+		String log = capture.toString();
+		assertTrue(log.contains("Test Date Pattern ********78 value"));
 	}
 }
