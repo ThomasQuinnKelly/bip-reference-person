@@ -2,6 +2,11 @@
 
 This is a suite of projects to demonstrate various patterns required to deploy and run application spring boot and spring cloud services on the BIP Platform.  
 
+BIP Framework has been updated to use the OpenAPI v3 "design first" approach to REST API declaration.
+- Please review the [Framework Release Notes](https://github.com/department-of-veterans-affairs/bip-framework/wiki/Framework-Release-Notes)
+- If you are creating a new project, please see the [BIP OpenAPI v3 Developer Guide](docs/openapi-v3-developer-guide.md)
+- If you are upgrading from BIP Framework 1.x to BIP Framework 2.x, please review the above links, and see the help at [Migrating from BIP Framework 1.x to BIP Framework 2.x](docs/openapi-v3-migration-guide.md).
+
 ## Project Breakdown
 
 1. [bip-reference-partner-person](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-partner-person): Partner service for reference person, showing sample mock data for BGS. It should be noted by service designers and tech leads that Partner projects would typically be stand-alone (in their own repo, and not part of a reactor project). The intent is for Partner projects to be freely available for use by any number of service applications that might need them by including them as a maven dependency.
@@ -9,8 +14,8 @@ This is a suite of projects to demonstrate various patterns required to deploy a
 	- The Provider (or "web") layer contains the REST endpoints and model, JSR 303 annotations in the resource class and the model, and the use of an adapter class to transform models and call the service interface.
 	- The Domain (or "service") layer contains examples of business validation, business logic,  to call Partner services and process the returned data, and exception handling.
 	- The Partner (or "client") layer shows how to perform model transformation, how to call a partner client interface, and how to handle responses (or exceptions thrown) from the partner client.
-3. [bip-reference-inttest](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-inttest): Contains the integration tests using the framework Test Library ()Spring Rest Template, Cucumber libraries, and other capabilities). It includes functioning test cases that run against the endpoints in `bip-reference-person`. 
-4. [bip-reference-perftest](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-perftest): Contains functioning performance JMX test scripts for Apache JMeter that run against the endpoints in `bip-reference-person`. 
+3. [bip-reference-inttest](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-inttest): Contains the integration tests using the framework Test Library ()Spring Rest Template, Cucumber libraries, and other capabilities). It includes functioning test cases that run against the endpoints in `bip-reference-person`.
+4. [bip-reference-perftest](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-perftest): Contains functioning performance JMX test scripts for Apache JMeter that run against the endpoints in `bip-reference-person`.
 
 ## How to include the framework libraries in your project
 
@@ -69,7 +74,7 @@ The fastest way to get set up is to visit the [Quick Start Guide](docs/quick-sta
 * [Build Info and Git Properties Plugin](docs/build-and-git-properties.md)
 * [Prometheus Grafana Local Dev](docs/prometheus-grafana-setup.md)
 * [Deployment Packaging](docs/deployment-package.md)
-* [OpenAPI Code Generation](docs/openapi-v3-api-code-generation-journey.md) 
+* [OpenAPI Code Generation](docs/openapi-v3-api-code-generation-journey.md)
 
 ## How to make the dependency framework libraries available
 
@@ -153,4 +158,3 @@ If you or your team wants to contribute to this repository, then fork the reposi
 
 ## Local Development
 Instructions on running the application on a local workstation can be found in the [local-dev README](local-dev)
-	
