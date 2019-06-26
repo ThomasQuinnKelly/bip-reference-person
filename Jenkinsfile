@@ -11,13 +11,13 @@ mavenGitflowPipeline {
         'bip-reference-person': 'bip-reference-person'
     ]
 
-    deploymentTemplates = ["template.yaml"]
-    deploymentParameters = [
-        'APP_NAME': 'bip-reference-person',
-        'IMAGE': 'bip-reference-person'
-    ]
+    // deploymentTemplates = ["template.yaml"]
+    // deploymentParameters = [
+    //     'APP_NAME': 'bip-reference-person',
+    //     'IMAGE': 'bip-reference-person'
+    // ]
 
-    cucumberOpts = "--tags @DEV"
+    // cucumberOpts = "--tags @DEV"
 
     //Credential for Nexus Deployment
     //nexusCredentialId = 'blue-dev-nexus-login'
