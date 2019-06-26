@@ -2,7 +2,7 @@
 
 OpenAPI is the open source successor to the old Swagger specification. The framework team has spent time investigating the two main approaches to using OpenAPI, and any issues that arise. There is value in being aware of [the research and its findings](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/docs/openapi-v3-api-code-generation-journey.md).
 
-BIP Framework began with support for the legacy Code First approach. With the move to OpenAPI v3, the framework is changing its API model to the Design First approach. In many ways this makes it easier for new projects, but imposes an upgrade requirement on existing projects.
+BIP Framework began with support for the legacy "Code First" approach. With the move to OpenAPI v3, the framework is changing its API model to the "Design First" approach. In many ways this makes it easier for new projects, but imposes an upgrade requirement on existing projects.
 
 This document describes how to use OpenAPI v3 in service applications built on BIP Framework, specifically:
 
@@ -14,7 +14,7 @@ This document describes how to use OpenAPI v3 in service applications built on B
 
 If you are migrating a BIP application from an earlier version of the framework, please see [Migrating from BIP Framework 1.x to BIP Framework 2.x](./openapi-v3-migration-guide.md).
 
-## Reference Information
+## References
 
 In addition to the [bip-reference-person] application and documentation, these sites provide excellent background for developers and tech leads:
 
@@ -23,6 +23,14 @@ In addition to the [bip-reference-person] application and documentation, these s
 	- [openapi-generator-maven-plugin](https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin)
 	- [openapi-generator](https://github.com/OpenAPITools/openapi-generator)
 	- There is also an [openapi-petstore](https://github.com/OpenAPITools/openapi-petstore)
+
+## Prerequisites
+
+- Java 8
+- Maven 3.5.4
+- Git 2.18 or newer
+- STS/Eclipse users **must** use [STS](https://spring.io/tools) 4.3 / [Eclipse](https://www.eclipse.org/downloads/) 4.12 or newer
+- Developers are encouraged to upgrade any other tooling they use to current versions
 
 ## Framework build responsibilities
 
