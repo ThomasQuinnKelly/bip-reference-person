@@ -5,7 +5,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 	<parent>
 		<groupId>gov.va.bip.framework</groupId>
 		<artifactId>bip-framework-parentpom</artifactId>
-		<version>1.0.3-SNAPSHOT</version>
+		<version>1.0.4-SNAPSHOT</version>
 		<relativePath/>
 	</parent>
 	
@@ -28,11 +28,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 		<id>nexus3</id>
 		<name>BIP Nexus Repository</name>
 		<url>https://nexus.dev.bip.va.gov/repository/maven-public</url>
-	  </repository>
-	  <repository>
-	   	<id>github</id>
-	    <name>GitHub Repository</name>
-	    <url>https://raw.github.com/department-of-veterans-affairs/ocp-framework/mvn-repo</url>
 	  </repository>
 	</repositories>
 </project>
