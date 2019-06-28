@@ -25,21 +25,21 @@ mavenGitflowPipeline {
     //Helm Chart information
 
     //Git Repository that contains your Helm chart
-    chart.repository = "https://github.com/department-of-veterans-affairs/ocp-external-config"
+    chartRepository = "https://github.com/department-of-veterans-affairs/ocp-external-config"
 
     //Path to your chart directory within the above repository
-    chart.path = "charts/bip-reference-person"
+    chartPath = "charts/bip-reference-person"
 
     //Jenkins credential ID to use when connecting to repository. This defaults to `github` if not specified
-    chart.credentialId = "github"
+    chartCredentialId = "github"
 
     //Map to parameters to set when installing the chart
-    chart.parameters = [
+    chartParameters = [
         "spring.profiles": "dev"
     ]
 
     //Release name to use
-    chart.releaseName = "bip-reference-person"
+    chartReleaseName = "bip-reference-person"
 
 
     //Below config is for local pipeline testing
