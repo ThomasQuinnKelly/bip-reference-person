@@ -23,26 +23,26 @@ mavenGitflowPipeline {
     //nexusCredentialId = 'blue-dev-nexus-login'
 
     //Helm Chart information
-    chart {
-        //Git Repository that contains your Helm chart
-        repository = "https://github.com/department-of-veterans-affairs/ocp-external-config"
 
-        //Path to your chart directory within the above repository
-        path = "charts/bip-reference-person"
+    //Git Repository that contains your Helm chart
+    chart.repository = "https://github.com/department-of-veterans-affairs/ocp-external-config"
 
-        //Jenkins credential ID to use when connecting to repository. This defaults to `github` if not specified
-        credentialId = "github"
+    //Path to your chart directory within the above repository
+    chart.path = "charts/bip-reference-person"
 
-        //Map to parameters to set when installing the chart
-        parameters = [
-            "spring.profiles": "dev"
-        ]
+    //Jenkins credential ID to use when connecting to repository. This defaults to `github` if not specified
+    chart.credentialId = "github"
 
-        releaseName = "bip-reference-person"
-    }
+    //Map to parameters to set when installing the chart
+    chart.parameters = [
+        "spring.profiles": "dev"
+    ]
+
+    //Release name to use
+    chart.releaseName = "bip-reference-person"
+
 
     //Below config is for local pipeline testing
     skipSonar = true
-    //skipMavenDeploy = true
     mvnSettingsFile = 'settings.xml'
 }
