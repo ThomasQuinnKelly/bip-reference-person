@@ -376,6 +376,8 @@ BIP service applications should leverage the framework configuration to minimize
 	```
 	</details>
 
+- The `templateDirectory` contains path to the directory with mustache templates. Basically, the API interface we got after the generation is coming from `api.mustache` file. That’s the template for the `ReferencePersonApi` class. If you want to modify the interface class generated, then copy the same file from [OpenAPI JavaSpring](https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator/src/main/resources/JavaSpring) to under `${basedir}/src/main/resources/openapi/mustache` and make updates. Mustache is a very basic templating language, I don’t want to go into details but you can find out more [here](https://mustache.github.io/mustache.5.html). 
+
 - The profile file also includes a `<pluginManagement>` section that configures eclipse / STS lifecycle mapping for the openapiTools. This section does not require any changes.
 
 ## How to specify the API
