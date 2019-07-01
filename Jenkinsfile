@@ -17,7 +17,7 @@ mavenGitflowPipeline {
     //     'IMAGE': 'bip-reference-person'
     // ]
 
-    // cucumberOpts = "--tags @DEV"
+    cucumberOpts = "--tags @DEV"
 
     //Credential for Nexus Deployment
     //nexusCredentialId = 'blue-dev-nexus-login'
