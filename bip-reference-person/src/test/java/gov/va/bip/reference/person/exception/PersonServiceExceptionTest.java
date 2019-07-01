@@ -52,10 +52,6 @@ public class PersonServiceExceptionTest {
 	}
 
 	/**
-	 * Test of setKey method, of class PersonServiceException.
-	 */
-
-	/**
 	 * Test of getMessage method, of class PersonServiceException.
 	 */
 	@Test
