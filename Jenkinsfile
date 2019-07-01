@@ -35,7 +35,16 @@ mavenGitflowPipeline {
 
     //Map to parameters to set when installing the chart
     chartParameters = [
-        "spring.profiles": "dev"
+        "spring.profiles": "dev",
+        "iamge.repository": "registry-docker-registry/blue-dev/bip-reference-person",
+        "vault.enabled": "false",
+        "vault.consul.enabled": "false",
+        "vault.service.configMap": "null",
+        "consul.config.enabled": "false",
+        "consul.discovery.enabled": "false",
+        "consul.discovery.register": "false",
+        "consul.service.configMap": "null",
+        "consul.service.secret": "null"
     ]
 
     //Release name to use
