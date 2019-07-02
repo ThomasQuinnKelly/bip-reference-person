@@ -55,5 +55,6 @@ mavenGitflowPipeline {
 
     //Below config is for local pipeline testing
     skipSonar = true
+    skipUndeploy = true
     mvnSettingsFile = 'settings.xml'
 }
