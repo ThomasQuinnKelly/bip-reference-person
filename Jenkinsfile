@@ -8,7 +8,7 @@ mavenGitflowPipeline {
     githubCredentials = 'epmo-github'
 
     dockerBuilds = [
-        'bip-reference-person': 'bip-reference-person'
+        'blue-dev/bip-reference-person': 'bip-reference-person'
     ]
 
     // deploymentTemplates = ["template.yaml"]
