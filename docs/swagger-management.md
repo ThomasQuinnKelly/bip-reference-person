@@ -10,21 +10,6 @@ Swagger provides more benefits than just helping create clear documentation.
 
 ## Swagger configuration
 
-- Swagger has the following dependency in autoconfigure project:
-
-```xml
-	    <dependency>
-	      <groupId>io.springfox</groupId>
-	      <artifactId>springfox-swagger2</artifactId>
-	      <version>${springfox.version}</version>
-	    </dependency>
-	    <dependency>
-	      <groupId>io.springfox</groupId>
-	      <artifactId>springfox-swagger-ui</artifactId>
-	      <version>${springfox.version}</version>
-	    </dependency>
-```
-
 - Add the bip-framework-autoconfigure dependency to the project pom, with the appropriate version that will 
   include the autoconfigure projects.
   
@@ -36,29 +21,21 @@ Swagger provides more benefits than just helping create clear documentation.
            </dependency>
 ```
 
-- Update the application service yml file with the following configuration (under the default profile):
+- To disable serving Swagger UI in any environment, use the following configuration:
 
-```yaml
+```yml
 	   bip.framework:
 	     swagger:
-    		title: 
-    		description:
-    		groupName: "@project.name@-@project.version@"
-    		version: ${info.build.version}
-    		securePaths: /api/v?.*/persons/.*
+    		enabled: false
 ```
-   securePaths above secures the swagger URL's access and forwards the Security Context(JWT) to 
-   actual Service API calls.  
 
-- Add the @EnableSwagger2 annotation to the Spring Boot Application class 
+- See the @EnableWebMvc and @ConditionalOnProperty annotations on the BipSwaggerAutoConfiguration for reference 
 
 ```java
 		@Configuration
-		@EnableConfigurationProperties(SwaggerProperties.class)
-		@EnableSwagger2
+		@EnableWebMvc
 		@ConditionalOnProperty(prefix = "bip.framework.swagger", name = "enabled", matchIfMissing = true)
-		@Import({ BeanValidatorPluginsConfiguration.class })
-		public class SwaggerAutoConfiguration {}
+		public class BipSwaggerAutoConfiguration implements WebMvcConfigurer {}
 ```
 
 - Add ApiOperations and ApiMethod annotations on the resource class methods to describe about the 

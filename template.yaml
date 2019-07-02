@@ -49,7 +49,7 @@ parameters:
     displayName: Spring Profiles
     description: Comma separated list of spring profiles to activate
     value: "dev"
-    required: true
+    required: false
 objects:
   - apiVersion: v1
     kind: DeploymentConfig

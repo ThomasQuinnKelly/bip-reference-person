@@ -50,6 +50,15 @@ There are 2 application profiles that you could run locally
 * Localhost URLs for testing/using this deployment approach
 
   [Swagger UI](http://localhost:8080/swagger-ui.html) (http://localhost:8080/swagger-ui.html)
+  
+  - After updating to BIP Framework 2.x, there may be initial build issues including the fact that Swagger UI isn't available. Mitigation for this:
+		
+      - Force maven to update libraries:
+			- In STS, right-click your reactor project and select _Maven > Update Project... > Force Update of Snapshots/Releases_.
+			- At command line, add `-U`, for example: `$ mvn clean install -U`
+		
+      - Clean and build the project, select _Project > Clean..._
+	- It may be necessary to run the clean/build more than one time for necessary artifacts to get generated correctly.
 
 ### Using Docker Compose
 
