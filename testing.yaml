@@ -1,0 +1,25 @@
+
+  ########################################################################
+  # Values section defines the parameters to the chart
+  # These are specific to the chart being installed
+  ########################################################################
+
+  image:
+    repository: registry-docker-registry/blue-dev/bip-reference-person
+    tag: jluck
+  vault:
+    enabled: false
+    failFast: false
+    consul:
+      enabled: false
+    service:
+      configMap: null
+  consul:
+      config:
+        enabled: false
+      discovery:
+        enabled: false
+        register: false
+      service:
+        configMap: null
+        secret: null
