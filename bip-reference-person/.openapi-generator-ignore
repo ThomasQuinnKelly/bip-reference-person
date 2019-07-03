@@ -1,0 +1,10 @@
+# Swagger Codegen Ignore
+# Lines beginning with a # are comments
+
+# Exclude all recursively
+# target/generated-sources/openapi/**
+
+# Exclude specific patterns
+target/generated-sources/openapi/**/client/*.java
+target/generated-sources/openapi/**/**ApiController*.java
+target/generated-sources/openapi/**/TokenResourceApi.java

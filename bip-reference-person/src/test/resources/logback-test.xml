@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration scan="false" debug="false">
+	<include resource="gov/va/bip/framework/starter/logger/bip-framework-logback-starter.xml" />
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- Log Masking Filters -->
+		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+			<evaluator class="gov.va.bip.framework.log.logback.BipMaskingFilter">
+				<name>Test Pattern 1</name>
+				<pattern>\d{3}-\d{3}</pattern>
+				<unmasked>3</unmasked>
+			</evaluator>
+		</filter>
+		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+			<evaluator class="gov.va.bip.framework.log.logback.BipMaskingFilter">
+				<name>Date</name>
+				<pattern>\d{4}-\d{1,2}-\d{1,2}</pattern>
+				<unmasked>2</unmasked>
+			</evaluator>
+		</filter>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<root level="ERROR">
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>

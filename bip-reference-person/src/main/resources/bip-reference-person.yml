@@ -107,8 +107,8 @@ bip-reference-person:
 #-##################################################
 logging: 
   level:
-    com.ecwid.consul: INFO
-    feign: INFO
+    com.ecwid.consul: WARN
+    feign: WARN
 #    gov.va.bip: DEBUG
     gov.va.bip.framework.client.ws: INFO
     gov.va.bip.framework.rest.provider: INFO
@@ -117,23 +117,23 @@ logging:
     gov.va.bip.reference: INFO
     gov.va.bip.framework: INFO
 #    org.apache.http: DEBUG
-    org.apache.http.impl.client: INFO
+    org.apache.http.impl.client: WARN
 #    org.springframework: DEBUG
-    org.springframework.cache: INFO 
-    org.springframework.cloud.consul.config: INFO
-    org.springframework.cloud.consul: INFO
-    org.springframework.client.discovery: INFO
-    org.springframework.cloud.openfeign: INFO
-    org.springframework.cloud.sleuth: INFO 
-    org.springframework.cloud.sleuth.log: INFO
+    org.springframework.cache: WARN 
+    org.springframework.cloud.consul.config: WARN
+    org.springframework.cloud.consul: WARN
+    org.springframework.client.discovery: WARN
+    org.springframework.cloud.openfeign: WARN
+    org.springframework.cloud.sleuth: WARN 
+    org.springframework.cloud.sleuth.log: WARN
     org.springframework.core.convert: WARN
     org.springframework.format: WARN
-    org.springframework.retry: INFO
-    org.springframework.security: INFO
-    org.springframework.security.web: INFO
-    org.springframework.web.client: INFO
-    org.springframework.ws: INFO
-    sun.net.www.protocol: INFO
+    org.springframework.retry: WARN
+    org.springframework.security: WARN
+    org.springframework.security.web: WARN
+    org.springframework.web.client: WARN
+    org.springframework.ws: WARN
+    sun.net.www.protocol: WARN
 ##################################################
 # Ribbon timeout, server refresh interval, retry
 # settings for the requests

@@ -79,10 +79,10 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 */
 	@Override
 	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE,
-			key = "#root.methodName + T(gov.va.bip.framework.cache.BipCacheUtil).createKey(#personByPidDomainRequest.participantID)",
-			unless = "T(gov.va.bip.framework.cache.BipCacheUtil).checkResultConditions(#result)")
+	key = "#root.methodName + T(gov.va.bip.framework.cache.BipCacheUtil).createKey(#personByPidDomainRequest.participantID)",
+	unless = "T(gov.va.bip.framework.cache.BipCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(commandKey = "GetPersonInfoByPIDCommand",
-			ignoreExceptions = { IllegalArgumentException.class, BipException.class, BipRuntimeException.class })
+	ignoreExceptions = { IllegalArgumentException.class, BipException.class, BipRuntimeException.class })
 	public PersonByPidDomainResponse findPersonByParticipantID(final PersonByPidDomainRequest personByPidDomainRequest) {
 
 		String cacheKey = "findPersonByParticipantID" + BipCacheUtil.createKey(personByPidDomainRequest.getParticipantID());
@@ -91,8 +91,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		PersonByPidDomainResponse response = null;
 		try {
 			Cache cache = null;
-			if (cacheManager != null && (cache = cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE)) != null
-					&& cache.get(cacheKey) != null) {
+			if ((cacheManager != null) && ((cache = cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE)) != null)
+					&& (cache.get(cacheKey) != null)) {
 				LOGGER.debug("findPersonByParticipantID returning cached data");
 				response = cache.get(cacheKey, PersonByPidDomainResponse.class);
 				return response;
@@ -109,8 +109,9 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			} catch (BipException | BipRuntimeException bipException) {
 				PersonByPidDomainResponse domainResponse = new PersonByPidDomainResponse();
 				// check exception..create domain model response
-				domainResponse.addMessage(bipException.getSeverity(), bipException.getStatus(), bipException.getMessageKey(),
-						bipException.getParams());
+				domainResponse.addMessage(bipException.getExceptionData().getSeverity(), bipException.getExceptionData().getStatus(),
+						bipException.getExceptionData().getMessageKey(),
+						bipException.getExceptionData().getParams());
 				return domainResponse;
 			}
 		}

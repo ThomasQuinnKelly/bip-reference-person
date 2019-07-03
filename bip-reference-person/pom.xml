@@ -16,16 +16,20 @@
     <name>${project.artifactId}</name>
     <description>Reference Person Service Implementation for BIP Spring Boot Project</description>
     
+    <properties>
+    	<bip-framework.version>2.0.1-SNAPSHOT</bip-framework.version>
+    </properties>
+    
     <dependencies>
     	<dependency>
             <groupId>gov.va.bip.framework</groupId>
             <artifactId>bip-framework-libraries</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>${bip-framework.version}</version>
         </dependency>
         <dependency>
             <groupId>gov.va.bip.framework</groupId>
             <artifactId>bip-framework-autoconfigure</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>${bip-framework.version}</version>
         </dependency>
 		<dependency>
             <groupId>gov.va.bip.reference.person</groupId>
@@ -130,7 +134,10 @@
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-annotations</artifactId>
 		</dependency>
-        
+ 		<dependency>
+		    <groupId>org.openapitools</groupId>
+		    <artifactId>openapi-generator</artifactId>
+		</dependency>
         <!-- jolokia for JMX over HTTP via /jolokia -->
         <dependency>
 		    <groupId>org.jolokia</groupId>
@@ -208,5 +215,139 @@
 			  </plugin>
     	</plugins>
     </build>
+
+    <profiles>
+        <!-- OpenAPI Specification (OAS) Code generation profile. In the framework 
+            parent pom see profile with id: org-openapitools-codegen-parent There are 
+            multiple plugins in the parent POM for swagger UI download, generate. The 
+            <exists> section below has to match the one from parent pom for the build 
+            phases and goals to execute for openapi code and swagger ui generation to 
+            work -->
+        <profile>
+            <id>org-openapitools-codegen-reference-person</id>
+            <activation>
+                <file><!-- Existence of API YML file to activate the profile. DO NOT 
+                        MODIFY LOCATION AND FILE NAME AS FRAMEWORK USES THE SAME FOR ACTIVATION, 
+                        SPEC GENERATE -->
+                    <exists>${basedir}/src/main/resources/openapi/openapi.yml</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- activate the openapi-generator-maven-plugin -->
+                    <plugin>
+                        <groupId>org.openapitools</groupId>
+                        <artifactId>openapi-generator-maven-plugin</artifactId>
+                        <version>${openapi.codegen.version}</version>
+                        <executions>
+                            <execution>
+                                <id>generate-openapi-reference-person</id>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                	<!-- See https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator-maven-plugin -->
+                                    <inputSpec>${basedir}/src/main/resources/openapi/openapi.yml</inputSpec>
+                                    <output>${project.build.directory}/generated-sources</output>
+                                    <ignoreFileOverride>${basedir}/.openapi-generator-ignore</ignoreFileOverride>
+
+                                    <apiPackage>gov.va.bip.reference.person.api</apiPackage>
+                                    <modelPackage>gov.va.bip.reference.person.api.model.v1</modelPackage>
+                                    <importMappings>
+                                        ProviderResponse=gov.va.bip.framework.rest.provider.ProviderResponse,
+                                        ProviderRequest=gov.va.bip.framework.rest.provider.ProviderRequest,
+                                        Message=gov.va.bip.framework.rest.provider.Message,
+                                        Person=gov.va.bip.framework.security.model.Person,
+                                        ProviderTransferObjectMarker=gov.va.bip.framework.transfer.ProviderTransferObjectMarker
+                                    </importMappings>
+
+                                    <addCompileSourceRoot>false</addCompileSourceRoot>
+                                    <configHelp>false</configHelp>
+                                    <verbose>false</verbose>
+                                    <generatorName>spring</generatorName>
+                                    <generateApiDocumentation>false</generateApiDocumentation>
+                                    <generateApiTests>false</generateApiTests>
+                                    <generateApis>true</generateApis>
+                                    <generateModels>true</generateModels>
+                                    <generateModelTests>false</generateModelTests>
+                                    <generateModelDocumentation>false</generateModelDocumentation>
+                                    <generateSupportingFiles>false</generateSupportingFiles>
+                                    <languageSpecificPrimitives>true</languageSpecificPrimitives>
+                                    <templateDirectory>${basedir}/src/main/resources/openapi/mustache</templateDirectory>
+
+                                    <configOptions>
+                                        <serializableModel>true</serializableModel>
+                                        <sourceFolder>openapi</sourceFolder>
+                                        <interfaceOnly>true</interfaceOnly>
+                                        <implicitHeaders>false</implicitHeaders>
+                                        <java8>false</java8>
+                                        <useBeanValidation>true</useBeanValidation>
+                                        <performBeanValidation>true</performBeanValidation>
+                                        <useTags>true</useTags>
+                                        <swaggerDocketConfig>false</swaggerDocketConfig>
+                                    </configOptions>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+                <!-- the following is only necessary if you are using eclipse, STS and 
+                    m2e -->
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.eclipse.m2e</groupId>
+                            <artifactId>lifecycle-mapping</artifactId>
+                            <configuration>
+                                <lifecycleMappingMetadata>
+                                    <pluginExecutions>
+                                        <pluginExecution>
+                                            <pluginExecutionFilter>
+                                                <groupId>org.openapitools</groupId>
+                                                <artifactId>openapi-generator-maven-plugin</artifactId>
+                                                <versionRange>[${openapi.codegen.version},)</versionRange>
+                                                <goals>
+                                                    <goal>generate</goal>
+                                                </goals>
+                                            </pluginExecutionFilter>
+                                            <action>
+                                                <execute />
+                                            </action>
+                                        </pluginExecution>
+                                        <pluginExecution>
+                                            <pluginExecutionFilter>
+                                                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                                                <artifactId>replacer</artifactId>
+                                                <versionRange>[${google.codereplacer.version},)</versionRange>
+                                                <goals>
+                                                    <goal>replace</goal>
+                                                </goals>
+                                            </pluginExecutionFilter>
+                                            <action>
+                                                <execute />
+                                            </action>
+                                        </pluginExecution>
+                                        <pluginExecution>
+                                            <pluginExecutionFilter>
+                                                <groupId>org.apache.maven.plugins</groupId>
+                                                <artifactId>maven-antrun-plugin</artifactId>
+                                                <versionRange>[${maven-antrun-plugin.version},)</versionRange>
+                                                <goals>
+                                                    <goal>run</goal>
+                                                </goals>
+                                            </pluginExecutionFilter>
+                                            <action>
+                                                <execute />
+                                            </action>
+                                        </pluginExecution>
+                                    </pluginExecutions>
+                                </lifecycleMappingMetadata>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
     
 </project>

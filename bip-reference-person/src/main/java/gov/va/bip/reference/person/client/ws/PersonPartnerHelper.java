@@ -52,7 +52,7 @@ public class PersonPartnerHelper {
 	 * @return PersonByPidDomainResponse domain representation of the partner response
 	 * @throws BipException
 	 */
-	public PersonByPidDomainResponse findPersonByPid(PersonByPidDomainRequest request) throws BipException {
+	public PersonByPidDomainResponse findPersonByPid(final PersonByPidDomainRequest request) throws BipException {
 
 		// transform from domain model request to partner model request
 		FindPersonByPtcpntId partnerRequest = personByPidD2P.convert(request);
@@ -81,8 +81,9 @@ public class PersonPartnerHelper {
 			// any other exception can be caught and thrown as PersonServiceException for the circuit not to be opened
 			String message = THROWSTR + clientException.getClass().getName() + ": " + clientException.getMessage();
 			LOGGER.error(message, clientException);
-			throw new PersonServiceException(clientException.getMessageKey(), clientException.getSeverity(),
-					clientException.getStatus(), clientException.getParams());
+			throw new PersonServiceException(clientException.getExceptionData().getMessageKey(),
+					clientException.getExceptionData().getSeverity(), clientException.getExceptionData().getStatus(),
+					clientException.getExceptionData().getParams());
 		} catch (final RuntimeException runtimeException) {
 			// RuntimeException can't be ignored as it's a candidate for circuit to be opened in Hystrix
 			String message = THROWSTR + runtimeException.getClass().getName() + ": " + runtimeException.getMessage();

@@ -36,7 +36,7 @@ public class PersonServiceExceptionTest {
 	public void testGetSeverity() {
 		System.out.println("getSeverity");
 		MessageSeverity expResult = MessageSeverity.ERROR;
-		MessageSeverity result = instance.getSeverity();
+		MessageSeverity result = instance.getExceptionData().getSeverity();
 		assertEquals(expResult, result);
 	}
 
@@ -47,13 +47,9 @@ public class PersonServiceExceptionTest {
 	public void testGetKey() {
 		System.out.println("getKey");
 		String expResult = NAME;
-		String result = instance.getKey();
+		String result = instance.getExceptionData().getKey();
 		assertEquals(expResult, result);
 	}
-
-	/**
-	 * Test of setKey method, of class PersonServiceException.
-	 */
 
 	/**
 	 * Test of getMessage method, of class PersonServiceException.

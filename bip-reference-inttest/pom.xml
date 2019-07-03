@@ -15,15 +15,19 @@
 
 	<name>bip-reference-inttest</name>
 	<description>BIP Reference Person Service Integration Test Suite</description>
+	
+	<properties>
+    	<bip-framework.version>2.0.1-SNAPSHOT</bip-framework.version>
+    </properties>
 
-<dependencies>
-
+	<dependencies>
 		<dependency>
-		<groupId>gov.va.bip.framework</groupId>
-		<artifactId>bip-framework-test-lib</artifactId>
-		<version>1.0.2-SNAPSHOT</version>
+			<groupId>gov.va.bip.framework</groupId>
+			<artifactId>bip-framework-test-lib</artifactId>
+			<version>${bip-framework.version}</version>	
 		</dependency>
-		</dependencies>
+	</dependencies>
+	
 	<build>
 		<plugins>
 			<!-- The skip property allows to skip the execution of the Spring Boot maven plugin altogether -->

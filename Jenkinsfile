@@ -4,6 +4,9 @@ mavenGitflowPipeline {
     //to connect to github during sonar PR scans, adding comments for any violations found
     sonarGithubCredentials = 'dsva-github'
 
+    //Github credential ID to use for releases
+    githubCredentials = 'epmo-github'
+
     dockerBuilds = [
         'bip-reference-person': 'bip-reference-person'
     ]
