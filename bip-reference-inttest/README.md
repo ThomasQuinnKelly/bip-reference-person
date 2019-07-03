@@ -54,7 +54,7 @@ To execute the functional test in local bip-reference-person service needs to be
 ```
     To execute the UI test cases please use this command: mvn verify -Pinttest -Dcucumber.options="--tags @DEVUI"
 ``` 
-    To execute both UI test case and person service end point functional test cases use this command : mvn verify -Pinttest - Dcucumber.options="--tags @DEV,@DEVUI"
+    To execute both UI test case and person service end point functional test cases use this command : mvn verify -Pinttest -Dcucumber.options="--tags @DEV,@DEVUI"
     
 ## More Details For Functional Test
 Read the [Integration Testing Guide](/docs/referenceperson-intest.md)
