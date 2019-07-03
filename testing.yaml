@@ -6,7 +6,7 @@
 
   imagePullSecret: regcred
   image:
-    repository: registry-docker-registry:32360/blue-dev/bip-reference-person
+    repository: registry-docker-registry.default.svc.cluster.local:32360/blue-dev/bip-reference-person
     tag: jluck
   vault:
     enabled: false
