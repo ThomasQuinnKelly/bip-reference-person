@@ -133,20 +133,22 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * @param pid the pid
 	 * @return ProviderResponse
 	 */
-	// @RequestMapping(path = URL_PREFIX + "/personDocument/uploadByPid/{pid}", method = RequestMethod.POST,
-	// consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	// @ApiOperation(value = "Submit a Binary Document", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE,
-	// produces = MediaType.APPLICATION_JSON_VALUE)
 	@Override
 	public ResponseEntity<ProviderResponse> submit(
 			@ApiParam(value = "participant id", required = true) @PathVariable("pid") final String pid,
 			@ApiParam(value = "byteFile", required = true) @Valid @RequestBody final Resource body) {
-		byte[] b = null;
+		byte[] b = "".getBytes();
 		try {
 			body.getInputStream().read(b);
 		} catch (IOException e) {
 			LOGGER.error("Could not read body", e);
 			new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		} finally {
+			try {
+				body.getInputStream().close();
+			} catch (IOException e) {
+				LOGGER.error("Could not close body's input stream", e);
+			}
 		}
 		ProviderResponse docResponse = serviceAdapter.uploadDocumentForPid(Long.valueOf(pid), b);
 		return new ResponseEntity<>(docResponse, HttpStatus.OK);
