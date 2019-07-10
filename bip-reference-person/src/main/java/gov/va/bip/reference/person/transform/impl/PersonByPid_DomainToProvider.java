@@ -13,19 +13,18 @@ import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
 public class PersonByPid_DomainToProvider extends AbstractDomainToProvider<PersonByPidDomainResponse, PersonInfoResponse> {
 
 	/**
-	 * Transform a service Domain {@link PersonByPidDomainResponse} into a REST Provider {@link PersonInfoResponse} object.
-	 * <br/>
+	 * Transform a service Domain {@link PersonByPidDomainResponse} into a REST Provider {@link PersonInfoResponse} object. <br/>
 	 * <b>Member objects inside the returned object may be {@code null}.</b>
 	 * <p>
 	 * {@inheritDoc AbstractDomainToProvider}
 	 */
 	@Override
-	public PersonInfoResponse convert(PersonByPidDomainResponse domainObject) {
+	public PersonInfoResponse convert(final PersonByPidDomainResponse domainObject) {
 		PersonInfoResponse providerObject = new PersonInfoResponse();
 
 		// add data
 		PersonInfo providerData = new PersonInfo();
-		if (domainObject != null && domainObject.getPersonInfo() != null) {
+		if ((domainObject != null) && (domainObject.getPersonInfo() != null)) {
 			providerData.setFileNumber(domainObject.getPersonInfo().getFileNumber());
 			providerData.setFirstName(domainObject.getPersonInfo().getFirstName());
 			providerData.setLastName(domainObject.getPersonInfo().getLastName());
@@ -35,10 +34,9 @@ public class PersonByPid_DomainToProvider extends AbstractDomainToProvider<Perso
 		}
 		providerObject.setPersonInfo(providerData);
 		// add messages
-		if (domainObject != null && domainObject.getMessages() != null && !domainObject.getMessages().isEmpty()) {
+		if ((domainObject != null) && (domainObject.getMessages() != null) && !domainObject.getMessages().isEmpty()) {
 			for (gov.va.bip.framework.messages.ServiceMessage domainMsg : domainObject.getMessages()) {
-				providerObject.addMessage(domainMsg.getSeverity(), domainMsg.getKey(), domainMsg.getText(),
-						domainMsg.getHttpStatus());
+				providerObject.addMessage(domainMsg.getSeverity(), domainMsg.getKey(), domainMsg.getText(), domainMsg.getHttpStatus());
 			}
 		}
 

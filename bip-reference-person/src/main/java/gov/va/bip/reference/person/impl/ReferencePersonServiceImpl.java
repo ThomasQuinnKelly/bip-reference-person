@@ -2,14 +2,12 @@ package gov.va.bip.reference.person.impl;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +19,12 @@ import gov.va.bip.framework.exception.BipException;
 import gov.va.bip.framework.exception.BipRuntimeException;
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
-import gov.va.bip.framework.messages.MessageKeys;
-import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.ReferencePersonService;
 import gov.va.bip.reference.person.client.ws.PersonPartnerHelper;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
+import gov.va.bip.reference.person.orm.PersonDatabaseHelper;
 import gov.va.bip.reference.person.utils.CacheConstants;
 import gov.va.bip.reference.person.utils.HystrixCommandConstants;
 
@@ -45,6 +42,7 @@ import gov.va.bip.reference.person.utils.HystrixCommandConstants;
 @RefreshScope
 @DefaultProperties(groupKey = HystrixCommandConstants.REFERENCE_PERSON_SERVICE_GROUP_KEY)
 public class ReferencePersonServiceImpl implements ReferencePersonService {
+
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(ReferencePersonServiceImpl.class);
 
 	/** Bean name constant */
@@ -53,6 +51,10 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	/** The person web service client helper. */
 	@Autowired
 	private PersonPartnerHelper personPartnerHelper;
+
+	/** The person web service client helper. */
+	@Autowired
+	private PersonDatabaseHelper personDatabaseHelper;
 
 	@Autowired
 	private CacheManager cacheManager;
@@ -110,8 +112,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 				PersonByPidDomainResponse domainResponse = new PersonByPidDomainResponse();
 				// check exception..create domain model response
 				domainResponse.addMessage(bipException.getExceptionData().getSeverity(), bipException.getExceptionData().getStatus(),
-						bipException.getExceptionData().getMessageKey(),
-						bipException.getExceptionData().getParams());
+						bipException.getExceptionData().getMessageKey(), bipException.getExceptionData().getParams());
 				return domainResponse;
 			}
 		}
@@ -144,33 +145,40 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 * @param throwable the throwable
 	 * @return A JAXB element for the WS request
 	 */
-	@HystrixCommand(commandKey = "FindPersonByParticipantIDFallBackCommand")
-	public PersonByPidDomainResponse findPersonByParticipantIDFallBack(final PersonByPidDomainRequest personByPidDomainRequest,
-			final Throwable throwable) {
-		LOGGER.info("findPersonByParticipantIDFallBack has been activated");
+	// @HystrixCommand(commandKey = "FindPersonByParticipantIDFallBackCommand")
+	// public PersonByPidDomainResponse findPersonByParticipantIDFallBack(final PersonByPidDomainRequest personByPidDomainRequest,
+	// final Throwable throwable) {
+	// LOGGER.info("findPersonByParticipantIDFallBack has been activated");
+	//
+	// /**
+	// * Fallback Method for Demonstration Purpose. In this use case, there is no static / mock data
+	// * that can be sent back to the consumers. Hence the method isn't configured as fallback.
+	// *
+	// * If needed to be configured, add annotation to the implementation method "findPersonByParticipantID" as below
+	// *
+	// * @HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack")
+	// */
+	// final PersonByPidDomainResponse response = new PersonByPidDomainResponse();
+	// response.setDoNotCacheResponse(true);
+	//
+	// if (throwable != null) {
+	// LOGGER.debug(ReflectionToStringBuilder.toString(throwable, null, true, true, Throwable.class));
+	// response.addMessage(MessageSeverity.WARN, HttpStatus.OK, MessageKeys.BIP_GLOBAL_GENERAL_EXCEPTION,
+	// throwable.getClass().getSimpleName(), throwable.getLocalizedMessage());
+	// } else {
+	// LOGGER.error(
+	// "findPersonByParticipantIDFallBack No Throwable Exception. Just Raise Runtime Exception {}",
+	// personByPidDomainRequest);
+	// response.addMessage(MessageSeverity.WARN, HttpStatus.OK, MessageKeys.WARN_KEY,
+	// "There was a problem processing your request.");
+	// }
+	// return response;
+	// }
 
-		/**
-		 * Fallback Method for Demonstration Purpose. In this use case, there is no static / mock data
-		 * that can be sent back to the consumers. Hence the method isn't configured as fallback.
-		 *
-		 * If needed to be configured, add annotation to the implementation method "findPersonByParticipantID" as below
-		 *
-		 * @HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack")
-		 */
-		final PersonByPidDomainResponse response = new PersonByPidDomainResponse();
-		response.setDoNotCacheResponse(true);
+	@Override
+	public void uploadDocument(final long pid, final byte[] file) {
 
-		if (throwable != null) {
-			LOGGER.debug(ReflectionToStringBuilder.toString(throwable, null, true, true, Throwable.class));
-			response.addMessage(MessageSeverity.WARN, HttpStatus.OK, MessageKeys.BIP_GLOBAL_GENERAL_EXCEPTION,
-					throwable.getClass().getSimpleName(), throwable.getLocalizedMessage());
-		} else {
-			LOGGER.error(
-					"findPersonByParticipantIDFallBack No Throwable Exception. Just Raise Runtime Exception {}",
-					personByPidDomainRequest);
-			response.addMessage(MessageSeverity.WARN, HttpStatus.OK, MessageKeys.WARN_KEY,
-					"There was a problem processing your request.");
-		}
-		return response;
+		personDatabaseHelper.uploadDocument(pid, file);
+
 	}
 }

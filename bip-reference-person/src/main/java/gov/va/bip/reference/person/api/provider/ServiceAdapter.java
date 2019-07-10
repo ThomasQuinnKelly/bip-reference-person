@@ -1,13 +1,15 @@
 package gov.va.bip.reference.person.api.provider;
 
 import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
+import gov.va.bip.framework.messages.MessageSeverity;
+import gov.va.bip.framework.rest.provider.ProviderResponse;
 import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.ReferencePersonService;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
@@ -29,10 +31,14 @@ public class ServiceAdapter {
 
 	/** Transform Provider (REST) request to Domain (service) request */
 	private PersonByPid_ProviderToDomain personByPidProvider2Domain = new PersonByPid_ProviderToDomain();
+
+	// /** Transform Provider (REST) request to Domain (service) request */
+	// private PersonStoredDataByPid_ProviderToDomain personByPidProvider2Domain = new PersonStoredDataByPid_ProviderToDomain();
+
 	/** Transform Domain (service) response to Provider (REST) response */
 	private PersonByPid_DomainToProvider personByPidDomain2Provider = new PersonByPid_DomainToProvider();
 
-	/** The service layer API contract for processing personByPid() requests */
+	/** The service layer API contract for processing requests such as personByPid() */
 	@Autowired
 	@Qualifier("PERSON_SERVICE_IMPL")
 	private ReferencePersonService refPersonService;
@@ -68,4 +74,43 @@ public class ServiceAdapter {
 
 		return providerResponse;
 	}
+
+	// public gov.va.bip.reference.person.model.v1.PersonStoredDataResponse
+	// personStoredDataByPid(@Valid final gov.va.bip.reference.person.model.v1.PersonStoredDataRequest personStoredDataRequest) {
+	// // transform provider request into domain request
+	// LOGGER.debug("Transforming from personInfoRequest to domainRequest");
+	// PersonByPidDomainRequest domainRequest = personByPidProvider2Domain.convert(personStoredDataRequest);
+	//
+	// // get domain response from the service (domain) layer
+	// LOGGER.debug("Calling refPersonService.findPersonByParticipantID");
+	// PersonByPidDomainResponse domainResponse = refPersonService.findPersonByParticipantID(domainRequest);
+	//
+	// // transform domain response into provider response
+	// LOGGER.debug("Transforming from domainResponse to providerResponse");
+	// PersonInfoResponse providerResponse = personByPidDomain2Provider.convert(domainResponse);
+	//
+	// return providerResponse;
+	// }
+
+	public ProviderResponse uploadDocumentForPid(final Long pid, final byte[] file) {
+
+		ProviderResponse response = new ProviderResponse();
+		try {
+			refPersonService.uploadDocument(pid, file);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			response.addMessage(MessageSeverity.ERROR, "Unexpected error", "failure message: " + e.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+			return response;
+		}
+
+		response.addMessage(MessageSeverity.INFO, "success", "file uploaded", HttpStatus.ACCEPTED);
+		return response;
+	}
+
+	// public byte[] getDocumentForPid(final Long valueOf) {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+
 }

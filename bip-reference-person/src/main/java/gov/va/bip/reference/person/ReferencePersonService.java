@@ -16,4 +16,6 @@ public interface ReferencePersonService {
 	 * @return A PersonByPidDomainResponse instance
 	 */
 	PersonByPidDomainResponse findPersonByParticipantID(PersonByPidDomainRequest personByPidDomainRequest);
+
+	void uploadDocument(long pid, byte[] file);
 }
