@@ -14,13 +14,13 @@ import gov.va.bip.framework.messages.MessageKey;
 public enum PersonMessageKeys implements MessageKey {
 
 	/** Minimum allowed value validation for PID; no args */
-	BIP_PERSON_INFO_REQUEST_PID_MIN("bip.reference.person.info.request.pid.Min",
+	BIP_PERSON_INFO_REQUEST_PID_MIN("Min.personInfoRequest.participantID",
 			"PersonInfoRequest.participantID cannot be zero"),
 	/** PID cannot be null validation; no args */
-	BIP_PERSON_INFO_REQUEST_PID_NOTNULL("bip.reference.person.info.request.pid.NotNull",
+	BIP_PERSON_INFO_REQUEST_PID_NOTNULL("NotNull.personInfoRequest.participantID",
 			"PersonInfoRequest.participantID cannot be null"),
 	/** Payload cannot be null validation; no args */
-	BIP_PERSON_INFO_REQUEST_NOTNULL("bip.reference.person.info.request.NotNull",
+	BIP_PERSON_INFO_REQUEST_NOTNULL("NotNull.personInfoRequest",
 			"PersonInfoRequest Payload cannot be null"),
 
 	/** Response has different PID than the request; no args */

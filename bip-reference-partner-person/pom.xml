@@ -7,7 +7,7 @@
     <parent>
 		<groupId>gov.va.bip.reference.person</groupId>
 		<artifactId>bip-reference-reactor</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>2.0.1-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 
@@ -16,13 +16,17 @@
 
     <name>${project.artifactId}</name>
     <description>Partner library for Spring Boot Reference Project</description>
+    
+    <properties>
+    	<bip-framework.version>2.0.1-SNAPSHOT</bip-framework.version>
+    </properties>
 
     <dependencies>
 
         <dependency>
             <groupId>gov.va.bip.framework</groupId>
             <artifactId>bip-framework-libraries</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>${bip-framework.version}</version>	
         </dependency>
     
     	<!-- spring framework project dependencies -->
@@ -78,14 +82,6 @@
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-test</artifactId>
-		</dependency>
-		<dependency>
-		    <groupId>org.seleniumhq.selenium</groupId>
-		    <artifactId>selenium-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-		    <artifactId>selenium-remote-driver</artifactId>
 		</dependency>
 
     </dependencies>
