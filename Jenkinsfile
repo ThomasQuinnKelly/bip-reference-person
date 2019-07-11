@@ -4,18 +4,15 @@ mavenGitflowPipeline {
     //to connect to github during sonar PR scans, adding comments for any violations found
     sonarGithubCredentials = 'dsva-github'
 
-    //Github credential ID to use for releases
+    //Credential ID to use when connecting to GitHub repository. Used during the release process to commit POM changes back to GitHub.
     githubCredentials = 'epmo-github'
 
+    // Map of Image Names to sub-directory in the repository. If this is value is non-empty, the build pipepline will build
+    // all images specified in the map. The config below will build an image tagged as 
+    // blue-dev/bip-reference-person:latest using the Docker context of ./bip-reference-person.
     dockerBuilds = [
         'blue-dev/bip-reference-person': 'bip-reference-person'
     ]
-
-    // deploymentTemplates = ["template.yaml"]
-    // deploymentParameters = [
-    //     'APP_NAME': 'bip-reference-person',
-    //     'IMAGE': 'bip-reference-person'
-    // ]
 
     cucumberOpts = "--tags @DEV"
 
@@ -34,20 +31,20 @@ mavenGitflowPipeline {
     chartCredentialId = "github"
 
     //Map to parameters to set when installing the chart
-    // chartParameters = [
-    //     "spring.profiles": "dev",
-    //     "iamge.repository": "registry-docker-registry/blue-dev/bip-reference-person",
-    //     "vault.enabled": "false",
-    //     "vault.consul.enabled": "false",
-    //     "vault.service.configMap": "null",
-    //     "consul.config.enabled": "false",
-    //     "consul.discovery.enabled": "false",
-    //     "consul.discovery.register": "false",
-    //     "consul.service.configMap": "null",
-    //     "consul.service.secret": "null"
-    // ]
+    chartParameters = [
+        "spring.profiles": "dev",
+        "iamge.repository": "registry-docker-registry/blue-dev/bip-reference-person",
+        "vault.enabled": "false",
+        "vault.consul.enabled": "false",
+        "vault.service.configMap": "null",
+        "consul.config.enabled": "false",
+        "consul.discovery.enabled": "false",
+        "consul.discovery.register": "false",
+        "consul.service.configMap": "null",
+        "consul.service.secret": "null"
+    ]
 
-    chartValueFile = "testing.yaml"
+    //chartValueFile = "testing.yaml"
 
     //Release name to use
     chartReleaseName = "bip-reference-person"
