@@ -4,10 +4,10 @@ VA OIS Software Assurance (SwA) performs reviews for design and code reviews, an
 This README and related `swa-prep.sh` script are specific to [Secure Code Review > How do I register applications, request secure code review tools and validations?](https://wiki.mobilehealth.va.gov/display/OISSWA/Frequently+Asked+Questions).
 
 Some targeted URLs to instructions for the SwA submission requirements and process:
-* Document Library (PDFs, etc): https://wiki.mobilehealth.va.gov/display/OISSWA/Public+Document+Library
-* Application Registration: https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+open+an+NSD+ticket+to+register+a+VA+application
-* Code Review Submission: https://wiki.mobilehealth.va.gov/pages/viewpage.action?pageId=26774489
-* FAQ:  https://wiki.mobilehealth.va.gov/display/OISSWA/Frequently+Asked+Questions
+* [Document Library (PDFs, etc)](https://wiki.mobilehealth.va.gov/display/OISSWA/Public+Document+Library)
+* [Application Registration](https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+open+an+NSD+ticket+to+register+a+VA+application)
+* [Code Review Submission](https://wiki.mobilehealth.va.gov/pages/viewpage.action?pageId=26774489)
+* [FAQ](https://wiki.mobilehealth.va.gov/display/OISSWA/Frequently+Asked+Questions)
 
 ## What does the script do?
 
@@ -20,6 +20,7 @@ The script offers:
 #### swa-prep.sh & swa-prep.properties
 
 This script creates a folder with:
+
 	* A copy of the `VA Secure Code Review Validation Request Form.pdf` to be filled out
 	* A zip of the code taken from a git tag (a release version)
 	* A fresh Fortify FPR derived from the tag
@@ -35,17 +36,18 @@ To make the preparation process go faster and easier, it is worth taking the tim
 
 Steps:
 1. [Register with SwA](https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+open+an+NSD+ticket+to+register+a+VA+application) if you have not already registered the application.
-2. Create a release on the Jenkins server.
+2. Create a release on the Jenkins server - assumption is that the project is release-ready, e.g. meets sonar requirements, Fortify SCA is clean (code fixed, suppressions done).
 3. Open a bash terminal
 	* Change to the local-dev/swa directory in your project
 		```bash
-		$ cd ~/git/my-project/local-dev/swa
+		$ cd ~/git/bip-my-project/local-dev/swa
 		```
 	* Run the script and follow prompts (you may need to set the script to be executable: `chmod +x swa-prep.sh`)
 		```bash
 		$ ./swa-prep.sh
 		```
-	* Follow the prompts, and supply information or perform actions as directed. Note the messages output when the script finishes.
+	* Follow the prompts, and supply information or perform actions as directed.
+	* Read the message that is output when the script finishes.
 4. Use the created submission files to [submit the code review request](https://wiki.mobilehealth.va.gov/pages/viewpage.action?pageId=26774489) to SwA
 
 ## Maintenance

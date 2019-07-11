@@ -276,7 +276,6 @@ function set_derived_values() {
 	inputDir="$tagsDir/$releaseVersion"
 	propertiesFile="$inputDir/$propertiesFileName"
 	submissionFilesDir="$outputDir/$projectName-$releaseVersion/submission-files"
-	mainFpr="./$projectName.fpr"
 }
 
 ## function to populate property vars from $propertiesFile ##
@@ -521,10 +520,10 @@ function prep_output_folder() {
 	mvn dependency:resolve 2>&1 >> "$logfile"
 	check_exit_status "$?"
 
+	# get the name of the maven reactor module
 	echo "+>> reactorName=$(mvn -q -Dexec.executable=echo -Dexec.args=\'\${project.artifactId}\' --non-recursive exec:exec)" 2>&1 | tee -a "$logfile"
 	reactorName=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.artifactId}' --non-recursive exec:exec) 2>&1 >> "$logfile"
 	check_exit_status "$?"
-	newFpr="./target/fortify/$projectName-reactor-$releaseVersion.fpr"
 
 	echo "+>> sourceanalyzer -b $reactorName -clean" 2>&1 | tee -a "$logfile"
 	sourceanalyzer -b "$reactorName" -clean 2>&1 >> "$logfile"
@@ -538,13 +537,33 @@ function prep_output_folder() {
 	mvn initialize com.fortify.sca.plugins.maven:sca-maven-plugin:scan -Dfortify.sca.buildId=$reactorName 2>&1 >> "$logfile"
 	check_exit_status "$?"
 
-	echo "+>> FPRUtility -merge -project $newFpr -source $mainFpr -f $newFpr" 2>&1 | tee -a "$logfile"
-	FPRUtility -merge -project $newFpr -source $mainFpr -f $newFpr 2>&1 >> "$logfile"
+	# get the name of the new FPR file
+	newFpr="$(ls ./target/fortify/*.fpr)" 2>&1 >> "$logfile"
+	echo "+>> newFpr=$newFpr" 2>&1 | tee -a "$logfile"
+	ls $newFpr 2>&1 >> "$logfile"
 	check_exit_status "$?"
 
-	cp_files "$mainFpr" "$mainFpr.backup"
+	# find out if there is a root FPR or not
+	mainFpr="`pwd`/$reactorName.fpr"
+	if [ -f "$reactorName" ]; then
+		echo "+>> FPRUtility -merge -project $newFpr -source $mainFpr -f $newFpr" 2>&1 | tee -a "$logfile"
+		FPRUtility -merge -project $newFpr -source $mainFpr -f $newFpr 2>&1 >> "$logfile"
+		check_exit_status "$?"
+		cp_files "$mainFpr" "$mainFpr.backup"
+		cp_files "$newFpr" "$mainFpr"
+	else
+		cp_files "$newFpr" "$mainFpr"
+	fi
 
-	cp_files "$newFpr" "$mainFpr"
+	echo "" 2>&1 | tee -a "$logfile"
+	echo "Open \"$mainFpr\" and confirm that it is clean." 2>&1 | tee -a "$logfile"
+	read -p "When done, press [Enter] to continue, or Ctrl+C to abort: " 2>&1 >> "$logfile"
+	echo "" 2>&1 | tee -a "$logfile"
+
+	echo "+>> mv $mainFpr $submissionFilesDir/" 2>&1 | tee -a "$logfile"
+	mv "$mainFpr" "$submissionFilesDir/" 2>&1 >> "$logfile"
+	check_exit_status "$?"
+	echo "" 2>&1 | tee -a "$logfile"
 
 	# remove any build files
 	echo "+>> rm -rf \$(find . -name 'target' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
@@ -610,8 +629,8 @@ function prep_output_folder() {
 	cd_to ".."
 
 	# move code ZIP to submissions folder
-	echo "+>> zip -rq9 $projectName-$releaseVersion.zip $projectName-$releaseVersion -x \*.DS_Store Thumbs.db" 2>&1 | tee -a "$logfile"
-	zip -rq9 "$projectName-$releaseVersion.zip" "$projectName-$releaseVersion" -x \*.DS_Store Thumbs.db 2>&1 >> "$logfile"
+	echo "+>> zip -rq9 $projectName-$releaseVersion.zip $projectName -x \*.DS_Store Thumbs.db" 2>&1 | tee -a "$logfile"
+	zip -rq9 "$projectName-$releaseVersion.zip" "$projectName" -x \*.DS_Store Thumbs.db 2>&1 >> "$logfile"
 	check_exit_status "$?"
 
 	echo "+>> mv $projectName-$releaseVersion.zip $submissionFilesDir/" 2>&1 | tee -a "$logfile"
@@ -631,17 +650,6 @@ function prep_output_folder() {
 }
 
 function post_prep_activities() {
-	# move FPR to submissions folder
-	echo "" 2>&1 | tee -a "$logfile"
-	echo "Open \"$mainFpr\" and confirm that it is clean." 2>&1 | tee -a "$logfile"
-	read -p "When done, press [Enter] to continue, or Ctrl+C to abort: " 2>&1 >> "$logfile"
-	echo "" 2>&1 | tee -a "$logfile"
-
-	echo "+>> mv $mainFpr $submissionFilesDir/" 2>&1 | tee -a "$logfile"
-	mv "$mainFpr" "$submissionFilesDir/" 2>&1 >> "$logfile"
-	check_exit_status "$?"
-	echo "" 2>&1 | tee -a "$logfile"
-
 	# manual check before zipping
 	echo "" 2>&1 | tee -a "$logfile"
 	echo "Review files and folders under `pwd`" 2>&1 | tee -a "$logfile"
