@@ -1,43 +1,53 @@
 # What is this for?
-VA SwA (Software Assurance) performs code review on release versions of software.
+VA OIS Software Assurance (SwA) performs reviews for design and code reviews, and quality reviews. For code reviews, SwA is interested in reviewing release versions of the software.
 
-The `swa-prep.sh` script automates the steps of preparing the package of documentation and code for submission to the SwA, specifically for the [Secure Code Review](https://wiki.mobilehealth.va.gov/display/OISSWA/Frequently+Asked+Questions).
+This README and related `swa-prep.sh` script are specific to [Secure Code Review > How do I register applications, request secure code review tools and validations?](https://wiki.mobilehealth.va.gov/display/OISSWA/Frequently+Asked+Questions).
+
+Some targeted URLs to instructions for the SwA submission requirements and process:
+* Document Library (PDFs, etc): https://wiki.mobilehealth.va.gov/display/OISSWA/Public+Document+Library
+* Application Registration: https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+open+an+NSD+ticket+to+register+a+VA+application
+* Code Review Submission: https://wiki.mobilehealth.va.gov/pages/viewpage.action?pageId=26774489
+* FAQ:  https://wiki.mobilehealth.va.gov/display/OISSWA/Frequently+Asked+Questions
 
 ## What does the script do?
 
-The script is intended for use with applications based on the BIP Framework (and for the framework itself).
-The script offers
+The script is intended for use with applications based on the BIP Framework (and for the framework itself). It prompts the user to perform any manual steps, and automates those steps that can be automated.
 
+The script offers:
 1. Repeatability and consistency for each released artifact
-
 2. Local traceability for the preparation of packages that will be sent to SwA
 
-3. After execution, a folder with:
-	* A copy of the VA Secure Code Review Validation Request Form.pdf to be filled out
-	* A valid zip of the code from a git tag (a release version)
-	* A fresh FPR derived from the tag
-	* A zip of the Fortify rulepack used to scan the code
+#### swa-prep.sh & swa-prep.properties
 
-## How do I run it?
+This script creates a folder with:
+	* A copy of the `VA Secure Code Review Validation Request Form.pdf` to be filled out
+	* A zip of the code taken from a git tag (a release version)
+	* A fresh Fortify FPR derived from the tag
+	* A zip of the local Fortify rulepack that used to scan the code
 
-1. Projects using the script for the first time:
-	* Create a branch of reactor project for [`bip-reference-person`](https://github.com/department-of-veterans-affairs/bip-reference-person)
-	* In a browser, go to the GitHub project page to acquire the name of the project (from the end of the repo URL, or end of the git clone URL)
- 	* Run the setup script - it will set up a project directory under the `local-dev/swa/projects/` folder for your project
+## When and how do I run the script?
+
+SwA submissions are typically done only on release candidates. A release version will have a git TAG version that does not have "-SNAPSHOT" on the end of it.
+
+To make the preparation process go faster and easier, it is worth taking the time to update default files for your project.
+* Open `[project-reactor]/local-dev/swa/defaults/VA Secure Code Review Validation Request Form.pdf` in a PDF editor (Acrobat, Preview, etc). Fill out the form and save it in place.
+* Open `[project-reactor]/local-dev/swa/defaults/swa-prep.properties` in an editor. Update property values to sensible defaults if desired, and save in place.
+
+Steps:
+1. [Register with SwA](https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+open+an+NSD+ticket+to+register+a+VA+application) if you have not already registered the application.
+2. Create a release on the Jenkins server.
+3. Open a bash terminal
+	* Change to the local-dev/swa directory in your project
 		```bash
-		# replace "your-project-name" below with YOUR project name as it appears in the GitHub URL
-		$ ./swa-setup.sh your-project-name
+		$ cd ~/git/my-project/local-dev/swa
 		```
-	* Set the values in `local-dev/swa/projects/your-project-name/swa-prep.properties` to values that are meaningful for the artifact to be reviewed, and for your local computer
-	* Optionally, fill out the request PDF form with a PDF editor, to be used as the default for future review submissions
-	* Commit and push your changes to the branch, and create a PR for them - set reviewer to Abhijit Kulkarni (username `abhijitvk`)
-2. To create the prep folder:
-	* Set the values in `local-dev/swa/projects/your-project-name/swa-prep.properties` to values that are meaningful for the artifact to be reviewed, and for your local computer
-	* Run `swa-prep.sh your-project-name` from a bash command line
+	* Run the script and follow prompts (you may need to set the script to be executable: `chmod +x swa-prep.sh`)
 		```bash
-		# replace "your-project-name" below with YOUR project name as it appears in the GitHub URL
-		$ ./swa-setup.sh your-project-name
+		$ ./swa-prep.sh
 		```
-	* The `your-project-name_tag/` prep folder will be created under the location specified in your properties file
+	* Follow the prompts, and supply information or perform actions as directed. Note the messages output when the script finishes.
+4. Use the created submission files to [submit the code review request](https://wiki.mobilehealth.va.gov/pages/viewpage.action?pageId=26774489) to SwA
 
-3. With the prep folder created, you will need to manually update the PDF that was copied to it. Adjust the PDF with information relevant to the artifact being sent for code review.
+## Maintenance
+
+The "VA Secure Code Review Validation Request Form.pdf" may change from time to time. You can check for recent versions at the Swa [Public Document Library](https://wiki.mobilehealth.va.gov/display/OISSWA/Public+Document+Library). Download it, and copy it into `[project-reactor]/local-dev/swa/defaults/`.  If the file name changes, you can either rename the new file to `VA Secure Code Review Validation Request Form.pdf`, or change the value of the `pdfFileName` variable near the top of `swa-prep.sh`.
