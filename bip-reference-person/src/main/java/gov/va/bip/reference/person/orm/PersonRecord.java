@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 
 @Entity
-public class PersonData implements Serializable {
+public class PersonRecord implements Serializable {
 
 	private static final long serialVersionUID = -1330928616668416505L;
 
@@ -27,7 +27,7 @@ public class PersonData implements Serializable {
 		this.document = document;
 	}
 
-	public long getPid()
+	public Long getPid()
 	{
 		return pid;
 	}

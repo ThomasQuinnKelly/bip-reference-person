@@ -10,18 +10,11 @@ import org.springframework.boot.info.BuildProperties;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.rest.provider.ProviderResponse;
@@ -30,9 +23,6 @@ import gov.va.bip.reference.person.api.ReferencePersonApi;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 /**
  * REST Person Service endpoint
@@ -137,12 +127,13 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	public ResponseEntity<ProviderResponse> submit(
 			@ApiParam(value = "participant id", required = true) @PathVariable("pid") final String pid,
 			@ApiParam(value = "byteFile", required = true) @Valid @RequestBody final Resource body) {
-		byte[] b = "".getBytes();
 		try {
+			byte[] b = new byte[(int) body.contentLength()];
 			body.getInputStream().read(b);
+			ProviderResponse docResponse = serviceAdapter.uploadDocumentForPid(Long.valueOf(pid), b);
+			return new ResponseEntity<>(docResponse, HttpStatus.OK);
 		} catch (IOException e) {
 			LOGGER.error("Could not read body", e);
-			new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		} finally {
 			try {
 				body.getInputStream().close();
@@ -150,25 +141,24 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 				LOGGER.error("Could not close body's input stream", e);
 			}
 		}
-		ProviderResponse docResponse = serviceAdapter.uploadDocumentForPid(Long.valueOf(pid), b);
-		return new ResponseEntity<>(docResponse, HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@RequestMapping(value = URL_PREFIX + "/personDocument/uploadByPid", method = RequestMethod.POST)
-	@ApiOperation(value = "Will return a document doperson stored data Response based on search by pid.",
-	notes = "Will perform a basic health check to see if the operation is running.")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = MESSAGE_200) })
-	public ProviderResponse upload(@RequestHeader final HttpHeaders headers,
-			@ApiParam(value = "Document to upload", required = true) @RequestPart("file") final MultipartFile file,
-			@ApiParam(value = "corresponding pid to upload to", required = true) @RequestPart("pid") final Long pid) {
-		ProviderResponse response = new ProviderResponse();
-		try {
-			response = serviceAdapter.uploadDocumentForPid(pid, file.getBytes());
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage(), e);
-		}
-		return response;
-	}
+	// @RequestMapping(value = URL_PREFIX + "/personDocument/uploadByPid", method = RequestMethod.POST)
+	// @ApiOperation(value = "Will return a document doperson stored data Response based on search by pid.",
+	// notes = "Will perform a basic health check to see if the operation is running.")
+	// @ApiResponses(value = { @ApiResponse(code = 200, message = MESSAGE_200) })
+	// public ProviderResponse upload(@RequestHeader final HttpHeaders headers,
+	// @ApiParam(value = "Document to upload", required = true) @RequestPart("file") final MultipartFile file,
+	// @ApiParam(value = "corresponding pid to upload to", required = true) @RequestPart("pid") final Long pid) {
+	// ProviderResponse response = new ProviderResponse();
+	// try {
+	// response = serviceAdapter.uploadDocumentForPid(pid, file.getBytes());
+	// } catch (IOException e) {
+	// LOGGER.error(e.getMessage(), e);
+	// }
+	// return response;
+	// }
 
 	// @RequestMapping(value = URL_PREFIX + "/person/modify/{claimId}", method = RequestMethod.POST)
 	// @ApiOperation(value = "Modify claim-type value in claim attributes",

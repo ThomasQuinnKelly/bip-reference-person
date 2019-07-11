@@ -11,6 +11,13 @@ server:
 ---
 spring.profiles: default
 spring.profiles.include: remote_client_sims, embedded-redis
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+  h2:
+    console:
+        enabled: true
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
