@@ -1,7 +1,7 @@
 # https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md
 openapi: 3.0.1
 info:
-   version: 0.0.1-SNAPSHOT
+   version: 0.0.1
    title: BIP Reference Person Spring Boot Service v1 API Documentation
    description: A sample Reference Person API to demonstrate features in the OpenAPI 3.0 specification
    termsOfService: https://developer.va.gov/terms-of-service
