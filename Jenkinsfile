@@ -33,7 +33,7 @@ mavenGitflowPipeline {
     //Map to parameters to set when installing the chart
     chartParameters = [
         "spring.profiles": "dev",
-        "iamge.repository": "registry-docker-registry/blue-dev/bip-reference-person",
+        "image.repository": "registry-docker-registry/blue-dev/bip-reference-person",
         "vault.enabled": "false",
         "vault.consul.enabled": "false",
         "vault.service.configMap": "null",
@@ -52,5 +52,4 @@ mavenGitflowPipeline {
 
     //Below config is for local pipeline testing
     skipSonar = true
-    mvnSettingsFile = 'settings.xml'
 }
