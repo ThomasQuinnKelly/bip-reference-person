@@ -95,7 +95,7 @@ services:
   # Postgres: The database used by Kong
   #######################################
   kong-database:
-    image: postgres:9.6
+    image: postgres:9.6.5-alpine
     restart: always
     environment:
       - POSTGRES_USER=kong
@@ -114,7 +114,7 @@ services:
   # Kong database migration
   #######################################
   kong-migration:
-    image: kong:latest
+    image: kong:1.2.1-alpine
     # You have to bootstrap the database before running kong. The up command is deprecated and replaced with bootstrap
     command: >
       sh -c "kong migrations bootstrap && 
@@ -135,7 +135,7 @@ services:
   # Kong: The API Gateway
   #######################################
   kong:
-    image: kong:latest
+    image: kong:1.2.1-alpine
     restart: always
     environment:
       - KONG_DATABASE=postgres
