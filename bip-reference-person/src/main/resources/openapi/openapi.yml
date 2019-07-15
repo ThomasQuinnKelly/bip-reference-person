@@ -151,14 +151,14 @@ paths:
             will contain a  "messages" element that will provide further information
             on the error.  This request shouldn't be retried until corrected.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
         '403':
           description: The request is not authorized.  Please verify credentials used
             in the request.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
         '500':
@@ -167,7 +167,7 @@ paths:
             on the error.  Please retry.  If problem persists, please contact support
             with a copy of the Response.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
       security:
@@ -206,14 +206,14 @@ paths:
             will contain a  "messages" element that will provide further information
             on the error.  This request shouldn't be retried until corrected.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
         '403':
           description: The request is not authorized.  Please verify credentials used
             in the request.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
         '500':
@@ -222,7 +222,7 @@ paths:
             on the error.  Please retry.  If problem persists, please contact support
             with a copy of the Response.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
       security:
@@ -255,14 +255,14 @@ paths:
             will contain a  "messages" element that will provide further information
             on the error.  This request shouldn't be retried until corrected.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
         '403':
           description: The request is not authorized.  Please verify credentials used
             in the request.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
         '500':
@@ -271,7 +271,7 @@ paths:
             on the error.  Please retry.  If problem persists, please contact support
             with a copy of the Response.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
       security:
@@ -303,14 +303,14 @@ paths:
             will contain a  "messages" element that will provide further information
             on the error.  This request shouldn't be retried until corrected.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
         '403':
           description: The request is not authorized.  Please verify credentials used
             in the request.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
         '500':
@@ -319,7 +319,7 @@ paths:
             on the error.  Please retry.  If problem persists, please contact support
             with a copy of the Response.
           content:
-            application/json:
+            application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
       security:

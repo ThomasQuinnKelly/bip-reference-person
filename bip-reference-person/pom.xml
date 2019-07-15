@@ -36,12 +36,7 @@
             <artifactId>bip-reference-partner-person</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- ojdbc and h2 dependencies -->
-		<!-- <dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc7</artifactId>
-			<version>12.1.0.2</version>
-		</dependency> -->
+        <!-- h2 dependency -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>

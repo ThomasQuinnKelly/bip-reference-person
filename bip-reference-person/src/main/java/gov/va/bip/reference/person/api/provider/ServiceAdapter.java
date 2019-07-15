@@ -31,14 +31,10 @@ public class ServiceAdapter {
 
 	/** Transform Provider (REST) request to Domain (service) request */
 	private PersonByPid_ProviderToDomain personByPidProvider2Domain = new PersonByPid_ProviderToDomain();
-
-	// /** Transform Provider (REST) request to Domain (service) request */
-	// private PersonStoredDataByPid_ProviderToDomain personByPidProvider2Domain = new PersonStoredDataByPid_ProviderToDomain();
-
 	/** Transform Domain (service) response to Provider (REST) response */
 	private PersonByPid_DomainToProvider personByPidDomain2Provider = new PersonByPid_DomainToProvider();
 
-	/** The service layer API contract for processing requests such as personByPid() */
+	/** The service layer API contract for processing personByPid() requests */
 	@Autowired
 	@Qualifier("PERSON_SERVICE_IMPL")
 	private ReferencePersonService refPersonService;
@@ -75,23 +71,6 @@ public class ServiceAdapter {
 		return providerResponse;
 	}
 
-	// public gov.va.bip.reference.person.model.v1.PersonStoredDataResponse
-	// personStoredDataByPid(@Valid final gov.va.bip.reference.person.model.v1.PersonStoredDataRequest personStoredDataRequest) {
-	// // transform provider request into domain request
-	// LOGGER.debug("Transforming from personInfoRequest to domainRequest");
-	// PersonByPidDomainRequest domainRequest = personByPidProvider2Domain.convert(personStoredDataRequest);
-	//
-	// // get domain response from the service (domain) layer
-	// LOGGER.debug("Calling refPersonService.findPersonByParticipantID");
-	// PersonByPidDomainResponse domainResponse = refPersonService.findPersonByParticipantID(domainRequest);
-	//
-	// // transform domain response into provider response
-	// LOGGER.debug("Transforming from domainResponse to providerResponse");
-	// PersonInfoResponse providerResponse = personByPidDomain2Provider.convert(domainResponse);
-	//
-	// return providerResponse;
-	// }
-
 	public ProviderResponse uploadDocumentForPid(final Long pid, final byte[] file) {
 
 		ProviderResponse response = new ProviderResponse();
@@ -117,10 +96,5 @@ public class ServiceAdapter {
 			throw e;
 		}
 	}
-
-	// public byte[] getDocumentForPid(final Long valueOf) {
-	// // TODO Auto-generated method stub
-	// return null;
-	// }
 
 }

@@ -14,7 +14,7 @@ public class PersonDatabaseHelper {
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(PersonDatabaseHelper.class);
 
 	@Autowired
-	PersonrecordsRepository personrecordsRepository;
+	PersonRecordsRepository personRecordsRepository;
 
 	/**
 	 * Upload document to person repository
@@ -25,9 +25,9 @@ public class PersonDatabaseHelper {
 	@Auditable(event = AuditEvents.SERVICE_AUDIT, activity = "uploadDocument")
 	public void uploadDocument(final Long pid, final byte[] file) {
 		try {
-			Personrecord results = personrecordsRepository.findByPid(pid);
+			PersonRecord results = personRecordsRepository.findByPid(pid);
 			results.setDocument(file);
-			personrecordsRepository.save(results);
+			personRecordsRepository.save(results);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw e;
@@ -37,7 +37,7 @@ public class PersonDatabaseHelper {
 	public byte[] getDocument(final Long pid) {
 
 		try {
-			return personrecordsRepository.findByPid(pid).getDocument();
+			return personRecordsRepository.findByPid(pid).getDocument();
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw e;

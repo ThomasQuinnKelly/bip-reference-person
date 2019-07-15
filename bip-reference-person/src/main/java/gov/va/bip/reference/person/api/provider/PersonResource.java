@@ -100,27 +100,6 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 		return new ResponseEntity<>(providerResponse, HttpStatus.OK);
 	}
 
-	// /**
-	// * Returns the person data stored in database for a given person pid.
-	// *
-	// * @param pid the pid
-	// * @return PersonStoredDataResponse
-	// */
-	// @RequestMapping(value = URL_PREFIX + "/storedDataByPid", produces = MediaType.APPLICATION_JSON_VALUE, method =
-	// RequestMethod.GET)
-	// @ApiOperation(value = "Retrieve person data stored from database by pid from person stored data Service",
-	// notes = "Will return a person stored data Response based on search by pid.")
-	// public gov.va.bip.reference.person.model.v1.PersonStoredDataResponse getPersonStoredDataByPid(
-	// @Valid @RequestBody final gov.va.bip.reference.person.model.v1.PersonStoredDataRequest personInfoRequest) {
-	// LOGGER.debug("getPersonStoredDataByPid() method invoked");
-	//
-	// gov.va.bip.reference.person.model.v1.PersonStoredDataResponse providerResponse =
-	// serviceAdapter.personStoredDataByPid(personInfoRequest);
-	//
-	// LOGGER.debug("Returning PersonStoredDataResponse to consumer");
-	// return providerResponse;
-	// }
-
 	/**
 	 * accepts the document and stores in database for a given person pid.
 	 *
@@ -172,56 +151,5 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
 	}
-
-	// @RequestMapping(value = URL_PREFIX + "/person/modify/{claimId}", method = RequestMethod.POST)
-	// @ApiOperation(value = "Modify claim-type value in claim attributes",
-	// notes = "Will perform a basic health check to see if the operation is running.")
-	// @ApiResponses(value = { @ApiResponse(code = 200, message = MESSAGE_200) })
-	// public ProviderResponse modifyClaim(@PathVariable("claimId") final String claimId, @RequestHeader final HttpHeaders headers,
-	// @ApiParam(value = "New claim type to change to", required = true) @RequestBody final String claimType) {
-	// ProviderResponse response = serviceAdapter.modifyClaim(Long.valueOf(claimId), claimType);
-	// return response;
-	// }
-
-	// @RequestMapping(value = URL_PREFIX + "/downloadFileForPid/{pid}", method = RequestMethod.GET)
-	// @ApiOperation(value = "download a given file from database for the given pid",
-	// notes = "Will perform a basic health check to see if the operation is running.")
-	// @ApiResponses(value = { @ApiResponse(code = 200, message = MESSAGE_200) })
-	// public ResponseEntity<Resource> downloadFile(@PathVariable("pid") final String pid, final HttpServletRequest request) {
-	// // Load file as Resource
-	// Resource resource = new ByteArrayResource(serviceAdapter.getDocumentForPid(Long.valueOf(pid)));
-	//
-	// // Try to determine file's content type
-	// String contentType = null;
-	// try {
-	// contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-	// } catch (IOException ex) {
-	// LOGGER.info("Could not determine file type.");
-	// }
-	//
-	// // Fallback to the default content type if type could not be determined
-	// if (contentType == null) {
-	// contentType = "application/octet-stream";
-	// }
-	//
-	// return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
-	// .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
-	// }
-
-	// @RequestMapping(method = { RequestMethod.GET }, value = URL_PREFIX + "/downloadMultipartFile/{pid}",
-	// produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-	// public ResponseEntity<MultiValueMap<String, Object>> getFileInMultipartData(@PathVariable("pid") final String pid) {
-	//
-	// JsonArray ja = new JsonArray();
-	// ja.add(pid);
-	// MultiValueMap<String, Object> mpr = new LinkedMultiValueMap<String, Object>();
-	// HttpHeaders xHeader = new HttpHeaders();
-	// xHeader.setContentType(MediaType.APPLICATION_JSON);
-	// HttpEntity<String> xPart = new HttpEntity<String>(ja.toString(), xHeader);
-	// mpr.add("response", xPart);
-	// Resource resource = new ByteArrayResource(serviceAdapter.getDocumentForPid(Long.valueOf(pid)));
-	// mpr.add("file", resource);
-	// return new ResponseEntity<MultiValueMap<String, Object>>(mpr, HttpStatus.OK);
-	// }
 
 }
