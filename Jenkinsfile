@@ -31,20 +31,20 @@ mavenGitflowPipeline {
     chartCredentialId = "github"
 
     //Map to parameters to set when installing the chart
-    chartParameters = [
-        "spring.profiles": "dev",
-        "image.repository": "registry-docker-registry/blue-dev/bip-reference-person",
-        "vault.enabled": "false",
-        "vault.consul.enabled": "false",
-        "vault.service.configMap": "null",
-        "consul.config.enabled": "false",
-        "consul.discovery.enabled": "false",
-        "consul.discovery.register": "false",
-        "consul.service.configMap": "null",
-        "consul.service.secret": "null"
-    ]
+    // chartParameters = [
+    //     "spring.profiles": "dev",
+    //     "image.repository": "registry-docker-registry/blue-dev/bip-reference-person",
+    //     "vault.enabled": "false",
+    //     "vault.consul.enabled": "false",
+    //     "vault.service.configMap": "null",
+    //     "consul.config.enabled": "false",
+    //     "consul.discovery.enabled": "false",
+    //     "consul.discovery.register": "false",
+    //     "consul.service.configMap": "null",
+    //     "consul.service.secret": "null"
+    // ]
 
-    //chartValueFile = "testing.yaml"
+    chartValueFile = "testing.yaml"
 
     //Release name to use
     chartReleaseName = "bip-reference-person"
