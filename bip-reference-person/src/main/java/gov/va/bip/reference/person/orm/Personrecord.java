@@ -4,20 +4,32 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
 @Entity
-public class PersonRecord implements Serializable {
+public class Personrecord implements Serializable {
 
 	private static final long serialVersionUID = -1330928616668416505L;
 
 	@Id
+	@GeneratedValue
+	private long id;
+
 	private long pid;
 
 	@Lob
 	@Column(name = "document", columnDefinition = "BLOB")
 	private byte[] document;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(final long id) {
+		this.id = id;
+	}
 
 	public byte[] getDocument() {
 		return document;

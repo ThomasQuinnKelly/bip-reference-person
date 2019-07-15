@@ -4,8 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PersonRecordsRepository extends JpaRepository<PersonRecord, Long> {
+public interface PersonrecordsRepository extends JpaRepository<Personrecord, Long> {
 
-	PersonRecord findByPid(long pid);
+	Personrecord findByPid(long pid);
 
 }
