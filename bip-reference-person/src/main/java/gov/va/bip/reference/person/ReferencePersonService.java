@@ -18,4 +18,6 @@ public interface ReferencePersonService {
 	PersonByPidDomainResponse findPersonByParticipantID(PersonByPidDomainRequest personByPidDomainRequest);
 
 	void uploadDocument(long pid, byte[] file);
+
+	byte[] getDocument(Long pid);
 }

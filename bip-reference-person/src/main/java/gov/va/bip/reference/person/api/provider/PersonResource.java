@@ -1,20 +1,24 @@
 package gov.va.bip.reference.person.api.provider;
 
 import java.io.IOException;
-
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.rest.provider.ProviderResponse;
@@ -134,6 +138,8 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 			return new ResponseEntity<>(docResponse, HttpStatus.OK);
 		} catch (IOException e) {
 			LOGGER.error("Could not read body", e);
+		} catch (Exception e) {
+			LOGGER.error("Upload failed due to unexpected exception", e);
 		} finally {
 			try {
 				body.getInputStream().close();
@@ -144,21 +150,28 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	// @RequestMapping(value = URL_PREFIX + "/personDocument/uploadByPid", method = RequestMethod.POST)
-	// @ApiOperation(value = "Will return a document doperson stored data Response based on search by pid.",
-	// notes = "Will perform a basic health check to see if the operation is running.")
-	// @ApiResponses(value = { @ApiResponse(code = 200, message = MESSAGE_200) })
-	// public ProviderResponse upload(@RequestHeader final HttpHeaders headers,
-	// @ApiParam(value = "Document to upload", required = true) @RequestPart("file") final MultipartFile file,
-	// @ApiParam(value = "corresponding pid to upload to", required = true) @RequestPart("pid") final Long pid) {
-	// ProviderResponse response = new ProviderResponse();
-	// try {
-	// response = serviceAdapter.uploadDocumentForPid(pid, file.getBytes());
-	// } catch (IOException e) {
-	// LOGGER.error(e.getMessage(), e);
-	// }
-	// return response;
-	// }
+	@Override
+	public ResponseEntity<ProviderResponse> submitByMulitpart(final String pid, @Valid final MultipartFile file) {
+		ProviderResponse response = new ProviderResponse();
+		try {
+			response = serviceAdapter.uploadDocumentForPid(Long.valueOf(pid), file.getBytes());
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			LOGGER.error("Upload failed due to unexpected exception", e);
+		}
+		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@Override
+	public ResponseEntity<Resource> downloadFile(final String pid) {
+		// Load file as Resource
+		Resource resource = new ByteArrayResource(serviceAdapter.getDocumentForPid(Long.valueOf(pid)));
+
+		String contentType = "application/octet-stream";
+
+		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
+	}
 
 	// @RequestMapping(value = URL_PREFIX + "/person/modify/{claimId}", method = RequestMethod.POST)
 	// @ApiOperation(value = "Modify claim-type value in claim attributes",

@@ -108,6 +108,16 @@ public class ServiceAdapter {
 		return response;
 	}
 
+	public byte[] getDocumentForPid(final Long pid) {
+		try {
+			byte[] file = refPersonService.getDocument(pid);
+			return file;
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw e;
+		}
+	}
+
 	// public byte[] getDocumentForPid(final Long valueOf) {
 	// // TODO Auto-generated method stub
 	// return null;

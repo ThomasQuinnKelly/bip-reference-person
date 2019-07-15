@@ -181,4 +181,9 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		personDatabaseHelper.uploadDocument(pid, file);
 
 	}
+
+	@Override
+	public byte[] getDocument(final Long pid) {
+		return personDatabaseHelper.getDocument(pid);
+	}
 }
