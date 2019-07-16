@@ -179,12 +179,23 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		return response;
 	}
 
+	/**
+	 * Upload a given document to the same record as the pid
+	 *
+	 * @param the pid to associate the uploaded document to
+	 */
 	@Override
 	public void uploadDocument(final long pid, final byte[] file) {
 		personDatabaseHelper.uploadDocument(pid, file);
 
 	}
 
+	/**
+	 * Get the document for a given pid
+	 *
+	 * @param the pid to associate the uploaded document to
+	 * @return A file as a byte array
+	 */
 	@Override
 	public byte[] getDocument(final Long pid) {
 		return personDatabaseHelper.getDocument(pid);

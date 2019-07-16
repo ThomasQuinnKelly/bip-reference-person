@@ -71,6 +71,13 @@ public class ServiceAdapter {
 		return providerResponse;
 	}
 
+	/**
+	 * Upload document for a given pid
+	 * 
+	 * @param pid
+	 * @param file
+	 * @return a ProviderResponse
+	 */
 	public ProviderResponse uploadDocumentForPid(final Long pid, final byte[] file) {
 
 		ProviderResponse response = new ProviderResponse();
@@ -87,6 +94,12 @@ public class ServiceAdapter {
 		return response;
 	}
 
+	/**
+	 * Get document for a given pid
+	 * 
+	 * @param pid
+	 * @return a file as a byte array
+	 */
 	public byte[] getDocumentForPid(final Long pid) {
 		try {
 			byte[] file = refPersonService.getDocument(pid);

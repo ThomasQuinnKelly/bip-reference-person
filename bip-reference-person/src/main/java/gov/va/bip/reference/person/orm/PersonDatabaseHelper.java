@@ -17,7 +17,7 @@ public class PersonDatabaseHelper {
 	PersonrecordsRepository personRecordsRepository;
 
 	/**
-	 * Upload document to person repository
+	 * Upload document to person repository to the record with the given pid
 	 * 
 	 * @param pid
 	 * @param file
@@ -34,6 +34,12 @@ public class PersonDatabaseHelper {
 		}
 	}
 
+	/**
+	 * Retrieve document from person repository for a given pid
+	 * 
+	 * @param pid
+	 * @return a file as a byte array
+	 */
 	public byte[] getDocument(final Long pid) {
 
 		try {

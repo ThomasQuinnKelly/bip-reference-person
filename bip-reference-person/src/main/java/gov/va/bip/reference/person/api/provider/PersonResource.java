@@ -101,7 +101,16 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	}
 
 	/**
-	 * accepts the document and stores in database for a given person pid.
+	 * Accepts the document and stores in database for a given person pid.
+	 *
+	 * <p>
+	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two return types.
+	 * <ol>
+	 * <li>An object that implements ProviderTransferObjectMarker, e.g.: PersonInfoResponse
+	 * <li>An object of type ResponseEntity&lt;ProviderTransferObjectMarker&gt;, e.g. a ResponseEntity that wraps some class that
+	 * implements ProviderTransferObjectMarker.
+	 * </ol>
+	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
 	 * @param pid the pid
 	 * @return ProviderResponse
@@ -110,6 +119,8 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	public ResponseEntity<ProviderResponse> submit(
 			@ApiParam(value = "participant id", required = true) @PathVariable("pid") final String pid,
 			@ApiParam(value = "byteFile", required = true) @Valid @RequestBody final Resource body) {
+		LOGGER.debug("submit() method invoked");
+
 		try {
 			byte[] b = new byte[(int) body.contentLength()];
 			body.getInputStream().read(b);
@@ -126,11 +137,28 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 				LOGGER.error("Could not close body's input stream", e);
 			}
 		}
+		LOGGER.debug("Returning providerResponse to consumer");
 		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	/**
+	 * Accepts the document and stores in database for a given person pid.
+	 *
+	 * <p>
+	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two return types.
+	 * <ol>
+	 * <li>An object that implements ProviderTransferObjectMarker, e.g.: PersonInfoResponse
+	 * <li>An object of type ResponseEntity&lt;ProviderTransferObjectMarker&gt;, e.g. a ResponseEntity that wraps some class that
+	 * implements ProviderTransferObjectMarker.
+	 * </ol>
+	 * The auditing aspect won't be triggered if the return type in not one of the above.
+	 *
+	 * @param pid the pid
+	 * @return ProviderResponse
+	 */
 	@Override
 	public ResponseEntity<ProviderResponse> submitByMulitpart(final String pid, @Valid final MultipartFile file) {
+		LOGGER.debug("submitByMulitpart() method invoked");
 		ProviderResponse response = new ProviderResponse();
 		try {
 			response = serviceAdapter.uploadDocumentForPid(Long.valueOf(pid), file.getBytes());
@@ -138,18 +166,40 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 		} catch (Exception e) {
 			LOGGER.error("Upload failed due to unexpected exception", e);
 		}
+		LOGGER.debug("Returning providerResponse to consumer");
 		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	/**
+	 * Gets the document stored in database for a given person pid.
+	 *
+	 * <p>
+	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two return types.
+	 * <ol>
+	 * <li>An object that implements ProviderTransferObjectMarker, e.g.: PersonInfoResponse
+	 * <li>An object of type ResponseEntity&lt;ProviderTransferObjectMarker&gt;, e.g. a ResponseEntity that wraps some class that
+	 * implements ProviderTransferObjectMarker.
+	 * </ol>
+	 * The auditing aspect won't be triggered if the return type in not one of the above.
+	 *
+	 * @param pid the pid
+	 * @return ProviderResponse
+	 */
 	@Override
 	public ResponseEntity<Resource> downloadFile(final String pid) {
 		// Load file as Resource
-		Resource resource = new ByteArrayResource(serviceAdapter.getDocumentForPid(Long.valueOf(pid)));
+		LOGGER.debug("downloadFile() method invoked");
 
-		String contentType = "application/octet-stream";
-
-		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
+		try {
+			Resource resource = new ByteArrayResource(serviceAdapter.getDocumentForPid(Long.valueOf(pid)));
+			String contentType = "application/octet-stream";
+			return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
+		} catch (Exception e) {
+			LOGGER.error("Upload failed due to unexpected exception", e);
+		}
+		LOGGER.debug("Returning providerResponse to consumer");
+		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

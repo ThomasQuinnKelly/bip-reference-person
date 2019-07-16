@@ -17,7 +17,20 @@ public interface ReferencePersonService {
 	 */
 	PersonByPidDomainResponse findPersonByParticipantID(PersonByPidDomainRequest personByPidDomainRequest);
 
+	/**
+	 * Upload given document to the database in the same record as the pid
+	 * 
+	 * @param pid the Person id number
+	 * @param file the file to be uploaded
+	 */
 	void uploadDocument(long pid, byte[] file);
 
+	/**
+	 * get the document associated with the pid
+	 * 
+	 * @param pid
+	 * 
+	 * @return the file as a byte array
+	 */
 	byte[] getDocument(Long pid);
 }
