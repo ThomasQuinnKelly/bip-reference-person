@@ -52,7 +52,7 @@ mavenGitflowPipeline {
     *************************************************************************/
 
     //Git Repository that contains your Helm chart
-    chartRepository = "https://github.com/department-of-veterans-affairs/ocp-external-config"
+    chartRepository = "https://github.ec.va.gov/EPMO/bip-external-config"
 
     //Path to your chart directory within the above repository
     chartPath = "charts/bip-reference-person"
