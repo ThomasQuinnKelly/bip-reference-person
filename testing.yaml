@@ -9,17 +9,10 @@
     tag: latest
   vault:
     enabled: false
-    failFast: false
-    consul:
-      enabled: false
-    service:
-      configMap: null
+    consulBackendEnabled: false
   consul:
       config:
         enabled: false
       discovery:
         enabled: false
         register: false
-      service:
-        configMap: null
-        secret: null
