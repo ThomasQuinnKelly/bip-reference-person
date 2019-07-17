@@ -157,7 +157,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * @return ProviderResponse
 	 */
 	@Override
-	public ResponseEntity<ProviderResponse> submitByMulitpart(final String pid, @Valid final MultipartFile file) {
+	public ResponseEntity<ProviderResponse> submitByMultipart(final String pid, @Valid final MultipartFile file) {
 		LOGGER.debug("submitByMulitpart() method invoked");
 		ProviderResponse response = new ProviderResponse();
 		try {
@@ -192,8 +192,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 
 		try {
 			Resource resource = new ByteArrayResource(serviceAdapter.getDocumentForPid(Long.valueOf(pid)));
-			String contentType = "application/octet-stream";
-			return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+			return ResponseEntity.ok().contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
 					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
 		} catch (Exception e) {
 			LOGGER.error("Upload failed due to unexpected exception", e);

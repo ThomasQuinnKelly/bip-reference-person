@@ -5,9 +5,6 @@ info:
    title: BIP Reference Person Spring Boot Service v1 API Documentation
    description: A sample Reference Person API to demonstrate features in the OpenAPI 3.0 specification
    termsOfService: https://developer.va.gov/terms-of-service
-   license:
-    name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
   - url: http://localhost:8080
     description: Local server
@@ -20,7 +17,215 @@ tags:
     description: Person Rest Client Tester
   - name: token-resource
     description: Token Resource
-paths:
+paths: 
+  "/api/v1/persons/pid":
+    post:
+      tags:
+      - reference-person
+      summary: Retrieve person information by PID from Person Service .
+      description: Will return a person info object based on search by PID.
+      operationId: personByPid
+      requestBody: 
+        description: personInfoRequest
+        required: true
+        content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/PersonInfoRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/PersonInfoResponse'
+        '400':
+          description: There was an error encountered processing the Request.  Response
+            will contain a  "messages" element that will provide further information
+            on the error.  This request shouldn't be retried until corrected.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+        '403':
+          description: The request is not authorized.  Please verify credentials used
+            in the request.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+        '500':
+          description: There was an error encountered processing the Request.  Response
+            will contain a  "messages" element that will provide further information
+            on the error.  Please retry.  If problem persists, please contact support
+            with a copy of the Response.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+      security:
+        - bearerAuth: []
+      deprecated: false
+  "/api/v1/persons/{pid}/upload":
+    post:
+      parameters:
+        - name : pid
+          in : path
+          description : participant id
+          required : true
+          schema:
+            type : string
+      tags:
+        - reference-person
+      summary: Retrieve person information by PID from Person Service .
+      description: Will return a person info object based on search by PID.
+      operationId: submit
+      requestBody: 
+        description: byteFile
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+        '400':
+          description: There was an error encountered processing the Request.  Response
+            will contain a  "messages" element that will provide further information
+            on the error.  This request shouldn't be retried until corrected.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+        '403':
+          description: The request is not authorized.  Please verify credentials used
+            in the request.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+        '500':
+          description: There was an error encountered processing the Request.  Response
+            will contain a  "messages" element that will provide further information
+            on the error.  Please retry.  If problem persists, please contact support
+            with a copy of the Response.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+      security:
+        - bearerAuth: []
+      deprecated: false
+  "/api/v1/persons/{pid}/uploadByMultipart":
+    post:
+      tags:
+        - reference-person
+      summary: Retrieve person information by PID from Person Service .
+      description: Will return a person info object based on search by PID.
+      operationId: submitByMultipart
+      requestBody: 
+        description: byteFile and pid
+        required: true
+        content: 
+          multipart/form-data: # Media type
+            schema:            # Request payload
+              type: object
+              properties:      # Request parts
+                pid:            # Part 1 (pid as a string value)
+                  type: string
+                  format: int64
+                file:  # Part 2 (the document to be uploaded)
+                  type: string
+                  format: binary     
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+        '400':
+          description: There was an error encountered processing the Request.  Response
+            will contain a  "messages" element that will provide further information
+            on the error.  This request shouldn't be retried until corrected.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+        '403':
+          description: The request is not authorized.  Please verify credentials used
+            in the request.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+        '500':
+          description: There was an error encountered processing the Request.  Response
+            will contain a  "messages" element that will provide further information
+            on the error.  Please retry.  If problem persists, please contact support
+            with a copy of the Response.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+      security:
+        - bearerAuth: []
+      deprecated: false
+  "/api/v1/persons/{pid}/document":
+    get:
+      parameters:
+        - name : pid
+          in : path
+          description : participant id
+          required : true
+          schema:
+            type : string
+      tags:
+        - reference-person
+      summary: Retrieve person reference document by PID .
+      description: Will return a person info object based on search by PID.
+      operationId: downloadFile
+      responses:
+        '200':
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: There was an error encountered processing the Request.  Response
+            will contain a  "messages" element that will provide further information
+            on the error.  This request shouldn't be retried until corrected.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+        '403':
+          description: The request is not authorized.  Please verify credentials used
+            in the request.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+        '500':
+          description: There was an error encountered processing the Request.  Response
+            will contain a  "messages" element that will provide further information
+            on the error.  Please retry.  If problem persists, please contact support
+            with a copy of the Response.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+      security:
+        - bearerAuth: []
+      deprecated: false
   "/api/v1/persons/clientTests/callPersonByPidUsingFeignClient":
     post:
       tags:
@@ -77,214 +282,6 @@ paths:
         remote echo operation.
       operationId: callPersonByPidUsingRestTemplateUsingPOST
       requestBody:
-        description: personInfoRequest
-        required: true
-        content:
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/PersonInfoRequest'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/PersonInfoResponse'
-        '400':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  This request shouldn't be retried until corrected.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '403':
-          description: The request is not authorized.  Please verify credentials used
-            in the request.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '500':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  Please retry.  If problem persists, please contact support
-            with a copy of the Response.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-      security:
-        - bearerAuth: []
-      deprecated: false
-  "/api/v1/persons/uploadByPid/{pid}":
-    post:
-      parameters:
-        - name : pid
-          in : path
-          description : participant id
-          required : true
-          schema:
-            type : string
-      tags:
-        - reference-person
-      summary: Retrieve person information by PID from Person Service .
-      description: Will return a person info object based on search by PID.
-      operationId: submit
-      requestBody: 
-        description: byteFile
-        required: true
-        content:
-          application/octet-stream:
-            schema:
-              type: string
-              format: binary
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '400':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  This request shouldn't be retried until corrected.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '403':
-          description: The request is not authorized.  Please verify credentials used
-            in the request.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '500':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  Please retry.  If problem persists, please contact support
-            with a copy of the Response.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-      security:
-        - bearerAuth: []
-      deprecated: false
-  "/api/v1/persons/uploadByPidMultipart":
-    post:
-      tags:
-        - reference-person
-      summary: Retrieve person information by PID from Person Service .
-      description: Will return a person info object based on search by PID.
-      operationId: submitByMulitpart
-      requestBody: 
-        description: byteFile and pid
-        required: true
-        content: 
-          multipart/form-data: # Media type
-            schema:            # Request payload
-              type: object
-              properties:      # Request parts
-                pid:            # Part 1 (pid as a string value)
-                  type: string
-                  format: int64
-                file:  # Part 2 (the document to be uploaded)
-                  type: string
-                  format: binary     
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '400':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  This request shouldn't be retried until corrected.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '403':
-          description: The request is not authorized.  Please verify credentials used
-            in the request.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '500':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  Please retry.  If problem persists, please contact support
-            with a copy of the Response.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-      security:
-        - bearerAuth: []
-      deprecated: false
-  "/api/v1/persons/getPersonDocument/{pid}":
-    get:
-      parameters:
-        - name : pid
-          in : path
-          description : participant id
-          required : true
-          schema:
-            type : string
-      tags:
-        - reference-person
-      summary: Retrieve person reference document by PID .
-      description: Will return a person info object based on search by PID.
-      operationId: downloadFile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        '400':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  This request shouldn't be retried until corrected.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '403':
-          description: The request is not authorized.  Please verify credentials used
-            in the request.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '500':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  Please retry.  If problem persists, please contact support
-            with a copy of the Response.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-      security:
-        - bearerAuth: []
-      deprecated: false
-  "/api/v1/persons/pid":
-    post:
-      tags:
-      - reference-person
-      summary: Retrieve person information by PID from Person Service .
-      description: Will return a person info object based on search by PID.
-      operationId: personByPid
-      requestBody: 
         description: personInfoRequest
         required: true
         content:
