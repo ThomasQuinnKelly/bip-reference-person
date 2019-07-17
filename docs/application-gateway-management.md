@@ -1,6 +1,10 @@
 # Application Gateway Management
 
-## Capability and Features
+## What do we need from an API gateway?
+- Highly available
+- Secure
+- Authoritative
+- Scalable
 - Authentication Mechanism
 - Load Balancing
 - Routing
@@ -84,3 +88,7 @@ The beauty of this ecosystem is that it's open and everybody can contribute to t
 It's good to keep in mind that the more advanced official plugins are only available for Kong Enterprise. However, it makes sense given they are only applicable for big enterprises and also because there is no free lunch. 
 
 They provide a lightweight gateway for you and you add the features that you need; either provided by Kong, the community or self-written. It's all possible!
+
+## Kong JWT Signer
+
+The Kong JWT Signer plugin makes it possible to verify and (re-)sign one or two tokens in a request, that the plugin refers as access token and channel token. The plugin supports both opaque tokens (via introspection) and signed JWT tokens (JWS tokens via signature verification). access_token and channel_token are names of the tokens and they can be any valid verifiable tokens. E.g. two access tokens (one given to end user and one given to client application).
