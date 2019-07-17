@@ -6,12 +6,12 @@ For more information, refer to the [bip-framework README.md](https://github.com/
 ## Design Considerations
 BIP Framework provides for distinct separation of model objects between the **Provider**, **Domain**, and **Partner** layers. For more information, see [Design: Layer and Model Separation](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/docs/design-layer-separation.md).
 
-Refer to the [bip-reference-spring-boot](https://github.com/department-of-veterans-affairs/bip-reference-person) application for detailed information. It demonstrate suggested patterns, packaging, and framework usage when developing a new application for the BIP platform.
+Refer to the [bip-reference-person](https://github.com/department-of-veterans-affairs/bip-reference-person) application for detailed information. It demonstrate suggested patterns, packaging, and framework usage when developing a new application for the BIP platform.
 
 The BIP Framework makes use of the Spring AOP implementation of AspectJ for audit and performance logging. Compile-time code weaving is not used.
 
 ## Configuration
-Platform capabilities are initialized in the bip-framework-autoconfigure artifact. The service application must enable these capabilities with the appropriate annotations in the application classes. Properties for managing these capabilities can be added to the application YAML. The [bip-reference README](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master#application-core-concepts-and-patterns) section provides links for more detailed information.
+Platform capabilities are initialized in the bip-framework-autoconfigure artifact. The service application must enable these capabilities with the appropriate annotations in the application classes. Properties for managing these capabilities can be added to the application YAML. The [bip-reference-person README.md](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master#application-core-concepts-and-patterns) section provides links for more detailed information.
 
 Application configuration of framework capabilities can be managed in the application YAML as identified in the sections below. See [bip-reference-person.yml](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/mastaer/bip-reference-person/src/main/resources/bip-reference-person.yml) for an example of a functioning configuration.
 
