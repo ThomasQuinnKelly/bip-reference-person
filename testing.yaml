@@ -1,0 +1,25 @@
+  ########################################################################
+  # Values section defines the parameters to the chart
+  # These are specific to the chart being installed
+  ########################################################################
+
+  imagePullSecret: regcred
+  image:
+    repository: container-registry.dev8.bip.va.gov/bip-reference-person
+    tag: latest
+  vault:
+    enabled: false
+    failFast: false
+    consul:
+      enabled: false
+    service:
+      configMap: null
+  consul:
+      config:
+        enabled: false
+      discovery:
+        enabled: false
+        register: false
+      service:
+        configMap: null
+        secret: null
