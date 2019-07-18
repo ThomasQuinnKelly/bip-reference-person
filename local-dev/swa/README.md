@@ -1,7 +1,7 @@
 # What is this for?
-VA OIS Software Assurance (SwA) performs reviews for design and code reviews, and quality reviews. For code reviews, SwA is interested in reviewing release versions of the software.
+VA OIS Software Assurance (SwA) performs reviews for design and code reviews, and quality reviews. For code reviews, SwA is interested in reviewing **release** versions of the software.
 
-This README and related `swa-prep.sh` script are specific to [Secure Code Review > How do I register applications, request secure code review tools and validations?](https://wiki.mobilehealth.va.gov/display/OISSWA/Frequently+Asked+Questions).
+This README and related `swa-prep.sh` script are specific to the SwA process described under the _Secure Code Review > How do I register applications, request secure code review tools and validations?_ section on the [SwA FAQ page](https://wiki.mobilehealth.va.gov/display/OISSWA/Frequently+Asked+Questions).
 
 Some targeted URLs to instructions for the SwA submission requirements and process:
 * [Document Library (PDFs, etc)](https://wiki.mobilehealth.va.gov/display/OISSWA/Public+Document+Library)
@@ -24,15 +24,24 @@ This script creates a folder with:
 	* A copy of the `VA Secure Code Review Validation Request Form.pdf` to be filled out
 	* A zip of the code taken from a git tag (a release version)
 	* A fresh Fortify FPR derived from the tag
-	* A zip of the local Fortify rulepack that used to scan the code
+	* A zip of the local Fortify rulepack that was used to scan the code
 
 ## When and how do I run the script?
 
-SwA submissions are typically done only on release candidates. A release version will have a git TAG version that does not have "-SNAPSHOT" on the end of it.
+The script has been tested on macOS. For Windows users, please use [Git Bash](https://gitforwindows.org/) to execute the script. If you encounter any problems, please open a "SwA Script" issue on EPMO GitHub [bip-archetype-service](https://github.ec.va.gov/EPMO/bip-archetype-service) project.
+
+#### Prerequisites
+
+SwA submissions are done only on release candidates. A release version will have a git TAG version that does not have "-SNAPSHOT" on the end of it.
+
+* The user workstation should be set up for BIP projects as documented in EPMO GitHub at the BIP [Quick Start Guide](https://github.ec.va.gov/EPMO/bip-reference-person/blob/master/docs/quick-start-guide.md). This includes local [installation of Fortify apps and Fortify maven plugins](https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+download+the+VA-Licensed+Fortify+software).
+* Know the name of the release tag that is to be submitted. To see available tags, run `git pull` then `git tag` in the project directory.
 
 To make the preparation process go faster and easier, it is worth taking the time to update default files for your project.
 * Open `[project-reactor]/local-dev/swa/defaults/VA Secure Code Review Validation Request Form.pdf` in a PDF editor (Acrobat, Preview, etc). Fill out the form and save it in place.
 * Open `[project-reactor]/local-dev/swa/defaults/swa-prep.properties` in an editor. Update property values to sensible defaults if desired, and save in place.
+
+#### Running the script
 
 Steps:
 1. [Register with SwA](https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+open+an+NSD+ticket+to+register+a+VA+application) if you have not already registered the application.

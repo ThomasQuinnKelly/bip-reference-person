@@ -46,6 +46,8 @@ releaseVersion="$(git describe --abbrev=0 --tags)"
 cloneUrl="" #eg "https://github.com/department-of-veterans-affairs/bip-framework.git"
 ### the project name from $cloneUrl
 projectName=""
+### fortify version in use, derived from sourceanalyzer -version
+fortifyVersion="18.20"
 ### the project properties file to use, derived as ./$tagsDir/$releaseVersion
 propertiesFile=""
 ### the directory with input files (properties & PDF) for the project, derived as $inputDir/$propertiesFileName
@@ -220,7 +222,7 @@ function cp_files() {
 ## scope: private (internal calls only)        ##
 function print_vars() {
 	echo "" 2>&1 | tee -a "$logfile"
-	echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" 2>&1 | tee -a "$logfile"
+	echo "·········································································" 2>&1 | tee -a "$logfile"
 	echo "+>> pwd=`pwd`" 2>&1 | tee -a "$logfile"
 	echo "+>> cwd=$cwd" 2>&1 | tee -a "$logfile"
 	echo "+>> thisScript=$thisScript" 2>&1 | tee -a "$logfile"
@@ -276,6 +278,13 @@ function set_derived_values() {
 	inputDir="$tagsDir/$releaseVersion"
 	propertiesFile="$inputDir/$propertiesFileName"
 	submissionFilesDir="$outputDir/$projectName-$releaseVersion/submission-files"
+
+	fortifyVersionRemoveThis="Fortify Static Code Analyzer " 2>&1 >> "$logfile"
+	fortifyVersion=$(sourceanalyzer -version) 2>&1 >> "$logfile"
+	fortifyVersion=${fortifyVersion#"$fortifyVersionRemoveThis"} 2>&1 >> "$logfile"
+	fortifyVersion=$(echo $fortifyVersion | cut -d' ' -f 1) 2>&1 >> "$logfile"
+	fortifyVersion=(${fortifyVersion//./ })
+	fortifyVersion="${fortifyVersion[0]}.${fortifyVersion[1]}"
 }
 
 ## function to populate property vars from $propertiesFile ##
@@ -329,7 +338,6 @@ function confirm_properties() {
 	echo "" 2>&1 | tee -a "$logfile"
 
 	# --- write the properties file ---
-	echo "" 2>&1 | tee -a "$logfile"
 	echo "Absolute path of the Fortify/SCA installation" 2>&1 | tee -a "$logfile"
 	if [ "$fortifyInstallDir" == "" ]; then
 		echo "  Type or paste the absolute path of the Fortify/SCA installation, then press [Enter] (or Ctrl+C to abort):" 2>&1 | tee -a "$logfile"
@@ -373,6 +381,7 @@ function confirm_properties() {
 	else
 		tmp=""
 		echo "  The release tag is set to: $releaseVersion" 2>&1 | tee -a "$logfile"
+		echo "  To view available tags, open a new terminal window/tab in the project folder and run: git tag" 2>&1 | tee -a "$logfile"
 		echo "  Press [Enter] to accept the current value, or type or paste a release tag then press [Enter] (or Ctrl+C to abort):" 2>&1 | tee -a "$logfile"
 		read -p "INPUT: " tmp 2>&1 >> "$logfile"
 		check_exit_status "$?"
@@ -394,6 +403,7 @@ function verify_values() {
 	echo "    swa.prep.output.dir=$outputDir" 2>&1 | tee -a "$logfile"
 	echo "    swa.prep.release.tag=$releaseVersion" 2>&1 | tee -a "$logfile"
 	echo "  Derived values:" 2>&1 | tee -a "$logfile"
+	echo "    Active Fortify SCA version: $fortifyVersion"
 	echo "    Project clone url: $cloneUrl" 2>&1 | tee -a "$logfile"
 	echo "    Project name: $projectName" 2>&1 | tee -a "$logfile"
 	echo "    Properties file: $propertiesFile" 2>&1 | tee -a "$logfile"
@@ -421,8 +431,8 @@ function write_input_dir() {
 	fi
 
 	# write the file
-	echo "" 2>&1 | tee -a "$logfile"
 	echo "+>> Writing properties to: $propertiesFile ..." 2>&1 | tee -a "$logfile"
+	echo "" 2>&1 | tee -a "$logfile"
 
 	echo "###############################################################################" > "$propertiesFile"
 	echo "# SwA Code Review - Properties " >> "$propertiesFile"
@@ -452,6 +462,7 @@ function write_input_dir() {
 
 function verify_inputs() {
 	echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" 2>&1 | tee -a "$logfile"
+	echo "Confirm PDF" 2>&1 | tee -a "$logfile"
 	echo "" 2>&1 | tee -a "$logfile"
 
 	echo "Confirm code review request form PDF:" 2>&1 | tee -a "$logfile"
@@ -483,7 +494,6 @@ function prep_output_folder() {
 	# copy PDF to submission folder
 	cp_files "$cwd/tags/$releaseVersion/$pdfFileName" "$submissionFilesDir/"
 
-	echo "+>> pwd=`pwd`" 2>&1 | tee -a "$logfile"
 	cd_to "$projectName-$releaseVersion"
 
 	# git
@@ -516,50 +526,74 @@ function prep_output_folder() {
 	mvn clean install -DskipTests=true -U 2>&1 >> "$logfile"
 	check_exit_status "$?"
 
-	echo "+>> mvn dependency:resolve" 2>&1 | tee -a "$logfile"
-	mvn dependency:resolve 2>&1 >> "$logfile"
-	check_exit_status "$?"
+	# echo "+>> mvn dependency:resolve" 2>&1 | tee -a "$logfile"
+	# mvn dependency:resolve 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+
+	### Fortify
 
 	# get the name of the maven reactor module
 	echo "+>> reactorName=$(mvn -q -Dexec.executable=echo -Dexec.args=\'\${project.artifactId}\' --non-recursive exec:exec)" 2>&1 | tee -a "$logfile"
 	reactorName=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.artifactId}' --non-recursive exec:exec) 2>&1 >> "$logfile"
 	check_exit_status "$?"
 
-	echo "+>> sourceanalyzer -b $reactorName -clean" 2>&1 | tee -a "$logfile"
-	sourceanalyzer -b "$reactorName" -clean 2>&1 >> "$logfile"
+	### below code kept for posterity if ever needed ...
+	# # echo "+>> sourceanalyzer -b $reactorName -clean" 2>&1 | tee -a "$logfile"
+	# # sourceanalyzer -b "$reactorName" -clean 2>&1 >> "$logfile"
+	# echo "+>> mvn com.fortify.sca.plugins.maven:sca-maven-plugin:$fortifyVersion:clean" 2>&1 | tee -a "$logfile"
+	# mvn com.fortify.sca.plugins.maven:sca-maven-plugin:$fortifyVersion:clean 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# # echo "+>> sourceanalyzer -b $reactorName touchless mvn com.fortify.sca.plugins.maven:sca-maven-plugin:18.20:translate -Dfortify.sca.buildId=$reactorName" 2>&1 | tee -a "$logfile"
+	# # sourceanalyzer -b "$reactorName" touchless mvn com.fortify.sca.plugins.maven:sca-maven-plugin:translate -Dfortify.sca.buildId=$reactorName 2>&1 >> "$logfile"
+	# echo "+>> mvn package com.fortify.sca.plugins.maven:sca-maven-plugin:$fortifyVersion:translate" 2>&1 | tee -a "$logfile"
+	# mvn package com.fortify.sca.plugins.maven:sca-maven-plugin:$fortifyVersion:translate -Dfortify.sca.tests.exclude=true 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# # echo "+>> mvn initialize com.fortify.sca.plugins.maven:sca-maven-plugin:18.20:scan -Dfortify.sca.buildId=$reactorName" 2>&1 | tee -a "$logfile"
+	# # mvn initialize com.fortify.sca.plugins.maven:sca-maven-plugin:scan -Dfortify.sca.buildId=$reactorName 2>&1 >> "$logfile"
+	# echo "+>> mvn com.fortify.sca.plugins.maven:sca-maven-plugin:$fortifyVersion:scan" 2>&1 | tee -a "$logfile"
+	# mvn integration-test com.fortify.sca.plugins.maven:sca-maven-plugin:$fortifyVersion:scan -Dfortify.sca.buildId=$reactorName-$releaseVersion 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# # get the name of the new FPR file
+	# newFpr="$(ls ./target/fortify/*.fpr)" 2>&1 >> "$logfile"
+	# echo "+>> newFpr=$newFpr" 2>&1 | tee -a "$logfile"
+	# ls $newFpr 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# # find out if there is a root FPR or not
+	# mainFpr="`pwd`/$reactorName.fpr"
+	# if [ -f "$reactorName" ]; then
+	# 	echo "+>> FPRUtility -merge -project $newFpr -source $mainFpr -f $newFpr" 2>&1 | tee -a "$logfile"
+	# 	FPRUtility -merge -project $newFpr -source $mainFpr -f $newFpr 2>&1 >> "$logfile"
+	# 	check_exit_status "$?"
+	# 	cp_files "$mainFpr" "$mainFpr.backup"
+	# 	cp_files "$newFpr" "$mainFpr"
+	# else
+	# 	cp_files "$newFpr" "$mainFpr"
+	# fi
+	### ... end of posterity
+
+	# since mvn clean install was previously run, only need to specify install to catch the lifecycle phases
+	echo "+>> mvn install -P fortify-sca" 2>&1 | tee -a "$logfile"
+	mvn install -P fortify-sca 2>&1 >> "$logfile"
 	check_exit_status "$?"
 
-	echo "+>> sourceanalyzer -b $reactorName touchless mvn com.fortify.sca.plugins.maven:sca-maven-plugin:18.20:translate -Dfortify.sca.buildId=$reactorName" 2>&1 | tee -a "$logfile"
-	sourceanalyzer -b "$reactorName" touchless mvn com.fortify.sca.plugins.maven:sca-maven-plugin:translate -Dfortify.sca.buildId=$reactorName 2>&1 >> "$logfile"
-	check_exit_status "$?"
+	read -p "TEMP PAUSE: check `pwd`/*.fpr build project"
 
-	echo "+>> mvn initialize com.fortify.sca.plugins.maven:sca-maven-plugin:18.20:scan -Dfortify.sca.buildId=$reactorName" 2>&1 | tee -a "$logfile"
-	mvn initialize com.fortify.sca.plugins.maven:sca-maven-plugin:scan -Dfortify.sca.buildId=$reactorName 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	# get the name of the new FPR file
-	newFpr="$(ls ./target/fortify/*.fpr)" 2>&1 >> "$logfile"
-	echo "+>> newFpr=$newFpr" 2>&1 | tee -a "$logfile"
-	ls $newFpr 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	# find out if there is a root FPR or not
-	mainFpr="`pwd`/$reactorName.fpr"
-	if [ -f "$reactorName" ]; then
-		echo "+>> FPRUtility -merge -project $newFpr -source $mainFpr -f $newFpr" 2>&1 | tee -a "$logfile"
-		FPRUtility -merge -project $newFpr -source $mainFpr -f $newFpr 2>&1 >> "$logfile"
-		check_exit_status "$?"
-		cp_files "$mainFpr" "$mainFpr.backup"
-		cp_files "$newFpr" "$mainFpr"
-	else
-		cp_files "$newFpr" "$mainFpr"
-	fi
-
+	echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" 2>&1 | tee -a "$logfile"
+	echo "Confirm FPR" 2>&1 | tee -a "$logfile"
 	echo "" 2>&1 | tee -a "$logfile"
-	echo "Open \"$mainFpr\" and confirm that it is clean." 2>&1 | tee -a "$logfile"
+	echo "Open \"$mainFpr\" in Fortify Audit Workbench." 2>&1 | tee -a "$logfile"
+	echo "	- make sure \"Filter set\" is set to \"Security Auditor View\"" 2>&1 | tee -a "$logfile"
+	echo "Confirm that:" 2>&1 | tee -a "$logfile"
+	echo "  - scan is free of warnings (all critical/high fixed and/or suppressions applied)" 2>&1 | tee -a "$logfile"
+	echo "  - the Summary > Build Information > Build Label value is correct" 2>&1 | tee -a "$logfile"
 	read -p "When done, press [Enter] to continue, or Ctrl+C to abort: " 2>&1 >> "$logfile"
 	echo "" 2>&1 | tee -a "$logfile"
 
+	# copy FPR to submissions folder
 	echo "+>> mv $mainFpr $submissionFilesDir/" 2>&1 | tee -a "$logfile"
 	mv "$mainFpr" "$submissionFilesDir/" 2>&1 >> "$logfile"
 	check_exit_status "$?"
@@ -650,9 +684,12 @@ function prep_output_folder() {
 }
 
 function post_prep_activities() {
-	# manual check before zipping
+	cd_to $submissionFilesDir
+
+	echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" 2>&1 | tee -a "$logfile"
+	echo "Review submission files" 2>&1 | tee -a "$logfile"
 	echo "" 2>&1 | tee -a "$logfile"
-	echo "Review files and folders under `pwd`" 2>&1 | tee -a "$logfile"
+	echo "Review files and folders under \"$submissionFilesDir\"" 2>&1 | tee -a "$logfile"
 	echo "Delete any additional files/folders that are not necessary for the SwA Code Review process." 2>&1 | tee -a "$logfile"
 	read -p "When done, press [Enter] to continue, or Ctrl+C to abort: " 2>&1 >> "$logfile"
 	echo "" 2>&1 | tee -a "$logfile"
