@@ -17,6 +17,8 @@ The script offers:
 1. Repeatability and consistency for each released artifact
 2. Local traceability for the preparation of packages that will be sent to SwA
 
+This script does _not_ alter the state of your local git repo or code workspace, but _does_ add a PDF and properties file under the local-dev/swa/tags/ directory for the tag that was processed. It is recommended to commit and push the files.
+
 #### swa-prep.sh & swa-prep.properties
 
 This script creates a folder with:
@@ -57,6 +59,7 @@ Steps:
 		```
 	* Follow the prompts, and supply information or perform actions as directed.
 	* Read the message that is output when the script finishes.
+	* Consider committing and pushing the new files created by the script (in your project local-dev/swa/tags directory).
 4. Use the created submission files to [submit the code review request](https://wiki.mobilehealth.va.gov/pages/viewpage.action?pageId=26774489) to SwA
 
 ## Maintenance

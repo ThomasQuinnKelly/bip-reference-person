@@ -537,6 +537,8 @@ function prep_output_folder() {
 	reactorName=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.artifactId}' --non-recursive exec:exec) 2>&1 >> "$logfile"
 	check_exit_status "$?"
 
+	mainFpr="`pwd`/$reactorName.fpr"
+
 	### below code kept for posterity if ever needed ...
 	# # echo "+>> sourceanalyzer -b $reactorName -clean" 2>&1 | tee -a "$logfile"
 	# # sourceanalyzer -b "$reactorName" -clean 2>&1 >> "$logfile"
