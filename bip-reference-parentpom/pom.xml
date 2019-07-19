@@ -20,7 +20,7 @@
 	<groupId>gov.va.bip.reference.person</groupId>
 	<artifactId>bip-reference-parentpom</artifactId>
 	<packaging>pom</packaging>
-	<version>2.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>bip-reference-parentpom</name>
 	<description>Parent POM for BIP Reference Person - demo service application</description>
 
