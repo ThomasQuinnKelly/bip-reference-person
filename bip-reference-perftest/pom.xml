@@ -2,13 +2,20 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-	<parent>
+<!-- 	<parent>
 		<groupId>gov.va.bip.reference.person</groupId>
 		<artifactId>bip-reference-parentpom</artifactId>
 		<version>0.0.2-SNAPSHOT</version>
 		<relativePath>../bip-reference-parentpom</relativePath>
 	</parent>
-
+ -->
+     <parent>
+		<groupId>gov.va.bip.reference.person</groupId>
+		<artifactId>bip-reference-reactor</artifactId>
+		<version>0.0.2-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+ 
 	<artifactId>bip-reference-perftest</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
