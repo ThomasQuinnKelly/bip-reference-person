@@ -1,9 +1,9 @@
-# What is this for?
-VA OIS Software Assurance (SwA) performs reviews for design and code reviews, and quality reviews. For code reviews, SwA is interested in reviewing **release** versions of the software.
+# SwA Preparation Script
+VA OIS Software Assurance (SwA) performs reviews for design and code reviews, and quality reviews. For code reviews, SwA is interested in reviewing **release** versions of the software. For background and technical details, see [Software Assurance and Fortify](../../docs/fortify-and-swa.md).
 
 This README and related `swa-prep.sh` script are specific to the SwA process described under the _Secure Code Review > How do I register applications, request secure code review tools and validations?_ section on the [SwA FAQ page](https://wiki.mobilehealth.va.gov/display/OISSWA/Frequently+Asked+Questions).
 
-Some targeted URLs to instructions for the SwA submission requirements and process:
+Some SwA website pages with instructions for the SwA submission requirements and process:
 * [Document Library (PDFs, etc)](https://wiki.mobilehealth.va.gov/display/OISSWA/Public+Document+Library)
 * [Application Registration](https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+open+an+NSD+ticket+to+register+a+VA+application)
 * [Code Review Submission](https://wiki.mobilehealth.va.gov/pages/viewpage.action?pageId=26774489)
@@ -11,13 +11,15 @@ Some targeted URLs to instructions for the SwA submission requirements and proce
 
 ## What does the script do?
 
-The script is intended for use with applications based on the BIP Framework (and for the framework itself). It prompts the user to perform any manual steps, and automates those steps that can be automated.
+The script is intended for use with applications based on the BIP Framework (and for the framework itself).
+
+The script can be run in _GitBash_ or any other bash terminal. As it runs, the script prompts the user to perform any manual steps, and automates those steps that can be automated.
 
 The script offers:
 1. Repeatability and consistency for each released artifact
 2. Local traceability for the preparation of packages that will be sent to SwA
 
-This script does _not_ alter the state of your local git repo or code workspace, but _does_ add a PDF and properties file under the local-dev/swa/tags/ directory for the tag that was processed. It is recommended to commit and push the files.
+This script does _not_ alter the state of your local git repo or code workspace, but _does_ add a PDF and properties file under the `./local-dev/swa/tags/` directory for the tag that was processed. It is recommended to commit and push the files.
 
 #### swa-prep.sh & swa-prep.properties
 
@@ -36,7 +38,10 @@ The script has been tested on macOS. For Windows users, please use [Git Bash](ht
 
 SwA submissions are done only on release candidates. A release version will have a git TAG version that does not have "-SNAPSHOT" on the end of it.
 
-* The user workstation should be set up for BIP projects as documented in EPMO GitHub at the BIP [Quick Start Guide](https://github.ec.va.gov/EPMO/bip-reference-person/blob/master/docs/quick-start-guide.md). This includes local [installation of Fortify apps and Fortify maven plugins](https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+download+the+VA-Licensed+Fortify+software).
+* The user workstation should be set up for BIP projects as documented in EPMO GitHub at the BIP [Quick Start Guide](https://github.ec.va.gov/EPMO/bip-reference-person/blob/master/docs/quick-start-guide.md). This includes:
+ 	* local installation of [Fortify apps and Fortify maven plugins](https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+download+the+VA-Licensed+Fortify+software).
+	* Fortify must be installed
+	* The project must produce the `[project-name]-reactor.fpr` when built with the `-P fortify-sca` profile
 * Know the name of the release tag that is to be submitted. To see available tags, run `git pull` then `git tag` in the project directory.
 
 To make the preparation process go faster and easier, it is worth taking the time to update default files for your project.

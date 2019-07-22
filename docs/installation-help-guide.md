@@ -59,20 +59,30 @@ Take some time to get comfortable with Git BASH and the Git GUI.
 
 Of the Fortify suite of products, BIP service apps will typically use SCA (to translate and scan projects), Auditors Workbench (to view FPR files), and the maven plugins (to perform local scans).
 
-Follow the [instructions provided by SwA](https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+download+the+VA-Licensed+Fortify+software) to get a download link and a license file. When running the installer, if options are provided to select / deselect software, ensure that all software is installed.
+1. Follow the [instructions provided by SwA](https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+download+the+VA-Licensed+Fortify+software) to get a download link and a license file. When running the installer, if options are provided to select / deselect software, ensure that all software is installed.
 
-Make sure Fortify is added to your PATH
-* macOS: edit `~/.bash_profile`
-	```bash
-		# macOS
-		export PATH="/Applications/Fortify/Fortify_SCA_and_Apps_18.20/bin:$PATH"
-	```
+2. Make sure Fortify is added to your PATH
 
-* Windows: add the fortify `\\bin` folder to your "System Properties > Advanced > Environment Variables"
+	* macOS: edit your bash profile, e.g. `open -a TextEdit ~/.bash_profile`
+		```bash
+			# macOS
+			export PATH="/Applications/Fortify/Fortify_SCA_and_Apps_18.20/bin:$PATH"
+		```
+
+	* Windows: add the `\[APP-FOLDER]\Fortify_SCA_and_Apps_18.20\bin` folder to your "System Properties > Advanced > Environment Variables"
+
+	* Test with the following command from some non-fortify directory: `sourceanalyzer -version`
+
+3. Install the maven plugins into your `.m2` repo:
+
+	* Open a terminal window and `$ cd [downloaded-fortify-folder]/plugins/maven`
+
+	* Run `./install.sh` or `install.bat`
 
 #### Running Fortify
 
 There are many ways to run Fortify on your projects, however the easiest is likely to use a maven profile.
+
 * Make sure all projects have `bip-framework-parentpom` _somewhere_ in their parent hierarchy. An easy, centralized way to do this is to set it as the parent in your project's `./parentpom/pom.xml` file
 	```xml
 		<!-- ./parentpom/pom.xml -->
