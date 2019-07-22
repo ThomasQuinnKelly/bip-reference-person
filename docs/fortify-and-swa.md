@@ -4,6 +4,13 @@ VA [OIS Software Assurance](https://wiki.mobilehealth.va.gov/display/OISSWA/) (S
 
 The tool used for the "[Secure & Quality Code Review](https://wiki.mobilehealth.va.gov/display/OISSWA/Frequently+Asked+Questions)" is Fortify.
 
+There are currently two profiles for running Fortify from maven (assuming installation prerequisites are met):
+
+1. `fortify` profile: This profile is in early versions of bip-framework 1.x. It is deprecated and will be removed in a future version. To run it: `mvn clean install -DskipIts=true -P fortify`
+
+2. `fortify-sca` profile: This new profile is the recommended method of activating fortify scans. To run it: `mvn clean install -P fortify-sca`
+
+
 ## Install and Run Fortify
 
 Follow the [Install and Run Fortify](installation-help-guide.md#install-and-run-fortify) instructions.
