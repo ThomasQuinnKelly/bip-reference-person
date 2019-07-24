@@ -88,7 +88,7 @@ There are many ways to run Fortify on your projects, however the easiest is like
 
 * Ensure both the `fortify-sca` and `fortify-merge` profiles exist in your project's reactor POM. The configuration in each section can be copied and pasted without change.
 
-	<details><summary>Click to expand - Reactor POM configuration for fortify-sca profile</summary>
+<details><summary>Click to expand - Reactor POM configuration for fortify-sca profile</summary>
 
 ```xml
 	<properties>
@@ -240,7 +240,7 @@ There are many ways to run Fortify on your projects, however the easiest is like
 	</profiles>
 ```
 
-	</details>
+</details>
 
 * Execute the maven profile from your project's root folder to create the FPR in the reactor's `target/fortify` directory, and merge it into the root FPR.  There are two approaches, depending on whether the state of your build project. A simple script has been provided to simplify running the maven commands.
 	* If your project has already been built, you can skip building again by using the maven initialize phase:
