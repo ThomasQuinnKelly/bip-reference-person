@@ -242,6 +242,7 @@ There are many ways to run Fortify on your projects, however the easiest is like
 
 * Execute the maven profile from your project's root folder to create the FPR in the reactor's `target/fortify` directory, and merge it into the root FPR.  There are two approaches, depending on whether the state of your build project. A simple script has been provided to simplify running the maven commands.
 	* If your project has already been built, you can skip building again by using the maven initialize phase:
+	
 		 	```bash
 			# --- EITHER ---
 			# use the script to scan only
@@ -254,6 +255,7 @@ There are many ways to run Fortify on your projects, however the easiest is like
 			```
 
 	* If your project has not been built, you can build and scan in one step by specifying the maven phase to bind fortify to:
+	
 			```bash
 			# --- EITHER ---
 			# use the script
