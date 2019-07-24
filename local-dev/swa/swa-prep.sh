@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ## turn on to assist debugging ##
-export PS4='[$LINENO] '
+# export PS4='[$LINENO] '
 # set -x
 ##
 
@@ -83,6 +83,7 @@ function exit_now() {
 		echo "##   FAQ:  https://wiki.mobilehealth.va.gov/display/OISSWA/Frequently+Asked+Questions" 2>&1 | tee -a "$logfile"
 		echo "## Prepared files are in \"$submissionFilesDir\"" 2>&1 | tee -a "$logfile"
 		echo "## Submit the package to SwA." 2>&1 | tee -a "$logfile"
+		echo "##   Submission ZIP: $outputDir/$reactorName-$releaseVersion/submission-files-$reactorName-$releaseVersion.zip" 2>&1 | tee -a "$logfile"
 		echo "##   See: https://wiki.mobilehealth.va.gov/pages/viewpage.action?pageId=26774489" 2>&1 | tee -a "$logfile"
 		echo "##################################################################################" 2>&1 | tee -a "$logfile"
 		echo "" 2>&1 | tee -a "$logfile"
@@ -291,7 +292,7 @@ function set_derived_values() {
 ## arg: none                                               ##
 ## scope: private (internal calls only)                    ##
 function read_properties() {
-	tmpFile = ""
+	tmpFile=""
 	if [ -d "$inputDir" ] && [ -f "$propertiesFile" ]; then
 		tmpFile="$propertiesFile"
 		echo "+>> found properties file \"$tmpFile\""
@@ -577,12 +578,13 @@ function prep_output_folder() {
 	# fi
 	### ... end of posterity
 
-	# since mvn clean install was previously run, only need to specify install to catch the lifecycle phases
-	echo "+>> mvn install -P fortify-sca" 2>&1 | tee -a "$logfile"
-	mvn install -P fortify-sca 2>&1 >> "$logfile"
+	# since mvn clean install was previously run, only need to specify initialize to catch the lifecycle phase
+	echo "+>> mvn initialize -Pfortify-sca" 2>&1 | tee -a "$logfile"
+	mvn initialize -Pfortify-sca 2>&1 >> "$logfile"
 	check_exit_status "$?"
-
-	read -p "TEMP PAUSE: check `pwd`/*.fpr build project"
+	echo "+>> mvn antrun:run@fortify-merge -Pfortify-merge" 2>&1 | tee -a "$logfile"
+	mvn antrun:run@fortify-merge -Pfortify-merge 2>&1 >> "$logfile"
+	check_exit_status "$?"
 
 	echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" 2>&1 | tee -a "$logfile"
 	echo "Confirm FPR" 2>&1 | tee -a "$logfile"
@@ -595,83 +597,162 @@ function prep_output_folder() {
 	read -p "When done, press [Enter] to continue, or Ctrl+C to abort: " 2>&1 >> "$logfile"
 	echo "" 2>&1 | tee -a "$logfile"
 
-	# copy FPR to submissions folder
+	# move FPR to submissions folder
 	echo "+>> mv $mainFpr $submissionFilesDir/" 2>&1 | tee -a "$logfile"
 	mv "$mainFpr" "$submissionFilesDir/" 2>&1 >> "$logfile"
 	check_exit_status "$?"
 	echo "" 2>&1 | tee -a "$logfile"
 
-	# remove any build files
-	echo "+>> rm -rf \$(find . -name 'target' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
-	rm -rf $(find . -name 'target' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
-	check_exit_status "$?"
+	# # remove any build files
+	# echo "+>> rm -rf \$(find . -name 'target' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name 'target' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -f *.fpr" 2>&1 | tee -a "$logfile"
+	# rm -f *.fpr 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -f *.fpr.backup" 2>&1 | tee -a "$logfile"
+	# rm -f *.fpr.backup 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# # remove un-scanned directories
+	# echo "+>> rm -rf bip-reference-inttest/src" 2>&1 | tee -a "$logfile"
+	# rm -rf bip-reference-inttest/src 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf bip-reference-perftest/src" 2>&1 | tee -a "$logfile"
+	# rm -rf bip-reference-perftest/src 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name 'test' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name 'test' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name 'helm' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name 'helm' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name 'local-dev' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name 'local-dev' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name 'docs' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name 'docs' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# # remove common / expected file names
+	# echo "+>> rm -rf \$(find . -name '.env' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '.env' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name '*.log' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '*.log' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name '*.md' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '*.md' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name '*.sh' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '*.sh' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name 'template.yaml' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name 'template.yaml' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name 'testing.yaml' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name 'testing.yaml' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name 'Jenkinsfile' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name 'Jenkinsfile' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name 'Dockerfile' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name 'Dockerfile' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name 'docker-compose.*' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name 'docker-compose.*' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# # remove any git files
+	# echo "+>> rm -rf \$(find . -name '.git' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '.git' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name '.gitignore' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '.gitignore' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# # remove any eclipse files
+	# echo "+>> rm -rf \$(find . -name '.settings' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '.settings' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name '.project' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '.project' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name '.metadata' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '.metadata' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name '.recommenders' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '.recommenders' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name 'RemoteSystemsTempFiles' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name 'RemoteSystemsTempFiles' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name 'Servers' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name 'Servers' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# # remove any intellij files
+	#
+	# echo "+>> rm -rf \$(find . -name '.idea' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '.idea' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name '*.iml' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '*.iml' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# # remove other files from tools etc
+	# echo "+>> rm -rf \$(find . -name '*.ucl' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '*.ucl' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name '*.useq' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '*.useq' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> rm -rf \$(find . -name '*.png' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
+	# rm -rf $(find . -name '*.png' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# cd_to ".."
+	#
+	# # move code ZIP to submissions folder - without any src/test/** files
+	# echo "+>> zip -rq9 $projectName-$releaseVersion.zip $projectName -x \*.DS_Store Thumbs.db \*.md \*/src/test" 2>&1 | tee -a "$logfile"
+	# zip -rq9 "submission-files-$projectName-$releaseVersion.zip" "$projectName" -x \*.DS_Store Thumbs.db \*.md \*/src/test \*/docs \*/helm \*/local-dev \*.sh template.yaml testing.yaml docker-compose.yml Jenkinsfile 2>&1 >> "$logfile"
+	# check_exit_status "$?"
+	#
+	# echo "+>> mv submission-files-$projectName-$releaseVersion.zip $submissionFilesDir/" 2>&1 | tee -a "$logfile"
+	# mv -f "submission-files-$projectName-$releaseVersion.zip" "$submissionFilesDir/" 2>&1 >> "$logfile"
+	# check_exit_status "$?"
 
-	echo "+>> rm -f *.fpr" 2>&1 | tee -a "$logfile"
-	rm -f *.fpr 2>&1 >> "$logfile"
-	check_exit_status "$?"
+	cd_to "$submissionFilesDir"
 
-	echo "+>> rm -f *.fpr.backup" 2>&1 | tee -a "$logfile"
-	rm -f *.fpr.backup 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	echo "+>> rm -rf \$(find . -name '*.log' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
-	rm -rf $(find . -name '*.log' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	# remove any git files
-	echo "+>> rm -rf \$(find . -name '.git' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
-	rm -rf $(find . -name '.git' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	echo "+>> rm -rf \$(find . -name '.gitignore' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
-	rm -rf $(find . -name '.gitignore' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	# remove any eclipse files
-	echo "+>> rm -rf \$(find . -name '.settings' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
-	rm -rf $(find . -name '.settings' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	echo "+>> rm -rf \$(find . -name '.project' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
-	rm -rf $(find . -name '.project' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	echo "+>> rm -rf \$(find . -name '.metadata' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
-	rm -rf $(find . -name '.metadata' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	echo "+>> rm -rf \$(find . -name '.recommenders' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
-	rm -rf $(find . -name '.recommenders' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	echo "+>> rm -rf \$(find . -name 'RemoteSystemsTempFiles' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
-	rm -rf $(find . -name 'RemoteSystemsTempFiles' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	echo "+>> rm -rf \$(find . -name 'Servers' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
-	rm -rf $(find . -name 'Servers' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	# remove any intellij files
-
-	echo "+>> rm -rf \$(find . -name '.idea' -type d -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
-	rm -rf $(find . -name '.idea' -type d -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	echo "+>> rm -rf \$(find . -name '*.iml' -type f -maxdepth 4 | sed 's:\.\/::g')" 2>&1 | tee -a "$logfile"
-	rm -rf $(find . -name '*.iml' -type f -maxdepth 4 | sed 's:\.\/::g') 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	cd_to ".."
-
-	# move code ZIP to submissions folder
-	echo "+>> zip -rq9 $projectName-$releaseVersion.zip $projectName -x \*.DS_Store Thumbs.db" 2>&1 | tee -a "$logfile"
-	zip -rq9 "$projectName-$releaseVersion.zip" "$projectName" -x \*.DS_Store Thumbs.db 2>&1 >> "$logfile"
-	check_exit_status "$?"
-
-	echo "+>> mv $projectName-$releaseVersion.zip $submissionFilesDir/" 2>&1 | tee -a "$logfile"
-	mv -f "$projectName-$releaseVersion.zip" "$submissionFilesDir/" 2>&1 >> "$logfile"
-	check_exit_status "$?"
+	# move zipped source files into submissions folder
+	echo "+>> FPRUtility -sourceArchive -extract -project $reactorName.fpr -recoverSourceDirectory -f $projectName" 2>&1 | tee -a "$logfile"
+	FPRUtility -sourceArchive -extract -project "$reactorName.fpr" -recoverSourceDirectory -f "$projectName" 2>&1 >> "$logfile"
+	echo "+>> zip -rq9m $projectName-$releaseVersion.zip $projectName" 2>&1 | tee -a "$logfile"
+	zip -rq9m "$projectName-$releaseVersion.zip" "$projectName" 2>&1 >> "$logfile"
 
 	# move rules zip to sumissions folder
 	cd_to "$fortifyInstallDir/Core/config"
@@ -691,11 +772,19 @@ function post_prep_activities() {
 	echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" 2>&1 | tee -a "$logfile"
 	echo "Review submission files" 2>&1 | tee -a "$logfile"
 	echo "" 2>&1 | tee -a "$logfile"
-	echo "Review files and folders under \"$submissionFilesDir\"" 2>&1 | tee -a "$logfile"
-	echo "Delete any additional files/folders that are not necessary for the SwA Code Review process." 2>&1 | tee -a "$logfile"
+	echo "Review files under \"$submissionFilesDir\"" 2>&1 | tee -a "$logfile"
+	# echo "Compare file list under \"Audit Workbench > Project Summary > Build Information > Files\""
+	# echo "with \"$submissionFilesDir\"" 2>&1 | tee -a "$logfile"
+	# echo "- Delete any files/folders that are not necessary for SwA Code Review." 2>&1 | tee -a "$logfile"
+	# echo "- Add back from source as needed, e.g. any generated files under /target" 2>&1 | tee -a "$logfile"
 	read -p "When done, press [Enter] to continue, or Ctrl+C to abort: " 2>&1 >> "$logfile"
 	echo "" 2>&1 | tee -a "$logfile"
 
+	cd_to ".."
+
+	echo "+>> zip -rq9 submission-files-$projectName-$releaseVersion.zip submission-files -x \*.DS_Store Thumbs.db" 2>&1 | tee -a "$logfile"
+	zip -rq9 "submission-files-$projectName-$releaseVersion.zip" "submission-files" -x \*.DS_Store Thumbs.db 2>&1 >> "$logfile"
+	echo "" 2>&1 | tee -a "$logfile"
 }
 
 ################################################################################
@@ -733,8 +822,6 @@ verify_inputs
 prep_output_folder
 ### final cleanup and instructions
 post_prep_activities
-
-cd_to "$outputDir/$projectName-$releaseVersion"
 
 ### print instructions and exit
 exit_now 0

@@ -83,52 +83,26 @@ Of the Fortify suite of products, BIP service apps will typically use SCA (to tr
 
 There are many ways to run Fortify on your projects, however the easiest is likely to use a maven profile.
 
-* Make sure all projects have `bip-framework-parentpom` _somewhere_ in their parent hierarchy. An easy, centralized way to do this is to set it as the parent in your project's `./parentpom/pom.xml` file
-	```xml
-		<!-- ./parentpom/pom.xml -->
-		<parent>
-			<groupId>gov.va.bip.framework</groupId>
-			<artifactId>bip-framework-parentpom</artifactId>
-			<version>VERSION</version>
-			<relativePath />
-		</parent>
-	```
+* Make sure all projects have `bip-framework-parentpom` _somewhere_ in their parent hierarchy, e.g. through the reactor POM or the POM of a parentpom project.
 
-	For fortify, the reason for including the framework parent pom is to inherit the base `fortify-sca` profile so that fortify scans can be run on the individual projects.
-
-* Ensure the `fortify-sca` profile (and plugins) is in your project's reactor POM. The configuration in each section can be copied and pasted without change. _**Note that**_ your reactor POM _cannot_ have a `<parent>` tag, or the fortify build will fail (a quirk of the sca-maven-plugin).
+* Ensure both the `fortify-sca` and `fortify-merge` profiles exist in your project's reactor POM. The configuration in each section can be copied and pasted without change.
 
 	<details><summary>Click to expand - Reactor POM configuration for fortify-sca profile</summary>
 	```xml
 	<properties>
-		<site-maven-plugin.version>0.12</site-maven-plugin.version>
 		<sca-maven-plugin.version>18.20</sca-maven-plugin.version>
 		<!-- intentionally using old ant-contrib because newer version doesn't work with maven-antrun-plugin -->
 		<ant-contrib.version>20020829</ant-contrib.version>
+		<!-- the maven phase to bind fortify-sca -->
+		<fortify.bind.phase>initialize</fortify.bind.phase>
 	</properties>
-
-	<!-- TEMPORARY PLUGINS SKIP TO BE REMOVED ONCE NEXUS REPO IS AVAILABLE -->
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>com.fortify.sca.plugins.maven</groupId>
-					<artifactId>sca-maven-plugin</artifactId>
-					<version>${sca-maven-plugin.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>ant-contrib</groupId>
-					<artifactId>ant-contrib</artifactId>
-					<version>${ant-contrib.version}</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-		</plugins>
-	</build>
 
 	<profiles>
 		<!--
-			!!! Fortify profile specifically for this project (not inheritable). !!!
+			The fortify-sca profile runs the aggregate scan for all modules.
+			If a project believes that the fortify-sca profile requires ANY changes,
+			please consult with the BIP Framework development team.
+			Base Fortify requirements for all project modules are declared in bip-framework-parentpom.
 		-->
 		<profile>
 			<id>fortify-sca</id>
@@ -143,23 +117,38 @@ There are many ways to run Fortify on your projects, however the easiest is like
 			</properties>
 			<build>
 				<plugins>
-					<!--
-					This plugin runs the aggregate scan on the reactor project only.
-					The parent POM contains the sca-maven-plugin needs for modules.
-					-->
 					<plugin>
 						<groupId>com.fortify.sca.plugins.maven</groupId>
 						<artifactId>sca-maven-plugin</artifactId>
 						<version>${sca-maven-plugin.version}</version>
 						<executions>
 							<execution>
-								<id>fortify-clean-translate-scan</id>
+								<id>fortify-sca-clean</id>
+								<phase>${fortify.bind.phase}</phase>
 								<goals>
-									<!-- clean: binds to prepare-package phase -->
 									<goal>clean</goal>
-									<!-- translate: binds to package phase -->
+								</goals>
+								<configuration>
+									<aggregate>true</aggregate>
+								</configuration>
+							</execution>
+							<execution>
+								<id>fortify-sca-translate</id>
+								<phase>${fortify.bind.phase}</phase>
+								<goals>
 									<goal>translate</goal>
-									<!-- scan: binds to integration-test phase -->
+								</goals>
+								<configuration>
+									<!-- run scans against all reactor projects -->
+									<aggregate>true</aggregate>
+									<!-- exclude inttest and perftest, as they don't go to prod -->
+									<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
+								</configuration>
+							</execution>
+							<execution>
+								<id>fortify-sca-scan</id>
+								<phase>${fortify.bind.phase}</phase>
+								<goals>
 									<goal>scan</goal>
 								</goals>
 								<configuration>
@@ -171,9 +160,27 @@ There are many ways to run Fortify on your projects, however the easiest is like
 							</execution>
 						</executions>
 					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>fortify-merge</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<!-- Don't run tests from SCA - profile should be run as: "mvn install -P fortify-sca" -->
+				<skipTests>true</skipTests>
+				<skipITs>true</skipITs>
+				<skipPerfTests>true</skipPerfTests>
+			</properties>
+			<build>
+				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-antrun-plugin</artifactId>
+						<!-- do not run on child modules, just on reactor -->
+						<inherited>false</inherited>
 						<dependencies>
 							<!-- provides ANT branch tags (if/then/else) -->
 							<dependency>
@@ -184,9 +191,7 @@ There are many ways to run Fortify on your projects, however the easiest is like
 						</dependencies>
 						<executions>
 							<execution>
-								<id>fortify-copy-or-merge</id>
-								<!-- MUST run AFTER fortify-clean-translate-scan execution -->
-								<phase>verify</phase>
+								<id>fortify-merge</id>
 								<goals>
 									<goal>run</goal>
 								</goals>
@@ -194,27 +199,31 @@ There are many ways to run Fortify on your projects, however the easiest is like
 									<tasks>
 										<!-- add the ant tasks from ant-contrib -->
 										<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-											<classpath refid="maven.dependency.classpath"/>
+											<classpath refid="maven.dependency.classpath" />
 										</taskdef>
 										<echo>+++ Executing ANT target for Fortify copy/merge</echo>
 										<echo>+++ Checking file availability of ${project.basedir}/${project.artifactId}.fpr</echo>
 										<if>
 											<available file="${project.basedir}/${project.artifactId}.fpr" />
 											<then>
-												<echo>+++ Found file ${project.basedir}/${project.artifactId}.fpr</echo>
-												<echo>+++ Executing Fortify merge operation with: FPRUtility -merge -project
-													${project.build.directory}/fortify/${project.build.finalName}.fpr -source
-													${project.basedir}/${project.artifactId}.fpr -f ${project.basedir}/${project.artifactId}.fpr</echo>
+												<echo>+++ Found file: ${project.basedir}/${project.artifactId}.fpr</echo>
+												<echo>+++ Executing Fortify merge operation with:</echo>
+												<echo>      FPRUtility -merge</echo>
+												<echo>        -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
+												<echo>        -source ${project.basedir}/${project.artifactId}.fpr</echo>
+												<echo>        -f ${project.basedir}/${project.artifactId}.fpr</echo>
 												<exec executable="FPRUtility">
 													<arg
-														line="-merge -project ${project.build.directory}/fortify/${project.build.finalName}.fpr -source ${project.basedir}/${project.artifactId}.fpr -f ${project.basedir}/${project.artifactId}.fpr" />
+														line="-merge -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr -source ${project.basedir}/${project.artifactId}.fpr -f ${project.basedir}/${project.artifactId}.fpr" />
 												</exec>
 											</then>
 											<else>
-												<echo>+++ Not-found file ${project.basedir}/${project.artifactId}.fpr</echo>
-												<echo>+++ Executing file copy with: copy ${project.build.directory}/fortify/${project.build.finalName}.fpr
-													${project.basedir}/${project.artifactId}.fpr</echo>
-												<copy file="${project.build.directory}/fortify/${project.build.finalName}.fpr"
+												<echo>+++ Not-found file: ${project.basedir}/${project.artifactId}.fpr</echo>
+												<echo>+++ Executing file copy with:</echo>
+												<echo>      copy</echo>
+												<echo>        ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
+												<echo>        ${project.basedir}/${project.artifactId}.fpr</echo>
+												<copy file="${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr"
 													tofile="${project.basedir}/${project.artifactId}.fpr" />
 											</else>
 										</if>
@@ -231,12 +240,32 @@ There are many ways to run Fortify on your projects, however the easiest is like
 
 	</details>
 
-* Execute the maven profile from your project's root folder
- 	```bash
-	$ mvn clean install -P fortify-sca
-	```
+* Execute the maven profile from your project's root folder to create the FPR in the reactor's `target/fortify` directory, and merge it into the root FPR.  There are two approaches, depending on whether the state of your build project. A simple script has been provided to simplify running the maven commands.
+	* If your project has already been built, you can skip building again by using the maven initialize phase:
+		 	```bash
+			# --- EITHER ---
+			# use the script to scan only
+			$ ./fortify
+			# --- OR ---
+			# scan without first building
+			$ mvn initialize -P fortify-sca
+			# merge the new scan to the root FPR
+			$ mvn antrun:run@fortify-merge -Pfortify-merge
+			```
 
-	A new `[project-name]-reactor.fpr` file will be created in the project's root folder.
+	* If your project has not been built, you can build and scan in one step by specifying the maven phase to bind fortify to:
+			```bash
+			# --- EITHER ---
+			# use the script
+			$ ./fortify -b
+			# --- OR ---
+			# build and scan after the build
+			$ mvn clean install -Pfortify-sca -Dfortify.bind.phase=package
+			# merge the new scan to the root FPR
+			$ mvn antrun:run@fortify-merge -Pfortify-merge
+			```
+
+	A new `[project-name]-reactor.fpr` file will be created in the project's `target/fortify` folder, and optionally merged into the FPR in the root folder.
 
 ## How to connect Maven with Nexus using HTTPS
 

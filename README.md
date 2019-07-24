@@ -9,12 +9,12 @@ BIP Framework has been updated to use the OpenAPI v3 "design first" approach to 
 
 ## Project Breakdown
 
-1. bip-reference-reactor: This is the root reactor project (you are in that repo now). This project forms the aggregate of modules that make up the complete service app, and manages the Fortify scans.
-	- The reactor POM **must not** have a `<parent>` tag, or Fortify scans will fail. This is due to an issue in Fortify's sca-maven-plugin.
-	- A "fortify-sca" profile is included in this POM to manage the fortify scans for the project as a whole.
+1. bip-reference-reactor: This is the root reactor project (you are in that repo now). This project forms the aggregate of modules that make up the complete service app, and manages the Fortify scans. In addition to its typical reactor duties, this project contains:
+	- a maven profile, and a `./fortify.sh` script to run Fortify
+	- a local-dev folder with docker images to run in the spring "local-int" (docker) mode, and with tools to simplify SwA code review submissions.
 
 2. [bip-reference-parentpom](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-parentpom): The parent POM for all modules in the service application. This POM provides a common `parent` reference to `bip-framework-parentpom`, enabling the features and capabilities of the BIP Framework in the application.
-	- The POM must specify `bip-framework-parentpom` as its own `<parent>`. This enables the core features and capabilities of the BIP Framework.
+	- Makes BIP Framework the parent POM for your projects
 
 3. [bip-reference-partner-person](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-partner-person): Partner service for reference person, showing sample mock data for BGS. It should be noted by service designers and tech leads that Partner projects would typically be stand-alone (in their own repo, and not part of a reactor project). The intent is for Partner projects to be freely available for use by any number of service applications that might need them by including them as a maven dependency.
 

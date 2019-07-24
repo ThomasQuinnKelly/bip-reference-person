@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 >
 	<modelVersion>4.0.0</modelVersion>
@@ -24,7 +23,7 @@
 	<description>Reactor POM for BIP Spring Boot Reference Service</description>
 
 	<modules>
-<!-- 		<module>bip-reference-parentpom</module> -->
+		<!-- <module>bip-reference-parentpom</module> -->
 		<module>bip-reference-partner-person</module>
 		<module>bip-reference-person</module>
 		<module>bip-reference-inttest</module>
@@ -38,13 +37,15 @@
 			<url>https://nexus.dev.bip.va.gov/repository/maven-public</url>
 		</repository>
 	</repositories>
-	
+
 	<properties>
 		<sca-maven-plugin.version>18.20</sca-maven-plugin.version>
 		<!-- intentionally using old ant-contrib because newer version doesn't work with maven-antrun-plugin -->
 		<ant-contrib.version>20020829</ant-contrib.version>
+		<!-- the maven phase to bind fortify-sca -->
+		<fortify.bind.phase>initialize</fortify.bind.phase>
 	</properties>
-	
+
 	<profiles>
 		<!--
 			The fortify-sca profile runs the aggregate scan for all modules.
@@ -71,13 +72,32 @@
 						<version>${sca-maven-plugin.version}</version>
 						<executions>
 							<execution>
-								<id>fortify-clean-translate-scan</id>
+								<id>fortify-sca-clean</id>
+								<phase>${fortify.bind.phase}</phase>
 								<goals>
-									<!-- clean: binds to prepare-package phase -->
 									<goal>clean</goal>
-									<!-- translate: binds to package phase -->
+								</goals>
+								<configuration>
+									<aggregate>true</aggregate>
+								</configuration>
+							</execution>
+							<execution>
+								<id>fortify-sca-translate</id>
+								<phase>${fortify.bind.phase}</phase>
+								<goals>
 									<goal>translate</goal>
-									<!-- scan: binds to integration-test phase -->
+								</goals>
+								<configuration>
+									<!-- run scans against all reactor projects -->
+									<aggregate>true</aggregate>
+									<!-- exclude inttest and perftest, as they don't go to prod -->
+									<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
+								</configuration>
+							</execution>
+							<execution>
+								<id>fortify-sca-scan</id>
+								<phase>${fortify.bind.phase}</phase>
+								<goals>
 									<goal>scan</goal>
 								</goals>
 								<configuration>
@@ -89,9 +109,27 @@
 							</execution>
 						</executions>
 					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>fortify-merge</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<!-- Don't run tests from SCA - profile should be run as: "mvn install -P fortify-sca" -->
+				<skipTests>true</skipTests>
+				<skipITs>true</skipITs>
+				<skipPerfTests>true</skipPerfTests>
+			</properties>
+			<build>
+				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-antrun-plugin</artifactId>
+						<!-- do not run on child modules, just on reactor -->
+						<inherited>false</inherited>
 						<dependencies>
 							<!-- provides ANT branch tags (if/then/else) -->
 							<dependency>
@@ -102,9 +140,7 @@
 						</dependencies>
 						<executions>
 							<execution>
-								<id>fortify-copy-or-merge</id>
-								<!-- MUST run AFTER fortify-clean-translate-scan execution, "verify" is the first available -->
-								<phase>verify</phase>
+								<id>fortify-merge</id>
 								<goals>
 									<goal>run</goal>
 								</goals>
@@ -112,7 +148,7 @@
 									<tasks>
 										<!-- add the ant tasks from ant-contrib -->
 										<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-											<classpath refid="maven.dependency.classpath"/> 
+											<classpath refid="maven.dependency.classpath" />
 										</taskdef>
 										<echo>+++ Executing ANT target for Fortify copy/merge</echo>
 										<echo>+++ Checking file availability of ${project.basedir}/${project.artifactId}.fpr</echo>
@@ -120,19 +156,23 @@
 											<available file="${project.basedir}/${project.artifactId}.fpr" />
 											<then>
 												<echo>+++ Found file: ${project.basedir}/${project.artifactId}.fpr</echo>
-												<echo>+++ Executing Fortify merge operation with: FPRUtility -merge -project
-													${project.build.directory}/fortify/${project.build.finalName}.fpr -source
-													${project.basedir}/${project.artifactId}.fpr -f ${project.basedir}/${project.artifactId}.fpr</echo>
+												<echo>+++ Executing Fortify merge operation with:</echo>
+												<echo>      FPRUtility -merge</echo>
+												<echo>        -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
+												<echo>        -source ${project.basedir}/${project.artifactId}.fpr</echo>
+												<echo>        -f ${project.basedir}/${project.artifactId}.fpr</echo>
 												<exec executable="FPRUtility">
 													<arg
-														line="-merge -project ${project.build.directory}/fortify/${project.build.finalName}.fpr -source ${project.basedir}/${project.artifactId}.fpr -f ${project.basedir}/${project.artifactId}.fpr" />
+														line="-merge -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr -source ${project.basedir}/${project.artifactId}.fpr -f ${project.basedir}/${project.artifactId}.fpr" />
 												</exec>
 											</then>
 											<else>
 												<echo>+++ Not-found file: ${project.basedir}/${project.artifactId}.fpr</echo>
-												<echo>+++ Executing file copy with: copy ${project.build.directory}/fortify/${project.build.finalName}.fpr
-													${project.basedir}/${project.artifactId}.fpr</echo>
-												<copy file="${project.build.directory}/fortify/${project.build.finalName}.fpr"
+												<echo>+++ Executing file copy with:</echo>
+												<echo>      copy</echo>
+												<echo>        ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
+												<echo>        ${project.basedir}/${project.artifactId}.fpr</echo>
+												<copy file="${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr"
 													tofile="${project.basedir}/${project.artifactId}.fpr" />
 											</else>
 										</if>

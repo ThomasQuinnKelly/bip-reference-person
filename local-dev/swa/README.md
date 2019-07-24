@@ -30,6 +30,13 @@ This script creates a folder with:
 	* A fresh Fortify FPR derived from the tag
 	* A zip of the local Fortify rulepack that was used to scan the code
 
+#### Script execution overview
+
+In general, the steps the script takes:
+* Clone the project repo and check out the TAG of the release version.
+* Build and scan the project
+* Assemble the Code Review Request PDF, a zip of the code that was scanned, the FPR, and a ZIP of the Fortify rules used to perform the scan.
+
 ## When and how do I run the script?
 
 The script has been tested on macOS. For Windows users, please use [Git Bash](https://gitforwindows.org/) to execute the script. If you encounter any problems, please open a "SwA Script" issue on EPMO GitHub [bip-archetype-service](https://github.ec.va.gov/EPMO/bip-archetype-service) project.
