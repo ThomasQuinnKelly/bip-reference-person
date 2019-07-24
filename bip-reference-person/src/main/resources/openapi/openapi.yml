@@ -77,8 +77,8 @@ paths:
             type : string
       tags:
         - reference-person
-      summary: Retrieve person information by PID from Person Service .
-      description: Will return a person info object based on search by PID.
+      summary: Upload document for the PID using octet stream and store it in the configured / in-memory database.
+      description:  Will upload a document based on the PID.
       operationId: submit
       requestBody: 
         description: byteFile
@@ -126,8 +126,8 @@ paths:
     post:
       tags:
         - reference-person
-      summary: Retrieve person information by PID from Person Service .
-      description: Will return a person info object based on search by PID.
+      summary: Upload document for the PID using Multipart form data and store it in the configured / in-memory database.
+      description: Will upload a document based on the PID.
       operationId: submitByMultipart
       requestBody: 
         description: byteFile and pid
@@ -188,8 +188,8 @@ paths:
             type : string
       tags:
         - reference-person
-      summary: Retrieve person reference document by PID .
-      description: Will return a person info object based on search by PID.
+      summary: Download a document for the PID using octet-stream from the configured / in-memory database.
+      description:  Will download a document based on the PID.
       operationId: downloadFile
       responses:
         '200':

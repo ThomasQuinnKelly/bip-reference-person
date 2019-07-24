@@ -195,7 +195,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 			return ResponseEntity.ok().contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
 					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
 		} catch (Exception e) {
-			LOGGER.error("Upload failed due to unexpected exception", e);
+			LOGGER.error("Download failed due to unexpected exception", e);
 		}
 		LOGGER.debug("Returning providerResponse to consumer");
 		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
