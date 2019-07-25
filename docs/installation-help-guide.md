@@ -63,12 +63,11 @@ Of the Fortify suite of products, BIP service apps will typically use SCA (to tr
 
 2. Make sure Fortify is added to your PATH
 
-	* macOS: edit your bash profile, e.g. `open -a TextEdit ~/.bash_profile`
-
-```bash
+	* macOS: edit your bash profile, e.g. `open -a TextEdit ~/.bash_profile`, for example
+	```bash
 			# macOS
 			export PATH="/Applications/Fortify/Fortify_SCA_and_Apps_18.20/bin:$PATH"
-```
+	```
 
 	* Windows: add the `\[APP-FOLDER]\Fortify_SCA_and_Apps_18.20\bin` folder to your "System Properties > Advanced > Environment Variables"
 
@@ -90,7 +89,7 @@ There are many ways to run Fortify on your projects, however the easiest is like
 
 <details><summary>Click to expand - Reactor POM configuration for fortify-sca profile</summary>
 
-```xml
+	```xml
 	<properties>
 		<sca-maven-plugin.version>18.20</sca-maven-plugin.version>
 		<!-- intentionally using old ant-contrib because newer version doesn't work with maven-antrun-plugin -->
@@ -238,36 +237,36 @@ There are many ways to run Fortify on your projects, however the easiest is like
 			</build>
 		</profile>
 	</profiles>
-```
+	```
 
 </details>
 
 * Execute the maven profile from your project's root folder to create the FPR in the reactor's `target/fortify` directory, and merge it into the root FPR.  There are two approaches, depending on whether the state of your build project. A simple script has been provided to simplify running the maven commands.
 	* If your project has already been built, you can skip building again by using the maven initialize phase:
 	
-```bash
-			# --- EITHER ---
-			# use the script to scan only
-			$ ./fortify
-			# --- OR ---
-			# scan without first building
-			$ mvn initialize -P fortify-sca
-			# merge the new scan to the root FPR
-			$ mvn antrun:run@fortify-merge -Pfortify-merge
-```
+		```bash
+		# --- EITHER ---
+		# use the script to scan only
+		$ ./fortify
+		# --- OR ---
+		# scan without first building
+		$ mvn initialize -P fortify-sca
+		# merge the new scan to the root FPR
+		$ mvn antrun:run@fortify-merge -Pfortify-merge
+		```
 
 	* If your project has not been built, you can build and scan in one step by specifying the maven phase to bind fortify to:
-	
-```bash
-			# --- EITHER ---
-			# use the script
-			$ ./fortify -b
-			# --- OR ---
-			# build and scan after the build
-			$ mvn clean install -Pfortify-sca -Dfortify.bind.phase=package
-			# merge the new scan to the root FPR
-			$ mvn antrun:run@fortify-merge -Pfortify-merge
-```
+
+		```bash
+		# --- EITHER ---
+		# use the script
+		$ ./fortify -b
+		# --- OR ---
+		# build and scan after the build
+		$ mvn clean install -Pfortify-sca -Dfortify.bind.phase=package
+		# merge the new scan to the root FPR
+		$ mvn antrun:run@fortify-merge -Pfortify-merge
+		```
 
 A new `[project-name]-reactor.fpr` file will be created in the project's `target/fortify` folder, and optionally merged into the FPR in the root folder.
 
