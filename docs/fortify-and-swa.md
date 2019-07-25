@@ -41,6 +41,7 @@ Fortify execution has been encapsulated in the `fortify-sca` and `fortify-merge`
 The Origin pseudo-archetype provides the necessary profiles to new service projects.
 
 **Framework: Parent POM module scans**
+
 The `bip-framework-parentpom/pom.xml` contains a `fortify-sca` profile that executes the Static Code Analyzer on an individual project. Any project that has this pom as its `<parent>` (e.g. the parentpom of your service app) will inherit this profile, so any module having the service app parentpom as its `<parent>` automatically can scan itself.
 
 <details><summary>Click to expand - Framework parentpom profile</summary>
@@ -134,9 +135,14 @@ The `bip-framework-parentpom/pom.xml` contains a `fortify-sca` profile that exec
 </details>
 
 **Service: Reactor POM scan aggregation & merge**
+
 The service reactor POM should contain `fortify-sca` and `fortify-merge` profiles. As previously discussed above, these profiles perform the scan and merge functions for BIP projects.
 
 These profiles can be copied and pasted into any BIP service project's reactor POM without any changes. It will just work.
+
+The `fortify-sca` profile binds itself by default to the maven `initialize` phase, which means the scan can be run without performing a build. This is helpful if your project has already been built, and you just need to scan. If you want to build and scan in one step, simply specify the phase to bind the execution to. See [Install and Run Fortify](installation-help-guide.md#install-and-run-fortify) for an example.
+
+The `fortify-merge` profile runs independent of builds. The only requirement is that a scan was previously run, and the FPR file exists in the reactors `/target/fortify` folder.
 
 <details><summary>Click to expand - Service reactor profiles</summary>
 
