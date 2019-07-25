@@ -89,7 +89,7 @@ There are many ways to run Fortify on your projects, however the easiest is like
 
 <details><summary>Click to expand - Reactor POM configuration for fortify-sca profile</summary>
 
-	```xml
+```xml
 	<properties>
 		<sca-maven-plugin.version>18.20</sca-maven-plugin.version>
 		<!-- intentionally using old ant-contrib because newer version doesn't work with maven-antrun-plugin -->
@@ -237,7 +237,7 @@ There are many ways to run Fortify on your projects, however the easiest is like
 			</build>
 		</profile>
 	</profiles>
-	```
+```
 
 </details>
 
