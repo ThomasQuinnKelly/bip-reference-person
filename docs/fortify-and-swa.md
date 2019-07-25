@@ -7,14 +7,14 @@ The tool used for the "[Secure & Quality Code Review](https://wiki.mobilehealth.
 ## BIP Process
 
 All BIP service projects are created as a collection of maven reactor modules. The process for managing Fortify scan results is:
-1. Perform **scan** of the reactor modules - results of the scan are stored in the `target/fortify` folder. This step is intended for use on _local_ and on the _build pipeline_.
-2. Perform **merge** of the new `target/fortify/*.fpr` into the `/*.fpr` root FPR. This step is intended for use on _local_. It allows a team to retain the accumulated suppressions, comments, etc. The file should be committed and pushed to the project GitHub repo.
+1. Perform **scan** of the reactor modules - results of the scan are stored in the reactor (root) `/target/fortify` folder. This step is intended for use on _local_ and on the _build pipeline_.
+2. Perform **merge** of the new `/target/fortify/*.fpr` into the `/*.fpr` root FPR. This step is intended for use on _local_. It allows a team to retain the accumulated suppressions, comments, etc. The file should be committed and pushed to the project GitHub repo.
 
 ## Install and Run Fortify
 
 There are currently two maven profiles for running Fortify from maven (assuming installation prerequisites are met):
 
-1. `fortify` profile: This profile is in early versions of bip-framework 1.x. It is _deprecated_ and will be removed in a future version. This profile does not help developers with FPR merge. To run the scan: `mvn clean install -DskipIts=true -P fortify`
+1. `fortify` profile: This profile is in early versions of bip-framework 1.x. **It is _deprecated_ and will be removed in a future version.** This profile does not help developers with FPR merge. To run the scan: `mvn clean install -DskipIts=true -P fortify`
 
 2. `fortify-sca` and `fortify-merge` profiles: These new profiles are the recommended method of activating fortify scans and merges. There are various ways to run them (some outlined in [Install and Run Fortify](installation-help-guide.md#install-and-run-fortify)), but one common way is: `mvn clean install -Pfortify-sca -Dfortify.bind.phase=package` followed by `mvn antrun:run@fortify-merge -Pfortify-merge`
 
