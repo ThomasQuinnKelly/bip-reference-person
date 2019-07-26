@@ -40,6 +40,7 @@ public class PersonDatabaseHelper {
 	 * @param pid
 	 * @return a file as a byte array
 	 */
+	@Auditable(event = AuditEvents.SERVICE_AUDIT, activity = "downloadDocument")
 	public byte[] getDocument(final Long pid) {
 
 		try {
