@@ -8,11 +8,6 @@ info:
    license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-servers:
-  - url: http://localhost:8080
-    description: Local server
-  - url: http://bip-reference-person-master-blue-dev.dev.bip.va.gov
-    description: Development server
 tags:
   - name: reference-person
     description: Reference Person Resource
