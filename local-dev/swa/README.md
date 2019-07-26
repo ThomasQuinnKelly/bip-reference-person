@@ -46,8 +46,7 @@ The script has been tested on macOS. For Windows users, please use [Git Bash](ht
 SwA submissions are done only on release candidates. A release version will have a git TAG version that does not have "-SNAPSHOT" on the end of it.
 
 * The user workstation should be set up for BIP projects as documented in EPMO GitHub at the BIP [Quick Start Guide](https://github.ec.va.gov/EPMO/bip-reference-person/blob/master/docs/quick-start-guide.md). This includes:
- 	* local installation of [Fortify apps and Fortify maven plugins](https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+download+the+VA-Licensed+Fortify+software).
-	* Fortify must be installed
+ 	* Local installation of [Fortify apps and Fortify maven plugins](https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+download+the+VA-Licensed+Fortify+software).
 	* The project must produce the `[project-name]-reactor.fpr` when built with the `-P fortify-sca` profile
 * Know the name of the release tag that is to be submitted. To see available tags, run `git pull` then `git tag` in the project directory.
 
@@ -59,7 +58,7 @@ To make the preparation process go faster and easier, it is worth taking the tim
 
 Steps:
 1. [Register with SwA](https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+open+an+NSD+ticket+to+register+a+VA+application) if you have not already registered the application.
-2. Create a release on the Jenkins server - assumption is that the project is release-ready, e.g. meets sonar requirements, Fortify SCA is clean (code fixed, suppressions done).
+2. Create a release on the Jenkins server - assumption is that the project is release-ready, e.g. meets sonar requirements, Fortify FPR is clean (code fixed, suppressions done).
 3. Open a bash terminal
 	* Change to the local-dev/swa directory in your project
 		```bash

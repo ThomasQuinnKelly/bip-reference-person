@@ -49,7 +49,7 @@
 	<profiles>
 		<!--
 			The fortify-sca profile runs the aggregate scan for all modules.
-			If a project believes that the fortify-sca profile requires ANY changes,
+			If a project team believes that the fortify-sca profile requires ANY changes,
 			please consult with the BIP Framework development team.
 			Base Fortify requirements for all project modules are declared in bip-framework-parentpom.
 		-->

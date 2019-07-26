@@ -57,7 +57,7 @@ Take some time to get comfortable with Git BASH and the Git GUI.
 
 ## Install and Run Fortify
 
-Of the Fortify suite of products, BIP service apps will typically use SCA (to translate and scan projects), Auditors Workbench (to view FPR files), and the maven plugins (to perform local scans).
+Of the Fortify suite of products, BIP service apps will typically use the `sca-maven-plugin` (which uses Fortify's Source Analyzer) to perform local scans, the `maven-ant-plugin` and Fortify's FPRUtility to merge FPR files, and Fortify's Auditors Workbench to view FPR files.
 
 1. Follow the [instructions provided by SwA](https://wiki.mobilehealth.va.gov/display/OISSWA/How+to+download+the+VA-Licensed+Fortify+software) to get a download link and a license file. When running the installer, if options are provided to select / deselect software, ensure that all software is installed.
 
@@ -65,7 +65,7 @@ Of the Fortify suite of products, BIP service apps will typically use SCA (to tr
 
 	* macOS: edit your bash profile, e.g. `open -a TextEdit ~/.bash_profile`, for example
 	```bash
-			# macOS
+			# add fortify to path
 			export PATH="/Applications/Fortify/Fortify_SCA_and_Apps_18.20/bin:$PATH"
 	```
 
@@ -83,25 +83,17 @@ Of the Fortify suite of products, BIP service apps will typically use SCA (to tr
 
 There are many ways to run Fortify on your projects, however the easiest is likely to use a maven profile.
 
-* Make sure all projects have `bip-framework-parentpom` _somewhere_ in their parent hierarchy, e.g. through the reactor POM or the POM of a parentpom project.
+* Make sure all projects have `bip-framework-parentpom` _somewhere_ in their parent hierarchy, e.g. through the the `parentpom/pom.xml`.
 
-* Ensure both the `fortify-sca` and `fortify-merge` profiles exist in your project's reactor POM. The configuration in each section can be copied and pasted without change.
+* Ensure both the `fortify-sca` and `fortify-merge` profiles exist (exactly as shown in the collapsible section below) in your project's reactor POM. The configuration in each section can be copied and pasted without change.
 
 <details><summary>Click to expand - Reactor POM configuration for fortify-sca profile</summary>
 
 ```xml
-	<properties>
-		<sca-maven-plugin.version>18.20</sca-maven-plugin.version>
-		<!-- intentionally using old ant-contrib because newer version doesn't work with maven-antrun-plugin -->
-		<ant-contrib.version>20020829</ant-contrib.version>
-		<!-- the maven phase to bind fortify-sca -->
-		<fortify.bind.phase>initialize</fortify.bind.phase>
-	</properties>
-
 	<profiles>
 		<!--
 			The fortify-sca profile runs the aggregate scan for all modules.
-			If a project believes that the fortify-sca profile requires ANY changes,
+			If a project team believes that the fortify-sca profile requires ANY changes,
 			please consult with the BIP Framework development team.
 			Base Fortify requirements for all project modules are declared in bip-framework-parentpom.
 		-->
@@ -241,32 +233,22 @@ There are many ways to run Fortify on your projects, however the easiest is like
 
 </details>
 
-* Execute the maven profile from your project's root folder to create the FPR in the reactor's `target/fortify` directory, and merge it into the root FPR.  There are two approaches, depending on whether the state of your build project. A simple script has been provided to simplify running the maven commands.
-	* If your project has already been built, you can skip building again by using the maven initialize phase:
-	
-		```bash
-		# --- EITHER ---
-		# use the script to scan only
-		$ ./fortify
-		# --- OR ---
-		# scan without first building
-		$ mvn initialize -P fortify-sca
-		# merge the new scan to the root FPR
-		$ mvn antrun:run@fortify-merge -Pfortify-merge
-		```
+* Make sure the project has been fully built on the latest code. Then execute the maven profile from your project's root folder to create the FPR in the reactor's `target/fortify` directory, and merge it into the root FPR.
 
-	* If your project has not been built, you can build and scan in one step by specifying the maven phase to bind fortify to:
-
-		```bash
-		# --- EITHER ---
-		# use the script
-		$ ./fortify -b
-		# --- OR ---
-		# build and scan after the build
-		$ mvn clean install -Pfortify-sca -Dfortify.bind.phase=package
-		# merge the new scan to the root FPR
-		$ mvn antrun:run@fortify-merge -Pfortify-merge
-		```
+	```bash
+	# --- Using the provided script ---
+	# Example: build the project, and scan & merge 
+	$ ./fortify -b
+	# Example: only scan and merge code that has already been built
+	$ ./fortify
+	# --- Manual execution ---
+	# build (if necessary)
+	$ mvn clean install -U
+	# scan the built project modules
+	$ mvn initialize -Pfortify-sca
+	# merge the new scan into the root FPR
+	$ mvn antrun:run@fortify-merge -Pfortify-merge
+	```
 
 A new `[project-name]-reactor.fpr` file will be created in the project's `target/fortify` folder, and optionally merged into the FPR in the root folder.
 

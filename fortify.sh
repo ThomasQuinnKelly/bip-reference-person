@@ -5,11 +5,17 @@
 # set -x
 ##
 
+echo "Initializing ..."
+
 args="$@"
 previous_opt=""
+doBuildFirst=false
 
 maven_phases="initialize"
 maven_args="-Pfortify-sca"
+
+artifactVersion=`grep -m 1 "<version>" pom.xml | cut -d "<" -f2 | rev | cut -d ">" -f1 | rev`
+fortifyVersion=`sourceanalyzer -version`
 
 ## get argument options off of the command line        ##
 ## required parameter: array of command-line arguments ##
@@ -32,8 +38,7 @@ function get_args() {
 				exit 0
 				;;
 			b )
-				maven_phases="clean install"
-				maven_args="$maven_args  -Dfortify.bind.phase=package"
+				doBuildFirst=true
 				;;
 			\? )
 				echo "+>> ERROR: unknown argument \"$opt\""
@@ -46,28 +51,36 @@ function get_args() {
 }
 
 echo ""
-echo "========================================================================="
-echo "Run Fortify"
+echo "====================================================="
+echo "Fortify Scan & Merge for BIP Framework"
+echo "Artifact version: $artifactVersion"
+echo "SCA version: $fortifyVersion"
+echo "====================================================="
 echo ""
 
 get_args $args
 
-# echo "maven_phases=$maven_phases"
-# echo "maven_args=$maven_args"
-# echo "previous_opt=$previous_opt"
-if [ "$previous_opt" == "" ]; then
-	echo "* Project will NOT be built before running Fortify"
-	echo "  Run './fortify -h' to see options."
-	read -p "  Press Enter to continue, Ctrl+C to abort: "
-else
+if [ doBuildFirst ]; then
 	echo "* Project will be built before running Fortify"
 	echo "  Run './fortify -h' to see options."
 	read -p "  Press Enter to continue, Ctrl+C to abort: "
-fi
 
-echo "+>> mvn $maven_phases $maven_args"
-mvn $maven_phases $maven_args
+	echo "+>> mvn clean install -U"
+	mvn clean install -U
+	if [ "$?" -ne "0" ]; then echo "Error: processing error."; exit 2; fi;
+else
+	echo "* Project will NOT be built before running Fortify"
+	echo "  Run './fortify -h' to see options."
+	read -p "  Press Enter to continue, Ctrl+C to abort: "
+fi
+echo ""
+
+echo "+>> mvn initialize -Pfortify-sca"
+mvn initialize -Pfortify-sca
 if [ "$?" -ne "0" ]; then echo "Error: processing error."; exit 2; fi;
+
+echo "sleep 2"
+sleep 2
 
 echo "+>> mvn antrun:run@fortify-merge -Pfortify-merge"
 mvn antrun:run@fortify-merge -Pfortify-merge

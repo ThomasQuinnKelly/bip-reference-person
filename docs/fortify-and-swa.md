@@ -7,16 +7,18 @@ The tool used for the "[Secure & Quality Code Review](https://wiki.mobilehealth.
 ## BIP Process
 
 All BIP service projects are created as a collection of maven reactor modules. The process for managing Fortify scan results is:
+
 1. Perform **scan** of the reactor modules - results of the scan are stored in the reactor (root) `/target/fortify` folder. This step is intended for use on _local_ and on the _build pipeline_.
+
 2. Perform **merge** of the new `/target/fortify/*.fpr` into the `/*.fpr` root FPR. This step is intended for use on _local_. It allows a team to retain the accumulated suppressions, comments, etc. The file should be committed and pushed to the project GitHub repo.
 
 ## Install and Run Fortify
 
-There are currently two maven profiles for running Fortify from maven (assuming installation prerequisites are met):
+There are currently two ways to run Fortify from maven (assuming installation prerequisites are met):
 
-1. `fortify` profile: This profile is in early versions of bip-framework 1.x. **It is _deprecated_ and will be removed in a future version.** This profile does not help developers with FPR merge. To run the scan: `mvn clean install -DskipIts=true -P fortify`
+1. The `fortify` maven profile: This profile is in early versions of bip-framework 1.x. **It is _deprecated_ and will be removed in a future version.** This profile does not help developers with FPR merge. To run the scan: `mvn clean install -DskipIts=true -P fortify`
 
-2. `fortify-sca` and `fortify-merge` profiles: These new profiles are the recommended method of activating fortify scans and merges. There are various ways to run them (some outlined in [Install and Run Fortify](installation-help-guide.md#install-and-run-fortify)), but one common way is: `mvn clean install -Pfortify-sca -Dfortify.bind.phase=package` followed by `mvn antrun:run@fortify-merge -Pfortify-merge`
+2. The `fortify-sca` and `fortify-merge` maven profiles: These new profiles are the recommended method of activating fortify scans and merges. There are various ways to run them (recommended approach is outlined in [Install and Run Fortify](installation-help-guide.md#install-and-run-fortify)). Execute a full build first, then: `mvn initialize -Pfortify-sca` followed by `mvn antrun:run@fortify-merge -Pfortify-merge`
 
 See [Install and Run Fortify](installation-help-guide.md#install-and-run-fortify) for more details.
 
@@ -32,24 +34,24 @@ This section describes technical details about the configuration and processes o
 
 #### Tools used
 
-BIP projects run Fortify scans using the `sca-maven-plugin` and `sourceanalyzer` app. FPR merges use the `maven-antrun-plugin` and `FPRUtility` app. You should have installed this as part of the [Install and Run Fortify](installation-help-guide.md#install-and-run-fortify) instructions.
+BIP projects run Fortify scans using the `sca-maven-plugin` and `sourceanalyzer` app. FPR merges use the `maven-antrun-plugin` and `FPRUtility` app. The maven plugins require that the Fortify binaries and plugins have been installed correctly. You should have installed this as part of the [Install and Run Fortify](installation-help-guide.md#install-and-run-fortify) instructions.
 
 #### POM configurations
 
 Fortify execution has been encapsulated in the `fortify-sca` and `fortify-merge` maven profiles. The BIP Framework provides the scanning profile for the service module projects through the `parentpom` projects. However, the service reactor project must declare its own scan aggregation and merge profiles in its own POM.
 
-The Origin pseudo-archetype provides the necessary profiles to new service projects.
+The Origin pseudo-archetype provides the necessary profiles to newly created service projects.
 
 **Framework: Parent POM module scans**
 
-The `bip-framework-parentpom/pom.xml` contains a `fortify-sca` profile that executes the Static Code Analyzer on an individual project. Any project that has this pom as its `<parent>` (e.g. the parentpom of your service app) will inherit this profile, so any module having the service app parentpom as its `<parent>` automatically can scan itself.
+The `bip-framework-parentpom/pom.xml` contains a `fortify-sca` profile that executes the Static Code Analyzer on an individual project. Any project that has this pom as its `<parent>` (e.g. the parentpom of your service app) will inherit this profile, so any module having the service app parentpom as its `<parent>` can automatically can scan itself.
 
 <details><summary>Click to expand - Framework parentpom profile</summary>
 
 ```xml
 		<!--
 			The fortify-sca profile runs the aggregate scan for all modules.
-			If a project believes that the fortify-sca profile requires ANY changes,
+			If a project team believes that the fortify-sca profile requires ANY changes,
 			please consult with the BIP Framework development team.
 			Base Fortify requirements for all project modules are declared in bip-framework-parentpom.
 		-->
@@ -64,7 +66,6 @@ The `bip-framework-parentpom/pom.xml` contains a `fortify-sca` profile that exec
 				<skipITs>true</skipITs>
 				<skipPerfTests>true</skipPerfTests>
 				<fortify.bind.phase>initialize</fortify.bind.phase>
-				<fortify.inherit>false</fortify.inherit>
 			</properties>
 			<build>
 				<pluginManagement>
@@ -81,7 +82,6 @@ The `bip-framework-parentpom/pom.xml` contains a `fortify-sca` profile that exec
 						<groupId>com.fortify.sca.plugins.maven</groupId>
 						<artifactId>sca-maven-plugin</artifactId>
 						<version>${sca-maven-plugin.version}</version>
-						<inherited>${fortify.inherit}</inherited>
 						<executions>
 							<execution>
 								<id>fortify-sca-clean</id>
@@ -106,8 +106,6 @@ The `bip-framework-parentpom/pom.xml` contains a `fortify-sca` profile that exec
 									<aggregate>true</aggregate>
 									<debug>true</debug>
 									<verbose>true</verbose>
-									<!-- exclude inttest and perftest, as they don't go to prod -->
-									<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
 								</configuration>
 							</execution>
 							<execution>
@@ -121,8 +119,6 @@ The `bip-framework-parentpom/pom.xml` contains a `fortify-sca` profile that exec
 									<aggregate>true</aggregate>
 									<debug>true</debug>
 									<verbose>true</verbose>
-									<!-- exclude inttest and perftest, as they don't go to prod -->
-									<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
 								</configuration>
 							</execution>
 						</executions>
@@ -144,12 +140,14 @@ The `fortify-sca` profile binds itself by default to the maven `initialize` phas
 
 The `fortify-merge` profile runs independent of builds. The only requirement is that a scan was previously run, and the FPR file exists in the reactors `/target/fortify` folder.
 
+Incidently, these profiles appear in the reactor POM in BIP Framework as well, but are not inherited into service projects (services inherit from the framework parentpom).
+
 <details><summary>Click to expand - Service reactor profiles</summary>
 
 ```xml
 		<!--
 			The fortify-sca profile runs the aggregate scan for all modules.
-			If a project believes that the fortify-sca profile requires ANY changes,
+			If a project team believes that the fortify-sca profile requires ANY changes,
 			please consult with the BIP Framework development team.
 			Base Fortify requirements for all project modules are declared in bip-framework-parentpom.
 		-->
