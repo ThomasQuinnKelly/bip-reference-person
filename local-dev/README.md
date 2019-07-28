@@ -1,5 +1,7 @@
 # Local Development Environment
-This local development environment is strickly for demonstration and local testing of the BIP Platform.
+This local development environment is a set of docker images, and is strictly for demonstration and local testing of the BIP Platform.
+
+The local-dev folder also contains tools to assist with preparing to submit [SwA Code Reviews](../docs/fortify-and-swa.md).
 
 For information about the BIP Framework and Reference Application, see this [README](https://github.ec.va.gov/EPMO/bip-reference-person).
 
@@ -39,7 +41,7 @@ The cache auto-configuration registers `BipCacheOpsMBean` and its implementation
 
 #### 2. Default Profile:
 
-If you run the app in default profile, it uses emebedded redis server for caching. To clear cache, follow the below steps.
+If you run the app in default profile (standalone), it uses emebedded redis server for caching. To clear cache, follow the below steps.
 
 * Download [Redis](https://redis.io/download)
 * Go to src folder and run `redis-cli`
@@ -48,7 +50,7 @@ If you run the app in default profile, it uses emebedded redis server for cachin
 
 #### 3. local-int profile:
 
-If you run the app in local-int profile, follow the below steps.
+If you run the app in local-int (docker) profile, follow the below steps.
 
 * Find the container id of the redis using `docker ps -a`
 * Log into the container `docker exec -i -t <container-id> sh`

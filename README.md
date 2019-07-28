@@ -9,19 +9,49 @@ BIP Framework has been updated to use the OpenAPI v3 "design first" approach to 
 
 ## Project Breakdown
 
-1. [bip-reference-partner-person](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-partner-person): Partner service for reference person, showing sample mock data for BGS. It should be noted by service designers and tech leads that Partner projects would typically be stand-alone (in their own repo, and not part of a reactor project). The intent is for Partner projects to be freely available for use by any number of service applications that might need them by including them as a maven dependency.
-2. [bip-reference-person](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-person): Service implementation project. This project demonstrates the recommended design patterns, configuration pointers, and coding examples. It shows how to produce a documented endpoint, how to register the app with Consul, how to use secrets from Vault, how to implement a Hystrix circuit breaker, how to get and use loggers, etc. The design consists of three layers:
+1. bip-reference-reactor: This is the root reactor project (you are in that repo now). This project forms the aggregate of modules that make up the complete service app, and manages the Fortify scans. In addition to its typical reactor duties, this project contains:
+	- a maven profile, and a `./fortify.sh` script to run Fortify
+	- a local-dev folder with docker images to run in the spring "local-int" (docker) mode, and with tools to simplify SwA code review submissions.
+
+2. [bip-reference-partner-person](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-partner-person): Partner service for reference person, showing sample mock data for BGS. It should be noted by service designers and tech leads that Partner projects would typically be stand-alone (in their own repo, and not part of a reactor project). The intent is for Partner projects to be freely available for use by any number of service applications that might need them by including them as a maven dependency.
+
+3. [bip-reference-person](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-person): Service implementation project. This project demonstrates the recommended design patterns, configuration pointers, and coding examples. It shows how to produce a documented endpoint, how to register the app with Consul, how to use secrets from Vault, how to implement a Hystrix circuit breaker, how to get and use loggers, etc. The design consists of three layers:
 	- The Provider (or "web") layer contains the REST endpoints and model, JSR 303 annotations in the resource class and the model, and the use of an adapter class to transform models and call the service interface.
 	- The Domain (or "service") layer contains examples of business validation, business logic,  to call Partner services and process the returned data, and exception handling.
 	- The Partner (or "client") layer shows how to perform model transformation, how to call a partner client interface, and how to handle responses (or exceptions thrown) from the partner client.
-3. [bip-reference-inttest](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-inttest): Contains the integration tests using the framework Test Library ()Spring Rest Template, Cucumber libraries, and other capabilities). It includes functioning test cases that run against the endpoints in `bip-reference-person`.
-4. [bip-reference-perftest](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-perftest): Contains functioning performance JMX test scripts for Apache JMeter that run against the endpoints in `bip-reference-person`.
+
+4. [bip-reference-inttest](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-inttest): Contains the integration tests using the framework Test Library Spring Rest Template, Cucumber libraries, and other capabilities). It includes functioning test cases that run against the endpoints in `bip-reference-person`.
+
+5. [bip-reference-perftest](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-perftest): Contains functioning performance JMX test scripts for Apache JMeter that run against the endpoints in `bip-reference-person`.
 
 ## How to include the framework libraries in your project
 
 The projects in this repository are dependent on the libraries from [BIP framework](https://github.ec.va.gov/EPMO/bip-framework) and [BIP framework test library](https://github.ec.va.gov/EPMO/bip-framework/tree/master/bip-framework-test-lib) for  auto configuration, common shared libraries, parent pom maven configuration and test libary. These libraries can be included as shown below.
 
-```xml
+1. Make `bip-framework-parentpom` the parent of your application's parent POM
+	```xml
+       <!-- ./bip-[application-name]-parentpom POM file -->
+       <parent>
+         <groupId>gov.va.bip.framework</groupId>
+         <artifactId>bip-framework-parentpom</artifactId>
+         <version>VERSION</version>
+         <relativePath />
+       </parent>
+	```
+
+2. The POM hierarchy for the application modules must resolve to the parent POM
+	```xml
+       <!-- ./bip-[module-name] POM file -->
+       <parent>
+         <groupId>[application.group.id]</groupId>
+         <artifactId>bip-[application-name]-parentpom</artifactId>
+         <version>VERSION</version>
+         <relativePath>..</relativePath>
+       </parent>
+	```
+
+3. Each module may add framework dependencies as needed
+	```xml
        <dependency>
          <groupId>gov.va.bip.framework</groupId>
          <artifactId>bip-framework-autoconfigure</artifactId>
@@ -34,15 +64,10 @@ The projects in this repository are dependent on the libraries from [BIP framewo
        </dependency>
        <dependency>
          <groupId>gov.va.bip.framework</groupId>
-         <artifactId>bip-framework-parentpom</artifactId>
-         <version><!-- add the appropriate version --></version>
-       </dependency>
-       <dependency>
-         <groupId>gov.va.bip.framework</groupId>
          <artifactId>bip-framework-test-lib</artifactId>
          <version><!-- add the appropriate version --></version>
        </dependency>
-```
+	```
 
 To make these libraries available for compilation, read [this section](#how-to-make-the-dependency-framework-libraries-available).
 
@@ -75,6 +100,7 @@ The fastest way to get set up is to visit the [Quick Start Guide](docs/quick-sta
 * [Prometheus Grafana Local Dev](docs/prometheus-grafana-setup.md)
 * [Deployment Packaging](docs/deployment-package.md)
 * [OpenAPI Code Generation](docs/openapi-v3-api-code-generation-journey.md)
+* [Fortify and SwA Secure Code Reviews](docs/fortify-and-swa.md)
 
 ## How to make the dependency framework libraries available
 
@@ -152,9 +178,9 @@ There are two steps to make this work.
 	</settings>
 ```
 
+## Local Development
+Instructions on running the application on a local workstation can be found in the [local-dev README](local-dev)
+
 ## Contribution guidelines
 If you or your team wants to contribute to this repository, then fork the repository and follow the steps to create a PR for our upstream repo to review and commit the changes:
 [Creating a pull request from a fork](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)
-
-## Local Development
-Instructions on running the application on a local workstation can be found in the [local-dev README](local-dev)
