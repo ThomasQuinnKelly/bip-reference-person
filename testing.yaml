@@ -7,6 +7,8 @@
   image:
     repository: container-registry.dev8.bip.va.gov/bip-reference-person
     tag: latest
+  ingress:
+    enabled: false
   vault:
     enabled: false
     consulBackendEnabled: false
