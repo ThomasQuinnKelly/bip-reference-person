@@ -11,29 +11,28 @@
 		<version>0.0.2-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
-<<<<<<< HEAD
-	
-    <artifactId>bip-reference-person</artifactId>
-    <packaging>jar</packaging>
-    
-    <name>${project.artifactId}</name>
-    <description>Reference Person Service Implementation for BIP Spring Boot Project</description>
-    
-    <properties>
-    	<bip-framework.version>2.0.3-SNAPSHOT</bip-framework.version>
-    </properties>
-    
-    <dependencies>
-    	<dependency>
-            <groupId>gov.va.bip.framework</groupId>
-            <artifactId>bip-framework-libraries</artifactId>
-            <version>${bip-framework.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>gov.va.bip.framework</groupId>
-            <artifactId>bip-framework-autoconfigure</artifactId>
-            <version>${bip-framework.version}</version>
-        </dependency>
+
+	<artifactId>bip-reference-person</artifactId>
+	<packaging>jar</packaging>
+
+	<name>${project.artifactId}</name>
+	<description>Reference Person Service Implementation for BIP Spring Boot Project</description>
+
+	<properties>
+		<bip-framework.version>2.0.3-SNAPSHOT</bip-framework.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>gov.va.bip.framework</groupId>
+			<artifactId>bip-framework-libraries</artifactId>
+			<version>${bip-framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>gov.va.bip.framework</groupId>
+			<artifactId>bip-framework-autoconfigure</artifactId>
+			<version>${bip-framework.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>gov.va.bip.reference.person</groupId>
 			<artifactId>bip-reference-partner-person</artifactId>
