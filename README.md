@@ -13,7 +13,8 @@ BIP Framework has been updated to use the OpenAPI v3 "design first" approach to 
 	- a maven profile, and a `./fortify.sh` script to run Fortify
 	- a local-dev folder with docker images to run in the spring "local-int" (docker) mode, and with tools to simplify SwA code review submissions.
 	- a `template.yaml` file which is the Openshift deployment template used during the CI/CD pipeline for deployment.
-	- a `testing.yaml` file which is used to configure the Helm Chart used by the CI/CD pipeline for the Kubernetes deployments. 
+	- a `testing.yaml` file which is used to configure the Helm Chart used by the CI/CD pipeline for the Kubernetes deployments.
+	- a `Jenkinsfile` file which configures the CI/CD pipeline for the project. For more information on the CI/CD pipeline see the [Java Gitflow Pipeline](https://github.com/department-of-veterans-affairs/os-svc-jenkins-lib/tree/promotion/docs/spring-boot-pipelines) and [Pipeline Configuration](https://github.com/department-of-veterans-affairs/os-svc-jenkins-lib/blob/promotion/docs/spring-boot-pipelines/pipeline-config.md) documents.
 
 2. [bip-reference-partner-person](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-partner-person): Partner service for reference person, showing sample mock data for BGS. It should be noted by service designers and tech leads that Partner projects would typically be stand-alone (in their own repo, and not part of a reactor project). The intent is for Partner projects to be freely available for use by any number of service applications that might need them by including them as a maven dependency.
 
