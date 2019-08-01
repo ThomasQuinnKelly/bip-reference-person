@@ -26,6 +26,10 @@ public class PersonDatabaseHelper {
 	public void uploadDocument(final Long pid, final byte[] file) {
 		try {
 			Personrecord results = personRecordsRepository.findByPid(pid);
+			if (results == null) {
+				results = new Personrecord();
+				results.setPid(pid);
+			}
 			results.setDocument(file);
 			personRecordsRepository.save(results);
 		} catch (Exception e) {
