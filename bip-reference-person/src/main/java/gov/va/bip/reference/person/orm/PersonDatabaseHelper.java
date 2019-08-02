@@ -47,7 +47,12 @@ public class PersonDatabaseHelper {
 	public byte[] getDocument(final Long pid) {
 
 		try {
-			return personRecordsRepository.findByPid(pid).getDocument();
+			Personrecord results = personRecordsRepository.findByPid(pid);
+			if (results == null) {
+				return null;
+			} else {
+				return results.getDocument();
+			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw e;
