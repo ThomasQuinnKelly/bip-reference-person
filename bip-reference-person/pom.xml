@@ -23,6 +23,7 @@
 	</properties>
 
 	<dependencies>
+		<!-- framework dependencies -->
 		<dependency>
 			<groupId>gov.va.bip.framework</groupId>
 			<artifactId>bip-framework-libraries</artifactId>
@@ -31,6 +32,11 @@
 		<dependency>
 			<groupId>gov.va.bip.framework</groupId>
 			<artifactId>bip-framework-autoconfigure</artifactId>
+			<version>${bip-framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>gov.va.bip.framework</groupId>
+			<artifactId>bip-framework-db</artifactId>
 			<version>${bip-framework.version}</version>
 		</dependency>
 		<dependency>
