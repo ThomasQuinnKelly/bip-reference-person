@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-   <parent>
+     <parent>
 		<groupId>gov.va.bip.reference.person</groupId>
 		<artifactId>bip-reference-reactor</artifactId>
 		<version>0.0.2-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
-
+ 
 	<artifactId>bip-reference-inttest</artifactId>
 	<packaging>jar</packaging>
 
@@ -17,7 +17,7 @@
 	<description>BIP Reference Person Service Integration Test Suite</description>
 	
 	<properties>
-    	<bip-framework.version>2.0.1-SNAPSHOT</bip-framework.version>
+    	<bip-framework.version>2.0.3-SNAPSHOT</bip-framework.version>
     </properties>
 
 	<dependencies>

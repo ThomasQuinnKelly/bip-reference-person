@@ -50,6 +50,10 @@ parameters:
     description: Comma separated list of spring profiles to activate
     value: "dev"
     required: false
+  - name: ROUTE_HOST
+    displayName: Route Host
+    description: Route host used as the fully qualified domain name for the app
+    required: false
 objects:
   - apiVersion: v1
     kind: DeploymentConfig
@@ -244,6 +248,7 @@ objects:
     metadata:
       name: ${APP_NAME}-${BRANCH}
     spec:
+      host: ${ROUTE_HOST}
       to:
         kind: Service
         name: ${APP_NAME}-${BRANCH}

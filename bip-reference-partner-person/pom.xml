@@ -4,13 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    <parent>
+     <parent>
 		<groupId>gov.va.bip.reference.person</groupId>
 		<artifactId>bip-reference-reactor</artifactId>
 		<version>0.0.2-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
-
+ 
     <artifactId>bip-reference-partner-person</artifactId>
     <packaging>jar</packaging>
 
@@ -18,7 +18,7 @@
     <description>Partner library for Spring Boot Reference Project</description>
     
     <properties>
-    	<bip-framework.version>2.0.1-SNAPSHOT</bip-framework.version>
+    	<bip-framework.version>2.0.3-SNAPSHOT</bip-framework.version>
     </properties>
 
     <dependencies>
