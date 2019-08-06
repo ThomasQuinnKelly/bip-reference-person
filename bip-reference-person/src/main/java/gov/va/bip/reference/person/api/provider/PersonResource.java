@@ -1,6 +1,7 @@
 package gov.va.bip.reference.person.api.provider;
 
 import java.io.IOException;
+
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
@@ -21,11 +22,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
+import gov.va.bip.framework.messages.MessageKeys;
+import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.rest.provider.ProviderResponse;
 import gov.va.bip.framework.swagger.SwaggerResponseMessages;
 import gov.va.bip.reference.person.api.ReferencePersonApi;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
+import gov.va.bip.reference.person.exception.PersonServiceException;
+import gov.va.bip.reference.person.messages.PersonMessageKeys;
 import io.swagger.annotations.ApiParam;
 
 /**
@@ -190,15 +195,21 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 		// Load file as Resource
 		LOGGER.debug("downloadFile() method invoked");
 
-		try {
-			Resource resource = new ByteArrayResource(serviceAdapter.getDocumentForPid(Long.valueOf(pid)));
-			return ResponseEntity.ok().contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
-					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
-		} catch (Exception e) {
-			LOGGER.error("Download failed due to unexpected exception", e);
+		byte[] docBytes = serviceAdapter.getDocumentForPid(Long.valueOf(pid));
+		if (docBytes == null || docBytes.length == 0) {
+			throw new PersonServiceException(PersonMessageKeys.BIP_PERSON_NO_DOCUMENT_DOWNLOAD, MessageSeverity.WARN, 
+					HttpStatus.NO_CONTENT);
+		} else {
+			try {
+				Resource resource = new ByteArrayResource(docBytes);
+				return ResponseEntity.ok().contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
+						.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
+			} catch (Exception e) {
+				LOGGER.error("Download failed due to unexpected exception", e);
+				throw new PersonServiceException(MessageKeys.NO_KEY, MessageSeverity.ERROR, 
+						HttpStatus.INTERNAL_SERVER_ERROR, e);
+			}
 		}
-		LOGGER.debug("Returning providerResponse to consumer");
-		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }
