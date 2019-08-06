@@ -45,23 +45,6 @@
 		<fortify.bind.phase>initialize</fortify.bind.phase>
 	</properties>
 
-	<dependencies>
-		<!-- db dependencies -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-<!-- 		<dependency>
-		    <groupId>org.postgresql</groupId>
-		    <artifactId>postgresql</artifactId>
-		</dependency>
- -->
- 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-		</dependency>
-	</dependencies>
-
 	<profiles>
 		<!--
 			The fortify-sca profile runs the aggregate scan for all modules.

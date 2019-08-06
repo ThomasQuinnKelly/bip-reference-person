@@ -15,10 +15,19 @@ spring.profiles.include: remote_client_sims, embedded-redis
 ### DATABASE ###
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/
+    ## hikariCP uses jdbc-url property, not "url"
+    ## see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
+    jdbc-url: jdbc:postgresql://localhost:5432/
+    ## use "driver-class-name" only for drivers not supported by spring (e.g. oracle)
 #    driver-class-name: org.postgresql.Driver
     username: postgres
     password: password
+    ## Connection Pool settings can be refined by adjusting
+    ## hikari properties directly
+#    hikari:
+#      connectionTimeout: 30000
+#      idleTimeout: 600000
+#      maxLifetime: 1800000
   jpa:
     properties:
       hibernate:
