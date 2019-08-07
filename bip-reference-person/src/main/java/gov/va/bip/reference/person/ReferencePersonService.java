@@ -1,5 +1,8 @@
 package gov.va.bip.reference.person;
 
+import java.io.IOException;
+
+import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadata;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
 
@@ -18,19 +21,21 @@ public interface ReferencePersonService {
 	PersonByPidDomainResponse findPersonByParticipantID(PersonByPidDomainRequest personByPidDomainRequest);
 
 	/**
-	 * Upload given document to the database in the same record as the pid
-	 * 
-	 * @param pid the Person id number
-	 * @param file the file to be uploaded
-	 */
-	void uploadDocument(long pid, byte[] file);
-
-	/**
 	 * get the document associated with the pid
 	 * 
 	 * @param pid
 	 * 
 	 * @return the file as a byte array
+	 * @throws IOException
 	 */
-	byte[] getDocument(Long pid);
+	byte[] getDocument(Long pid) throws IOException;
+
+	/**
+	 * store the meta-data associated with the document for a given pid
+	 * 
+	 * @param pid
+	 * 
+	 * @return the file as a byte array
+	 */
+	void storeMetadata(Long pid, PersonDocumentMetadata personDocumentMetadata);
 }

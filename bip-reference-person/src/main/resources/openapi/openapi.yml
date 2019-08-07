@@ -72,71 +72,22 @@ paths:
             type : string
       tags:
         - reference-person
-      summary: Upload document for the PID using octet stream and store it in the configured / in-memory database.
-      description:  Will upload a document based on the PID.
-      operationId: submit
-      requestBody: 
-        description: byteFile
-        required: true
-        content:
-          application/octet-stream:
-            schema:
-              type: string
-              format: binary
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '400':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  This request shouldn't be retried until corrected.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '403':
-          description: The request is not authorized.  Please verify credentials used
-            in the request.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-        '500':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  Please retry.  If problem persists, please contact support
-            with a copy of the Response.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-      security:
-        - bearerAuth: []
-      deprecated: false
-  "/api/v1/persons/{pid}/uploadByMultipart":
-    post:
-      tags:
-        - reference-person
       summary: Upload document for the PID using Multipart form data and store it in the configured / in-memory database.
       description: Will upload a document based on the PID.
-      operationId: submitByMultipart
+      operationId: upload
       requestBody: 
-        description: byteFile and pid
+        description: byteFile and meta-data
         required: true
         content: 
           multipart/form-data: # Media type
             schema:            # Request payload
               type: object
               properties:      # Request parts
-                pid:            # Part 1 (pid as a string value)
-                  type: string
-                  format: int64
+                personDocumentMetadata:           # Part 1 (document meta data)
+                  $ref: '#/components/schemas/PersonDocumentMetadata'
                 file:  # Part 2 (the document to be uploaded)
                   type: string
+                  description : The document to be uploaded
                   format: binary     
       responses:
         '200':
@@ -539,4 +490,15 @@ components:
     ProviderRequest: 
       type: object
       title: ProviderRequest
+    PersonDocumentMetadata:            
+      type: object
+      description : The meta-data associated with the document
+      properties:     
+        documentName: 
+          type: string
+          description : The name of the document
+        creationDate:
+          type: string
+          description : The date of creation of the document
+          format: date
     

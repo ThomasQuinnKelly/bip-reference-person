@@ -1,7 +1,11 @@
 package gov.va.bip.reference.person.impl;
 
+import java.io.IOException;
+import java.net.URL;
+
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,6 +29,7 @@ import gov.va.bip.framework.messages.MessageKeys;
 import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.ReferencePersonService;
+import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadata;
 import gov.va.bip.reference.person.client.ws.PersonPartnerHelper;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
@@ -180,24 +185,34 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	}
 
 	/**
-	 * Upload a given document to the same record as the pid
-	 *
-	 * @param the pid to associate the uploaded document to
-	 */
-	@Override
-	public void uploadDocument(final long pid, final byte[] file) {
-		personDatabaseHelper.uploadDocument(pid, file);
-
-	}
-
-	/**
-	 * Get the document for a given pid
+	 * Get the document for a given pid from the database
 	 *
 	 * @param the pid to associate the uploaded document to
 	 * @return A file as a byte array
+	 * @throws IOException
 	 */
 	@Override
-	public byte[] getDocument(final Long pid) {
-		return personDatabaseHelper.getDocument(pid);
+	public byte[] getDocument(final Long pid) throws IOException {
+		try {
+			String referenceFileToSend = "/testFiles/1MbFile.txt";
+			URL url = this.getClass().getResource(referenceFileToSend);
+			return IOUtils.toByteArray(url.openStream());
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw e;
+		}
+	}
+
+	/**
+	 * Store the meta-data associated with the document to the same record as the pid in the database
+	 *
+	 * @param the pid to associate the uploaded document to
+	 */
+	@Override
+	public void storeMetadata(final Long pid, final PersonDocumentMetadata personDocumentMetadata) {
+		personDatabaseHelper.storeMetadata(pid, personDocumentMetadata);
 	}
 }

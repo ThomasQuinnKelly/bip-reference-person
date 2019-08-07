@@ -1,13 +1,13 @@
 package gov.va.bip.reference.person.orm;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -22,9 +22,25 @@ public class Personrecord implements Serializable {
 
 	private long pid;
 
-	@Lob
-	@Column(name = "document", columnDefinition = "BLOB")
-	private byte[] document;
+	private String documentName;
+
+	private LocalDate documentCreationDate;
+
+	public LocalDate getDocumentCreationDate() {
+		return documentCreationDate;
+	}
+
+	public void setDocumentCreationDate(final LocalDate documentCreationDate) {
+		this.documentCreationDate = documentCreationDate;
+	}
+
+	public String getDocumentName() {
+		return documentName;
+	}
+
+	public void setDocumentName(final String documentName) {
+		this.documentName = documentName;
+	}
 
 	public long getId() {
 		return id;
@@ -32,14 +48,6 @@ public class Personrecord implements Serializable {
 
 	public void setId(final long id) {
 		this.id = id;
-	}
-
-	public byte[] getDocument() {
-		return document;
-	}
-
-	public void setDocument(final byte[] document) {
-		this.document = document;
 	}
 
 	public Long getPid() {
@@ -52,6 +60,7 @@ public class Personrecord implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ClassPojo [pid = " + pid + ", document = " + document.toString() + "]";
+		return "ClassPojo [pid = " + pid + ", documentName = " + documentName + ", documentCreationDate = "
+				+ documentCreationDate.format(DateTimeFormatter.BASIC_ISO_DATE) + "]";
 	}
 }

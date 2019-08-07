@@ -12,6 +12,7 @@ import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.rest.provider.ProviderResponse;
 import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.ReferencePersonService;
+import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadata;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
@@ -78,11 +79,12 @@ public class ServiceAdapter {
 	 * @param file
 	 * @return a ProviderResponse
 	 */
-	public ProviderResponse uploadDocumentForPid(final Long pid, final byte[] file) {
+	public ProviderResponse storeMetaData(final Long pid, final PersonDocumentMetadata personDocumentMetadata) {
 
 		ProviderResponse response = new ProviderResponse();
+
 		try {
-			refPersonService.uploadDocument(pid, file);
+			refPersonService.storeMetadata(pid, personDocumentMetadata);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			response.addMessage(MessageSeverity.ERROR, "Unexpected error", "failure message: " + e.getMessage(),
@@ -99,8 +101,9 @@ public class ServiceAdapter {
 	 * 
 	 * @param pid
 	 * @return a file as a byte array
+	 * @throws Exception
 	 */
-	public byte[] getDocumentForPid(final Long pid) {
+	public byte[] getDocumentForPid(final Long pid) throws Exception {
 		try {
 			byte[] file = refPersonService.getDocument(pid);
 			return file;
