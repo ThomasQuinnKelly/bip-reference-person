@@ -119,7 +119,10 @@ services:
     command: >
       sh -c "kong migrations bootstrap && 
              curl -i -X POST --url 'http://kong:8001/services/' --data 'name=bip-reference-person' --data 'url=http://bip-reference-person:8080' && 
-             curl -i -X POST --url 'http://kong:8001/services/bip-reference-person/routes' --data 'hosts[]=bip.reference.person.com'"
+             curl -i -X POST --url 'http://kong:8001/services/bip-reference-person/routes' --data 'name=bip-reference-person&hosts[]=bip.reference.person.com' &&
+             curl -i -X POST --url 'http://kong:8001/consumers' --data 'username=va.gov-consumer' &&
+             curl -i -X POST --url 'http://kong:8001/consumers/va.gov-consumer/jwt' -H 'Content-Type: application/x-www-form-urlencoded' --data 'key=Vets.gov&secret=secret' &&
+             curl -i -X POST --url 'http://kong:8001/routes/bip-reference-person/plugins' --data 'name=jwt' --data 'config.secret_is_base64=false&config.claims_to_verify=exp&config.maximum_expiration=900&config.uri_param_names='jwt''"
     restart: on-failure
     environment:
       - KONG_DATABASE=postgres
