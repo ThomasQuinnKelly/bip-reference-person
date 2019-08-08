@@ -1,5 +1,7 @@
 package gov.va.bip.reference.person.api.provider;
 
+import java.time.LocalDate;
+
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,7 +14,6 @@ import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.rest.provider.ProviderResponse;
 import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.ReferencePersonService;
-import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadata;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
@@ -73,18 +74,20 @@ public class ServiceAdapter {
 	}
 
 	/**
-	 * Upload document for a given pid
+	 * Store meta data for a document for a given pid
 	 * 
-	 * @param pid
-	 * @param file
+	 * @param pid the pid
+	 * @param documentName the name of the document
+	 * @param creationDate the date of creation of the document
+	 * 
 	 * @return a ProviderResponse
 	 */
-	public ProviderResponse storeMetaData(final Long pid, final PersonDocumentMetadata personDocumentMetadata) {
+	public ProviderResponse storeMetaData(final Long pid, final String documentName, final LocalDate creationDate) {
 
 		ProviderResponse response = new ProviderResponse();
 
 		try {
-			refPersonService.storeMetadata(pid, personDocumentMetadata);
+			refPersonService.storeMetadata(pid, documentName, creationDate);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			response.addMessage(MessageSeverity.ERROR, "Unexpected error", "failure message: " + e.getMessage(),
@@ -97,15 +100,15 @@ public class ServiceAdapter {
 	}
 
 	/**
-	 * Get document for a given pid
+	 * Get the meta data associated with documents accepted for a pid
 	 * 
 	 * @param pid
 	 * @return a file as a byte array
 	 * @throws Exception
 	 */
-	public byte[] getDocumentForPid(final Long pid) throws Exception {
+	public byte[] getMetadataDocumentForPid(final Long pid) throws Exception {
 		try {
-			byte[] file = refPersonService.getDocument(pid);
+			byte[] file = refPersonService.getMetadataDocumentForPid(pid);
 			return file;
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

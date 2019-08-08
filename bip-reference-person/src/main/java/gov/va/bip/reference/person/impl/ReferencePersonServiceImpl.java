@@ -1,11 +1,10 @@
 package gov.va.bip.reference.person.impl;
 
 import java.io.IOException;
-import java.net.URL;
+import java.time.LocalDate;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
@@ -29,11 +30,11 @@ import gov.va.bip.framework.messages.MessageKeys;
 import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.ReferencePersonService;
-import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadata;
 import gov.va.bip.reference.person.client.ws.PersonPartnerHelper;
+import gov.va.bip.reference.person.data.PersonDatabaseHelper;
+import gov.va.bip.reference.person.data.orm.entity.Personrecord;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
-import gov.va.bip.reference.person.orm.PersonDatabaseHelper;
 import gov.va.bip.reference.person.utils.CacheConstants;
 import gov.va.bip.reference.person.utils.HystrixCommandConstants;
 
@@ -185,18 +186,20 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	}
 
 	/**
-	 * Get the document for a given pid from the database
+	 * Get the meta data associated with documents accepted for a pid
 	 *
 	 * @param the pid to associate the uploaded document to
 	 * @return A file as a byte array
 	 * @throws IOException
 	 */
 	@Override
-	public byte[] getDocument(final Long pid) throws IOException {
+	public byte[] getMetadataDocumentForPid(final Long pid) throws IOException {
 		try {
-			String referenceFileToSend = "/testFiles/1MbFile.txt";
-			URL url = this.getClass().getResource(referenceFileToSend);
-			return IOUtils.toByteArray(url.openStream());
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
+			Personrecord data = personDatabaseHelper.getDataForPid(pid);
+			String json = mapper.writeValueAsString(data);
+			return json.getBytes();
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
 			throw e;
@@ -209,10 +212,12 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	/**
 	 * Store the meta-data associated with the document to the same record as the pid in the database
 	 *
-	 * @param the pid to associate the uploaded document to
+	 * @param pid the pid
+	 * @param documentName the name of the document
+	 * @param creationDate the date of creation of the document
 	 */
 	@Override
-	public void storeMetadata(final Long pid, final PersonDocumentMetadata personDocumentMetadata) {
-		personDatabaseHelper.storeMetadata(pid, personDocumentMetadata);
+	public void storeMetadata(final Long pid, final String documentName, final LocalDate creationDate) {
+		personDatabaseHelper.storeMetadata(pid, documentName, creationDate);
 	}
 }

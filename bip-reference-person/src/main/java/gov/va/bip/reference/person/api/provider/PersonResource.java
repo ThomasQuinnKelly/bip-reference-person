@@ -1,6 +1,7 @@
 package gov.va.bip.reference.person.api.provider;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
@@ -29,7 +30,6 @@ import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.rest.provider.ProviderResponse;
 import gov.va.bip.framework.swagger.SwaggerResponseMessages;
 import gov.va.bip.reference.person.api.ReferencePersonApi;
-import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadata;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.exception.PersonServiceException;
@@ -121,18 +121,23 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
 	 * @param pid the pid
+	 * @param documentName the name of the document
+	 * @param creationDate the date of creation of the document
+	 * 
 	 * @return ProviderResponse
 	 */
 	@Override
-	public ResponseEntity<gov.va.bip.framework.rest.provider.ProviderResponse> upload(
+	public ResponseEntity<gov.va.bip.framework.rest.provider.ProviderResponse> submit(
 			@ApiParam(value = "participant id", required = true) @PathVariable("pid") final String pid,
-			@ApiParam(value = "", defaultValue = "null") @RequestParam(value = "personDocumentMetadata",
-			required = false) final PersonDocumentMetadata personDocumentMetadata,
+			@ApiParam(value = "The name of the document") @RequestParam(value = "documentName",
+			required = false) final String documentName,
+			@ApiParam(value = "The date of creation of the document") @RequestParam(value = "creationDate",
+			required = false) final LocalDate creationDate,
 			@ApiParam(value = "file detail") @Valid @RequestPart("file") final MultipartFile file) {
 		LOGGER.debug("submitByMulitpart() method invoked");
 		ProviderResponse response = new ProviderResponse();
 		try {
-			response = serviceAdapter.storeMetaData(Long.valueOf(pid), personDocumentMetadata);
+			response = serviceAdapter.storeMetaData(Long.valueOf(pid), documentName, creationDate);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			LOGGER.error("Upload failed due to unexpected exception", e);
@@ -142,7 +147,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	}
 
 	/**
-	 * Gets the document stored in database for a given person pid.
+	 * Get the meta data associated with documents accepted for a pid
 	 *
 	 * <p>
 	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two return types.
@@ -157,13 +162,13 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * @return ProviderResponse
 	 */
 	@Override
-	public ResponseEntity<Resource> downloadFile(final String pid) {
+	public ResponseEntity<Resource> getMetadataDocument(final String pid) {
 		// Load file as Resource
 		LOGGER.debug("downloadFile() method invoked");
 
 		byte[] docBytes;
 		try {
-			docBytes = serviceAdapter.getDocumentForPid(Long.valueOf(pid));
+			docBytes = serviceAdapter.getMetadataDocumentForPid(Long.valueOf(pid));
 			if ((docBytes == null) || (docBytes.length == 0)) {
 				throw new PersonServiceException(PersonMessageKeys.BIP_PERSON_NO_DOCUMENT_DOWNLOAD, MessageSeverity.WARN,
 						HttpStatus.NO_CONTENT);

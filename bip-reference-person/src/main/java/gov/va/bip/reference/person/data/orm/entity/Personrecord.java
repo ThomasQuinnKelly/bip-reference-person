@@ -1,4 +1,4 @@
-package gov.va.bip.reference.person.orm;
+package gov.va.bip.reference.person.data.orm.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -10,6 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+/**
+ * Personrecord POJO mapped to the records in the PERSONRECORD table in database
+ *
+ */
 @Entity
 @SequenceGenerator(name="seq", initialValue=10, allocationSize=100)
 public class Personrecord implements Serializable {
