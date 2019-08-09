@@ -119,12 +119,12 @@ services:
       sh -c "kong migrations bootstrap && 
              curl -i -X POST --url 'http://kong:8001/services/' --data 'name=bip-reference-person' --data 'url=http://bip-reference-person:8080' && 
              curl -i -X POST --url 'http://kong:8001/services/bip-reference-person/routes' --data 'name=bip-reference-person&hosts[]=bip-reference-person.local.va.gov' &&
-             curl -i -X POST --url 'http://kong:8001/services/bip-reference-person/routes' --data 'name=bip-reference-person-jwt-token&path=/api/v1/persons/pid&hosts[]=bip-reference-person.local.va.gov' &&
+             curl -i -X POST --url 'http://kong:8001/services/bip-reference-person/routes' --data 'name=bip-reference-person-jwt-token&paths[]=/api/v1/token&hosts[]=bip-reference-person.local.va.gov&strip_path=false' &&
              curl -i -X POST --url 'http://kong:8001/consumers' --data 'username=va.gov_consumer' &&
-             curl -i -X POST --url 'http://kong:8001/consumers' --data 'username=anonymous_users' &&
+             curl -i -X POST --url 'http://kong:8001/consumers' --data 'id=4d924084-1adb-40a5-c042-63b19db421d1&username=anonymous_users&custom_id=anonymous_users' &&
              curl -i -X POST --url 'http://kong:8001/consumers/va.gov_consumer/jwt' -H 'Content-Type: application/x-www-form-urlencoded' --data 'key=Vets.gov&secret=secret' &&
-             curl -i -X POST --url 'http://kong:8001/routes/bip-reference-person/plugins' --data 'name=jwt' --data 'config.secret_is_base64=false&config.claims_to_verify=exp&config.maximum_expiration=900&config.uri_param_names='jwt' &&
-             curl -i -X POST --url 'http://kong:8001/routes/bip-reference-person-jwt-token/plugins' --data 'name=jwt' --data 'config.secret_is_base64=false&config.claims_to_verify=exp&config.maximum_expiration=900&config.uri_param_names='jwt''"
+             curl -i -X POST --url 'http://kong:8001/routes/bip-reference-person-jwt-token/plugins' --data 'name=key-auth' --data 'config.anonymous=4d924084-1adb-40a5-c042-63b19db421d1'
+             curl -i -X POST --url 'http://kong:8001/routes/bip-reference-person/plugins' --data 'name=jwt' --data 'config.secret_is_base64=false&config.claims_to_verify=exp&config.maximum_expiration=900&config.uri_param_names='jwt''"
     restart: on-failure
     environment:
       - KONG_DATABASE=postgres
