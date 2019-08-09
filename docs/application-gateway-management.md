@@ -89,6 +89,15 @@ It's good to keep in mind that the more advanced official plugins are only avail
 
 They provide a lightweight gateway for you and you add the features that you need; either provided by Kong, the community or self-written. It's all possible!
 
+## Kong JWT Plugin
+Verify requests containing HS256 or RS256 signed JSON Web Tokens (as specified in RFC 7519). Each of your Consumers will have JWT credentials (public and secret keys) which must be used to sign their JWTs. A token can then be passed through:
+
+- a query string parameter,
+- a cookie,
+- or the Authorization header.
+
+Kong will either proxy the request to your upstream services if the token’s signature is verified, or discard the request if not. Kong can also perform verifications on some of the registered claims of RFC 7519 (exp and nbf). Review the docker compose file to see how this plugin is configured for BIP reference person end points.
+
 ## Kong JWT Signer
 
 The Kong JWT Signer plugin makes it possible to verify and (re-)sign one or two tokens in a request, that the plugin refers as access token and channel token. The plugin supports both opaque tokens (via introspection) and signed JWT tokens (JWS tokens via signature verification). access_token and channel_token are names of the tokens and they can be any valid verifiable tokens. E.g. two access tokens (one given to end user and one given to client application).

@@ -109,7 +109,6 @@ services:
       retries: 5
     networks:
       - bip
-      
   #######################################
   # Kong database migration
   #######################################
@@ -119,10 +118,13 @@ services:
     command: >
       sh -c "kong migrations bootstrap && 
              curl -i -X POST --url 'http://kong:8001/services/' --data 'name=bip-reference-person' --data 'url=http://bip-reference-person:8080' && 
-             curl -i -X POST --url 'http://kong:8001/services/bip-reference-person/routes' --data 'name=bip-reference-person&hosts[]=bip.reference.person.com' &&
-             curl -i -X POST --url 'http://kong:8001/consumers' --data 'username=va.gov-consumer' &&
-             curl -i -X POST --url 'http://kong:8001/consumers/va.gov-consumer/jwt' -H 'Content-Type: application/x-www-form-urlencoded' --data 'key=Vets.gov&secret=secret' &&
-             curl -i -X POST --url 'http://kong:8001/routes/bip-reference-person/plugins' --data 'name=jwt' --data 'config.secret_is_base64=false&config.claims_to_verify=exp&config.maximum_expiration=900&config.uri_param_names='jwt''"
+             curl -i -X POST --url 'http://kong:8001/services/bip-reference-person/routes' --data 'name=bip-reference-person&hosts[]=bip-reference-person.local.va.gov' &&
+             curl -i -X POST --url 'http://kong:8001/services/bip-reference-person/routes' --data 'name=bip-reference-person-jwt-token&path=/api/v1/persons/pid&hosts[]=bip-reference-person.local.va.gov' &&
+             curl -i -X POST --url 'http://kong:8001/consumers' --data 'username=va.gov_consumer' &&
+             curl -i -X POST --url 'http://kong:8001/consumers' --data 'username=anonymous_users' &&
+             curl -i -X POST --url 'http://kong:8001/consumers/va.gov_consumer/jwt' -H 'Content-Type: application/x-www-form-urlencoded' --data 'key=Vets.gov&secret=secret' &&
+             curl -i -X POST --url 'http://kong:8001/routes/bip-reference-person/plugins' --data 'name=jwt' --data 'config.secret_is_base64=false&config.claims_to_verify=exp&config.maximum_expiration=900&config.uri_param_names='jwt' &&
+             curl -i -X POST --url 'http://kong:8001/routes/bip-reference-person-jwt-token/plugins' --data 'name=jwt' --data 'config.secret_is_base64=false&config.claims_to_verify=exp&config.maximum_expiration=900&config.uri_param_names='jwt''"
     restart: on-failure
     environment:
       - KONG_DATABASE=postgres
@@ -133,7 +135,6 @@ services:
       - kong-database
     networks:
       - bip
-      
   #######################################
   # Kong: The API Gateway
   #######################################
@@ -160,12 +161,12 @@ services:
       - "8000:8000"
     networks:
       - bip
-      
   #######################################
   # Konga database prepare
   #######################################
   konga-prepare:
-    image: pantsel/konga:next
+    build:
+      context: ./local-dev/gateway/konga
     command: "-c prepare -a postgres -u postgresql://kong@kong-database:5432/konga_db"
     networks:
       - bip
@@ -179,7 +180,8 @@ services:
   # Konga: Kong GUI
   #######################################
   konga:
-    image: pantsel/konga:next
+    build:
+      context: ./local-dev/gateway/konga
     restart: always
     networks:
         - bip
@@ -190,11 +192,16 @@ services:
       TOKEN_SECRET: km1GUr4RkcQD7DewhJPNXrCuZwcKmqjb
       DB_DATABASE: konga_db
       NODE_ENV: production
+      KONGA_SEED_USER_DATA_SOURCE_FILE: /app/user_seed.js
+      KONGA_SEED_KONG_NODE_DATA_SOURCE_FILE: /app/node_seed.js
+      KONG_ADMIN_URL: http://kong:8001
     depends_on:
       - kong-database
     ports:
       - "1337:1337"
-
+    volumes:
+      - ./local-dev/gateway/konga/user_seed.js:/app/user_seed.js:ro
+      - ./local-dev/gateway/konga/node_seed.js:/app/node_seed.js:ro
 networks:
   bip:
     driver: bridge
