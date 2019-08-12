@@ -69,6 +69,17 @@ services:
     networks:
       - bip
 
+  db:
+    image: postgres:11.4-alpine
+    restart: always
+    networks:
+      - bip
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: password
+    
+
   prometheus:
     image:  prom/prometheus:v2.5.0
     ports:

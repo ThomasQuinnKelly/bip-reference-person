@@ -23,7 +23,6 @@
 	<description>Reactor POM for BIP Spring Boot Reference Service</description>
 
 	<modules>
-		<!-- <module>bip-reference-parentpom</module> -->
 		<module>bip-reference-partner-person</module>
 		<module>bip-reference-person</module>
 		<module>bip-reference-inttest</module>
