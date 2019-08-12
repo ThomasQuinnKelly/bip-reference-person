@@ -45,11 +45,6 @@
 			<version>${bip-framework.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>gov.va.bip.framework</groupId>
-			<artifactId>bip-framework-db</artifactId>
-			<version>${bip-framework.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>gov.va.bip.reference.person</groupId>
 			<artifactId>bip-reference-partner-person</artifactId>
 			<version>${project.version}</version>

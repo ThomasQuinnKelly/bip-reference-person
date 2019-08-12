@@ -196,30 +196,30 @@ Some important configuration points:
 	spring.profiles: default
 	spring.profiles.include: remote_client_sims, embedded-redis
 	spring:
-	datasource:
-		## hikariCP uses jdbc-url property, not "url"
-		## see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
-		jdbc-url: jdbc:postgresql://localhost:5432/postgres
-		## use "driver-class-name" only for drivers not supported by spring
-		## Example for Oracle's ojdbc driver ...
-#		driver-class-name: oracle.jdbc.driver.OracleDriver
-		username: postgres
-		password: password
-		## Connection Pool settings can be refined by adjusting
-		## hikari properties directly
-#		hikari:
-#			connectionTimeout: 30000
-#			maximum-pool-size: 5
-#			idleTimeout: 600000
-#			maxLifetime: 1800000
-	jpa:
-		database-platform: org.hibernate.dialect.PostgreSQL9Dialect
-		hibernate:
-			# do this in all cases to avoid collision with spring or liquibase...
-			ddl-auto: none
-			# avoid exceptions with CLOBs...
-			temp:
-				use_jdbc_metadata_defaults: false
+	  datasource:
+	    type: com.zaxxer.hikari.HikariDataSource
+	#    type: com.zaxxer.hikari.HikariDataSource
+	    initialization-mode: always
+	    url: jdbc:postgresql://localhost:5432/postgres
+	    ## see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
+	    ## use "driver-class-name" only for drivers not supported by spring (e.g. oracle)
+	#    driver-class-name: org.postgresql.Driver
+	    username: postgres
+	    password: password
+	  jpa:
+	#    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+	#    properties:
+	#      hibernate:
+	        # provide correct dialect to avoid exceptions with CLOBs...
+	#        dialect: org.hibernate.dialect.PostgreSQLDialect
+	#    generate-ddl: true
+	    hibernate:
+	      ddl-auto: none
+	      connection:
+	        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+	    # avoid  exceptions with CLOBs...
+	#    temp:
+	#        use_jdbc_metadata_defaults: false
 ## In the logging section of the YAML file, you could add things like...
 #logging.level.org.hibernate.SQL=debug
 ```
