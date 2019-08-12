@@ -72,17 +72,20 @@ public class ServiceAdapter {
 	}
 
 	/**
-	 * Upload document for a given pid
+	 * Store meta data for a document for a given pid
 	 * 
-	 * @param pid
-	 * @param file
+	 * @param pid the pid
+	 * @param documentName the name of the document
+	 * @param documentCreationDate the date of creation of the document
+	 * 
 	 * @return a ProviderResponse
 	 */
-	public ProviderResponse uploadDocumentForPid(final Long pid, final byte[] file) {
+	public ProviderResponse storeMetaData(final Long pid, final String documentName, final String documentCreationDate) {
 
 		ProviderResponse response = new ProviderResponse();
+
 		try {
-			refPersonService.uploadDocument(pid, file);
+			refPersonService.storeMetadata(pid, documentName, documentCreationDate);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			response.addMessage(MessageSeverity.ERROR, "Unexpected error", "failure message: " + e.getMessage(),
@@ -95,14 +98,15 @@ public class ServiceAdapter {
 	}
 
 	/**
-	 * Get document for a given pid
+	 * Get the meta data associated with documents accepted for a pid
 	 * 
 	 * @param pid
 	 * @return a file as a byte array
+	 * @throws Exception
 	 */
-	public byte[] getDocumentForPid(final Long pid) {
+	public byte[] getMetadataDocumentForPid(final Long pid) throws Exception {
 		try {
-			byte[] file = refPersonService.getDocument(pid);
+			byte[] file = refPersonService.getMetadataDocumentForPid(pid);
 			return file;
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

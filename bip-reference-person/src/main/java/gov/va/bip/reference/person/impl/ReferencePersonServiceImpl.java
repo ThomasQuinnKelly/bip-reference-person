@@ -1,7 +1,13 @@
 package gov.va.bip.reference.person.impl;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
@@ -26,9 +34,11 @@ import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.ReferencePersonService;
 import gov.va.bip.reference.person.client.ws.PersonPartnerHelper;
+import gov.va.bip.reference.person.data.PersonDatabaseHelper;
+import gov.va.bip.reference.person.data.orm.entity.Personrecord;
+import gov.va.bip.reference.person.messages.PersonMessageKeys;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
-import gov.va.bip.reference.person.orm.PersonDatabaseHelper;
 import gov.va.bip.reference.person.utils.CacheConstants;
 import gov.va.bip.reference.person.utils.HystrixCommandConstants;
 
@@ -180,24 +190,50 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	}
 
 	/**
-	 * Upload a given document to the same record as the pid
-	 *
-	 * @param the pid to associate the uploaded document to
-	 */
-	@Override
-	public void uploadDocument(final long pid, final byte[] file) {
-		personDatabaseHelper.uploadDocument(pid, file);
-
-	}
-
-	/**
-	 * Get the document for a given pid
+	 * Get the meta data associated with documents accepted for a pid
 	 *
 	 * @param the pid to associate the uploaded document to
 	 * @return A file as a byte array
+	 * @throws IOException
 	 */
 	@Override
-	public byte[] getDocument(final Long pid) {
-		return personDatabaseHelper.getDocument(pid);
+	public byte[] getMetadataDocumentForPid(final Long pid) throws IOException {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.enable(SerializationFeature.INDENT_OUTPUT);
+			Personrecord data = personDatabaseHelper.getDataForPid(pid);
+			String json = mapper.writeValueAsString(data);
+			return json.getBytes();
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw e;
+		}
+	}
+
+	/**
+	 * Store the meta-data associated with the document to the same record as the pid in the database
+	 *
+	 * @param pid the pid
+	 * @param documentName the name of the document
+	 * @param documentCreationDateString the date of creation of the document
+	 */
+	@Override
+	public void storeMetadata(final Long pid, final String documentName, final String documentCreationDateString) {
+		LocalDate documentCreationDate = null;
+		if (StringUtils.isBlank(documentCreationDateString)) {
+			documentCreationDate = LocalDate.now();
+		} else {
+			// If more validation code is added this can be moved to a separate validator class
+			try {
+				documentCreationDate = LocalDate.parse(documentCreationDateString, DateTimeFormatter.ISO_DATE);
+			} catch (DateTimeParseException e) {
+				throw new BipRuntimeException(PersonMessageKeys.BIP_PERSON_INVALID_DATE, MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
+						"");
+			}
+		}
+		personDatabaseHelper.storeMetadata(pid, documentName, documentCreationDate);
 	}
 }
