@@ -38,7 +38,8 @@ mavenGitflowPipeline {
     //Deployment parameters used to configure your Openshift deployment template
     deploymentParameters = [
         'APP_NAME': 'bip-reference-person',
-        'IMAGE': 'bip-reference-person'
+        'IMAGE': 'bip-reference-person',
+        'SPRING_PROFILES': 'dev'
     ]
 
     
