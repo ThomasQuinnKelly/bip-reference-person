@@ -28,12 +28,12 @@ public class PersonDatabaseHelper {
 	 * 
 	 * @param pid the pid
 	 * @param documentName the name of the document
-	 * @param creationDate the date of creation of the document
+	 * @param documentCreationDate the date of creation of the document
 	 * 
 	 * @return a file as a byte array
 	 * @throws IOException
 	 */
-	public void storeMetadata(final Long pid, final String documentName, final LocalDate creationDate) {
+	public void storeMetadata(final Long pid, final String documentName, final LocalDate documentCreationDate) {
 		try {
 			Personrecord result = personRecordsRepository.findByPid(pid);
 			if (result == null) {
@@ -41,7 +41,7 @@ public class PersonDatabaseHelper {
 				result.setPid(pid);
 			}
 			result.setDocumentName(documentName);
-			result.setDocumentCreationDate(creationDate);
+			result.setDocumentCreationDate(documentCreationDate);
 			personRecordsRepository.save(result);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

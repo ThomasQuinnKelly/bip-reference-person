@@ -1,7 +1,5 @@
 package gov.va.bip.reference.person.api.provider;
 
-import java.time.LocalDate;
-
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -78,16 +76,16 @@ public class ServiceAdapter {
 	 * 
 	 * @param pid the pid
 	 * @param documentName the name of the document
-	 * @param creationDate the date of creation of the document
+	 * @param documentCreationDate the date of creation of the document
 	 * 
 	 * @return a ProviderResponse
 	 */
-	public ProviderResponse storeMetaData(final Long pid, final String documentName, final LocalDate creationDate) {
+	public ProviderResponse storeMetaData(final Long pid, final String documentName, final String documentCreationDate) {
 
 		ProviderResponse response = new ProviderResponse();
 
 		try {
-			refPersonService.storeMetadata(pid, documentName, creationDate);
+			refPersonService.storeMetadata(pid, documentName, documentCreationDate);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			response.addMessage(MessageSeverity.ERROR, "Unexpected error", "failure message: " + e.getMessage(),

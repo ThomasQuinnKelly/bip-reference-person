@@ -1,7 +1,6 @@
 package gov.va.bip.reference.person.api.provider;
 
 import java.io.IOException;
-import java.time.LocalDate;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
@@ -122,7 +121,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 *
 	 * @param pid the pid
 	 * @param documentName the name of the document
-	 * @param creationDate the date of creation of the document
+	 * @param documentCreationDate the date of creation of the document
 	 * 
 	 * @return ProviderResponse
 	 */
@@ -131,13 +130,13 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 			@ApiParam(value = "participant id", required = true) @PathVariable("pid") final String pid,
 			@ApiParam(value = "The name of the document") @RequestParam(value = "documentName",
 			required = false) final String documentName,
-			@ApiParam(value = "The date of creation of the document") @RequestParam(value = "creationDate",
-			required = false) final LocalDate creationDate,
+			@ApiParam(value = "The date of creation of the document in YYYY-MM-DD format") @RequestParam(value = "documentCreationDate",
+			required = false) final String documentCreationDate,
 			@ApiParam(value = "file detail") @Valid @RequestPart("file") final MultipartFile file) {
 		LOGGER.debug("submitByMulitpart() method invoked");
 		ProviderResponse response = new ProviderResponse();
 		try {
-			response = serviceAdapter.storeMetaData(Long.valueOf(pid), documentName, creationDate);
+			response = serviceAdapter.storeMetaData(Long.valueOf(pid), documentName, documentCreationDate);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			LOGGER.error("Upload failed due to unexpected exception", e);
@@ -159,7 +158,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
 	 * @param pid the pid
-	 * @return ProviderResponse
+	 * @return Resource to be downloaded
 	 */
 	@Override
 	public ResponseEntity<Resource> getMetadataDocument(final String pid) {

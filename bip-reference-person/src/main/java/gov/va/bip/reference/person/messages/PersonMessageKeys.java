@@ -31,7 +31,11 @@ public enum PersonMessageKeys implements MessageKey {
 			"Response has different PID than the logged in user."),
 	/** Response has different PID than the request; no args */
 	BIP_PERSON_NO_DOCUMENT_DOWNLOAD("bip.reference.person.info.request.pid.nodocument",
-			"No Document to download for the Participant ID."),;
+			"No Document to download for the Participant ID."),
+	/**
+	 * Date value given in the request is not valid.
+	 */
+	BIP_PERSON_INVALID_DATE("bip.framework.invalid.date", "Date value given in the request is not valid.");
 
 	/** The filename "name" part of the properties file to get from the classpath */
 	private static final String propertiesFile = "messages";

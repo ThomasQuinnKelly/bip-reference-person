@@ -26,30 +26,43 @@ spring.profiles.include: remote_client_sims, embedded-redis
 ### POSTGRESQL DATABASE CONFIG###
 spring:
   datasource:
-    ## hikariCP uses jdbc-url property, not "url"
+    type: com.zaxxer.hikari.HikariDataSource
+#    type: com.zaxxer.hikari.HikariDataSource
+    initialization-mode: always
+    url: jdbc:postgresql://localhost:5432/postgres
     ## see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
-    jdbc-url: jdbc:postgresql://localhost:5432/
     ## use "driver-class-name" only for drivers not supported by spring (e.g. oracle)
 #    driver-class-name: org.postgresql.Driver
     username: postgres
     password: password
   jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+#    properties:
+#      hibernate:
+        # provide correct dialect to avoid exceptions with CLOBs...
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#    generate-ddl: true
     hibernate:
-      ddl-auto: create
-  h2:
-    console:
-        enabled: true
+      ddl-auto: none
+      connection:
+        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+    # avoid  exceptions with CLOBs...
+#    temp:
+#        use_jdbc_metadata_defaults: false
+#  h2:
+#    console:
+#        enabled: true
   ## Connection Pool settings can be refined by adjusting
   ## hikari properties directly
   # A list of all Hikari parameters with a good explanation is available on
   # https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
-  hikari:
-    connection-timeout: 30000 # maximum number of milliseconds that a client will wait for a connection from connection pool
-    minimum-idle: 5 # minimum number of idle connections that is maintained by HikariCP in connection pool
-    maximum-pool-size: 12 # configures the maximum pool size
-    idle-timeout: 300000 # maximum amount of time in milliseconds that a connection is allowed to sit idle in connection pool
-    max-lifetime: 1200000 #  maximum life time in milliseconds of a connection in pool after it is closed
-    auto-commit: true # configures the default auto-commit behavior of connections returned from pool. Default value is true.
+#  hikari:
+#    connection-timeout: 30000 # maximum number of milliseconds that a client will wait for a connection from connection pool
+#    minimum-idle: 5 # minimum number of idle connections that is maintained by HikariCP in connection pool
+#    maximum-pool-size: 12 # configures the maximum pool size
+#    idle-timeout: 300000 # maximum amount of time in milliseconds that a connection is allowed to sit idle in connection pool
+#    max-lifetime: 1200000 #  maximum life time in milliseconds of a connection in pool after it is closed
+#    auto-commit: true # configures the default auto-commit behavior of connections returned from pool. Default value is true.
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}

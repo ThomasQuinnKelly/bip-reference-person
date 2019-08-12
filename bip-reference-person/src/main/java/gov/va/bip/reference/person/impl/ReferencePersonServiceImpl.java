@@ -2,9 +2,12 @@ package gov.va.bip.reference.person.impl;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,6 +36,7 @@ import gov.va.bip.reference.person.ReferencePersonService;
 import gov.va.bip.reference.person.client.ws.PersonPartnerHelper;
 import gov.va.bip.reference.person.data.PersonDatabaseHelper;
 import gov.va.bip.reference.person.data.orm.entity.Personrecord;
+import gov.va.bip.reference.person.messages.PersonMessageKeys;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
 import gov.va.bip.reference.person.utils.CacheConstants;
@@ -214,10 +218,22 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 *
 	 * @param pid the pid
 	 * @param documentName the name of the document
-	 * @param creationDate the date of creation of the document
+	 * @param documentCreationDateString the date of creation of the document
 	 */
 	@Override
-	public void storeMetadata(final Long pid, final String documentName, final LocalDate creationDate) {
-		personDatabaseHelper.storeMetadata(pid, documentName, creationDate);
+	public void storeMetadata(final Long pid, final String documentName, final String documentCreationDateString) {
+		LocalDate documentCreationDate = null;
+		if (StringUtils.isBlank(documentCreationDateString)) {
+			documentCreationDate = LocalDate.now();
+		} else {
+			// If more validation code is added this can be moved to a separate validator class
+			try {
+				documentCreationDate = LocalDate.parse(documentCreationDateString, DateTimeFormatter.ISO_DATE);
+			} catch (DateTimeParseException e) {
+				throw new BipRuntimeException(PersonMessageKeys.BIP_PERSON_INVALID_DATE, MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
+						"");
+			}
+		}
+		personDatabaseHelper.storeMetadata(pid, documentName, documentCreationDate);
 	}
 }
