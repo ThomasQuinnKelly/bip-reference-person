@@ -1,5 +1,11 @@
 package gov.va.bip.reference.partner.person.client.ws;
 
+import java.io.IOException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.spec.InvalidKeySpecException;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.http.HttpRequestInterceptor;
@@ -122,12 +128,18 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 * @param readTimeout the read timeout
 	 * @param connectionTimeout the connection timeout
 	 * @return the web service template
+	 * @throws IOException 
+	 * @throws InvalidKeySpecException 
+	 * @throws CertificateException 
+	 * @throws NoSuchAlgorithmException 
+	 * @throws KeyStoreException 
 	 */
 	@Bean
 	WebServiceTemplate personWsClientAxiomTemplate(
 			@Value("${bip-reference-partner-person.ws.client.endpoint}") final String endpoint,
 			@Value("${bip-reference-partner-person.ws.client.readTimeout:60000}") final int readTimeout,
-			@Value("${bip-reference-partner-person.ws.client.connectionTimeout:60000}") final int connectionTimeout) throws Exception {
+			@Value("${bip-reference-partner-person.ws.client.connectionTimeout:60000}") final int connectionTimeout) 
+			throws KeyStoreException, NoSuchAlgorithmException, CertificateException, InvalidKeySpecException, IOException  {
 
 		Defense.hasText(endpoint, "personWsClientAxiomTemplate endpoint cannot be empty.");
 

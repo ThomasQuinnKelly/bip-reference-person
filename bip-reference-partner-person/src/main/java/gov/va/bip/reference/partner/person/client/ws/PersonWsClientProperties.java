@@ -52,11 +52,11 @@ public class PersonWsClientProperties {
 	
 	public final KeyStore getTrustStore() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
 		KeyStore trustStore = null;
-		for (String alias : getTrustedCerts().keySet()) {
+		for (String certAlias : getTrustedCerts().keySet()) {
 			if (trustStore == null) {
-				trustStore = KeystoreUtils.createTrustStore(alias, getTrustedCerts().get(alias));
+				trustStore = KeystoreUtils.createTrustStore(certAlias, getTrustedCerts().get(certAlias));
 			} else {
-				KeystoreUtils.addTrustedCert(alias, getTrustedCerts().get(alias), trustStore);
+				KeystoreUtils.addTrustedCert(certAlias, getTrustedCerts().get(certAlias), trustStore);
 			}
 		}
 		return trustStore;
@@ -112,7 +112,7 @@ public class PersonWsClientProperties {
 	 */
 	public final Map<String, String> getTrustedCerts() {
 		if (trustedCerts == null) {
-			trustedCerts = new HashMap<String, String>();
+			trustedCerts = new HashMap<>();
 		}
 		return trustedCerts;
 	}
