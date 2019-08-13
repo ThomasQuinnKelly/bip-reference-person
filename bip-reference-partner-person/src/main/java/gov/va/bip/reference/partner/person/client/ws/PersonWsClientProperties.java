@@ -43,7 +43,11 @@ public class PersonWsClientProperties {
 	private Map<String, String> trustedCerts;
 	
 	public final KeyStore getKeyStore() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, InvalidKeySpecException, IOException {
-		return KeystoreUtils.createKeyStore(getPublicCert(), getPrivateKey(), getPrivateKeyPass(), alias);
+		if (getPublicCert() != null && getPrivateKey() != null) {
+			return KeystoreUtils.createKeyStore(getPublicCert(), getPrivateKey(), getPrivateKeyPass(), getAlias());
+		} else {
+			return null;
+		}
 	}
 	
 	public final KeyStore getTrustStore() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {

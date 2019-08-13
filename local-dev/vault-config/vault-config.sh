@@ -35,7 +35,11 @@ consul kv put config/bip-reference-person.yml @/consul/bip-reference-person.yml
 consul kv put config/application.yml @/consul/application.yml
 
 # Load a certificate credential example in Vault
+echo "Loading Secrets into Vault..."
 vault kv put secret/blue/bip-reference-person test=blah
-vault kv put secret/blue/bip-reference-person/example-service  service.example.private_key=@/vault/example.key service.example.public_cert=@/vault/example.crt
+vault kv put secret/blue/bip-reference-person/example-service \
+    bip-reference-partner-person.ws.client.privateKey=@/vault/example.key \
+    bip-reference-partner-person.ws.client.publicCert=@/vault/example.crt \
+    bip-reference-partner-person.ws.client.trustedCerts.ca=@/vault/example.crt
 
 ######################################################################

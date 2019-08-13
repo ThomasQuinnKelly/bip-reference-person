@@ -2,12 +2,16 @@ package gov.va.bip.reference.partner.person.client.ws;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.HttpResponseInterceptor;
 import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -25,6 +29,7 @@ import gov.va.bip.framework.validation.Defense;
  * This class represents the Spring configuration for the Person Web Service Client.
  */
 @Configuration
+@Import(PersonWsClientProperties.class)
 @ComponentScan(basePackages = {
 		"gov.va.bip.framework.client.ws",
 		"gov.va.bip.framework.audit",
@@ -40,6 +45,9 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 
 	/** The XSD for this web service */
 	private static final String XSD = "xsd/PersonService/PersonWebService.xsd";
+	
+	@Autowired
+	private PersonWsClientProperties properties;
 
 	// ####### for test, member values are from src/test/resource/application.yml ######
 
@@ -119,13 +127,21 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	WebServiceTemplate personWsClientAxiomTemplate(
 			@Value("${bip-reference-partner-person.ws.client.endpoint}") final String endpoint,
 			@Value("${bip-reference-partner-person.ws.client.readTimeout:60000}") final int readTimeout,
-			@Value("${bip-reference-partner-person.ws.client.connectionTimeout:60000}") final int connectionTimeout) {
+			@Value("${bip-reference-partner-person.ws.client.connectionTimeout:60000}") final int connectionTimeout) throws Exception {
 
 		Defense.hasText(endpoint, "personWsClientAxiomTemplate endpoint cannot be empty.");
 
-		return super.createSslWebServiceTemplate(endpoint, readTimeout, connectionTimeout, personMarshaller(), personMarshaller(),
+
+		return super.createSslWebServiceTemplate(endpoint, 
+				readTimeout, 
+				connectionTimeout, 
+				personMarshaller(), 
+				personMarshaller(),
+				new HttpRequestInterceptor[] { null },
+				new HttpResponseInterceptor[] { null },
 				new ClientInterceptor[] { personSecurityInterceptor() },
-				keystore, keystorePass, truststore, truststorePass);
+				properties.getKeyStore(), properties.getPrivateKeyPass(),
+				properties.getTrustStore());
 	}
 
 	/**

@@ -2,6 +2,7 @@ package gov.va.bip.reference.partner.person.client.ws;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.security.Key;
@@ -102,6 +103,21 @@ public class PersonWsClientPropertiesTest {
 		Certificate resultCert = result.getCertificate(properties.getAlias());
 		String encodedCert = "-----BEGIN CERTIFICATE-----" + Base64.getEncoder().encodeToString(resultCert.getEncoded()) + "-----END CERTIFICATE-----";
 		assertEquals(properties.getPublicCert(), encodedCert);
+	}
+	
+	/**
+	 * Test that if either the public cert or private key is null, that null is returned when calling
+	 * getKeyStore().
+	 * @throws Exception
+	 */
+	@Test
+	public void getKeyStore_NoCerts() throws Exception {
+		PersonWsClientProperties props = new PersonWsClientProperties();
+		KeyStore result = props.getKeyStore();
+		assertNull(result);
+		props.setPublicCert(publicCert);
+		result = props.getKeyStore();
+		assertNull(result);
 	}
 	
 	@Test
