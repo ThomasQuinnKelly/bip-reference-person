@@ -23,8 +23,10 @@ spring.profiles.include: remote_client_sims, embedded-redis
 # By design, the in-memory database is volatile and data will be lost when we restart the application.
 #####################################################################################################
 spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+#    initialization-mode: always
   jpa:
-#    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
 #    properties:
 #      hibernate:
         # provide correct dialect to avoid exceptions with CLOBs...
@@ -62,12 +64,15 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
 #    type: com.zaxxer.hikari.HikariDataSource
     initialization-mode: always
-    url: jdbc:postgresql:${BIP_REFERENECE_DB_HOST}:${BIP_REFERENECE_DB_PORT}/postgres
+#    schema: schema-postgresql.sql
+#    data: data-postgresql.sql
+    url: jdbc:postgresql:db:5432/postgres
+    platform: postgresql
     ## see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
     ## use "driver-class-name" only for drivers not supported by spring (e.g. oracle)
 #    driver-class-name: org.postgresql.Driver
-    username: ${BIP_REFERENECE_DB_USERNAME}
-    password: ${BIP_REFERENECE_DB_PASSWORD}
+    username: postgres
+    password: password
   jpa:
 #    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
 #    properties:
@@ -82,9 +87,6 @@ spring:
     # avoid  exceptions with CLOBs...
 #    temp:
 #        use_jdbc_metadata_defaults: false
-#  h2:
-#    console:
-#        enabled: true
   ## Connection Pool settings can be refined by adjusting
   ## hikari properties directly
   # A list of all Hikari parameters with a good explanation is available on

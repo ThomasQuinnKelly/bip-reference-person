@@ -21,13 +21,24 @@ services:
       - bip.framework.security.jwt.enabled=true
     ports:
       - "8080:8080"
+      - "8000:8000"
     networks:
        - bip
+    entrypoint: ["/wait-for-it.sh","//db:5432","--timeout=0","--strict", "--", "java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=bip-reference-person:8080","-jar","/bip-reference-person.jar" ]
     depends_on:
       - consul
       - redis
       - vault
       - vault-config
+      - db
+
+  db:
+    image: postgres:11.4
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - bip
 
   consul:
     image: bipdev/consul:1.4.3
@@ -69,16 +80,16 @@ services:
     networks:
       - bip
 
-  db:
-    image: postgres:11.4-alpine
-    restart: always
-    networks:
-      - bip
-    ports:
-      - 5432:5432
-    environment:
-      POSTGRES_PASSWORD: password
-    
+  # db:
+  #   image: postgres:11.4-alpine
+  #   restart: always
+  #   networks:
+  #     - bip
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     POSTGRES_PASSWORD: password
+
 
   prometheus:
     image:  prom/prometheus:v2.5.0
