@@ -66,10 +66,10 @@ Of the Fortify suite of products, BIP service apps will typically use the `sca-m
 	* macOS: edit your bash profile, e.g. `open -a TextEdit ~/.bash_profile`, for example
 	```bash
 			# add fortify to path
-			export PATH="/Applications/Fortify/Fortify_SCA_and_Apps_18.20/bin:$PATH"
+			export PATH="/Applications/Fortify/Fortify_SCA_and_Apps_19.1.0/bin:$PATH"
 	```
 
-	* Windows: add the `\[APP-FOLDER]\Fortify_SCA_and_Apps_18.20\bin` folder to your "System Properties > Advanced > Environment Variables"
+	* Windows: add the `\[APP-FOLDER]\Fortify_SCA_and_Apps_19.1.0\bin` folder to your "System Properties > Advanced > Environment Variables"
 
 	* Test with the following command from some non-fortify directory: `sourceanalyzer -version`
 
