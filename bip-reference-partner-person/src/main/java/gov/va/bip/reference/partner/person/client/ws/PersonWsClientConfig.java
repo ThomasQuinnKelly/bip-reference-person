@@ -55,26 +55,6 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	@Autowired
 	private PersonWsClientProperties properties;
 
-	// ####### for test, member values are from src/test/resource/application.yml ######
-
-	/** Location of the truststore containing the cert */
-	@Value("#{ baseWsClientUtil."
-			+ "verifyAddFilePrefix('${bip-reference-partner-person.ws.client.ssl.keystore:classpath:ssl/dev/vaebnweb1Keystore.jks}') }")
-	private Resource keystore;
-
-	/** Password for the cert */
-	@Value("${bip-reference-partner-person.ws.client.ssl.keystorePass:password}")
-	private String keystorePass;
-
-	/** Location of the truststore containing the cert */
-	@Value("#{ baseWsClientUtil."
-			+ "verifyAddFilePrefix('${bip-reference-partner-person.ws.client.ssl.truststore:classpath:ssl/dev/vaebnTruststore.jks}') }")
-	private Resource truststore;
-
-	/** Password for the cert */
-	@Value("${bip-reference-partner-person.ws.client.ssl.truststorePass:password}")
-	private String truststorePass;
-
 	/** Decides if jaxb validation logs errors. */
 	@Value("${bip-reference-partner-person.ws.client.logValidation:true}")
 	private boolean logValidation;
@@ -100,10 +80,6 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 */
 	@PostConstruct
 	public final void postConstruct() {
-		Defense.notNull(keystore, "Partner keystore cannot be empty.");
-		Defense.hasText(keystorePass, "Partner keystorePass cannot be empty.");
-		Defense.notNull(truststore, "Partner truststore cannot be empty.");
-		Defense.hasText(truststorePass, "Partner truststorePass cannot be empty.");
 		Defense.hasText(username, "Partner username cannot be empty.");
 		Defense.hasText(password, "Partner password cannot be empty.");
 		Defense.hasText(vaApplicationName, "Partner vaApplicationName cannot be empty.");
