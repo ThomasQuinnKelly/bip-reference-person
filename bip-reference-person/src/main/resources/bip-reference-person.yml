@@ -26,8 +26,9 @@ spring.profiles.include: remote_client_sims, embedded-redis
 ### POSTGRESQL DATABASE CONFIG###
 spring:
   datasource:
+    ## explicitly declare the connection pool to eliminate spring boot search algorithm
     type: com.zaxxer.hikari.HikariDataSource
-#    type: com.zaxxer.hikari.HikariDataSource
+    ## for our purposes, always run db initialization
     initialization-mode: always
     url: jdbc:postgresql://localhost:5432/postgres
     ## see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
@@ -37,18 +38,18 @@ spring:
     password: password
   jpa:
 #    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
-#    properties:
-#      hibernate:
+    properties:
+      hibernate:
         # provide correct dialect to avoid exceptions with CLOBs...
-#        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
 #    generate-ddl: true
     hibernate:
       ddl-auto: none
       connection:
         provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
     # avoid  exceptions with CLOBs...
-#    temp:
-#        use_jdbc_metadata_defaults: false
+    temp:
+        use_jdbc_metadata_defaults: false
 #  h2:
 #    console:
 #        enabled: true

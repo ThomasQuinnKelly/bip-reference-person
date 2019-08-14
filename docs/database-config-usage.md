@@ -9,7 +9,7 @@
 
 # Databases in BIP
 
-Spring offers a variety of ways to configure and use databases. The [Spring Boot features for working with databases](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html)  and [data access how-to](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-data-access) are useful pages.
+Spring offers a variety of ways to configure and use databases. The [Spring Boot features for working with databases](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-sql.html)  and [data access how-to](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/htmlsingle/#howto-data-access) are useful pages.
 
 Spring boot uses the excellent database support from the Spring Data module. Because BIP application datasource needs can vary widely, spring's database offering is about as granular as is possible. As a result, there is no real value-add that BIP Framework can currently offer for SQL database access.
 
@@ -21,21 +21,21 @@ However to encourage some level of consistency between applications, this docume
 
 Recommended technology choices for relational database support:
 
-* Use [Spring Boot 2.x support for SQL databases](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html).
+* Use [Spring Boot 2.1.x support for SQL databases](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-sql.html).
 
-* Connection Pool: datasource recommendation is to use [the default (and preferred) spring connection pool](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html#boot-features-connect-to-production-database), which is [HikariCP](https://github.com/brettwooldridge/HikariCP).
+* Connection Pool: datasource recommendation is to use [the default (and preferred) spring connection pool](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-sql.html#boot-features-connect-to-production-database), which is [HikariCP](https://github.com/brettwooldridge/HikariCP).
 
 * Statement caching is the responsibility of the database (most JDBC drivers know how to access the db cache). Do not try to cache at the connection pool.
 
 * For query logging, consider [P6Spy](https://github.com/p6spy/p6spy).
 
-* Entity Manager / ORM: default implementation of [Spring JPA](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html#boot-features-jpa-and-spring-data) with [hibernate](https://hibernate.org/orm/documentation/).
+* Entity Manager / ORM: default implementation of [Spring JPA](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-sql.html#boot-features-jpa-and-spring-data) with [hibernate](https://hibernate.org/orm/documentation/).
 
 * Transaction Manager:
 
-	* Applications with a single datasource, or multiple-but-independent datasources, the default transaction manager that is preconfigured with [Spring Data JPA](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html#boot-features-jpa-and-spring-data) is sufficient.
+	* Applications with a single datasource, or multiple-but-independent datasources, the default transaction manager that is preconfigured with [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-sql.html#boot-features-jpa-and-spring-data) is sufficient.
 
-	* Applications with multiple datasources that would benefit from XA transactions should use an embedded transaction manager (recommend [Atomikos](https://www.atomikos.com/) or [Bitronix](https://github.com/bitronix/btm)). For more information about Spring Boot JTA, see [Distributed Transactions with JTA](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-jta.html) and [Configuring Spring and JTA without full Java EE](https://spring.io/blog/2011/08/15/configuring-spring-and-jta-without-full-java-ee/). JTA is not nearly as scary as it once was.
+	* Applications with multiple datasources that would benefit from XA transactions should use an embedded transaction manager (recommend [Atomikos](https://www.atomikos.com/) or [Bitronix](https://github.com/bitronix/btm)). For more information about Spring Boot JTA, see [Distributed Transactions with JTA](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-jta.html) and [Configuring Spring and JTA without full Java EE](https://spring.io/blog/2011/08/15/configuring-spring-and-jta-without-full-java-ee/). JTA is not nearly as scary as it once was.
 
 * For database schema versioning and data management [Liquibase](http://www.liquibase.org/) is recommended.
 
@@ -99,13 +99,16 @@ For single-datasource projects, add only the **one** desired driver dependency (
 
 <dependencyManagement>
 	<!--
+		Oracle and other licensed drivers must be installed in .m2 manually.
 		Pick from below (or add your own) and add to dependencies.
-		For Oracle and other licensed drivers must be installed in .m2 manually.
 		Example
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-		</dependency>
+		<dependencies>
+			...
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+			</dependency>
+		</dependencies>
 	-->
 
 	<!-- in-memory dbs -->
@@ -179,7 +182,7 @@ This is where datasource and related configuration properties are set.
 
 Some important configuration points:
 
-* If you are using the default connection pool (Hikari), do not use the standard `url` property. [HikariCP uses the `jdbc-url`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource) property as shown in the example below.
+* If you are using the default connection pool (Hikari), do not use the standard `url` property. [HikariCP uses the `jdbc-url`](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/htmlsingle/#howto-configure-a-datasource) property as shown in the example below.
 
 * If CLOBs will be used in your schema, hibernate and spring will generate an exception. To avoid this, add the following properties to your application YAML for all profiles:
 
@@ -196,30 +199,31 @@ Some important configuration points:
 	spring.profiles: default
 	spring.profiles.include: remote_client_sims, embedded-redis
 	spring:
-	  datasource:
-	    type: com.zaxxer.hikari.HikariDataSource
-	#    type: com.zaxxer.hikari.HikariDataSource
-	    initialization-mode: always
-	    url: jdbc:postgresql://localhost:5432/postgres
-	    ## see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
-	    ## use "driver-class-name" only for drivers not supported by spring (e.g. oracle)
-	#    driver-class-name: org.postgresql.Driver
-	    username: postgres
-	    password: password
-	  jpa:
-	#    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
-	#    properties:
-	#      hibernate:
-	        # provide correct dialect to avoid exceptions with CLOBs...
-	#        dialect: org.hibernate.dialect.PostgreSQLDialect
-	#    generate-ddl: true
-	    hibernate:
-	      ddl-auto: none
-	      connection:
-	        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
-	    # avoid  exceptions with CLOBs...
-	#    temp:
-	#        use_jdbc_metadata_defaults: false
+		datasource:
+			## hikariCP uses jdbc-url property, not "url"
+			## see https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/htmlsingle/#howto-configure-a-datasource
+			jdbc-url: jdbc:postgresql://localhost:5432/postgres
+			## use "driver-class-name" only for drivers not supported by spring
+			## Example for Oracle's ojdbc driver ...
+#			driver-class-name: oracle.jdbc.driver.OracleDriver
+			username: postgres
+			password: password
+			## Connection Pool settings can be refined by adjusting
+			## hikari properties directly
+#			hikari:
+#				connectionTimeout: 30000
+#				maximum-pool-size: 5
+#				idleTimeout: 600000
+#				maxLifetime: 1800000
+	jpa:
+		# the hibernate dialect to use
+		database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+		hibernate:
+			# always turn off hibernate DDL to avoid collision with spring or liquibase...
+			ddl-auto: none
+			# avoid exceptions with CLOBs...
+			temp:
+				use_jdbc_metadata_defaults: false
 ## In the logging section of the YAML file, you could add things like...
 #logging.level.org.hibernate.SQL=debug
 ```
@@ -228,27 +232,78 @@ Some important configuration points:
 
 ### SQL Database Configuration: Multiple Datasources
 
-If your project requires multiple datasources to participate in XA transactions, there is a little more work involved. Remember that configurations will need to be set up in profiles so they are activated in the appropriate environment.
+If your project requires multiple datasources to participate in XA transactions, there is a little more work involved. Remember that configurations will need to be set up in spring profiles so they are activated in the appropriate environment.
+
+The Spring Boot docs have short sections on how to [Configure Two DataSources](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/htmlsingle/#howto-two-datasources), which uses techniques from the prior section [Configure a Custom DataSource](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/htmlsingle/#howto-configure-a-datasource).
 
 The short version of what to do:
 
-* For your **primary** datasource, perform the steps in [SQL Database Configuration: Single Datasource](#sql-database-configuration-single-datasource) above.
+* Perform the steps in the above [SQL Database Configuration: Single Datasource](#sql-database-configuration-single-datasource) section.
 
-* Create configuration classes for each database to declare beans for the datasource, entity manager, and transaction manager.
+	* Add an identifier to the property path to distinguish config for each datasource, e.g. `spring.datasource.ds1.*`, `spring.datasource.ds2.*`
 
-	* Remember to add the `@Primary` annotation to your primary datasource bean.
+		<details><summary>Click here: Multi-Datasource Configuration</summary>
 
-* Create an autoconfiguration class for each datasource that will participate in the XA transactions, and define which property path applies to each datasource.
+		```yaml
+		spring:
+			datasource:
+				ds1:
+					jdbc-url: jdbc:postgresql://localhost:5432/postgres
+					username: postgres
+					password: password
+				ds2:
+					jdbc-url: jdbc:mysql://localhost/testing
+					username: dbuser
+					password: dbpass
+		```
 
-* Add configuration properties for each datasource "property path" in the application YAML file.
+		</details>
 
-For reference, check out these links...
+* Create `@Configuration` classes for each database. These config classes are to declare beans for the datasource, entity manager, and transaction manager.
 
-* Spring docs has a short page on [Distributed Transactions with JTA](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-jta.html).
+	* Set `@ConfigurationProperties` to the appropriate property paths
+
+	* If you intend ever to use the spring boot database initializer, you must add the `@Primary` annotation to the datasource bean that will be updated from `schema.sql` and/or `data.sql`.
+
+		<details><summary>Click here: Multi-Datasource Beans</summary>
+
+		```java
+		@Bean
+		@Primary
+		@ConfigurationProperties("spring.datasource.ds1")
+		public DataSourceProperties ds1DataSourceProperties() {
+			return new DataSourceProperties();
+		}
+
+		@Bean
+		@Primary
+		@ConfigurationProperties("spring.datasource.ds1.configuration")
+		public HikariDataSource ds1DataSource() {
+			return ds1DataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
+		}
+
+		@Bean
+		@ConfigurationProperties("spring.datasource.ds2")
+		public DataSourceProperties ds2DataSource() {
+			return new DataSourceProperties();
+		}
+
+		@Bean
+		@ConfigurationProperties("spring.datasource.ds2.configuration")
+		public HikariDataSource ds1DataSource() {
+			return ds2DataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
+		}
+		```
+
+		</details>
+
+For additional reference, these links are worth reviewing ...
+
+* Spring docs has a short page on [Distributed Transactions with JTA](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-jta.html).
 
 * Spring Blog has a detailed article on [Configuring Spring and JTA without full Java EE](https://spring.io/blog/2011/08/15/configuring-spring-and-jta-without-full-java-ee/).
 
-* Baeldung provides a must-read example of how to set up [Spring JPA – Multiple Databases](https://www.baeldung.com/spring-data-jpa-multiple-databases). Classes for configuration are provided, and the boot autoconfiguration is shown in part _**6. Multiple Databases in Spring Boot**_.
+* Baeldung provides a good example of how to set up [Spring JPA – Multiple Databases](https://www.baeldung.com/spring-data-jpa-multiple-databases). Classes for configuration are provided, and the boot autoconfiguration is shown in part _**6. Multiple Databases in Spring Boot**_. _Beware of implementation differences between the spring boot version used in their example and your code base._
 
 # Schema and Data Management
 
@@ -728,7 +783,7 @@ Testing of data access should cover everything from the configuration of the acc
 
 #### Unit Tests
 
-Use [Spring Boot Test](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-testing.html#boot-features-testing-spring-boot-applications-testing-autoconfigured-jpa-test). A good starting point for using these tools is in [this article](https://www.baeldung.com/spring-testing-separate-data-source).
+Use [Spring Boot Test](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-testing.html#boot-features-testing-spring-boot-applications-testing-autoconfigured-jpa-test). A good starting point for using these tools is in [this article](https://www.baeldung.com/spring-testing-separate-data-source).
 
 * In-memory database should be used so that all ORM layers get coverage.
 
