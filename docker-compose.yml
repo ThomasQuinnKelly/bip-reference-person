@@ -19,6 +19,7 @@ services:
       - spring.cloud.vault.enabled=true
       - spring.cloud.vault.consul.enabled=true
       - bip.framework.security.jwt.enabled=true
+      - spring.cloud.vault.kv.application-name=blue/bip-reference-person,blue/bip-reference-person/example-service
     ports:
       - "8080:8080"
       - "8000:8000"

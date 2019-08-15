@@ -1,13 +1,23 @@
 package gov.va.bip.reference.partner.person.client.ws;
 
+import java.io.IOException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.spec.InvalidKeySpecException;
+
 import javax.annotation.PostConstruct;
 
+import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.HttpResponseInterceptor;
 import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -25,6 +35,7 @@ import gov.va.bip.framework.validation.Defense;
  * This class represents the Spring configuration for the Person Web Service Client.
  */
 @Configuration
+@Import(PersonWsClientProperties.class)
 @ComponentScan(basePackages = {
 		"gov.va.bip.framework.client.ws",
 		"gov.va.bip.framework.audit",
@@ -40,26 +51,9 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 
 	/** The XSD for this web service */
 	private static final String XSD = "xsd/PersonService/PersonWebService.xsd";
-
-	// ####### for test, member values are from src/test/resource/application.yml ######
-
-	/** Location of the truststore containing the cert */
-	@Value("#{ baseWsClientUtil."
-			+ "verifyAddFilePrefix('${bip-reference-partner-person.ws.client.ssl.keystore:classpath:ssl/dev/vaebnweb1Keystore.jks}') }")
-	private Resource keystore;
-
-	/** Password for the cert */
-	@Value("${bip-reference-partner-person.ws.client.ssl.keystorePass:password}")
-	private String keystorePass;
-
-	/** Location of the truststore containing the cert */
-	@Value("#{ baseWsClientUtil."
-			+ "verifyAddFilePrefix('${bip-reference-partner-person.ws.client.ssl.truststore:classpath:ssl/dev/vaebnTruststore.jks}') }")
-	private Resource truststore;
-
-	/** Password for the cert */
-	@Value("${bip-reference-partner-person.ws.client.ssl.truststorePass:password}")
-	private String truststorePass;
+	
+	@Autowired
+	private PersonWsClientProperties properties;
 
 	/** Decides if jaxb validation logs errors. */
 	@Value("${bip-reference-partner-person.ws.client.logValidation:true}")
@@ -86,10 +80,6 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 */
 	@PostConstruct
 	public final void postConstruct() {
-		Defense.notNull(keystore, "Partner keystore cannot be empty.");
-		Defense.hasText(keystorePass, "Partner keystorePass cannot be empty.");
-		Defense.notNull(truststore, "Partner truststore cannot be empty.");
-		Defense.hasText(truststorePass, "Partner truststorePass cannot be empty.");
 		Defense.hasText(username, "Partner username cannot be empty.");
 		Defense.hasText(password, "Partner password cannot be empty.");
 		Defense.hasText(vaApplicationName, "Partner vaApplicationName cannot be empty.");
@@ -114,18 +104,32 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 * @param readTimeout the read timeout
 	 * @param connectionTimeout the connection timeout
 	 * @return the web service template
+	 * @throws IOException 
+	 * @throws InvalidKeySpecException 
+	 * @throws CertificateException 
+	 * @throws NoSuchAlgorithmException 
+	 * @throws KeyStoreException 
 	 */
 	@Bean
 	WebServiceTemplate personWsClientAxiomTemplate(
 			@Value("${bip-reference-partner-person.ws.client.endpoint}") final String endpoint,
 			@Value("${bip-reference-partner-person.ws.client.readTimeout:60000}") final int readTimeout,
-			@Value("${bip-reference-partner-person.ws.client.connectionTimeout:60000}") final int connectionTimeout) {
+			@Value("${bip-reference-partner-person.ws.client.connectionTimeout:60000}") final int connectionTimeout) 
+			throws KeyStoreException, NoSuchAlgorithmException, CertificateException, InvalidKeySpecException, IOException  {
 
 		Defense.hasText(endpoint, "personWsClientAxiomTemplate endpoint cannot be empty.");
 
-		return super.createSslWebServiceTemplate(endpoint, readTimeout, connectionTimeout, personMarshaller(), personMarshaller(),
+
+		return super.createSslWebServiceTemplate(endpoint, 
+				readTimeout, 
+				connectionTimeout, 
+				personMarshaller(), 
+				personMarshaller(),
+				new HttpRequestInterceptor[] { null },
+				new HttpResponseInterceptor[] { null },
 				new ClientInterceptor[] { personSecurityInterceptor() },
-				keystore, keystorePass, truststore, truststorePass);
+				properties.getKeyStore(), properties.getPrivateKeyPass(),
+				properties.getTrustStore());
 	}
 
 	/**
