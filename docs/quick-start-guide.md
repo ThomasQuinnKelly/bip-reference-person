@@ -8,7 +8,7 @@
 * IDE ([Spring Tool Suite 4:STS4](https://spring.io/tools) is recommended as it plays nicely with Spring Boot. However you are free to choose.)
 * Docker [for MAC](https://docs.docker.com/docker-for-mac/install/) or [Windows](https://docs.docker.com/docker-for-windows/install/) (to run BIP reference person service in the container)
 * Create a GitHub [Personal Access Token](#creating-personal-access-token-to-connect-to-github) to connect to GitHub
-* [Fortify 18.20](installation-help-guide.md#install-and-run-fortify) SCA and maven plugins provided in the download
+* [Fortify 19.1.0](installation-help-guide.md#install-and-run-fortify) SCA and maven plugins provided in the download
 * [SonarQube is installed as a docker image](#running-sonar) when you build a BIP service project
 * See [How to connect Maven with Nexus using HTTPS](installation-help-guide.md#how-to-connect-maven-with-nexus-using-https)
 
