@@ -179,15 +179,16 @@ This is where datasource and related configuration properties are set.
 
 Some important configuration points:
 
-* If you are using the default connection pool (Hikari), do not use the standard `url` property. [HikariCP uses the `jdbc-url`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource) property as shown in the example below.
+* If you are using the default connection pool (Hikari), spring's documentation recommends that you use the `jdbc-url` property instead of the the standard `url` property. But this doesn't seem to work and spring seems to only read the `url` property.
 
 * If CLOBs will be used in your schema, hibernate and spring will generate an exception. To avoid this, add the following properties to your application YAML for all profiles:
 
-	```yaml
+
+``` yaml
 	# for available hibernate dialects, see https://docs.jboss.org/hibernate/orm/5.0/javadocs/org/hibernate/dialect/package-summary.html
 	spring.jpa.database-platform: org.hibernate.dialect.[database]Dialect
 	spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false
-	```
+```
 
 <details><summary>Click here: Single Datasource Example</summary>
 
