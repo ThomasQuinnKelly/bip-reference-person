@@ -19,6 +19,7 @@ services:
       - spring.cloud.vault.enabled=true
       - spring.cloud.vault.consul.enabled=true
       - bip.framework.security.jwt.enabled=true
+      - spring.cloud.vault.kv.application-name=blue/bip-reference-person,blue/bip-reference-person/example-service
     ports:
       - "8080:8080"
       - "8000:8000"
@@ -33,7 +34,7 @@ services:
       - postgres
 
   postgres:
-    image: postgres:11.4
+    image: postgres:12-alpine
     restart: always
     ports:
       - "5432:5432"

@@ -17,7 +17,7 @@ paths:
     post:
       tags:
       - reference-person
-      summary: Retrieve person information by PID from Person Service .
+      summary: Retrieve person information by PID from mocked reference partner person service.
       description: Will return a person info object based on search by PID.
       operationId: personByPid
       requestBody: 
@@ -61,7 +61,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
-  "/api/v1/persons/{pid}/submit":
+  "/api/v1/persons/{pid}/documents":
     post:
       parameters:
         - name : pid
@@ -74,7 +74,7 @@ paths:
         - reference-person
       summary: Upload document for the PID using Multipart form data and store it in the configured / in-memory database.
       description: Will upload a document based on the PID.
-      operationId: submit
+      operationId: upload
       requestBody: 
         description: byteFile and meta-data
         required: true
@@ -82,6 +82,9 @@ paths:
           multipart/form-data: # Media type
             schema:            # Request payload
               type: object
+              required: 
+                - documentName
+                - file
               properties:      # Request parts
                 documentName: # Part 1 (document name)
                   type: string
@@ -129,7 +132,6 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
-  "/api/v1/persons/{pid}/metadataDocument":
     get:
       parameters:
         - name : pid
@@ -142,7 +144,7 @@ paths:
         - reference-person
       summary: Download a document for the PID using octet-stream from the configured / in-memory database.
       description:  Will download a document based on the PID.
-      operationId: getMetadataDocument
+      operationId: download
       responses:
         '200':
           description: OK
@@ -181,6 +183,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+    
   "/api/v1/persons/clientTests/callPersonByPidUsingFeignClient":
     post:
       tags:
