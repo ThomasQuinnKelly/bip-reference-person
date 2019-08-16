@@ -38,7 +38,6 @@
 	</repositories>
 
 	<properties>
-		<sca-maven-plugin.version>18.20</sca-maven-plugin.version>
 		<!-- intentionally using old ant-contrib because newer version doesn't work with maven-antrun-plugin -->
 		<ant-contrib.version>20020829</ant-contrib.version>
 		<!-- the maven phase to bind fortify-sca -->
