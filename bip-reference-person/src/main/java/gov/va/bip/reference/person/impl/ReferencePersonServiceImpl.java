@@ -1,12 +1,14 @@
 package gov.va.bip.reference.person.impl;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
@@ -39,6 +39,8 @@ import gov.va.bip.reference.person.data.orm.entity.Personrecord;
 import gov.va.bip.reference.person.messages.PersonMessageKeys;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
+import gov.va.bip.reference.person.model.PersonDocumentMetadataDomain;
+import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainResponse;
 import gov.va.bip.reference.person.utils.CacheConstants;
 import gov.va.bip.reference.person.utils.HystrixCommandConstants;
 
@@ -197,20 +199,15 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 * @throws IOException
 	 */
 	@Override
-	public byte[] getMetadataDocumentForPid(final Long pid) throws IOException {
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.enable(SerializationFeature.INDENT_OUTPUT);
+	public PersonDocumentMetadataDomainResponse getMetadataDocumentForPid(final Long pid) {
 			Personrecord data = personDatabaseHelper.getDataForPid(pid);
-			String json = mapper.writeValueAsString(data);
-			return json.getBytes();
-		} catch (IOException e) {
-			LOGGER.error(e.getMessage(), e);
-			throw e;
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			throw e;
-		}
+			PersonDocumentMetadataDomainResponse domainResponse = new PersonDocumentMetadataDomainResponse();
+			PersonDocumentMetadataDomain personDocumentMetadataDomain = new PersonDocumentMetadataDomain();
+			String dateString = data.getDocumentCreationDate().format(DateTimeFormatter.ISO_DATE);
+			personDocumentMetadataDomain.setDocumentCreationDate(dateString);
+			personDocumentMetadataDomain.setDocumentName(data.getDocumentName());
+			domainResponse.setPersonDocumentMetadataDomain(personDocumentMetadataDomain);
+			return domainResponse;
 	}
 
 	/**
@@ -235,5 +232,17 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			}
 		}
 		personDatabaseHelper.storeMetadata(pid, documentName, documentCreationDate);
+	}
+
+	@Override
+	public byte[] getSampleReferenceDocument() {
+		String fileAsString;
+		try {
+			fileAsString = IOUtils.resourceToString("sampleReferenceDocument.txt", StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			throw new BipRuntimeException(PersonMessageKeys.BIP_PERSON_INVALID_DATE, MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
+					"");
+		}
+		return fileAsString == null ? null : fileAsString.getBytes();
 	}
 }

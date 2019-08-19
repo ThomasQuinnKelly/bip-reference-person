@@ -35,7 +35,12 @@ public enum PersonMessageKeys implements MessageKey {
 	/**
 	 * Date value given in the request is not valid.
 	 */
-	BIP_PERSON_INVALID_DATE("bip.framework.invalid.date", "Date value given in the request is not valid.");
+	BIP_PERSON_INVALID_DATE("bip.reference.person.invalid.date", "Date value given in the request is not valid."),
+
+	/**
+	 * Pid value could not be found.
+	 */
+	BIP_PERSON_INFO_REQUEST_PID_NOT_FOUND("bip.reference.person.pid.not.found", "Pid value could not be found.");
 
 	/** The filename "name" part of the properties file to get from the classpath */
 	private static final String propertiesFile = "messages";

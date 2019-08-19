@@ -280,7 +280,7 @@ hystrix:
 bip.framework:
   security:
     jwt:
-      enabled: true
+      enabled: false
       filterProcessUrls: 
         - /api/v1/persons/**
         - /api/v2/persons/**

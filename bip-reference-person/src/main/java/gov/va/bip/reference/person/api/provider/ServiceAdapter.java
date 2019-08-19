@@ -12,12 +12,15 @@ import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.rest.provider.ProviderResponse;
 import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.ReferencePersonService;
+import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataResponse;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
+import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainResponse;
 import gov.va.bip.reference.person.transform.impl.PersonByPid_DomainToProvider;
 import gov.va.bip.reference.person.transform.impl.PersonByPid_ProviderToDomain;
+import gov.va.bip.reference.person.transform.impl.PersonDocumentMetadataByPid_DomainToProvider;
 
 /**
  * An adapter between the provider layer api/model, and the services layer interface/model.
@@ -33,6 +36,10 @@ public class ServiceAdapter {
 	private PersonByPid_ProviderToDomain personByPidProvider2Domain = new PersonByPid_ProviderToDomain();
 	/** Transform Domain (service) response to Provider (REST) response */
 	private PersonByPid_DomainToProvider personByPidDomain2Provider = new PersonByPid_DomainToProvider();
+
+	/** Transform Domain (service) response to Provider (REST) response */
+	private PersonDocumentMetadataByPid_DomainToProvider personDocumentMetadataByPidDomain2Provider =
+			new PersonDocumentMetadataByPid_DomainToProvider();
 
 	/** The service layer API contract for processing personByPid() requests */
 	@Autowired
@@ -80,7 +87,7 @@ public class ServiceAdapter {
 	 * 
 	 * @return a ProviderResponse
 	 */
-	public ProviderResponse storeMetaData(final Long pid, final String documentName, final String documentCreationDate) {
+	ProviderResponse storeMetaData(final Long pid, final String documentName, final String documentCreationDate) {
 
 		ProviderResponse response = new ProviderResponse();
 
@@ -104,9 +111,24 @@ public class ServiceAdapter {
 	 * @return a file as a byte array
 	 * @throws Exception
 	 */
-	public byte[] getMetadataDocumentForPid(final Long pid) throws Exception {
+	PersonDocumentMetadataResponse getMetadataDocumentForPid(final Long pid) {
+
+		// get domain response from the service (domain) layer
+		LOGGER.debug("Calling refPersonService.findPersonByParticipantID");
+		PersonDocumentMetadataDomainResponse domainResponse = refPersonService.getMetadataDocumentForPid(pid);
+
+		// transform domain response into provider response
+		LOGGER.debug("Transforming from domainResponse to providerResponse");
+		PersonDocumentMetadataResponse providerResponse = personDocumentMetadataByPidDomain2Provider.convert(domainResponse);
+
+		// return providerResponse;
+		return null;
+
+	}
+
+	byte[] getSampleReferenceDocument() {
 		try {
-			byte[] file = refPersonService.getMetadataDocumentForPid(pid);
+			byte[] file = refPersonService.getSampleReferenceDocument();
 			return file;
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

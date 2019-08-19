@@ -1,9 +1,8 @@
 package gov.va.bip.reference.person.api.provider;
 
-import java.io.IOException;
-
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
@@ -15,7 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +28,7 @@ import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.rest.provider.ProviderResponse;
 import gov.va.bip.framework.swagger.SwaggerResponseMessages;
 import gov.va.bip.reference.person.api.ReferencePersonApi;
+import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataResponse;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.exception.PersonServiceException;
@@ -105,34 +108,34 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	}
 
 	/**
-	 * Accepts the document and stores in database for a given person pid.
+	 * Accept the document and store the metadata supplied in the multi-part request in database for a given person pid. The document
+	 * is currently discarded. Storage of the document is not demonstrated.
 	 *
 	 * <p>
-	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two
-	 * return types.
+	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two return types.
 	 * <ol>
-	 * <li>An object that implements ProviderTransferObjectMarker, e.g.:
-	 * PersonInfoResponse
-	 * <li>An object of type ResponseEntity&lt;ProviderTransferObjectMarker&gt;,
-	 * e.g. a ResponseEntity that wraps some class that implements
-	 * ProviderTransferObjectMarker.
+	 * <li>An object that implements ProviderTransferObjectMarker, e.g.: PersonInfoResponse
+	 * <li>An object of type ResponseEntity&lt;ProviderTransferObjectMarker&gt;, e.g. a ResponseEntity that wraps some class that
+	 * implements ProviderTransferObjectMarker.
 	 * </ol>
-	 * The auditing aspect won't be triggered if the return type in not one of
-	 * the above.
+	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
-	 * @param pid
-	 *            the pid
-	 * @param documentName
-	 *            the name of the document
-	 * @param documentCreationDate
-	 *            the date of creation of the document
+	 * @param pid the pid
+	 * @param documentName the name of the document
+	 * @param file the file uploaded for the pid
+	 * @param documentCreationDate the date of creation of the document
 	 * 
 	 * @return ProviderResponse
 	 */
 	@Override
-	public ResponseEntity<ProviderResponse> upload(String pid, String documentName, @Valid MultipartFile file,
-			String documentCreationDate) {
-		LOGGER.debug("submitByMulitpart() method invoked");
+	public ResponseEntity<gov.va.bip.framework.rest.provider.ProviderResponse> upload(
+			@Min(1L) @ApiParam(value = "participant id", required = true) @PathVariable("pid") final Long pid,
+			@ApiParam(value = "The name of the document", required = true) @RequestParam(value = "documentName",
+			required = true) final String documentName,
+			@ApiParam(value = "file detail") @Valid @RequestPart("file") final MultipartFile file,
+			@ApiParam(value = "The date of creation of the document in YYYY-MM-DD format") @RequestParam(
+					value = "documentCreationDate", required = false) final String documentCreationDate) {
+		LOGGER.debug("upload() method invoked");
 		ProviderResponse response = new ProviderResponse();
 		try {
 			response = serviceAdapter.storeMetaData(Long.valueOf(pid), documentName, documentCreationDate);
@@ -145,33 +148,27 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	}
 
 	/**
-	 * Get the meta data associated with documents accepted for a pid
+	 * Get the statically stored sample reference document
 	 *
 	 * <p>
-	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two
-	 * return types.
+	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two return types.
 	 * <ol>
-	 * <li>An object that implements ProviderTransferObjectMarker, e.g.:
-	 * PersonInfoResponse
-	 * <li>An object of type ResponseEntity&lt;ProviderTransferObjectMarker&gt;,
-	 * e.g. a ResponseEntity that wraps some class that implements
-	 * ProviderTransferObjectMarker.
+	 * <li>An object that implements ProviderTransferObjectMarker, e.g.: PersonInfoResponse
+	 * <li>An object of type ResponseEntity&lt;ProviderTransferObjectMarker&gt;, e.g. a ResponseEntity that wraps some class that
+	 * implements ProviderTransferObjectMarker.
 	 * </ol>
-	 * The auditing aspect won't be triggered if the return type in not one of
-	 * the above.
+	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
-	 * @param pid
-	 *            the pid
-	 * @return Resource to be downloaded
+	 * @return the document resource to be downloaded
 	 */
 	@Override
-	public ResponseEntity<Resource> download(final String pid) {
+	public ResponseEntity<Resource> downloadSampleDocument() {
 		// Load file as Resource
-		LOGGER.debug("downloadFile() method invoked");
+		LOGGER.debug("downloadSampleDocument() method invoked");
 
 		byte[] docBytes;
 		try {
-			docBytes = serviceAdapter.getMetadataDocumentForPid(Long.valueOf(pid));
+			docBytes = serviceAdapter.getSampleReferenceDocument();
 			if ((docBytes == null) || (docBytes.length == 0)) {
 				throw new PersonServiceException(PersonMessageKeys.BIP_PERSON_NO_DOCUMENT_DOWNLOAD,
 						MessageSeverity.WARN, HttpStatus.NO_CONTENT);
@@ -183,14 +180,39 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 								"attachment; filename=\"" + resource.getFilename() + "\"")
 						.body(resource);
 			}
-		} catch (IOException e) {
-			LOGGER.error("Could not fetch document", e);
-			throw new PersonServiceException(PersonMessageKeys.BIP_PERSON_NO_DOCUMENT_DOWNLOAD, MessageSeverity.WARN,
-					HttpStatus.NO_CONTENT);
+		} catch (PersonServiceException e) {
+			throw e;
 		} catch (Exception e) {
 			LOGGER.error("Download failed due to unexpected exception", e);
 			throw new PersonServiceException(MessageKeys.NO_KEY, MessageSeverity.ERROR,
 					HttpStatus.INTERNAL_SERVER_ERROR, e);
 		}
 	}
+
+	/**
+	 * Get metadata sent along with uploaded document by their participant ID.
+	 * <p>
+	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two return types.
+	 * <ol>
+	 * <li>An object that implements ProviderTransferObjectMarker, e.g.: PersonInfoResponse
+	 * <li>An object of type ResponseEntity&lt;ProviderTransferObjectMarker&gt;, e.g. a ResponseEntity that wraps some class that
+	 * implements ProviderTransferObjectMarker.
+	 * </ol>
+	 * The auditing aspect won't be triggered if the return type in not one of the above.
+	 *
+	 * @param pid the pid
+	 * 
+	 * @return the person info response
+	 */
+	public ResponseEntity<PersonDocumentMetadataResponse>
+	getDocumentMetadata(@Min(1L) @ApiParam(value = "participant id", required = true) @PathVariable("pid") final Long pid) {
+		LOGGER.debug("getDocumentMetadata() method invoked");
+
+		PersonDocumentMetadataResponse providerResponse = serviceAdapter.getMetadataDocumentForPid(pid);
+
+		// send provider response back to consumer
+		LOGGER.debug("Returning providerResponse to consumer");
+		return new ResponseEntity<>(providerResponse, HttpStatus.OK);
+	}
+
 }

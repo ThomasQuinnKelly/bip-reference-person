@@ -1,8 +1,11 @@
 package gov.va.bip.reference.person;
 
 import java.io.IOException;
+
+import gov.va.bip.framework.exception.BipException;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
+import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainResponse;
 
 /**
  * The contract interface for the Person domain (service) layer.
@@ -25,8 +28,9 @@ public interface ReferencePersonService {
 	 * 
 	 * @return the file as a byte array
 	 * @throws IOException when file cannot be written into
+	 * @throws BipException when there is problem with fetching docuement for a given pid
 	 */
-	byte[] getMetadataDocumentForPid(Long pid) throws IOException;
+	PersonDocumentMetadataDomainResponse getMetadataDocumentForPid(Long pid);
 
 	/**
 	 * store the meta-data associated with the document for a given pid
@@ -37,4 +41,6 @@ public interface ReferencePersonService {
 	 * 
 	 */
 	void storeMetadata(Long pid, String documentName, String documentCreationDate);
+
+	byte[] getSampleReferenceDocument();
 }
