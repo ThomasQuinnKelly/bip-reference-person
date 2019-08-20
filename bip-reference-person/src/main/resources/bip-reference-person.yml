@@ -25,6 +25,8 @@ spring.profiles.include: remote_client_sims, embedded-redis
 #####################################################################################################
 ### POSTGRESQL DATABASE CONFIG###
 spring:
+  liquibase:
+    enabled: false
   datasource:
     ## explicitly declare the connection pool to eliminate spring boot search algorithm
     type: com.zaxxer.hikari.HikariDataSource
@@ -38,10 +40,10 @@ spring:
     password: password
   jpa:
 #    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
-    properties:
-      hibernate:
-        # provide correct dialect to avoid exceptions with CLOBs...
-        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+#    properties:
+#      hibernate:
+#        # provide correct dialect to avoid exceptions with CLOBs...
+#        dialect: org.hibernate.dialect.PostgreSQL9Dialect
 #    generate-ddl: true
     hibernate:
       ddl-auto: none

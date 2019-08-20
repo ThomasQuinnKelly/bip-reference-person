@@ -1,0 +1,184 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] bip-reference-reactor                                              [pom]
+[INFO] bip-reference-partner-person                                       [jar]
+[INFO] bip-reference-person                                               [jar]
+[INFO] bip-reference-inttest                                              [jar]
+[INFO] bip-reference-perftest                                             [jar]
+[INFO] 
+[INFO] ---------< gov.va.bip.reference.person:bip-reference-reactor >----------
+[INFO] Building bip-reference-reactor 0.0.2-SNAPSHOT                      [1/5]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-snapshots) @ bip-reference-reactor ---
+[INFO] 
+[INFO] --- git-commit-id-plugin:2.2.6:revision (default) @ bip-reference-reactor ---
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:parse-version (parse-version) @ bip-reference-reactor ---
+[INFO] 
+[INFO] --- jacoco-maven-plugin:0.8.4:prepare-agent (prepare-agent) @ bip-reference-reactor ---
+[INFO] argLine set to -javaagent:/Users/aburkholder/.m2/repository/org/jacoco/org.jacoco.agent/0.8.4/org.jacoco.agent-0.8.4-runtime.jar=destfile=/Users/aburkholder/git/bip-reference-person/target/jacoco/jacoco.exec,append=true,excludes=**/static/features/**/*:**com.steadystate*
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:add-test-source (add-integration-test-sources) @ bip-reference-reactor ---
+[INFO] Test Source directory: /Users/aburkholder/git/bip-reference-person/src/inttest/java added.
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.6.RELEASE:build-info (build-info) @ bip-reference-reactor ---
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ bip-reference-reactor ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] gov.va.bip.reference.person:bip-reference-reactor:pom:0.0.2-SNAPSHOT
+[INFO] 
+[INFO] ------< gov.va.bip.reference.person:bip-reference-partner-person >------
+[INFO] Building bip-reference-partner-person 0.0.2-SNAPSHOT               [2/5]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-snapshots) @ bip-reference-partner-person ---
+[INFO] 
+[INFO] --- git-commit-id-plugin:2.2.6:revision (default) @ bip-reference-partner-person ---
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:parse-version (parse-version) @ bip-reference-partner-person ---
+[INFO] 
+[INFO] --- jacoco-maven-plugin:0.8.4:prepare-agent (prepare-agent) @ bip-reference-partner-person ---
+[INFO] argLine set to -javaagent:/Users/aburkholder/.m2/repository/org/jacoco/org.jacoco.agent/0.8.4/org.jacoco.agent-0.8.4-runtime.jar=destfile=/Users/aburkholder/git/bip-reference-person/bip-reference-partner-person/target/jacoco/jacoco.exec,append=true,excludes=**/static/features/**/*:**com.steadystate*
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:add-test-source (add-integration-test-sources) @ bip-reference-partner-person ---
+[INFO] Test Source directory: /Users/aburkholder/git/bip-reference-person/bip-reference-partner-person/src/inttest/java added.
+[INFO] 
+[INFO] --- jaxb2-maven-plugin:1.5:xjc (xjc-PersonService) @ bip-reference-partner-person ---
+[INFO] No changes detected in schema or binding files - skipping source generation.
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.6.RELEASE:build-info (build-info) @ bip-reference-partner-person ---
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ bip-reference-partner-person ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 7 resources
+[INFO] skip non existing resourceDirectory /Users/aburkholder/git/bip-reference-person/bip-reference-partner-person/src/main/resources/cert
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ bip-reference-partner-person ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ bip-reference-partner-person ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] gov.va.bip.reference.person:bip-reference-partner-person:jar:0.0.2-SNAPSHOT
+[INFO] +- gov.va.bip.framework:bip-framework-libraries:jar:2.0.3-SNAPSHOT:compile
+[INFO] |  +- gov.va.bip.framework:bip-framework-shared:jar:2.0.3-SNAPSHOT:compile
+[INFO] |  +- io.jsonwebtoken:jjwt:jar:0.9.1:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-security:jar:2.1.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:5.1.5.RELEASE:compile
+[INFO] |  |  \- org.springframework.security:spring-security-web:jar:5.1.5.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.1.6.RELEASE:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot:jar:2.1.6.RELEASE:compile
+[INFO] |  +- io.swagger:swagger-annotations:jar:1.5.22:compile
+[INFO] |  +- org.springframework.ws:spring-ws-security:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:5.1.8.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:5.1.5.RELEASE:compile
+[INFO] |  |  +- net.sf.ehcache:ehcache:jar:2.10.6:compile
+[INFO] |  |  +- org.apache.wss4j:wss4j-ws-security-dom:jar:2.2.0:compile
+[INFO] |  |  |  \- org.apache.wss4j:wss4j-ws-security-common:jar:2.2.0:compile
+[INFO] |  |  |     +- org.opensaml:opensaml-saml-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  +- org.opensaml:opensaml-profile-api:jar:3.3.0:compile
+[INFO] |  |  |     |  |  \- org.opensaml:opensaml-core:jar:3.3.0:compile
+[INFO] |  |  |     |  |     \- io.dropwizard.metrics:metrics-core:jar:4.0.5:compile
+[INFO] |  |  |     |  +- org.opensaml:opensaml-saml-api:jar:3.3.0:compile
+[INFO] |  |  |     |  |  +- org.opensaml:opensaml-xmlsec-api:jar:3.3.0:compile
+[INFO] |  |  |     |  |  \- org.opensaml:opensaml-soap-api:jar:3.3.0:compile
+[INFO] |  |  |     |  +- org.opensaml:opensaml-security-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  |  \- org.opensaml:opensaml-security-api:jar:3.3.0:compile
+[INFO] |  |  |     |  |     +- org.cryptacular:cryptacular:jar:1.1.1:compile
+[INFO] |  |  |     |  |     \- org.bouncycastle:bcprov-jdk15on:jar:1.54:compile
+[INFO] |  |  |     |  +- org.opensaml:opensaml-xmlsec-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  \- net.shibboleth.utilities:java-support:jar:7.3.0:compile
+[INFO] |  |  |     |     \- com.google.guava:guava:jar:19.0:compile
+[INFO] |  |  |     +- org.opensaml:opensaml-xacml-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  \- org.opensaml:opensaml-xacml-api:jar:3.3.0:compile
+[INFO] |  |  |     +- org.opensaml:opensaml-xacml-saml-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  \- org.opensaml:opensaml-xacml-saml-api:jar:3.3.0:compile
+[INFO] |  |  |     +- org.jasypt:jasypt:jar:1.9.2:compile
+[INFO] |  |  |     \- org.apache.geronimo.javamail:geronimo-javamail_1.4_mail:jar:1.8.4:compile
+[INFO] |  |  \- org.apache.santuario:xmlsec:jar:2.1.0:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.9:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.9.9:compile
+[INFO] |  +- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+[INFO] |  +- org.apache.httpcomponents:httpclient:jar:4.5.9:compile
+[INFO] |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.11:compile
+[INFO] |  |  +- commons-logging:commons-logging:jar:1.2:compile
+[INFO] |  |  \- commons-codec:commons-codec:jar:1.11:compile
+[INFO] |  +- org.apache.ws.commons.axiom:axiom-impl:jar:1.2.22:compile
+[INFO] |  |  +- org.apache.ws.commons.axiom:axiom-api:jar:1.2.22:compile
+[INFO] |  |  |  +- org.apache.geronimo.specs:geronimo-activation_1.1_spec:jar:1.1:compile
+[INFO] |  |  |  +- jaxen:jaxen:jar:1.1.6:compile
+[INFO] |  |  |  +- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0.1:compile
+[INFO] |  |  |  \- org.apache.james:apache-mime4j-core:jar:0.7.2:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.2.0:compile
+[INFO] |  |     \- org.codehaus.woodstox:stax2-api:jar:3.1.1:compile
+[INFO] |  +- org.apache.ws.security:wss4j:jar:1.6.19:compile
+[INFO] |  |  \- org.opensaml:opensaml:jar:2.5.1-1:compile
+[INFO] |  |     \- org.opensaml:openws:jar:1.4.2-1:compile
+[INFO] |  |        \- org.opensaml:xmltooling:jar:1.3.2-1:compile
+[INFO] |  |           \- joda-time:joda-time:jar:2.10.2:compile
+[INFO] |  +- ch.qos.logback:logback-classic:jar:1.2.3:compile
+[INFO] |  |  \- ch.qos.logback:logback-core:jar:1.2.3:compile
+[INFO] |  +- net.logstash.logback:logstash-logback-encoder:jar:6.1:compile
+[INFO] |  +- com.github.lalyos:jfiglet:jar:0.0.8:compile
+[INFO] |  +- org.yaml:snakeyaml:jar:1.23:compile
+[INFO] |  \- org.springframework.ws:spring-ws-test:jar:3.0.7.RELEASE:compile
+[INFO] |     +- org.springframework:spring-context:jar:5.1.8.RELEASE:compile
+[INFO] |     \- xmlunit:xmlunit:jar:1.5:compile
+[INFO] +- org.springframework:spring-web:jar:5.1.8.RELEASE:compile
+[INFO] |  +- org.springframework:spring-beans:jar:5.1.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-core:jar:5.1.8.RELEASE:compile
+[INFO] |     \- org.springframework:spring-jcl:jar:5.1.8.RELEASE:compile
+[INFO] +- org.springframework.ws:spring-ws-core:jar:3.0.7.RELEASE:compile
+[INFO] |  +- org.springframework.ws:spring-xml:jar:3.0.7.RELEASE:compile
+[INFO] |  +- org.springframework:spring-aop:jar:5.1.8.RELEASE:compile
+[INFO] |  +- org.springframework:spring-oxm:jar:5.1.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-webmvc:jar:5.1.8.RELEASE:compile
+[INFO] |     \- org.springframework:spring-expression:jar:5.1.8.RELEASE:compile
+[INFO] +- org.aspectj:aspectjtools:jar:1.9.4:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-validation:jar:2.1.6.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.1.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.1.6.RELEASE:compile
+[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.11.2:compile
+[INFO] |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.11.2:compile
+[INFO] |  |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.26:compile
+[INFO] |  |  \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.21:compile
+[INFO] |  \- org.hibernate.validator:hibernate-validator:jar:6.0.17.Final:compile
+[INFO] |     +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |     +- org.jboss.logging:jboss-logging:jar:3.3.2.Final:compile
+[INFO] |     \- com.fasterxml:classmate:jar:1.4.0:compile
+[INFO] +- org.glassfish.web:el-impl:jar:2.2:compile
+[INFO] |  \- javax.el:el-api:jar:2.2:compile
+[INFO] +- org.apache.commons:commons-lang3:jar:3.9:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.26:compile
+[INFO] +- junit:junit:jar:4.12:compile
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:compile
+[INFO] +- org.mockito:mockito-core:jar:2.28.2:test
+[INFO] |  +- net.bytebuddy:byte-buddy:jar:1.9.13:test
+[INFO] |  +- net.bytebuddy:byte-buddy-agent:jar:1.9.13:test
+[INFO] |  \- org.objenesis:objenesis:jar:2.6:test
+[INFO] \- org.springframework:spring-test:jar:5.1.8.RELEASE:compile
+[INFO] 
+[INFO] ----------< gov.va.bip.reference.person:bip-reference-person >----------
+[INFO] Building bip-reference-person 0.0.2-SNAPSHOT                       [3/5]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-snapshots) @ bip-reference-person ---
+[INFO] 
+[INFO] --- git-commit-id-plugin:2.2.6:revision (default) @ bip-reference-person ---
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:unpack (download-swagger-ui-webjar) @ bip-reference-person ---
+[INFO] Configured Artifact: org.webjars:swagger-ui:3.22.2:jar
+[INFO] Unpacking /Users/aburkholder/.m2/repository/org/webjars/swagger-ui/3.22.2/swagger-ui-3.22.2.jar to /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/classes with includes "" and excludes ""
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:parse-version (parse-version) @ bip-reference-person ---
+[INFO] 
+[INFO] --- jacoco-maven-plugin:0.8.4:prepare-agent (prepare-agent) @ bip-reference-person ---
+[INFO] argLine set to -javaagent:/Users/aburkholder/.m2/repository/org/jacoco/org.jacoco.agent/0.8.4/org.jacoco.agent-0.8.4-runtime.jar=destfile=/Users/aburkholder/git/bip-reference-person/bip-reference-person/target/jacoco/jacoco.exec,append=true,excludes=**/static/features/**/*:**com.steadystate*
+[INFO] 
+[INFO] --- openapi-generator-maven-plugin:3.3.4:generate (generate-openapi-spec) @ bip-reference-person ---

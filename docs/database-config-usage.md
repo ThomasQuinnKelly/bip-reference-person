@@ -467,6 +467,27 @@ The [Maven Liquibase Plugin](https://www.liquibase.org/documentation/maven/index
 
 * Configure Maven Profiles for expected activities
 
+	* Make sure profiles use the correct `${liquibase.changelog.path.*}` variables in their `<configuration>` properties.
+
+	* Profiles:
+
+		* `liquibase-generate-changelog` creates a changelog file derived from an existing datasource (including any JPA/Hibernate `@Entity` classes).
+
+			* Configure each execution in `src/main/resources/db/${liquibase.changelog.path.*}/liquibase-generate-changelog.properties`
+
+			* Execute: `mvn clean process-classes -Pliquibase-generate-changelog`
+
+			* Produces output in `src/main/resources/db/${liquibase.changelog.path.*}/changelog/liquibase-generate-changelog.yml`
+
+		* `liquibase-create-db-from-changelog` drops any existing database by that name, and recreates if from a changelog file.
+
+			* Configure each execution in `src/main/resources/db/${liquibase.changelog.path.*}/liquibase-create-db-from-changelog.properties`
+
+			* Execute: `mvn clean process-classes -Pliquibase-create-db-from-changelog`
+
+			* Produces output in `src/main/resources/db/${liquibase.changelog.path.*}/changelog/liquibase-create-db-from-changelog.yml`
+
+
 	<details><summary>Click here: Liquibase maven dependencies</summary>
 
 	```xml
@@ -735,7 +756,7 @@ The [Maven Liquibase Plugin](https://www.liquibase.org/documentation/maven/index
 			</profile>
 
 			<profile>
-					<id>db-generate-changelog</id>
+					<id>liquibase-generate-changelog</id>
 					<build>
 							<plugins>
 									<plugin>

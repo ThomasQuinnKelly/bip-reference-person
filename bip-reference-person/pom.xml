@@ -20,18 +20,28 @@
 
 	<properties>
 		<bip-framework.version>2.0.3-SNAPSHOT</bip-framework.version>
+		<!-- spring versions derived from bip-framework spring dependencies -->
+		<validation-api.version>2.0.1.Final</validation-api.version>
+		<spring-core.version>5.1.8.RELEASE</spring-core.version>
+		<spring-data-jpa.version>2.1.9.RELEASE</spring-data-jpa.version>
+		
+		<!--  liquibase path options to chose from -->
+		<liquibase.changelog.path.default>default</liquibase.changelog.path.default>
+		<liquibase.changelog.path.ds1>ds1</liquibase.changelog.path.ds1>
+		<liquibase.changelog.path.ds2>ds2</liquibase.changelog.path.ds2>
+		<!-- chosen liquibase path -->
+		<liquibase.changelog.path>${liquibase.changelog.path.default}</liquibase.changelog.path>
 	</properties>
 
 	<dependencies>
-<!-- 		<dependency>
+		<dependency>
 		    <groupId>org.postgresql</groupId>
 		    <artifactId>postgresql</artifactId>
 		</dependency>
- -->
- 		<dependency>
+<!--  		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-		</dependency>
+		</dependency> -->
 
 		<!-- framework dependencies -->
 		<dependency>
@@ -74,10 +84,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-		    <groupId>org.postgresql</groupId>
-		    <artifactId>postgresql</artifactId>
 		</dependency>
 		<!-- spring cloud dependencies -->
 		<!-- Spring-cloud Netflix Feign dependency for defining declarative REST clients -->
@@ -373,6 +379,153 @@
 				</pluginManagement>
 			</build>
 		</profile>
+		
+		<profile>
+			<!--  currently broken due to https://github.com/liquibase/liquibase-hibernate/issues/198 -->
+			<id>liquibase-diff</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>${liquibase-core.version}</version>
+                        <dependencies>
+                        	<dependency>
+                        		<groupId>org.liquibase.ext</groupId>
+                        		<artifactId>liquibase-hibernate5</artifactId>
+                        		<version>${liquibase-hibernate5.version}</version>
+                        		<exclusions>
+                        			<exclusion>
+			                        <groupId>org.liquibase</groupId>
+			                        <artifactId>liquibase-core</artifactId>
+                        			</exclusion>
+                        		</exclusions>
+                        	</dependency>
+                        </dependencies>
+                        <!--  NOTE config may incomplete until bug is fixed, see https://github.com/liquibase/liquibase-hibernate/issues/198-->
+						<configuration>
+							<verbose>true</verbose>
+							<logging>debug</logging>
+							<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+							<propertyFileWillOverride>true</propertyFileWillOverride>
+							<propertyFile>${project.basedir}/src/main/resources/db/local/liquibase-diff.properties</propertyFile>
+							<changeLogFile>${project.basedir}/src/main/resources/db/local/changelog/changelog-master.xml</changeLogFile>
+						</configuration>
+						<executions>
+							<execution>
+								<id>liquibase-diff</id>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>diff</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<!--  currently broken due to https://github.com/liquibase/liquibase-hibernate/issues/198 -->
+			<id>liquibase-generate-changelog</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>${liquibase-core.version}</version>
+                        <dependencies>
+                        	<dependency>
+                        		<groupId>org.liquibase.ext</groupId>
+                        		<artifactId>liquibase-hibernate5</artifactId>
+                        		<version>${liquibase-hibernate5.version}</version>
+                        	</dependency>
+							<dependency>
+								<groupId>javax.validation</groupId>
+								<artifactId>validation-api</artifactId>
+								<version>${validation-api.version}</version>
+							</dependency>
+							<dependency>
+								<groupId>org.springframework</groupId>
+								<artifactId>spring-core</artifactId>
+								<version>${spring-core.version}</version>
+							</dependency>
+							<dependency>
+								<groupId>org.springframework</groupId>
+								<artifactId>spring-context</artifactId>
+								<version>${spring-core.version}</version>
+							</dependency>
+							<dependency>
+								<groupId>org.springframework</groupId>
+								<artifactId>spring-beans</artifactId>
+								<version>${spring-core.version}</version>
+							</dependency>
+							<dependency>
+								<groupId>org.springframework.data</groupId>
+								<artifactId>spring-data-jpa</artifactId>
+								<version>${spring-data-jpa.version}</version>
+							</dependency>
+                        </dependencies>
+						<configuration>
+							<verbose>true</verbose>
+							<logging>debug</logging>
+							<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+							<propertyFileWillOverride>true</propertyFileWillOverride>
+							<propertyFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/liquibase-generate-changelog.properties</propertyFile>
+							<outputChangeLogFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/changelog/liquibase-generate-changelog.yml</outputChangeLogFile>
+						</configuration>
+						<executions>
+							<execution>
+								<id>liquibase-generate-changelog</id>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>generateChangeLog</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	
+		<profile>
+			<id>liquibase-create-db-from-changelog</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.liquibase</groupId>
+						<artifactId>liquibase-maven-plugin</artifactId>
+						<executions>
+	
+							<!-- create database -->
+							<execution>
+								<id>create-local-database</id>
+								<goals>
+									<goal>update</goal>
+								</goals>
+								<phase>process-resources</phase>
+								<configuration>
+									<dropFirst>true</dropFirst>
+									<verbose>true</verbose>
+									<logging>debug</logging>
+									<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+									<propertyFileWillOverride>true</propertyFileWillOverride>
+									<propertyFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/liquibase-create-db-from-changelog.properties</propertyFile>
+									<changeLogFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/liquibase-changelog/create-db-from-changelog.yml</changeLogFile>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
 	</profiles>
 
 </project>

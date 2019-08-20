@@ -1,0 +1,692 @@
+[INFO] Scanning for projects...
+Downloading from nexus3: https://nexus.dev.bip.va.gov/repository/maven-public/gov/va/bip/framework/bip-framework-parentpom/2.0.3-SNAPSHOT/maven-metadata.xml
+[WARNING] Could not transfer metadata gov.va.bip.framework:bip-framework-parentpom:2.0.3-SNAPSHOT/maven-metadata.xml from/to nexus3 (https://nexus.dev.bip.va.gov/repository/maven-public): nexus.dev.bip.va.gov: nodename nor servname provided, or not known
+[WARNING] Failure to transfer gov.va.bip.framework:bip-framework-parentpom:2.0.3-SNAPSHOT/maven-metadata.xml from https://nexus.dev.bip.va.gov/repository/maven-public was cached in the local repository, resolution will not be reattempted until the update interval of nexus3 has elapsed or updates are forced. Original error: Could not transfer metadata gov.va.bip.framework:bip-framework-parentpom:2.0.3-SNAPSHOT/maven-metadata.xml from/to nexus3 (https://nexus.dev.bip.va.gov/repository/maven-public): nexus.dev.bip.va.gov: nodename nor servname provided, or not known
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] bip-reference-reactor                                              [pom]
+[INFO] bip-reference-partner-person                                       [jar]
+[INFO] bip-reference-person                                               [jar]
+[INFO] bip-reference-inttest                                              [jar]
+[INFO] bip-reference-perftest                                             [jar]
+[INFO] 
+[INFO] ---------< gov.va.bip.reference.person:bip-reference-reactor >----------
+[INFO] Building bip-reference-reactor 0.0.2-SNAPSHOT                      [1/5]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-snapshots) @ bip-reference-reactor ---
+[INFO] 
+[INFO] --- git-commit-id-plugin:2.2.6:revision (default) @ bip-reference-reactor ---
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:parse-version (parse-version) @ bip-reference-reactor ---
+[INFO] 
+[INFO] --- jacoco-maven-plugin:0.8.4:prepare-agent (prepare-agent) @ bip-reference-reactor ---
+[INFO] argLine set to -javaagent:/Users/aburkholder/.m2/repository/org/jacoco/org.jacoco.agent/0.8.4/org.jacoco.agent-0.8.4-runtime.jar=destfile=/Users/aburkholder/git/bip-reference-person/target/jacoco/jacoco.exec,append=true,excludes=**/static/features/**/*:**com.steadystate*
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:add-test-source (add-integration-test-sources) @ bip-reference-reactor ---
+[INFO] Test Source directory: /Users/aburkholder/git/bip-reference-person/src/inttest/java added.
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.6.RELEASE:build-info (build-info) @ bip-reference-reactor ---
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ bip-reference-reactor ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] gov.va.bip.reference.person:bip-reference-reactor:pom:0.0.2-SNAPSHOT
+[INFO] 
+[INFO] ------< gov.va.bip.reference.person:bip-reference-partner-person >------
+[INFO] Building bip-reference-partner-person 0.0.2-SNAPSHOT               [2/5]
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from nexus3: https://nexus.dev.bip.va.gov/repository/maven-public/gov/va/bip/framework/bip-framework-libraries/2.0.3-SNAPSHOT/maven-metadata.xml
+[WARNING] Could not transfer metadata gov.va.bip.framework:bip-framework-libraries:2.0.3-SNAPSHOT/maven-metadata.xml from/to nexus3 (https://nexus.dev.bip.va.gov/repository/maven-public): nexus.dev.bip.va.gov
+[WARNING] Failure to transfer gov.va.bip.framework:bip-framework-libraries:2.0.3-SNAPSHOT/maven-metadata.xml from https://nexus.dev.bip.va.gov/repository/maven-public was cached in the local repository, resolution will not be reattempted until the update interval of nexus3 has elapsed or updates are forced. Original error: Could not transfer metadata gov.va.bip.framework:bip-framework-libraries:2.0.3-SNAPSHOT/maven-metadata.xml from/to nexus3 (https://nexus.dev.bip.va.gov/repository/maven-public): nexus.dev.bip.va.gov
+[WARNING] Failure to transfer gov.va.bip.framework:bip-framework-parentpom:2.0.3-SNAPSHOT/maven-metadata.xml from https://nexus.dev.bip.va.gov/repository/maven-public was cached in the local repository, resolution will not be reattempted until the update interval of nexus3 has elapsed or updates are forced. Original error: Could not transfer metadata gov.va.bip.framework:bip-framework-parentpom:2.0.3-SNAPSHOT/maven-metadata.xml from/to nexus3 (https://nexus.dev.bip.va.gov/repository/maven-public): nexus.dev.bip.va.gov: nodename nor servname provided, or not known
+Downloading from nexus3: https://nexus.dev.bip.va.gov/repository/maven-public/gov/va/bip/framework/bip-framework-shared/2.0.3-SNAPSHOT/maven-metadata.xml
+[WARNING] Could not transfer metadata gov.va.bip.framework:bip-framework-shared:2.0.3-SNAPSHOT/maven-metadata.xml from/to nexus3 (https://nexus.dev.bip.va.gov/repository/maven-public): nexus.dev.bip.va.gov
+[WARNING] Failure to transfer gov.va.bip.framework:bip-framework-shared:2.0.3-SNAPSHOT/maven-metadata.xml from https://nexus.dev.bip.va.gov/repository/maven-public was cached in the local repository, resolution will not be reattempted until the update interval of nexus3 has elapsed or updates are forced. Original error: Could not transfer metadata gov.va.bip.framework:bip-framework-shared:2.0.3-SNAPSHOT/maven-metadata.xml from/to nexus3 (https://nexus.dev.bip.va.gov/repository/maven-public): nexus.dev.bip.va.gov
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-snapshots) @ bip-reference-partner-person ---
+[INFO] 
+[INFO] --- git-commit-id-plugin:2.2.6:revision (default) @ bip-reference-partner-person ---
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:parse-version (parse-version) @ bip-reference-partner-person ---
+[INFO] 
+[INFO] --- jacoco-maven-plugin:0.8.4:prepare-agent (prepare-agent) @ bip-reference-partner-person ---
+[INFO] argLine set to -javaagent:/Users/aburkholder/.m2/repository/org/jacoco/org.jacoco.agent/0.8.4/org.jacoco.agent-0.8.4-runtime.jar=destfile=/Users/aburkholder/git/bip-reference-person/bip-reference-partner-person/target/jacoco/jacoco.exec,append=true,excludes=**/static/features/**/*:**com.steadystate*
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:add-test-source (add-integration-test-sources) @ bip-reference-partner-person ---
+[INFO] Test Source directory: /Users/aburkholder/git/bip-reference-person/bip-reference-partner-person/src/inttest/java added.
+[INFO] 
+[INFO] --- jaxb2-maven-plugin:1.5:xjc (xjc-PersonService) @ bip-reference-partner-person ---
+[INFO] No changes detected in schema or binding files - skipping source generation.
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.6.RELEASE:build-info (build-info) @ bip-reference-partner-person ---
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ bip-reference-partner-person ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 7 resources
+[INFO] skip non existing resourceDirectory /Users/aburkholder/git/bip-reference-person/bip-reference-partner-person/src/main/resources/cert
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ bip-reference-partner-person ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ bip-reference-partner-person ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] gov.va.bip.reference.person:bip-reference-partner-person:jar:0.0.2-SNAPSHOT
+[INFO] +- gov.va.bip.framework:bip-framework-libraries:jar:2.0.3-SNAPSHOT:compile
+[INFO] |  +- gov.va.bip.framework:bip-framework-shared:jar:2.0.3-SNAPSHOT:compile
+[INFO] |  +- io.jsonwebtoken:jjwt:jar:0.9.1:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-security:jar:2.1.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:5.1.5.RELEASE:compile
+[INFO] |  |  \- org.springframework.security:spring-security-web:jar:5.1.5.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.1.6.RELEASE:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot:jar:2.1.6.RELEASE:compile
+[INFO] |  +- io.swagger:swagger-annotations:jar:1.5.22:compile
+[INFO] |  +- org.springframework.ws:spring-ws-security:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:5.1.8.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:5.1.5.RELEASE:compile
+[INFO] |  |  +- net.sf.ehcache:ehcache:jar:2.10.6:compile
+[INFO] |  |  +- org.apache.wss4j:wss4j-ws-security-dom:jar:2.2.0:compile
+[INFO] |  |  |  \- org.apache.wss4j:wss4j-ws-security-common:jar:2.2.0:compile
+[INFO] |  |  |     +- org.opensaml:opensaml-saml-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  +- org.opensaml:opensaml-profile-api:jar:3.3.0:compile
+[INFO] |  |  |     |  |  \- org.opensaml:opensaml-core:jar:3.3.0:compile
+[INFO] |  |  |     |  |     \- io.dropwizard.metrics:metrics-core:jar:4.0.5:compile
+[INFO] |  |  |     |  +- org.opensaml:opensaml-saml-api:jar:3.3.0:compile
+[INFO] |  |  |     |  |  +- org.opensaml:opensaml-xmlsec-api:jar:3.3.0:compile
+[INFO] |  |  |     |  |  \- org.opensaml:opensaml-soap-api:jar:3.3.0:compile
+[INFO] |  |  |     |  +- org.opensaml:opensaml-security-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  |  \- org.opensaml:opensaml-security-api:jar:3.3.0:compile
+[INFO] |  |  |     |  |     +- org.cryptacular:cryptacular:jar:1.1.1:compile
+[INFO] |  |  |     |  |     \- org.bouncycastle:bcprov-jdk15on:jar:1.54:compile
+[INFO] |  |  |     |  +- org.opensaml:opensaml-xmlsec-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  \- net.shibboleth.utilities:java-support:jar:7.3.0:compile
+[INFO] |  |  |     |     \- com.google.guava:guava:jar:19.0:compile
+[INFO] |  |  |     +- org.opensaml:opensaml-xacml-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  \- org.opensaml:opensaml-xacml-api:jar:3.3.0:compile
+[INFO] |  |  |     +- org.opensaml:opensaml-xacml-saml-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  \- org.opensaml:opensaml-xacml-saml-api:jar:3.3.0:compile
+[INFO] |  |  |     +- org.jasypt:jasypt:jar:1.9.2:compile
+[INFO] |  |  |     \- org.apache.geronimo.javamail:geronimo-javamail_1.4_mail:jar:1.8.4:compile
+[INFO] |  |  \- org.apache.santuario:xmlsec:jar:2.1.0:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.9:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.9.9:compile
+[INFO] |  +- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+[INFO] |  +- org.apache.httpcomponents:httpclient:jar:4.5.9:compile
+[INFO] |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.11:compile
+[INFO] |  |  +- commons-logging:commons-logging:jar:1.2:compile
+[INFO] |  |  \- commons-codec:commons-codec:jar:1.11:compile
+[INFO] |  +- org.apache.ws.commons.axiom:axiom-impl:jar:1.2.22:compile
+[INFO] |  |  +- org.apache.ws.commons.axiom:axiom-api:jar:1.2.22:compile
+[INFO] |  |  |  +- org.apache.geronimo.specs:geronimo-activation_1.1_spec:jar:1.1:compile
+[INFO] |  |  |  +- jaxen:jaxen:jar:1.1.6:compile
+[INFO] |  |  |  +- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0.1:compile
+[INFO] |  |  |  \- org.apache.james:apache-mime4j-core:jar:0.7.2:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.2.0:compile
+[INFO] |  |     \- org.codehaus.woodstox:stax2-api:jar:3.1.1:compile
+[INFO] |  +- org.apache.ws.security:wss4j:jar:1.6.19:compile
+[INFO] |  |  \- org.opensaml:opensaml:jar:2.5.1-1:compile
+[INFO] |  |     \- org.opensaml:openws:jar:1.4.2-1:compile
+[INFO] |  |        \- org.opensaml:xmltooling:jar:1.3.2-1:compile
+[INFO] |  |           \- joda-time:joda-time:jar:2.10.2:compile
+[INFO] |  +- ch.qos.logback:logback-classic:jar:1.2.3:compile
+[INFO] |  |  \- ch.qos.logback:logback-core:jar:1.2.3:compile
+[INFO] |  +- net.logstash.logback:logstash-logback-encoder:jar:6.1:compile
+[INFO] |  +- com.github.lalyos:jfiglet:jar:0.0.8:compile
+[INFO] |  +- org.yaml:snakeyaml:jar:1.23:compile
+[INFO] |  \- org.springframework.ws:spring-ws-test:jar:3.0.7.RELEASE:compile
+[INFO] |     +- org.springframework:spring-context:jar:5.1.8.RELEASE:compile
+[INFO] |     \- xmlunit:xmlunit:jar:1.5:compile
+[INFO] +- org.springframework:spring-web:jar:5.1.8.RELEASE:compile
+[INFO] |  +- org.springframework:spring-beans:jar:5.1.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-core:jar:5.1.8.RELEASE:compile
+[INFO] |     \- org.springframework:spring-jcl:jar:5.1.8.RELEASE:compile
+[INFO] +- org.springframework.ws:spring-ws-core:jar:3.0.7.RELEASE:compile
+[INFO] |  +- org.springframework.ws:spring-xml:jar:3.0.7.RELEASE:compile
+[INFO] |  +- org.springframework:spring-aop:jar:5.1.8.RELEASE:compile
+[INFO] |  +- org.springframework:spring-oxm:jar:5.1.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-webmvc:jar:5.1.8.RELEASE:compile
+[INFO] |     \- org.springframework:spring-expression:jar:5.1.8.RELEASE:compile
+[INFO] +- org.aspectj:aspectjtools:jar:1.9.4:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-validation:jar:2.1.6.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.1.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.1.6.RELEASE:compile
+[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.11.2:compile
+[INFO] |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.11.2:compile
+[INFO] |  |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.26:compile
+[INFO] |  |  \- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.21:compile
+[INFO] |  \- org.hibernate.validator:hibernate-validator:jar:6.0.17.Final:compile
+[INFO] |     +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |     +- org.jboss.logging:jboss-logging:jar:3.3.2.Final:compile
+[INFO] |     \- com.fasterxml:classmate:jar:1.4.0:compile
+[INFO] +- org.glassfish.web:el-impl:jar:2.2:compile
+[INFO] |  \- javax.el:el-api:jar:2.2:compile
+[INFO] +- org.apache.commons:commons-lang3:jar:3.9:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.26:compile
+[INFO] +- junit:junit:jar:4.12:compile
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:compile
+[INFO] +- org.mockito:mockito-core:jar:2.28.2:test
+[INFO] |  +- net.bytebuddy:byte-buddy:jar:1.9.13:test
+[INFO] |  +- net.bytebuddy:byte-buddy-agent:jar:1.9.13:test
+[INFO] |  \- org.objenesis:objenesis:jar:2.6:test
+[INFO] \- org.springframework:spring-test:jar:5.1.8.RELEASE:compile
+[INFO] 
+[INFO] ----------< gov.va.bip.reference.person:bip-reference-person >----------
+[INFO] Building bip-reference-person 0.0.2-SNAPSHOT                       [3/5]
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from nexus3: https://nexus.dev.bip.va.gov/repository/maven-public/gov/va/bip/framework/bip-framework-autoconfigure/2.0.3-SNAPSHOT/maven-metadata.xml
+[WARNING] Could not transfer metadata gov.va.bip.framework:bip-framework-autoconfigure:2.0.3-SNAPSHOT/maven-metadata.xml from/to nexus3 (https://nexus.dev.bip.va.gov/repository/maven-public): nexus.dev.bip.va.gov
+[WARNING] Failure to transfer gov.va.bip.framework:bip-framework-autoconfigure:2.0.3-SNAPSHOT/maven-metadata.xml from https://nexus.dev.bip.va.gov/repository/maven-public was cached in the local repository, resolution will not be reattempted until the update interval of nexus3 has elapsed or updates are forced. Original error: Could not transfer metadata gov.va.bip.framework:bip-framework-autoconfigure:2.0.3-SNAPSHOT/maven-metadata.xml from/to nexus3 (https://nexus.dev.bip.va.gov/repository/maven-public): nexus.dev.bip.va.gov
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-snapshots) @ bip-reference-person ---
+[INFO] 
+[INFO] --- git-commit-id-plugin:2.2.6:revision (default) @ bip-reference-person ---
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:unpack (download-swagger-ui-webjar) @ bip-reference-person ---
+[INFO] Configured Artifact: org.webjars:swagger-ui:3.22.2:jar
+[INFO] Unpacking /Users/aburkholder/.m2/repository/org/webjars/swagger-ui/3.22.2/swagger-ui-3.22.2.jar to /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/classes with includes "" and excludes ""
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:parse-version (parse-version) @ bip-reference-person ---
+[INFO] 
+[INFO] --- jacoco-maven-plugin:0.8.4:prepare-agent (prepare-agent) @ bip-reference-person ---
+[INFO] argLine set to -javaagent:/Users/aburkholder/.m2/repository/org/jacoco/org.jacoco.agent/0.8.4/org.jacoco.agent-0.8.4-runtime.jar=destfile=/Users/aburkholder/git/bip-reference-person/bip-reference-person/target/jacoco/jacoco.exec,append=true,excludes=**/static/features/**/*:**com.steadystate*
+[INFO] 
+[INFO] --- openapi-generator-maven-plugin:3.3.4:generate (generate-openapi-spec) @ bip-reference-person ---
+[WARNING] 'host' (OAS 2.0) or 'servers' (OAS 3.0) not defined in the spec. Default to [http://localhost] for server URL [http://localhost/]
+[WARNING] 'host' (OAS 2.0) or 'servers' (OAS 3.0) not defined in the spec. Default to [http://localhost] for server URL [http://localhost/]
+[WARNING] Multiple schemas found, returning only the first one
+[WARNING] Multiple schemas found, returning only the first one
+[INFO] Model inline_object (marked as unused due to form parameters) is generated due to skipFormModel=false (default)
+[WARNING] Multiple schemas found, returning only the first one
+[WARNING] Multiple schemas found, returning only the first one
+[WARNING] 'host' (OAS 2.0) or 'servers' (OAS 3.0) not defined in the spec. Default to [http://localhost] for server URL [http://localhost/]
+[INFO] writing file /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/classes/META-INF/resources/webjars/swagger-ui/README.md
+[INFO] writing file /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/classes/META-INF/resources/webjars/swagger-ui/.openapi-generator/VERSION
+[INFO] wrote file to /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/classes/META-INF/resources/webjars/swagger-ui/openapi.json
+[INFO] 
+[INFO] --- openapi-generator-maven-plugin:3.3.4:generate (generate-openapi-reference-person) @ bip-reference-person ---
+[INFO] ----------------------------------
+[INFO] has JAVA8
+[INFO] Environment variable JAVA_POST_PROCESS_FILE not defined so the Java code may not be properly formatted. To define it, try 'export JAVA_POST_PROCESS_FILE="/usr/local/bin/clang-format -i"' (Linux/Mac)
+[INFO] NOTE: To enable file post-processing, 'enablePostProcessFile' must be set to `true` (--enable-post-process-file for CLI).
+[INFO] Invoker Package Name, originally not set, is now dervied from api package name: gov.va.bip.reference.person
+[WARNING] 'host' (OAS 2.0) or 'servers' (OAS 3.0) not defined in the spec. Default to [http://localhost] for server URL [http://localhost/]
+[WARNING] 'host' (OAS 2.0) or 'servers' (OAS 3.0) not defined in the spec. Default to [http://localhost] for server URL [http://localhost/]
+[WARNING] 'host' (OAS 2.0) or 'servers' (OAS 3.0) not defined in the spec. Default to [http://localhost] for server URL [http://localhost/]
+[WARNING] Multiple schemas found, returning only the first one
+[WARNING] Multiple schemas found, returning only the first one
+[INFO] Model inline_object (marked as unused due to form parameters) is generated due to skipFormModel=false (default)
+[INFO] writing file /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/generated-sources/openapi/gov/va/bip/reference/person/api/model/v1/InlineObject.java
+[INFO] writing file /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/generated-sources/openapi/gov/va/bip/reference/person/api/model/v1/PersonInfo.java
+[INFO] writing file /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/generated-sources/openapi/gov/va/bip/reference/person/api/model/v1/PersonInfoRequest.java
+[INFO] writing file /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/generated-sources/openapi/gov/va/bip/reference/person/api/model/v1/PersonInfoResponse.java
+[WARNING] Multiple schemas found, returning only the first one
+[WARNING] Multiple schemas found, returning only the first one
+[INFO] writing file /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/generated-sources/openapi/gov/va/bip/reference/person/api/PersonRestClientTesterApi.java
+[INFO] writing file /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/generated-sources/openapi/gov/va/bip/reference/person/api/ReferencePersonApi.java
+[INFO] Skipped generation of /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/generated-sources/openapi/gov/va/bip/reference/person/api/TokenResourceApi.java due to rule in .openapi-generator-ignore
+[WARNING] 'host' (OAS 2.0) or 'servers' (OAS 3.0) not defined in the spec. Default to [http://localhost] for server URL [http://localhost/]
+[INFO] 
+[INFO] --- templating-maven-plugin:1.0.0:filter-sources (filtering-java-templates) @ bip-reference-person ---
+[INFO] Coping files with filtering to temporary directory.
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] No files needs to be copied to output directory. Up to date: /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/generated-sources/java-template
+[INFO] Source directory: /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/generated-sources/java-template added.
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:add-test-source (add-integration-test-sources) @ bip-reference-person ---
+[INFO] Test Source directory: /Users/aburkholder/git/bip-reference-person/bip-reference-person/src/inttest/java added.
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:add-source (add-generated-source) @ bip-reference-person ---
+[INFO] Source directory: /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/generated-sources/openapi added.
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:add-source (add-source) @ bip-reference-person ---
+[INFO] Source directory: /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/generated-sources/java-template added.
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.6.RELEASE:build-info (build-info) @ bip-reference-person ---
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ bip-reference-person ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 14 resources
+[INFO] skip non existing resourceDirectory /Users/aburkholder/git/bip-reference-person/bip-reference-person/src/main/resources/cert
+[INFO] Copying 4 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ bip-reference-person ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 38 source files to /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/classes
+[INFO] 
+[INFO] --- maven-antrun-plugin:1.8:run (copy-delete-swaggerui) @ bip-reference-person ---
+[INFO] Executing tasks
+
+main:
+     [copy] Copying 18 files to /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/classes/META-INF/resources/webjars/swagger-ui
+   [delete] Deleting directory /Users/aburkholder/git/bip-reference-person/bip-reference-person/target/classes/META-INF/resources/webjars/swagger-ui/3.22.2
+[INFO] Executed tasks
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ bip-reference-person ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] gov.va.bip.reference.person:bip-reference-person:jar:0.0.2-SNAPSHOT
+[INFO] +- org.liquibase:liquibase-core:jar:3.6.3:compile
+[INFO] |  +- org.yaml:snakeyaml:jar:1.23:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.26:compile
+[INFO] |  \- ch.qos.logback:logback-classic:jar:1.2.3:compile
+[INFO] |     \- ch.qos.logback:logback-core:jar:1.2.3:compile
+[INFO] +- org.apache.logging.log4j:log4j-liquibase:jar:2.11.2:compile
+[INFO] |  \- org.apache.logging.log4j:log4j-api:jar:2.11.2:compile
+[INFO] +- org.postgresql:postgresql:jar:42.2.5:compile
+[INFO] +- gov.va.bip.framework:bip-framework-libraries:jar:2.0.3-SNAPSHOT:compile
+[INFO] |  +- gov.va.bip.framework:bip-framework-shared:jar:2.0.3-SNAPSHOT:compile
+[INFO] |  +- io.jsonwebtoken:jjwt:jar:0.9.1:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-security:jar:2.1.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:5.1.5.RELEASE:compile
+[INFO] |  |  \- org.springframework.security:spring-security-web:jar:5.1.5.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.1.6.RELEASE:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot:jar:2.1.6.RELEASE:compile
+[INFO] |  +- io.swagger:swagger-annotations:jar:1.5.22:compile
+[INFO] |  +- org.springframework.ws:spring-ws-security:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.ws:spring-xml:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:5.1.8.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:5.1.8.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:5.1.5.RELEASE:compile
+[INFO] |  |  +- net.sf.ehcache:ehcache:jar:2.10.6:compile
+[INFO] |  |  +- org.apache.wss4j:wss4j-ws-security-dom:jar:2.2.0:compile
+[INFO] |  |  |  \- org.apache.wss4j:wss4j-ws-security-common:jar:2.2.0:compile
+[INFO] |  |  |     +- org.opensaml:opensaml-saml-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  +- org.opensaml:opensaml-profile-api:jar:3.3.0:compile
+[INFO] |  |  |     |  |  \- org.opensaml:opensaml-core:jar:3.3.0:compile
+[INFO] |  |  |     |  |     \- io.dropwizard.metrics:metrics-core:jar:4.0.5:compile
+[INFO] |  |  |     |  +- org.opensaml:opensaml-saml-api:jar:3.3.0:compile
+[INFO] |  |  |     |  |  +- org.opensaml:opensaml-xmlsec-api:jar:3.3.0:compile
+[INFO] |  |  |     |  |  \- org.opensaml:opensaml-soap-api:jar:3.3.0:compile
+[INFO] |  |  |     |  +- org.opensaml:opensaml-security-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  |  \- org.opensaml:opensaml-security-api:jar:3.3.0:compile
+[INFO] |  |  |     |  |     \- org.cryptacular:cryptacular:jar:1.1.1:compile
+[INFO] |  |  |     |  +- org.opensaml:opensaml-xmlsec-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  \- net.shibboleth.utilities:java-support:jar:7.3.0:compile
+[INFO] |  |  |     +- org.opensaml:opensaml-xacml-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  \- org.opensaml:opensaml-xacml-api:jar:3.3.0:compile
+[INFO] |  |  |     +- org.opensaml:opensaml-xacml-saml-impl:jar:3.3.0:compile
+[INFO] |  |  |     |  \- org.opensaml:opensaml-xacml-saml-api:jar:3.3.0:compile
+[INFO] |  |  |     +- org.jasypt:jasypt:jar:1.9.2:compile
+[INFO] |  |  |     \- org.apache.geronimo.javamail:geronimo-javamail_1.4_mail:jar:1.8.4:compile
+[INFO] |  |  \- org.apache.santuario:xmlsec:jar:2.1.0:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.9:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.9.9:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-validation:jar:2.1.6.RELEASE:compile
+[INFO] |  +- org.glassfish.web:el-impl:jar:2.2:compile
+[INFO] |  |  \- javax.el:el-api:jar:2.2:compile
+[INFO] |  +- commons-io:commons-io:jar:2.6:compile
+[INFO] |  +- org.aspectj:aspectjtools:jar:1.9.4:compile
+[INFO] |  +- org.apache.httpcomponents:httpclient:jar:4.5.9:compile
+[INFO] |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.11:compile
+[INFO] |  |  +- commons-logging:commons-logging:jar:1.2:compile
+[INFO] |  |  \- commons-codec:commons-codec:jar:1.11:compile
+[INFO] |  +- org.apache.ws.commons.axiom:axiom-impl:jar:1.2.22:compile
+[INFO] |  |  +- org.apache.ws.commons.axiom:axiom-api:jar:1.2.22:compile
+[INFO] |  |  |  +- org.apache.geronimo.specs:geronimo-activation_1.1_spec:jar:1.1:compile
+[INFO] |  |  |  +- jaxen:jaxen:jar:1.1.6:compile
+[INFO] |  |  |  +- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0.1:compile
+[INFO] |  |  |  \- org.apache.james:apache-mime4j-core:jar:0.7.2:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.2.0:compile
+[INFO] |  |     \- org.codehaus.woodstox:stax2-api:jar:3.1.1:compile
+[INFO] |  +- org.apache.ws.security:wss4j:jar:1.6.19:compile
+[INFO] |  |  \- org.opensaml:opensaml:jar:2.5.1-1:compile
+[INFO] |  |     \- org.opensaml:openws:jar:1.4.2-1:compile
+[INFO] |  |        \- org.opensaml:xmltooling:jar:1.3.2-1:compile
+[INFO] |  +- com.github.lalyos:jfiglet:jar:0.0.8:compile
+[INFO] |  +- org.springframework.ws:spring-ws-core:jar:3.0.7.RELEASE:compile
+[INFO] |  |  \- org.springframework:spring-oxm:jar:5.1.8.RELEASE:compile
+[INFO] |  \- org.springframework.ws:spring-ws-test:jar:3.0.7.RELEASE:compile
+[INFO] |     +- org.springframework:spring-context:jar:5.1.8.RELEASE:compile
+[INFO] |     \- xmlunit:xmlunit:jar:1.5:compile
+[INFO] +- gov.va.bip.framework:bip-framework-autoconfigure:jar:2.0.3-SNAPSHOT:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-commons:jar:2.1.2.RELEASE:compile
+[INFO] |  |  \- org.springframework.security:spring-security-crypto:jar:5.1.5.RELEASE:compile
+[INFO] |  +- com.netflix.netflix-commons:netflix-commons-util:jar:0.3.0:compile
+[INFO] |  |  \- javax.inject:javax.inject:jar:1:runtime
+[INFO] |  +- io.micrometer:micrometer-core:jar:1.1.5:compile
+[INFO] |  |  +- org.hdrhistogram:HdrHistogram:jar:2.1.9:compile
+[INFO] |  |  \- org.latencyutils:LatencyUtils:jar:2.0.3:compile
+[INFO] |  +- io.micrometer:micrometer-registry-prometheus:jar:1.1.5:runtime
+[INFO] |  |  \- io.prometheus:simpleclient_common:jar:0.5.0:runtime
+[INFO] |  |     \- io.prometheus:simpleclient:jar:0.5.0:runtime
+[INFO] |  +- org.springframework.boot:spring-boot-starter-data-redis:jar:2.1.6.RELEASE:compile
+[INFO] |  |  \- org.springframework.data:spring-data-redis:jar:2.1.9.RELEASE:compile
+[INFO] |  |     \- org.springframework.data:spring-data-keyvalue:jar:2.1.9.RELEASE:compile
+[INFO] |  +- redis.clients:jedis:jar:2.9.3:compile
+[INFO] |  |  \- org.apache.commons:commons-pool2:jar:2.6.2:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-cache:jar:2.1.6.RELEASE:compile
+[INFO] |  |  \- org.springframework:spring-context-support:jar:5.1.8.RELEASE:compile
+[INFO] |  \- com.github.kstyrc:embedded-redis:jar:0.6:compile
+[INFO] +- gov.va.bip.reference.person:bip-reference-partner-person:jar:0.0.2-SNAPSHOT:compile
+[INFO] |  +- org.springframework:spring-web:jar:5.1.8.RELEASE:compile
+[INFO] |  +- junit:junit:jar:4.12:compile
+[INFO] |  \- org.springframework:spring-test:jar:5.1.8.RELEASE:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:2.1.6.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.1.6.RELEASE:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot-starter-logging:jar:2.1.6.RELEASE:compile
+[INFO] |  |     +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.11.2:compile
+[INFO] |  |     \- org.slf4j:jul-to-slf4j:jar:1.7.26:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-json:jar:2.1.6.RELEASE:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.9.9:compile
+[INFO] |  |  \- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.9.9:compile
+[INFO] |  +- org.hibernate.validator:hibernate-validator:jar:6.0.17.Final:compile
+[INFO] |  |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  |  +- org.jboss.logging:jboss-logging:jar:3.3.2.Final:compile
+[INFO] |  |  \- com.fasterxml:classmate:jar:1.4.0:compile
+[INFO] |  \- org.springframework:spring-webmvc:jar:5.1.8.RELEASE:compile
+[INFO] |     \- org.springframework:spring-expression:jar:5.1.8.RELEASE:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-actuator:jar:2.1.6.RELEASE:compile
+[INFO] |  \- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.1.6.RELEASE:compile
+[INFO] |     \- org.springframework.boot:spring-boot-actuator:jar:2.1.6.RELEASE:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.1.6.RELEASE:compile
+[INFO] |  +- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.21:compile
+[INFO] |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.21:compile
+[INFO] |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.21:compile
+[INFO] +- org.springframework.boot:spring-boot-configuration-processor:jar:2.1.6.RELEASE:compile (optional) 
+[INFO] +- org.springframework.boot:spring-boot-starter-aop:jar:2.1.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-aop:jar:5.1.8.RELEASE:compile
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.9.4:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-data-jpa:jar:2.1.6.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-jdbc:jar:2.1.6.RELEASE:compile
+[INFO] |  |  +- com.zaxxer:HikariCP:jar:3.2.0:compile
+[INFO] |  |  \- org.springframework:spring-jdbc:jar:5.1.8.RELEASE:compile
+[INFO] |  +- javax.transaction:javax.transaction-api:jar:1.3:compile
+[INFO] |  +- javax.xml.bind:jaxb-api:jar:2.3.1:compile
+[INFO] |  |  \- javax.activation:javax.activation-api:jar:1.2.0:compile
+[INFO] |  +- org.hibernate:hibernate-core:jar:5.3.10.Final:compile
+[INFO] |  |  +- javax.persistence:javax.persistence-api:jar:2.2:compile
+[INFO] |  |  +- org.javassist:javassist:jar:3.23.2-GA:compile
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.9.13:compile
+[INFO] |  |  +- antlr:antlr:jar:2.7.7:compile
+[INFO] |  |  +- org.jboss:jandex:jar:2.0.5.Final:compile
+[INFO] |  |  +- org.dom4j:dom4j:jar:2.1.1:compile
+[INFO] |  |  \- org.hibernate.common:hibernate-commons-annotations:jar:5.0.4.Final:compile
+[INFO] |  +- org.springframework.data:spring-data-jpa:jar:2.1.9.RELEASE:compile
+[INFO] |  |  +- org.springframework.data:spring-data-commons:jar:2.1.9.RELEASE:compile
+[INFO] |  |  \- org.springframework:spring-orm:jar:5.1.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-aspects:jar:5.1.8.RELEASE:compile
+[INFO] +- org.springframework.cloud:spring-cloud-starter-openfeign:jar:2.1.2.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-starter:jar:2.1.2.RELEASE:compile
+[INFO] |  |  +- org.springframework.cloud:spring-cloud-context:jar:2.1.2.RELEASE:compile
+[INFO] |  |  \- org.springframework.security:spring-security-rsa:jar:1.0.7.RELEASE:compile
+[INFO] |  |     \- org.bouncycastle:bcpkix-jdk15on:jar:1.60:compile
+[INFO] |  |        \- org.bouncycastle:bcprov-jdk15on:jar:1.60:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-openfeign-core:jar:2.1.2.RELEASE:compile
+[INFO] |  |  \- io.github.openfeign.form:feign-form-spring:jar:3.8.0:compile
+[INFO] |  |     +- io.github.openfeign.form:feign-form:jar:3.8.0:compile
+[INFO] |  |     \- commons-fileupload:commons-fileupload:jar:1.4:compile
+[INFO] |  +- io.github.openfeign:feign-core:jar:10.2.3:compile
+[INFO] |  +- io.github.openfeign:feign-slf4j:jar:10.2.3:compile
+[INFO] |  \- io.github.openfeign:feign-hystrix:jar:10.2.3:compile
+[INFO] |     \- com.netflix.archaius:archaius-core:jar:0.7.6:compile
+[INFO] +- org.springframework.cloud:spring-cloud-starter-netflix-hystrix:jar:2.1.2.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-netflix-hystrix:jar:2.1.2.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-netflix-ribbon:jar:2.1.2.RELEASE:compile
+[INFO] |  |  \- org.springframework.cloud:spring-cloud-netflix-archaius:jar:2.1.2.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-starter-netflix-archaius:jar:2.1.2.RELEASE:compile
+[INFO] |  |  \- commons-configuration:commons-configuration:jar:1.8:compile
+[INFO] |  +- com.netflix.hystrix:hystrix-core:jar:1.5.18:compile
+[INFO] |  +- com.netflix.hystrix:hystrix-serialization:jar:1.5.18:compile
+[INFO] |  |  \- com.fasterxml.jackson.module:jackson-module-afterburner:jar:2.9.9:runtime
+[INFO] |  +- com.netflix.hystrix:hystrix-metrics-event-stream:jar:1.5.18:compile
+[INFO] |  +- com.netflix.hystrix:hystrix-javanica:jar:1.5.18:compile
+[INFO] |  |  \- org.ow2.asm:asm:jar:5.0.4:runtime
+[INFO] |  \- io.reactivex:rxjava-reactive-streams:jar:1.2.1:compile
+[INFO] |     \- org.reactivestreams:reactive-streams:jar:1.0.2:compile
+[INFO] +- org.springframework.cloud:spring-cloud-starter-netflix-ribbon:jar:2.1.2.RELEASE:compile
+[INFO] |  +- com.netflix.ribbon:ribbon:jar:2.3.0:compile
+[INFO] |  |  +- com.netflix.ribbon:ribbon-transport:jar:2.3.0:runtime
+[INFO] |  |  |  +- io.reactivex:rxnetty-contexts:jar:0.4.9:runtime
+[INFO] |  |  |  \- io.reactivex:rxnetty-servo:jar:0.4.9:runtime
+[INFO] |  |  \- io.reactivex:rxnetty:jar:0.4.9:runtime
+[INFO] |  +- com.netflix.ribbon:ribbon-core:jar:2.3.0:compile
+[INFO] |  |  \- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- com.netflix.ribbon:ribbon-httpclient:jar:2.3.0:compile
+[INFO] |  |  +- commons-collections:commons-collections:jar:3.2.2:runtime
+[INFO] |  |  +- com.sun.jersey:jersey-client:jar:1.19.1:runtime
+[INFO] |  |  |  \- com.sun.jersey:jersey-core:jar:1.19.1:runtime
+[INFO] |  |  |     \- javax.ws.rs:jsr311-api:jar:1.1.1:runtime
+[INFO] |  |  +- com.sun.jersey.contribs:jersey-apache-client4:jar:1.19.1:runtime
+[INFO] |  |  \- com.netflix.servo:servo-core:jar:0.12.21:runtime
+[INFO] |  +- com.netflix.ribbon:ribbon-loadbalancer:jar:2.3.0:compile
+[INFO] |  |  \- com.netflix.netflix-commons:netflix-statistics:jar:0.1.1:runtime
+[INFO] |  \- io.reactivex:rxjava:jar:1.3.8:compile
+[INFO] +- org.springframework.cloud:spring-cloud-starter-bus-amqp:jar:2.1.2.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-starter-stream-rabbit:jar:2.1.3.RELEASE:compile
+[INFO] |  \- org.springframework.cloud:spring-cloud-bus:jar:2.1.2.RELEASE:compile
+[INFO] +- org.springframework.cloud:spring-cloud-starter-sleuth:jar:2.1.2.RELEASE:compile
+[INFO] |  \- org.springframework.cloud:spring-cloud-sleuth-core:jar:2.1.2.RELEASE:compile
+[INFO] |     +- org.aspectj:aspectjrt:jar:1.9.4:compile
+[INFO] |     +- io.zipkin.brave:brave:jar:5.6.6:compile
+[INFO] |     |  +- io.zipkin.zipkin2:zipkin:jar:2.14.2:compile
+[INFO] |     |  \- io.zipkin.reporter2:zipkin-reporter:jar:2.8.4:compile
+[INFO] |     +- io.zipkin.brave:brave-context-log4j2:jar:5.6.6:compile
+[INFO] |     +- io.zipkin.brave:brave-instrumentation-spring-web:jar:5.6.6:compile
+[INFO] |     |  \- io.zipkin.brave:brave-instrumentation-http:jar:5.6.6:compile
+[INFO] |     +- io.zipkin.brave:brave-instrumentation-spring-rabbit:jar:5.6.6:compile
+[INFO] |     +- io.zipkin.brave:brave-instrumentation-kafka-clients:jar:5.6.6:compile
+[INFO] |     +- io.zipkin.brave:brave-instrumentation-httpclient:jar:5.6.6:compile
+[INFO] |     +- io.zipkin.brave:brave-instrumentation-httpasyncclient:jar:5.6.6:compile
+[INFO] |     +- io.zipkin.brave:brave-instrumentation-spring-webmvc:jar:5.6.6:compile
+[INFO] |     |  \- io.zipkin.brave:brave-instrumentation-servlet:jar:5.6.6:compile
+[INFO] |     \- io.zipkin.brave:brave-instrumentation-jms:jar:5.6.6:compile
+[INFO] +- org.springframework.cloud:spring-cloud-stream-binder-rabbit:jar:2.1.3.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-stream-binder-rabbit-core:jar:2.1.3.RELEASE:compile
+[INFO] |  |  \- com.rabbitmq:http-client:jar:2.1.0.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-stream:jar:2.1.3.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-messaging:jar:5.1.8.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tuple:jar:1.0.0.RELEASE:compile
+[INFO] |  |  |  \- com.esotericsoftware:kryo-shaded:jar:3.0.3:compile
+[INFO] |  |  |     \- com.esotericsoftware:minlog:jar:1.3.0:compile
+[INFO] |  |  +- org.springframework.integration:spring-integration-tuple:jar:1.0.0.RELEASE:compile
+[INFO] |  |  \- org.springframework.cloud:spring-cloud-function-context:jar:2.0.2.RELEASE:compile
+[INFO] |  |     \- org.springframework.cloud:spring-cloud-function-core:jar:2.0.2.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-amqp:jar:2.1.6.RELEASE:compile
+[INFO] |  |  \- org.springframework.amqp:spring-rabbit:jar:2.1.7.RELEASE:compile
+[INFO] |  |     +- org.springframework.amqp:spring-amqp:jar:2.1.7.RELEASE:compile
+[INFO] |  |     \- com.rabbitmq:amqp-client:jar:5.4.3:compile
+[INFO] |  +- org.springframework.integration:spring-integration-amqp:jar:5.1.6.RELEASE:compile
+[INFO] |  +- org.springframework.integration:spring-integration-core:jar:5.1.6.RELEASE:compile
+[INFO] |  |  \- io.projectreactor:reactor-core:jar:3.2.10.RELEASE:compile
+[INFO] |  \- org.springframework.integration:spring-integration-jmx:jar:5.1.6.RELEASE:compile
+[INFO] +- org.springframework.retry:spring-retry:jar:1.2.4.RELEASE:compile
+[INFO] |  \- org.springframework:spring-core:jar:5.1.8.RELEASE:compile
+[INFO] |     \- org.springframework:spring-jcl:jar:5.1.8.RELEASE:compile
+[INFO] +- org.springframework.cloud:spring-cloud-vault-config-consul:jar:2.1.2.RELEASE:compile
+[INFO] |  \- org.springframework.cloud:spring-cloud-vault-config:jar:2.1.2.RELEASE:compile
+[INFO] |     \- org.springframework.vault:spring-vault-core:jar:2.1.2.RELEASE:compile
+[INFO] +- org.springframework.cloud:spring-cloud-starter-consul-config:jar:2.1.2.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-starter-consul:jar:2.1.2.RELEASE:compile
+[INFO] |  |  +- org.springframework.cloud:spring-cloud-consul-core:jar:2.1.2.RELEASE:compile
+[INFO] |  |  +- com.ecwid.consul:consul-api:jar:1.4.1:compile
+[INFO] |  |  \- com.google.code.gson:gson:jar:2.8.5:compile
+[INFO] |  \- org.springframework.cloud:spring-cloud-consul-config:jar:2.1.2.RELEASE:compile
+[INFO] +- org.springframework.cloud:spring-cloud-starter-consul-all:jar:2.1.2.RELEASE:compile
+[INFO] |  +- org.springframework.cloud:spring-cloud-starter-consul-bus:jar:2.1.2.RELEASE:compile
+[INFO] |  |  \- org.springframework.cloud:spring-cloud-consul-binder:jar:2.1.2.RELEASE:compile
+[INFO] |  \- org.springframework.cloud:spring-cloud-starter-consul-discovery:jar:2.1.2.RELEASE:compile
+[INFO] |     +- org.springframework.cloud:spring-cloud-consul-discovery:jar:2.1.2.RELEASE:compile
+[INFO] |     \- joda-time:joda-time:jar:2.10.2:compile
+[INFO] +- net.logstash.logback:logstash-logback-encoder:jar:6.1:compile
+[INFO] +- org.codehaus.janino:janino:jar:3.0.13:compile
+[INFO] |  \- org.codehaus.janino:commons-compiler:jar:3.0.13:compile
+[INFO] +- com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:jar:2.9.9:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:compile
+[INFO] +- com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:jar:2.9.9:compile
+[INFO] +- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.9.9:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+[INFO] +- org.openapitools:openapi-generator:jar:3.3.4:compile
+[INFO] |  +- io.swagger.core.v3:swagger-core:jar:2.0.4:compile
+[INFO] |  |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.9.9:compile
+[INFO] |  |  +- io.swagger.core.v3:swagger-annotations:jar:2.0.4:compile
+[INFO] |  |  \- io.swagger.core.v3:swagger-models:jar:2.0.4:compile
+[INFO] |  +- io.swagger.parser.v3:swagger-parser:jar:2.0.4:compile
+[INFO] |  |  +- io.swagger.parser.v3:swagger-parser-v2-converter:jar:2.0.4:compile
+[INFO] |  |  |  +- io.swagger:swagger-parser:jar:1.0.38:compile
+[INFO] |  |  |  |  \- io.swagger:swagger-core:jar:1.5.21:compile
+[INFO] |  |  |  |     \- io.swagger:swagger-models:jar:1.5.21:compile
+[INFO] |  |  |  +- io.swagger:swagger-compat-spec-parser:jar:1.0.38:compile
+[INFO] |  |  |  |  +- com.github.java-json-tools:json-schema-validator:jar:2.2.8:compile
+[INFO] |  |  |  |  |  +- com.github.java-json-tools:json-schema-core:jar:1.2.8:compile
+[INFO] |  |  |  |  |  |  +- org.mozilla:rhino:jar:1.7R4:compile
+[INFO] |  |  |  |  |  |  \- com.github.fge:uri-template:jar:0.9:compile
+[INFO] |  |  |  |  |  +- javax.mail:mailapi:jar:1.4.3:compile
+[INFO] |  |  |  |  |  |  \- javax.activation:activation:jar:1.1:compile
+[INFO] |  |  |  |  |  +- com.googlecode.libphonenumber:libphonenumber:jar:8.0.0:compile
+[INFO] |  |  |  |  |  \- net.sf.jopt-simple:jopt-simple:jar:5.0.3:compile
+[INFO] |  |  |  |  \- com.github.fge:json-patch:jar:1.6:compile
+[INFO] |  |  |  |     \- com.github.fge:jackson-coreutils:jar:1.6:compile
+[INFO] |  |  |  |        \- com.github.fge:msg-simple:jar:1.1:compile
+[INFO] |  |  |  |           \- com.github.fge:btf:jar:1.2:compile
+[INFO] |  |  |  \- io.swagger.parser.v3:swagger-parser-core:jar:2.0.4:compile
+[INFO] |  |  \- io.swagger.parser.v3:swagger-parser-v3:jar:2.0.4:compile
+[INFO] |  +- com.samskivert:jmustache:jar:1.14:compile
+[INFO] |  +- org.slf4j:slf4j-ext:jar:1.7.26:compile
+[INFO] |  +- commons-cli:commons-cli:jar:1.2:compile
+[INFO] |  +- com.google.guava:guava:jar:26.0-jre:compile
+[INFO] |  |  +- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] |  |  +- org.checkerframework:checker-qual:jar:2.5.2:compile
+[INFO] |  |  +- com.google.errorprone:error_prone_annotations:jar:2.1.3:compile
+[INFO] |  |  +- com.google.j2objc:j2objc-annotations:jar:1.1:compile
+[INFO] |  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.14:compile
+[INFO] |  \- com.atlassian.commonmark:commonmark:jar:0.11.0:compile
+[INFO] +- org.jolokia:jolokia-core:jar:1.6.1:compile
+[INFO] |  \- com.googlecode.json-simple:json-simple:jar:1.1.1:compile
+[INFO] +- org.apache.commons:commons-lang3:jar:3.9:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-test:jar:2.1.6.RELEASE:test
+[INFO] |  +- org.springframework.boot:spring-boot-test:jar:2.1.6.RELEASE:test
+[INFO] |  +- org.springframework.boot:spring-boot-test-autoconfigure:jar:2.1.6.RELEASE:test
+[INFO] |  +- org.assertj:assertj-core:jar:3.11.1:test
+[INFO] |  +- org.mockito:mockito-core:jar:2.28.2:test
+[INFO] |  |  +- net.bytebuddy:byte-buddy-agent:jar:1.9.13:test
+[INFO] |  |  \- org.objenesis:objenesis:jar:2.6:compile
+[INFO] |  +- org.hamcrest:hamcrest-core:jar:1.3:compile
+[INFO] |  +- org.hamcrest:hamcrest-library:jar:1.3:test
+[INFO] |  +- org.skyscreamer:jsonassert:jar:1.5.0:test
+[INFO] |  |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
+[INFO] |  \- org.xmlunit:xmlunit-core:jar:2.6.2:test
+[INFO] \- com.jayway.jsonpath:json-path:jar:2.4.0:test
+[INFO]    \- net.minidev:json-smart:jar:2.3:test
+[INFO]       \- net.minidev:accessors-smart:jar:1.2:test
+[INFO] 
+[INFO] ---------< gov.va.bip.reference.person:bip-reference-inttest >----------
+[INFO] Building bip-reference-inttest 0.0.2-SNAPSHOT                      [4/5]
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from nexus3: https://nexus.dev.bip.va.gov/repository/maven-public/gov/va/bip/framework/bip-framework-test-lib/2.0.3-SNAPSHOT/maven-metadata.xml
+[WARNING] Could not transfer metadata gov.va.bip.framework:bip-framework-test-lib:2.0.3-SNAPSHOT/maven-metadata.xml from/to nexus3 (https://nexus.dev.bip.va.gov/repository/maven-public): nexus.dev.bip.va.gov
+[WARNING] Failure to transfer gov.va.bip.framework:bip-framework-test-lib:2.0.3-SNAPSHOT/maven-metadata.xml from https://nexus.dev.bip.va.gov/repository/maven-public was cached in the local repository, resolution will not be reattempted until the update interval of nexus3 has elapsed or updates are forced. Original error: Could not transfer metadata gov.va.bip.framework:bip-framework-test-lib:2.0.3-SNAPSHOT/maven-metadata.xml from/to nexus3 (https://nexus.dev.bip.va.gov/repository/maven-public): nexus.dev.bip.va.gov
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-snapshots) @ bip-reference-inttest ---
+[INFO] 
+[INFO] --- git-commit-id-plugin:2.2.6:revision (default) @ bip-reference-inttest ---
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:parse-version (parse-version) @ bip-reference-inttest ---
+[INFO] 
+[INFO] --- jacoco-maven-plugin:0.8.4:prepare-agent (prepare-agent) @ bip-reference-inttest ---
+[INFO] argLine set to -javaagent:/Users/aburkholder/.m2/repository/org/jacoco/org.jacoco.agent/0.8.4/org.jacoco.agent-0.8.4-runtime.jar=destfile=/Users/aburkholder/git/bip-reference-person/bip-reference-inttest/target/jacoco/jacoco.exec,append=true,excludes=**/static/features/**/*:**com.steadystate*
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:add-test-source (add-integration-test-sources) @ bip-reference-inttest ---
+[INFO] Test Source directory: /Users/aburkholder/git/bip-reference-person/bip-reference-inttest/src/inttest/java added.
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.6.RELEASE:build-info (build-info) @ bip-reference-inttest ---
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ bip-reference-inttest ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /Users/aburkholder/git/bip-reference-person/bip-reference-inttest/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/aburkholder/git/bip-reference-person/bip-reference-inttest/src/main/resources/cert
+[INFO] skip non existing resourceDirectory /Users/aburkholder/git/bip-reference-person/bip-reference-inttest/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ bip-reference-inttest ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ bip-reference-inttest ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] gov.va.bip.reference.person:bip-reference-inttest:jar:0.0.2-SNAPSHOT
+[INFO] \- gov.va.bip.framework:bip-framework-test-lib:jar:2.0.3-SNAPSHOT:compile
+[INFO]    +- gov.va.bip.framework:bip-framework-shared:jar:2.0.3-SNAPSHOT:compile
+[INFO]    +- info.cukes:cucumber-junit:jar:1.2.5:compile
+[INFO]    |  \- junit:junit:jar:4.12:compile
+[INFO]    |     \- org.hamcrest:hamcrest-core:jar:1.3:compile
+[INFO]    +- info.cukes:cucumber-core:jar:1.2.5:compile
+[INFO]    |  +- info.cukes:cucumber-html:jar:0.2.3:compile
+[INFO]    |  +- info.cukes:cucumber-jvm-deps:jar:1.0.5:compile
+[INFO]    |  \- info.cukes:gherkin:jar:2.12.2:compile
+[INFO]    +- info.cukes:cucumber-testng:jar:1.2.5:compile
+[INFO]    |  \- org.testng:testng:jar:6.9.10:compile
+[INFO]    |     +- com.beust:jcommander:jar:1.48:compile
+[INFO]    |     \- org.beanshell:bsh:jar:2.0b4:compile
+[INFO]    +- info.cukes:cucumber-picocontainer:jar:1.2.5:compile
+[INFO]    |  +- info.cukes:cucumber-java:jar:1.2.5:compile
+[INFO]    |  \- org.picocontainer:picocontainer:jar:2.15:compile
+[INFO]    +- org.springframework:spring-web:jar:5.1.8.RELEASE:compile
+[INFO]    |  +- org.springframework:spring-beans:jar:5.1.8.RELEASE:compile
+[INFO]    |  \- org.springframework:spring-core:jar:5.1.8.RELEASE:compile
+[INFO]    |     \- org.springframework:spring-jcl:jar:5.1.8.RELEASE:compile
+[INFO]    +- org.apache.httpcomponents:httpclient:jar:4.5.9:compile
+[INFO]    |  +- org.apache.httpcomponents:httpcore:jar:4.4.11:compile
+[INFO]    |  +- commons-logging:commons-logging:jar:1.2:compile
+[INFO]    |  \- commons-codec:commons-codec:jar:1.11:compile
+[INFO]    +- com.jayway.jsonpath:json-path:jar:2.4.0:compile
+[INFO]    |  +- net.minidev:json-smart:jar:2.3:compile
+[INFO]    |  |  \- net.minidev:accessors-smart:jar:1.2:compile
+[INFO]    |  |     \- org.ow2.asm:asm:jar:5.0.4:compile
+[INFO]    |  \- org.slf4j:slf4j-api:jar:1.7.26:compile
+[INFO]    +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.9:compile
+[INFO]    |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+[INFO]    |  \- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:compile
+[INFO]    +- ch.qos.logback:logback-classic:jar:1.2.3:compile
+[INFO]    |  \- ch.qos.logback:logback-core:jar:1.2.3:compile
+[INFO]    +- commons-io:commons-io:jar:2.6:compile
+[INFO]    +- org.apache.commons:commons-text:jar:1.6:compile
+[INFO]    |  \- org.apache.commons:commons-lang3:jar:3.9:compile
+[INFO]    \- org.springframework:spring-test:jar:5.1.8.RELEASE:compile
+[INFO] 
+[INFO] ---------< gov.va.bip.reference.person:bip-reference-perftest >---------
+[INFO] Building bip-reference-perftest 0.0.2-SNAPSHOT                     [5/5]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-enforcer-plugin:3.0.0-M2:enforce (enforce-no-snapshots) @ bip-reference-perftest ---
+[INFO] 
+[INFO] --- git-commit-id-plugin:2.2.6:revision (default) @ bip-reference-perftest ---
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:parse-version (parse-version) @ bip-reference-perftest ---
+[INFO] 
+[INFO] --- jacoco-maven-plugin:0.8.4:prepare-agent (prepare-agent) @ bip-reference-perftest ---
+[INFO] argLine set to -javaagent:/Users/aburkholder/.m2/repository/org/jacoco/org.jacoco.agent/0.8.4/org.jacoco.agent-0.8.4-runtime.jar=destfile=/Users/aburkholder/git/bip-reference-person/bip-reference-perftest/target/jacoco/jacoco.exec,append=true,excludes=**/static/features/**/*:**com.steadystate*
+[INFO] 
+[INFO] --- build-helper-maven-plugin:3.0.0:add-test-source (add-integration-test-sources) @ bip-reference-perftest ---
+[INFO] Test Source directory: /Users/aburkholder/git/bip-reference-person/bip-reference-perftest/src/inttest/java added.
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.1.6.RELEASE:build-info (build-info) @ bip-reference-perftest ---
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ bip-reference-perftest ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /Users/aburkholder/git/bip-reference-person/bip-reference-perftest/src/main/resources
+[INFO] skip non existing resourceDirectory /Users/aburkholder/git/bip-reference-person/bip-reference-perftest/src/main/resources/cert
+[INFO] skip non existing resourceDirectory /Users/aburkholder/git/bip-reference-person/bip-reference-perftest/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ bip-reference-perftest ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ bip-reference-perftest ---
+[INFO] Verbose not supported since maven-dependency-plugin 3.0
+[INFO] gov.va.bip.reference.person:bip-reference-perftest:jar:0.0.2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] bip-reference-reactor 0.0.2-SNAPSHOT ............... SUCCESS [  1.450 s]
+[INFO] bip-reference-partner-person ....................... SUCCESS [  1.555 s]
+[INFO] bip-reference-person ............................... SUCCESS [  5.256 s]
+[INFO] bip-reference-inttest .............................. SUCCESS [  0.311 s]
+[INFO] bip-reference-perftest 0.0.2-SNAPSHOT .............. SUCCESS [  0.188 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 10.207 s
+[INFO] Finished at: 2019-08-19T09:11:54-04:00
+[INFO] ------------------------------------------------------------------------

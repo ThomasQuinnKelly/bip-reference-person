@@ -1,0 +1,26 @@
+databaseChangeLog:
+- changeSet:
+    id: 1566305685708-1
+    author: aburkholder (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: personrecord_pkey
+            name: id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: pid
+            type: INTEGER
+        - column:
+            name: document_name
+            type: VARCHAR(128)
+        - column:
+            name: document_creation_date
+            type: VARCHAR(128)
+        tableName: personrecord
+
