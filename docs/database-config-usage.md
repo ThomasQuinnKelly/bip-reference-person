@@ -65,6 +65,17 @@ For these reasons, it is advisable for developers to adopt the database vendor t
 
 Databases that are not directly supported by spring require additional configuration. Their use is discouraged, unless the database is used in higher environments.
 
+### SQL Database Configuration: General Configuration
+
+Projects should be arranged such that the same configurations can be used across all modules
+
+* allows for common schema and data setups for the service and its unit tests, integration tests, and performance tests
+
+* dependencies can be provided by `<dependencyManagement` in the reactor POM (or parent POM, if common dependencies have been split out)
+
+* the same strategy should be considered for tools such as Liquibase.
+
+
 ### SQL Database Configuration: Single Datasource
 
 As mentioned above, dependencies should be declared in the service `pom.xml`. The URL and other configuration properties for a given environment should be declared in the `[application-name].yml` file for the specific profile (the _default_ profile, _local-int_, _ci_, _dev_, _stage_, _prod_).
@@ -309,19 +320,25 @@ For additional reference, these links are worth reviewing ...
 
 Spring Boot has rudimentary database initialization capabilities. What spring does not provide out of the box is a means for managing schema and data changes over time. [Liquibase](http://www.liquibase.org/) is recommended for its database changeset and schema version management features.
 
-The assumption is that the application uses `spring-boot-starter-data-jpa`.
+The assumption is that the application is uses JPA in preference over raw JDBC. The spring boot dependency is `spring-boot-starter-data-jpa`.
 
-### Database Management and Versioning
+### Database Management and Versioning With Liquibase
 
 It is worth reviewing the [Liquibase documentation](https://www.liquibase.org/documentation/) to understand changesets, include, preconditions, contexts and parameters.
 
-Both the Liquibase and Spring documentation are very brief and somewhat vague about how to integrate Liquibase into a Spring Boot project. Furthermore, as Spring Boot matures in this integration, handling of Liquibase behaviors and properties is a moving target - there are significant discrepancies between minor spring-boot point releases. As a result, **every source of information about Liquibase integration must be understood in the context of the version of Spring / Spring Boot** used in the discussion or article.
+Some general suggestions:
 
-The current recommendation is to create an `[application-name]-db-liquibase` project (maven module) to isolate Liquibase references and configuration.
+* Use maven profiles to separate the types of operations performed (drop and recreate schema, update schema, populate data, etc). Each profile should have one or more corresponding properties files and changelogs that are named the same or similar as the profile id.
 
-Below is a summarization of the key points, assuming the application uses `spring-boot-starter-data-jpa`:
+* Use liquibase properties files to specify the JDBC connection, and input / output file names.
 
-* Add Liquibase to the maven dependencies for liquibase (spring-boot 2.1.6 uses Liquibase 3.6.3), and configure the plugin that comes with liquibase-core:
+* Use liquibase contexts to control which changesets in a changelog should be executed for an operation (clean and populate data, environment-specific operations, version-specific upgrade, etc).
+
+Both the Liquibase and Spring documentation are very brief and somewhat vague about how to integrate Liquibase into a Spring Boot project. Furthermore, as Liqiobase matures and Spring follows with its integrations, handling of Liquibase behaviors and properties is a moving target - there are significant discrepancies between minor spring-boot point releases. As a result, **every source of information about Liquibase integration must be understood in the context of the version of Liquibase and Spring / Spring Boot** used in the discussion or article.
+
+Below is a summarization of the key points, assuming the JDBC connections and other database-specific configuration is already done:
+
+* Add Liquibase to the maven dependencies for liquibase to a root POM (spring-boot 2.1.6 uses Liquibase 3.6.3):
 
 	<details><summary>Click here: Liquibase Maven Dependencies</summary>
 
@@ -339,21 +356,14 @@ Below is a summarization of the key points, assuming the application uses `sprin
 
 	<details><summary>Click here: Empty Master Changelog</summary>
 
-	```xml
-	<databaseChangeLog
-		xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-		xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-			http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
-			http://www.liquibase.org/xml/ns/dbchangelog-ext
-			http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-	</databaseChangeLog>
+	```yml
+	databaseChangeLog
+
 	```
 
 	</details>
 
-* Spring Boot properties for Liquibase:  As of spring-boot 2.1.6-RELEASE:
+* Spring Boot properties for Liquibase, as of spring-boot 2.1.6-RELEASE:
 
 	* The most recent round of liquibase property deprecations and their replacement properties can be found in the [META-INF/additional-spring-configuration-metadata.json](https://github.com/spring-projects/spring-boot/blob/v2.1.6.RELEASE/spring-boot-project/spring-boot-autoconfigure/src/main/resources/META-INF/additional-spring-configuration-metadata.json) file (to see what was deprecated in other releases, just change the version number in the URL). Search for `liquibase`.
 
@@ -392,7 +402,7 @@ Below is a summarization of the key points, assuming the application uses `sprin
 
 		</details>
 
-* By default, Liquibase stores all changelogs in one file. This is convenient, however it does not take long for the file to become large and unmanageable. Configure for separate  _changeset_ files with the databaseChangeLog `includeAll` directive to your configuration:
+* By default, Liquibase stores all changelogs in one file. This is convenient, however it does not take long for the file to become large and unmanageable. If you want to split _changeset_ declarations into multiple changelog files, put them in their own directory, and set the databaseChangeLog `includeAll` directive:
 
 		<details><summary>Click here: Changelog Location & Separate Changesets</summary>
 
@@ -417,8 +427,6 @@ Below is a summarization of the key points, assuming the application uses `sprin
 		```
 
 		</details>
-
-* If you have multiple datasources, open the configuration class you created for the datasource in question, and mark it with **????**
 
 * Liquibase extensions are available to add missing support for specific databases. If the functionality is needed by a project, the extension plugins can be useful.  See the [Available Plugins](https://liquibase.jira.com/wiki/spaces/CONTRIB/overview) list (right side of the page). The Oracle Extensions plugin may be of interest.
 
@@ -479,6 +487,8 @@ The [Maven Liquibase Plugin](https://www.liquibase.org/documentation/maven/index
 
 			* Produces output in `src/main/resources/db/${liquibase.changelog.path.*}/changelog/liquibase-generate-changelog.yml`
 
+			* Contexts can be added by including `-Dliquibase.contexts=context1[,context2...]` to the maven command
+
 		* `liquibase-create-db-from-changelog` drops any existing database by that name, and recreates if from a changelog file.
 
 			* Configure each execution in `src/main/resources/db/${liquibase.changelog.path.*}/liquibase-create-db-from-changelog.properties`
@@ -487,316 +497,32 @@ The [Maven Liquibase Plugin](https://www.liquibase.org/documentation/maven/index
 
 			* Produces output in `src/main/resources/db/${liquibase.changelog.path.*}/changelog/liquibase-create-db-from-changelog.yml`
 
+			* Contexts can be added by including `-Dliquibase.contexts=context1[,context2...]` to the maven command
+
 
 	<details><summary>Click here: Liquibase maven dependencies</summary>
 
 	```xml
-	<properties>
-			<!-- Liquibase Properties -->
-			<updatesOnly>false</updatesOnly>
-
-			<master-localdb.username>postgres</master-localdb.username>
-			<master-localdb.password>password</master-localdb.password>
-
-			<master-liquibase.username>liquibase</master-liquibase.username>
-			<master-liquibase.password>liquibase</master-liquibase.password>
-
-			<proddb.username>proddb</proddb.username>
-			<proddb.password>Niagraraproboscispoultice</proddb.password>
-
-			<liquibase.url>jdbc:postgresql://localhost:5432/postgres</liquibase.url>
-	</properties>
-	<profiles>
-			<profile>
-					<id>db-local-initial-setup</id>
-					<build>
-							<plugins>
-									<plugin>
-											<groupId>org.liquibase</groupId>
-											<artifactId>liquibase-maven-plugin</artifactId>
-											<executions>
-
-													<!-- drop database and liquibase user -->
-													<execution>
-															<id>drop-local-database</id>
-															<goals>
-																	<goal>update</goal>
-															</goals>
-															<phase>clean</phase>
-															<configuration>
-																	<!-- only if not provided by spring boot, e.g.: <driver>oracle.jdbc.OracleDriver</driver> -->
-																	<url>${liquibase.url}</url>
-																	<changeLogFile>${project.basedir}/src/main/resources/local/clean/clean.yml</changeLogFile>
-																	<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-																	<username>${master-localdb.username}</username>
-																	<password>${master-localdb.password}</password>
-															</configuration>
-													</execution>
-
-													<!-- create database -->
-													<execution>
-															<id>create-local-database</id>
-															<goals>
-																	<goal>update</goal>
-															</goals>
-															<phase>process-resources</phase>
-															<configuration>
-																	<!-- only if not provided by spring boot, e.g.: <driver>oracle.jdbc.OracleDriver</driver> -->
-																	<url>${liquibase.url}</url>
-																	<changeLogFile>${project.basedir}/src/main/resources/local/install/install.yml</changeLogFile>
-																	<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-																	<username>${master-localdb.username}</username>
-																	<password>${master-localdb.password}</password>
-															</configuration>
-													</execution>
-
-											</executions>
-									</plugin>
-							</plugins>
-					</build>
-			</profile>
-
-			<profile>
-					<id>db-local-setup</id>
-					<build>
-							<plugins>
-									<plugin>
-											<groupId>org.liquibase</groupId>
-											<artifactId>liquibase-maven-plugin</artifactId>
-											<executions>
-
-													<!-- Clean -->
-													<execution>
-															<id>clean-schemas</id>
-															<goals>
-																	<goal>update</goal>
-															</goals>
-															<phase>clean</phase>
-															<configuration>
-																	<!-- only if not provided by spring boot, e.g.: <driver>oracle.jdbc.OracleDriver</driver> -->
-																	<url>${liquibase.url}</url>
-																	<changeLogFile>${project.basedir}/src/main/resources/liquibase/clean/clean.yml</changeLogFile>
-																	<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-																	<username>${master-liquibase.username}</username>
-																	<password>${master-liquibase.password}</password>
-															</configuration>
-													</execution>
-
-													<!-- Users -->
-													<execution>
-															<id>users</id>
-															<goals>
-																	<goal>update</goal>
-															</goals>
-															<phase>process-resources</phase>
-															<configuration>
-																	<!-- only if not provided by spring boot, e.g.: <driver>oracle.jdbc.OracleDriver</driver> -->
-																	<url>${liquibase.url}</url>
-																	<changeLogFile>liquibase/users/users-all.yml</changeLogFile>
-																	<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-																	<username>${master-liquibase.username}</username>
-																	<password>${master-liquibase.password}</password>
-															</configuration>
-													</execution>
-
-											</executions>
-									</plugin>
-							</plugins>
-					</build>
-			</profile>
-
-			<profile>
-					<id>db-install</id>
-					<build>
-							<plugins>
-									<plugin>
-											<groupId>org.liquibase</groupId>
-											<artifactId>liquibase-maven-plugin</artifactId>
-											<dependencies>
-													<dependency>
-														<groupId>org.postgresql</groupId>
-														<artifactId>postgresql</artifactId>
-														<version>${postgres.version}</version>
-													</dependency>
-											</dependencies>
-											<executions>
-
-													<!--Install coporate -->
-													<execution>
-															<id>install-coprorate</id>
-															<goals>
-																	<goal>update</goal>
-															</goals>
-															<phase>process-resources</phase>
-															<configuration>
-																	<!-- only if not provided by spring boot, e.g.: <driver>oracle.jdbc.OracleDriver</driver> -->
-																	<url>${liquibase.url}</url>
-																	<changeLogFile>liquibase/proddb/install.yml</changeLogFile>
-																	<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-																	<username>${proddb.username}</username>
-																	<password>${proddb.password}</password>
-															</configuration>
-													</execution>
-
-													<!--Update proddb -->
-													<execution>
-															<id>update-proddb</id>
-															<goals>
-																	<goal>update</goal>
-															</goals>
-															<phase>process-resources</phase>
-															<configuration>
-																	<!-- only if not provided by spring boot, e.g.: <driver>oracle.jdbc.OracleDriver</driver> -->
-																	<url>${liquibase.url}</url>
-																	<changeLogFile>liquibase/proddb/update.yml</changeLogFile>
-																	<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-																	<username>${proddb.username}</username>
-																	<password>${proddb.password}</password>
-															</configuration>
-													</execution>
-
-											</executions>
-									</plugin>
-							</plugins>
-					</build>
-			</profile>
-
-			<profile>
-					<id>db-update</id>
-					<build>
-							<plugins>
-									<plugin>
-											<groupId>org.liquibase</groupId>
-											<artifactId>liquibase-maven-plugin</artifactId>
-											<dependencies>
-													<dependency>
-														<groupId>org.postgresql</groupId>
-														<artifactId>postgresql</artifactId>
-														<version>${postgres.version}</version>
-													</dependency>
-											</dependencies>
-											<executions>
-
-													<!--Update proddb -->
-													<execution>
-															<id>update-proddb</id>
-															<goals>
-																	<goal>update</goal>
-															</goals>
-															<phase>process-resources</phase>
-															<configuration>
-																	<!-- only if not provided by spring boot, e.g.: <driver>oracle.jdbc.OracleDriver</driver> -->
-																	<url>${liquibase.url}</url>
-																	<changeLogFile>liquibase/proddb/update.yml</changeLogFile>
-																	<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-																	<username>${proddb.username}</username>
-																	<password>${proddb.password}</password>
-															</configuration>
-													</execution>
-											</executions>
-									</plugin>
-							</plugins>
-					</build>
-			</profile>
-
-			<profile>
-					<id>db-major-upgrade</id>
-					<build>
-							<plugins>
-									<plugin>
-											<groupId>org.liquibase</groupId>
-											<artifactId>liquibase-maven-plugin</artifactId>
-											<dependencies>
-													<dependency>
-														<groupId>org.postgresql</groupId>
-														<artifactId>postgresql</artifactId>
-														<version>${postgres.version}</version>
-													</dependency>
-											</dependencies>
-											<executions>
-
-													<!--Upgrade proddb-->
-													<execution>
-															<id>upgrade-proddb</id>
-															<goals>
-																	<goal>update</goal>
-															</goals>
-															<phase>process-resources</phase>
-															<configuration>
-																	<!-- only if not provided by spring boot, e.g.: <driver>oracle.jdbc.OracleDriver</driver> -->
-																	<url>${liquibase.url}</url>
-																	<changeLogFile>liquibase/proddb/upgrade_to_major.yml</changeLogFile>
-																	<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-																	<username>${proddb.username}</username>
-																	<password>${proddb.password}</password>
-															</configuration>
-													</execution>
-
-													<!--Update proddb -->
-													<execution>
-															<id>update-proddb</id>
-															<goals>
-																	<goal>update</goal>
-															</goals>
-															<phase>process-resources</phase>
-															<configuration>
-																	<!-- only if not provided by spring boot, e.g.: <driver>oracle.jdbc.OracleDriver</driver> -->
-																	<url>${liquibase.url}</url>
-																	<changeLogFile>liquibase/proddb/update.yml</changeLogFile>
-																	<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-																	<username>${proddb.username}</username>
-																	<password>${proddb.password}</password>
-															</configuration>
-													</execution>
-
-											</executions>
-									</plugin>
-							</plugins>
-					</build>
-			</profile>
-
-			<profile>
-					<id>liquibase-generate-changelog</id>
-					<build>
-							<plugins>
-									<plugin>
-											<groupId>org.liquibase</groupId>
-											<artifactId>liquibase-maven-plugin</artifactId>
-											<dependencies>
-													<dependency>
-														<groupId>org.postgresql</groupId>
-														<artifactId>postgresql</artifactId>
-														<version>${postgres.version}</version>
-													</dependency>
-											</dependencies>
-											<executions>
-													<execution>
-															<id>generate proddb</id>
-															<goals>
-																	<goal>generateChangeLog</goal>
-															</goals>
-															<phase>process-resources</phase>
-															<configuration>
-																	<defaultSchemaName>proddb</defaultSchemaName>
-																	<outputDefaultSchema>true</outputDefaultSchema>
-																	<outputChangeLogFile>${project.build.directory}/proddb.changelog.yml</outputChangeLogFile>
-																	<!-- only if not provided by spring boot, e.g.: <driver>oracle.jdbc.OracleDriver</driver> -->
-																	<url>${liquibase.url}</url>
-																	<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-																	<username>${master-liquibase.username}</username>
-																	<password>${master-liquibase.password}</password>
-																	<verbose>true</verbose>
-															</configuration>
-													</execution>
-											</executions>
-									</plugin>
-							</plugins>
-					</build>
-			</profile>
-	</profiles>
+	<!-- TBD -->
 	```
 
 	</details>
+
+### Logging Database Activity
+
+[P6spy](https://p6spy.readthedocs.io) - specifically [its spring boot integration](https://github.com/gavlyukovskiy/spring-boot-data-source-decorator) is recommended due to its transparent integration in spring boot applications.  With the p6spy decorator, it is not necessary to pollute the Application class, or provide `@Configuration` beans.
+
+<details><summary>Click here: p6spy configuration</summary>
+
+```xml
+	<dependency>
+	    <groupId>com.github.gavlyukovskiy</groupId>
+	    <artifactId>p6spy-spring-boot-starter</artifactId>
+	    <version>1.5.6</version>
+	</dependency>
+```
+
+</details>
 
 ### SQL Database Testing
 

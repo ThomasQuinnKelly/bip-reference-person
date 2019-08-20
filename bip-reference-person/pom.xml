@@ -20,6 +20,8 @@
 
 	<properties>
 		<bip-framework.version>2.0.3-SNAPSHOT</bip-framework.version>
+
+<!-- DB ... -->
 		<!-- spring versions derived from bip-framework spring dependencies -->
 		<validation-api.version>2.0.1.Final</validation-api.version>
 		<spring-core.version>5.1.8.RELEASE</spring-core.version>
@@ -31,17 +33,55 @@
 		<liquibase.changelog.path.ds2>ds2</liquibase.changelog.path.ds2>
 		<!-- chosen liquibase path -->
 		<liquibase.changelog.path>${liquibase.changelog.path.default}</liquibase.changelog.path>
+		<liquibase.contexts></liquibase.contexts>
+<!-- ...DB -->
 	</properties>
 
+<!-- DB... -->
+    <pluginRepositories>
+        <pluginRepository>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>http://repo1.maven.org/maven2</url>
+            <layout>default</layout>
+        </pluginRepository>
+        <pluginRepository>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>spring-plugins</id>
+            <name>Spring Plugin Repo</name>
+            <url>http://repo.spring.io/plugins-release</url>
+            <layout>default</layout>
+        </pluginRepository>
+    </pluginRepositories>
+<!-- ...DB -->
+
 	<dependencies>
+<!-- DB... -->
 		<dependency>
 		    <groupId>org.postgresql</groupId>
 		    <artifactId>postgresql</artifactId>
 		</dependency>
-<!--  		<dependency>
+ 		<!-- <dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency> -->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+<!-- ...DB -->
 
 		<!-- framework dependencies -->
 		<dependency>
@@ -80,10 +120,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<!-- spring cloud dependencies -->
 		<!-- Spring-cloud Netflix Feign dependency for defining declarative REST clients -->
@@ -379,7 +415,8 @@
 				</pluginManagement>
 			</build>
 		</profile>
-		
+
+<!-- DB... -->
 		<profile>
 			<!--  currently broken due to https://github.com/liquibase/liquibase-hibernate/issues/198 -->
 			<id>liquibase-diff</id>
@@ -413,6 +450,7 @@
 							<propertyFileWillOverride>true</propertyFileWillOverride>
 							<propertyFile>${project.basedir}/src/main/resources/db/local/liquibase-diff.properties</propertyFile>
 							<changeLogFile>${project.basedir}/src/main/resources/db/local/changelog/changelog-master.xml</changeLogFile>
+							<contexts>${liquibase.contexts}</contexts>
 						</configuration>
 						<executions>
 							<execution>
@@ -479,6 +517,7 @@
 							<propertyFileWillOverride>true</propertyFileWillOverride>
 							<propertyFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/liquibase-generate-changelog.properties</propertyFile>
 							<outputChangeLogFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/changelog/liquibase-generate-changelog.yml</outputChangeLogFile>
+							<contexts>${liquibase.contexts}</contexts>
 						</configuration>
 						<executions>
 							<execution>
@@ -518,6 +557,7 @@
 									<propertyFileWillOverride>true</propertyFileWillOverride>
 									<propertyFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/liquibase-create-db-from-changelog.properties</propertyFile>
 									<changeLogFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/liquibase-changelog/create-db-from-changelog.yml</changeLogFile>
+									<contexts>${liquibase.contexts}</contexts>
 								</configuration>
 							</execution>
 						</executions>
@@ -526,6 +566,10 @@
 			</build>
 		</profile>
 		
+		<profile>
+		</profile>
+
+<!-- ...DB -->
 	</profiles>
 
 </project>
