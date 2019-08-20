@@ -137,25 +137,20 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
-  "/api/v1/persons/{pid}/documentMetadata":
-    get:
-      parameters:
-        - name : pid
-          in : path
-          description : participant id
-          required : true
-          schema:
-            type: integer
-            format: int64
-            example: 6666345
-            description: The Participant ID of the person for whom to retrieve data
-            minimum: 1
-            exclusiveMinimum: false
+  "/api/v1/persons/documentMetadata":
+    post:
       tags:
         - reference-person
       summary: Get metadata about the document uploaded for a pid, that is stored in the database
       description: Demonstrate retrieval of data from a database
       operationId: getDocumentMetadata
+      requestBody: 
+        description: PersonDocumentMetadataRequest
+        required: true
+        content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/PersonDocumentMetadataRequest'
       responses:
         '200':
           description: OK
@@ -440,6 +435,22 @@ components:
               exclusiveMinimum: false
           required:
             - participantID
+    PersonDocumentMetadataRequest:
+      title: PersonDocumentMetadataRequest
+      description: Model for data to request metadata of the document associated with a person from the Person Service
+      allOf:
+        - '$ref': '#/components/schemas/ProviderRequest'
+        - type: object
+          properties:
+            participantID:
+              type: integer
+              format: int64
+              example: 6666345
+              description: The Participant ID of the person for whom to retrieve data
+              minimum: 1
+              exclusiveMinimum: false
+          required:
+            - participantID        
     PersonInfoResponse:
       title: PersonInfoResponse
       description: Model for the response from the Person Service

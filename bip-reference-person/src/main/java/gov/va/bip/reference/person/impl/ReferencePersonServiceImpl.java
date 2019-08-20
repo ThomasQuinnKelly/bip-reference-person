@@ -40,6 +40,7 @@ import gov.va.bip.reference.person.messages.PersonMessageKeys;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
 import gov.va.bip.reference.person.model.PersonDocumentMetadataDomain;
+import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainRequest;
 import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainResponse;
 import gov.va.bip.reference.person.utils.CacheConstants;
 import gov.va.bip.reference.person.utils.HystrixCommandConstants;
@@ -199,15 +200,15 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 * @throws IOException
 	 */
 	@Override
-	public PersonDocumentMetadataDomainResponse getMetadataDocumentForPid(final Long pid) {
-			Personrecord data = personDatabaseHelper.getDataForPid(pid);
-			PersonDocumentMetadataDomainResponse domainResponse = new PersonDocumentMetadataDomainResponse();
-			PersonDocumentMetadataDomain personDocumentMetadataDomain = new PersonDocumentMetadataDomain();
-			String dateString = data.getDocumentCreationDate().format(DateTimeFormatter.ISO_DATE);
-			personDocumentMetadataDomain.setDocumentCreationDate(dateString);
-			personDocumentMetadataDomain.setDocumentName(data.getDocumentName());
-			domainResponse.setPersonDocumentMetadataDomain(personDocumentMetadataDomain);
-			return domainResponse;
+	public PersonDocumentMetadataDomainResponse getMetadataForPid(final PersonDocumentMetadataDomainRequest domainRequest) {
+		Personrecord data = personDatabaseHelper.getDataForPid(domainRequest.getParticipantID());
+		PersonDocumentMetadataDomainResponse domainResponse = new PersonDocumentMetadataDomainResponse();
+		PersonDocumentMetadataDomain personDocumentMetadataDomain = new PersonDocumentMetadataDomain();
+		String dateString = data.getDocumentCreationDate().format(DateTimeFormatter.ISO_DATE);
+		personDocumentMetadataDomain.setDocumentCreationDate(dateString);
+		personDocumentMetadataDomain.setDocumentName(data.getDocumentName());
+		domainResponse.setPersonDocumentMetadataDomain(personDocumentMetadataDomain);
+		return domainResponse;
 	}
 
 	/**
@@ -238,7 +239,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	public byte[] getSampleReferenceDocument() {
 		String fileAsString;
 		try {
-			fileAsString = IOUtils.resourceToString("sampleReferenceDocument.txt", StandardCharsets.UTF_8);
+			fileAsString = IOUtils.resourceToString("/sampleReferenceDocument.txt", StandardCharsets.UTF_8);
 		} catch (IOException e) {
 			throw new BipRuntimeException(PersonMessageKeys.BIP_PERSON_INVALID_DATE, MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
 					"");

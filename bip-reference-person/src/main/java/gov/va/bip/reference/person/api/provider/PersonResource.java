@@ -28,6 +28,7 @@ import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.rest.provider.ProviderResponse;
 import gov.va.bip.framework.swagger.SwaggerResponseMessages;
 import gov.va.bip.reference.person.api.ReferencePersonApi;
+import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataResponse;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
@@ -205,10 +206,11 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * @return the person info response
 	 */
 	public ResponseEntity<PersonDocumentMetadataResponse>
-	getDocumentMetadata(@Min(1L) @ApiParam(value = "participant id", required = true) @PathVariable("pid") final Long pid) {
+	getDocumentMetadata(@ApiParam(value = "PersonDocumentMetadataRequest",
+	required = true) @Valid @RequestBody final PersonDocumentMetadataRequest personDocumentMetadataRequest) {
 		LOGGER.debug("getDocumentMetadata() method invoked");
 
-		PersonDocumentMetadataResponse providerResponse = serviceAdapter.getMetadataDocumentForPid(pid);
+		PersonDocumentMetadataResponse providerResponse = serviceAdapter.getMetadataDocumentForPid(personDocumentMetadataRequest);
 
 		// send provider response back to consumer
 		LOGGER.debug("Returning providerResponse to consumer");

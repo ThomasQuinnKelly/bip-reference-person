@@ -5,6 +5,7 @@ import java.io.IOException;
 import gov.va.bip.framework.exception.BipException;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
+import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainRequest;
 import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainResponse;
 
 /**
@@ -24,13 +25,13 @@ public interface ReferencePersonService {
 	/**
 	 * Get the meta data associated with documents accepted for a pid
 	 * 
-	 * @param pid
+	 * @param domainRequest
 	 * 
 	 * @return the file as a byte array
 	 * @throws IOException when file cannot be written into
 	 * @throws BipException when there is problem with fetching docuement for a given pid
 	 */
-	PersonDocumentMetadataDomainResponse getMetadataDocumentForPid(Long pid);
+	PersonDocumentMetadataDomainResponse getMetadataForPid(PersonDocumentMetadataDomainRequest domainRequest);
 
 	/**
 	 * store the meta-data associated with the document for a given pid

@@ -1,6 +1,8 @@
 package gov.va.bip.reference.person.api.provider;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -12,15 +14,18 @@ import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.rest.provider.ProviderResponse;
 import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.ReferencePersonService;
+import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataResponse;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
+import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainRequest;
 import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainResponse;
 import gov.va.bip.reference.person.transform.impl.PersonByPid_DomainToProvider;
 import gov.va.bip.reference.person.transform.impl.PersonByPid_ProviderToDomain;
 import gov.va.bip.reference.person.transform.impl.PersonDocumentMetadataByPid_DomainToProvider;
+import gov.va.bip.reference.person.transform.impl.PersonDocumentMetadataByPid_ProviderToDomain;
 
 /**
  * An adapter between the provider layer api/model, and the services layer interface/model.
@@ -37,6 +42,9 @@ public class ServiceAdapter {
 	/** Transform Domain (service) response to Provider (REST) response */
 	private PersonByPid_DomainToProvider personByPidDomain2Provider = new PersonByPid_DomainToProvider();
 
+	/** Transform Provider (REST) request to Domain (service) request */
+	private PersonDocumentMetadataByPid_ProviderToDomain PersonDocumentMetadataByPidProvider2Domain =
+			new PersonDocumentMetadataByPid_ProviderToDomain();
 	/** Transform Domain (service) response to Provider (REST) response */
 	private PersonDocumentMetadataByPid_DomainToProvider personDocumentMetadataByPidDomain2Provider =
 			new PersonDocumentMetadataByPid_DomainToProvider();
@@ -107,23 +115,26 @@ public class ServiceAdapter {
 	/**
 	 * Get the meta data associated with documents accepted for a pid
 	 * 
-	 * @param pid
+	 * @param personDocumentMetadataRequest
 	 * @return a file as a byte array
 	 * @throws Exception
 	 */
-	PersonDocumentMetadataResponse getMetadataDocumentForPid(final Long pid) {
+	PersonDocumentMetadataResponse
+	getMetadataDocumentForPid(final @Valid PersonDocumentMetadataRequest personDocumentMetadataRequest) {
+		// transform provider request into domain request
+		LOGGER.debug("Transforming from personDocumentMetadataRequest to domainRequest");
+		PersonDocumentMetadataDomainRequest domainRequest =
+				PersonDocumentMetadataByPidProvider2Domain.convert(personDocumentMetadataRequest);
 
 		// get domain response from the service (domain) layer
 		LOGGER.debug("Calling refPersonService.findPersonByParticipantID");
-		PersonDocumentMetadataDomainResponse domainResponse = refPersonService.getMetadataDocumentForPid(pid);
+		PersonDocumentMetadataDomainResponse domainResponse = refPersonService.getMetadataForPid(domainRequest);
 
 		// transform domain response into provider response
 		LOGGER.debug("Transforming from domainResponse to providerResponse");
 		PersonDocumentMetadataResponse providerResponse = personDocumentMetadataByPidDomain2Provider.convert(domainResponse);
 
-		// return providerResponse;
-		return null;
-
+		return providerResponse;
 	}
 
 	byte[] getSampleReferenceDocument() {
