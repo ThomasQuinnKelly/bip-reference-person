@@ -25,23 +25,28 @@ public interface ReferencePersonService {
 	/**
 	 * Get the meta data associated with documents accepted for a pid
 	 * 
-	 * @param domainRequest
+	 * @param domainRequest the object containing information required for fetching metadata
 	 * 
-	 * @return the file as a byte array
+	 * @return the PersonDocumentMetadataDomainResponse object containing data associated with a pid
+	 * 
 	 * @throws IOException when file cannot be written into
 	 * @throws BipException when there is problem with fetching docuement for a given pid
 	 */
 	PersonDocumentMetadataDomainResponse getMetadataForPid(PersonDocumentMetadataDomainRequest domainRequest);
 
 	/**
-	 * store the meta-data associated with the document for a given pid
+	 * Store the meta-data associated with the document for a given pid
 	 * 
 	 * @param pid the pid
 	 * @param documentName the name of the document
 	 * @param documentCreationDate the date of creation of the document
-	 * 
 	 */
 	void storeMetadata(Long pid, String documentName, String documentCreationDate);
 
+	/**
+	 * Get a static document as a byte array containing some sample reference data
+	 * 
+	 * @return the file as a byte array
+	 */
 	byte[] getSampleReferenceDocument();
 }

@@ -201,9 +201,9 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * </ol>
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
-	 * @param pid the pid
+	 * @param personDocumentMetadataRequest the PersonDocumentMetadataRequest object containing  information required for requesting metadata information
 	 * 
-	 * @return the person info response
+	 * @return the PersonDocumentMetadataResponse wrapped by a response entity
 	 */
 	public ResponseEntity<PersonDocumentMetadataResponse>
 	getDocumentMetadata(@ApiParam(value = "PersonDocumentMetadataRequest",
