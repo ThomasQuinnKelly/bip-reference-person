@@ -203,6 +203,9 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	@Override
 	public PersonDocumentMetadataDomainResponse getMetadataForPid(final PersonDocumentMetadataDomainRequest domainRequest) {
 		Personrecord data = personDatabaseHelper.getDataForPid(domainRequest.getParticipantID());
+		if (data == null) {
+			return null;
+		}
 		PersonDocumentMetadataDomainResponse domainResponse = new PersonDocumentMetadataDomainResponse();
 		PersonDocumentMetadataDomain personDocumentMetadataDomain = new PersonDocumentMetadataDomain();
 		String dateString =
