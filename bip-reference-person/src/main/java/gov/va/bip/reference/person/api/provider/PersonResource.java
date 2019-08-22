@@ -136,7 +136,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 		LOGGER.debug("upload() method invoked");
 		ProviderResponse response = new ProviderResponse();
 		try {
-			response = serviceAdapter.storeMetaData(Long.valueOf(pid), documentName, documentCreationDate);
+			response = serviceAdapter.storeMetaData(Long.valueOf(pid), documentName, documentCreationDate, file);
 			// send provider response back to consumer
 			LOGGER.debug("Returning providerResponse to consumer");
 			return new ResponseEntity<>(response, HttpStatus.OK);

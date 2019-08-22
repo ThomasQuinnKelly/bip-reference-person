@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
-import gov.va.bip.framework.exception.BipRuntimeException;
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.messages.MessageSeverity;
@@ -28,6 +28,7 @@ import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainResponse;
 import gov.va.bip.reference.person.transform.impl.PersonByPid_DomainToProvider;
 import gov.va.bip.reference.person.transform.impl.PersonByPid_ProviderToDomain;
 import gov.va.bip.reference.person.transform.impl.PersonDocumentMetadata_DomainToProvider;
+import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 
 /**
  * An adapter between the provider layer api/model, and the services layer interface/model.
@@ -90,14 +91,18 @@ public class ServiceAdapter {
 	 * @param pid the pid
 	 * @param documentName the name of the document
 	 * @param documentCreationDate the date of creation of the document
+	 * @param file
 	 * 
 	 * @return a ProviderResponse
 	 */
-	ProviderResponse storeMetaData(final Long pid, final String documentName, final String documentCreationDate) {
+	ProviderResponse storeMetaData(final Long pid, String documentName, final String documentCreationDate, @Valid final MultipartFile file) {
 
 		ProviderResponse response = new ProviderResponse();
 
 		try {
+			if (StringUtils.isBlank(documentName)) {
+				documentName = file.getResource().getFilename();
+			}
 			refPersonService.storeMetadata(pid, documentName, documentCreationDate);
 		} catch (PersonServiceException e) {
 			LOGGER.error(e.getMessage(), e);
