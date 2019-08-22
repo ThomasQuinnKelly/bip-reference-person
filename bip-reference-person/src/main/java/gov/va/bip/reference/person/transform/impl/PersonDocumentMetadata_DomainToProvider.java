@@ -9,7 +9,7 @@ import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainResponse;
  * object.
  *
  */
-public class PersonDocumentMetadataByPid_DomainToProvider
+public class PersonDocumentMetadata_DomainToProvider
 		extends AbstractDomainToProvider<PersonDocumentMetadataDomainResponse, PersonDocumentMetadataResponse> {
 
 	@Override

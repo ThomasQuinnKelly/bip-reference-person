@@ -2,6 +2,8 @@ package gov.va.bip.reference.person;
 
 import java.io.IOException;
 
+import org.springframework.core.io.Resource;
+
 import gov.va.bip.framework.exception.BipException;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
@@ -28,9 +30,6 @@ public interface ReferencePersonService {
 	 * @param domainRequest the object containing information required for fetching metadata
 	 * 
 	 * @return the PersonDocumentMetadataDomainResponse object containing data associated with a pid
-	 * 
-	 * @throws IOException when file cannot be written into
-	 * @throws BipException when there is problem with fetching docuement for a given pid
 	 */
 	PersonDocumentMetadataDomainResponse getMetadataForPid(PersonDocumentMetadataDomainRequest domainRequest);
 
@@ -46,7 +45,7 @@ public interface ReferencePersonService {
 	/**
 	 * Get a static document as a byte array containing some sample reference data
 	 * 
-	 * @return the file as a byte array
+	 * @return the file as a resource
 	 */
-	byte[] getSampleReferenceDocument();
+	Resource getSampleReferenceDocument();
 }

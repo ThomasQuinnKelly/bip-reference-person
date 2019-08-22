@@ -5,6 +5,9 @@ info:
    title: BIP Reference Person Spring Boot Service v1 API Documentation
    description: A sample Reference Person API to demonstrate features in the OpenAPI 3.0 specification
    termsOfService: https://developer.va.gov/terms-of-service
+   license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
 tags:
   - name: reference-person
     description: Reference Person Resource
@@ -12,7 +15,7 @@ tags:
     description: Person Rest Client Tester
   - name: token-resource
     description: Token Resource
-paths: 
+paths:
   "/api/v1/persons/pid":
     post:
       tags:
@@ -24,9 +27,9 @@ paths:
         description: personInfoRequest
         required: true
         content:
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/PersonInfoRequest'
+          application/json:
+            schema:
+              '$ref': '#/components/schemas/PersonInfoRequest'
       responses:
         '200':
           description: OK
@@ -137,20 +140,25 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
-  "/api/v1/persons/documentMetadata":
-    post:
+  "/api/v1/persons/{pid}/documents/metadata":
+    get:
+      parameters:
+          - name : pid
+            in : path
+            description : participant id
+            required : true
+            schema:
+              type: integer
+              format: int64
+              example: 6666345
+              description: The Participant ID of the person for whom to retrieve data
+              minimum: 1
+              exclusiveMinimum: false
       tags:
         - reference-person
       summary: Get metadata about the document uploaded for a pid, that is stored in the database
       description: Demonstrate retrieval of data from a database
-      operationId: getDocumentMetadata
-      requestBody: 
-        description: PersonDocumentMetadataRequest
-        required: true
-        content:
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/PersonDocumentMetadataRequest'
+      operationId: getDocumentMetadataForPerson
       responses:
         '200':
           description: OK
@@ -235,9 +243,9 @@ paths:
         person by pid operation.
       operationId: callPersonByPidUsingFeignClientUsingPOST
       requestBody:
-          description: personInfoRequest
-          required: true
-          content:
+        description: personInfoRequest
+        required: true
+        content:
             application/json:
               schema:
                 '$ref': '#/components/schemas/PersonInfoRequest'

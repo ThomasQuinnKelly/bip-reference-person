@@ -1,14 +1,12 @@
 package gov.va.bip.reference.person.impl;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,8 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -59,6 +59,8 @@ import gov.va.bip.reference.person.utils.HystrixCommandConstants;
 @RefreshScope
 @DefaultProperties(groupKey = HystrixCommandConstants.REFERENCE_PERSON_SERVICE_GROUP_KEY)
 public class ReferencePersonServiceImpl implements ReferencePersonService {
+	private static final String SAMPLE_REFERENCE_DOCUMENT = "/sample/sampleReferenceDocument.txt";
+
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(ReferencePersonServiceImpl.class);
 
 	/** Bean name constant */
@@ -195,16 +197,16 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	/**
 	 * Get the meta data associated with documents accepted for a pid
 	 *
-	 * @param the pid to associate the uploaded document to
-	 * @return A file as a byte array
-	 * @throws IOException
+	 * @param the pid to get the metadata for
+	 * @return A PersonDocumentMetadataDomainResponse with the required metadata
 	 */
 	@Override
 	public PersonDocumentMetadataDomainResponse getMetadataForPid(final PersonDocumentMetadataDomainRequest domainRequest) {
 		Personrecord data = personDatabaseHelper.getDataForPid(domainRequest.getParticipantID());
 		PersonDocumentMetadataDomainResponse domainResponse = new PersonDocumentMetadataDomainResponse();
 		PersonDocumentMetadataDomain personDocumentMetadataDomain = new PersonDocumentMetadataDomain();
-		String dateString = data.getDocumentCreationDate().format(DateTimeFormatter.ISO_DATE);
+		String dateString =
+				data.getDocumentCreationDate() == null ? "" : data.getDocumentCreationDate().format(DateTimeFormatter.ISO_DATE);
 		personDocumentMetadataDomain.setDocumentCreationDate(dateString);
 		personDocumentMetadataDomain.setDocumentName(data.getDocumentName());
 		domainResponse.setPersonDocumentMetadataDomain(personDocumentMetadataDomain);
@@ -235,15 +237,13 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		personDatabaseHelper.storeMetadata(pid, documentName, documentCreationDate);
 	}
 
+	/**
+	 * Get the sample reference document
+	 * 
+	 * @return a static reference document
+	 */
 	@Override
-	public byte[] getSampleReferenceDocument() {
-		String fileAsString;
-		try {
-			fileAsString = IOUtils.resourceToString("/sampleReferenceDocument.txt", StandardCharsets.UTF_8);
-		} catch (IOException e) {
-			throw new BipRuntimeException(PersonMessageKeys.BIP_PERSON_INVALID_DATE, MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
-					"");
-		}
-		return fileAsString == null ? null : fileAsString.getBytes();
+	public Resource getSampleReferenceDocument() {
+		return new ClassPathResource(SAMPLE_REFERENCE_DOCUMENT);
 	}
 }

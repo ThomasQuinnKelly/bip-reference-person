@@ -6,7 +6,6 @@ import javax.validation.constraints.Min;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,12 +27,10 @@ import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.rest.provider.ProviderResponse;
 import gov.va.bip.framework.swagger.SwaggerResponseMessages;
 import gov.va.bip.reference.person.api.ReferencePersonApi;
-import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataResponse;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.exception.PersonServiceException;
-import gov.va.bip.reference.person.messages.PersonMessageKeys;
 import io.swagger.annotations.ApiParam;
 
 /**
@@ -140,10 +137,13 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 		ProviderResponse response = new ProviderResponse();
 		try {
 			response = serviceAdapter.storeMetaData(Long.valueOf(pid), documentName, documentCreationDate);
+			// send provider response back to consumer
+			LOGGER.debug("Returning providerResponse to consumer");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			LOGGER.error("Upload failed due to unexpected exception", e);
 		}
+		// send provider response back to consumer
 		LOGGER.debug("Returning providerResponse to consumer");
 		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
@@ -164,23 +164,18 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 */
 	@Override
 	public ResponseEntity<Resource> downloadSampleDocument() {
-		// Load file as Resource
 		LOGGER.debug("downloadSampleDocument() method invoked");
 
-		byte[] docBytes;
 		try {
-			docBytes = serviceAdapter.getSampleReferenceDocument();
-			if ((docBytes == null) || (docBytes.length == 0)) {
-				throw new PersonServiceException(PersonMessageKeys.BIP_PERSON_NO_DOCUMENT_DOWNLOAD,
-						MessageSeverity.WARN, HttpStatus.NO_CONTENT);
-			} else {
-				Resource resource = new ByteArrayResource(docBytes);
-				return ResponseEntity.ok()
-						.contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
-						.header(HttpHeaders.CONTENT_DISPOSITION,
-								"attachment; filename=\"" + resource.getFilename() + "\"")
-						.body(resource);
-			}
+			Resource resource = serviceAdapter.getSampleReferenceDocument();
+
+			// send provider response back to consumer
+			LOGGER.debug("Returning providerResponse to consumer");
+			return ResponseEntity.ok()
+					.contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
+					.header(HttpHeaders.CONTENT_DISPOSITION,
+							"attachment; filename=\"" + resource.getFilename() + "\"")
+					.body(resource);
 		} catch (PersonServiceException e) {
 			throw e;
 		} catch (Exception e) {
@@ -206,11 +201,11 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * @return the PersonDocumentMetadataResponse wrapped by a response entity
 	 */
 	public ResponseEntity<PersonDocumentMetadataResponse>
-	getDocumentMetadata(@ApiParam(value = "PersonDocumentMetadataRequest",
-	required = true) @Valid @RequestBody final PersonDocumentMetadataRequest personDocumentMetadataRequest) {
+	getDocumentMetadataForPerson(
+			@Min(1L) @ApiParam(value = "participant id", required = true) @PathVariable("pid") final Long pid) {
 		LOGGER.debug("getDocumentMetadata() method invoked");
 
-		PersonDocumentMetadataResponse providerResponse = serviceAdapter.getMetadataDocumentForPid(personDocumentMetadataRequest);
+		PersonDocumentMetadataResponse providerResponse = serviceAdapter.getMetadataDocumentForPid(pid);
 
 		// send provider response back to consumer
 		LOGGER.debug("Returning providerResponse to consumer");
