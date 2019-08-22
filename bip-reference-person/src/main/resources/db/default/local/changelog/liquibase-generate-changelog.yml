@@ -1,26 +1,51 @@
 databaseChangeLog:
 - changeSet:
-    id: 1566305685708-1
+    id: 1566415993246-1
     author: aburkholder (generated)
+    context: bip-tester
     changes:
-    - createTable:
+    - loadData:
         columns:
         - column:
-            constraints:
-              primaryKey: true
-              primaryKeyName: personrecord_pkey
+            header: id
             name: id
-            type: INTEGER
+            type: NUMERIC
         - column:
-            constraints:
-              nullable: false
+            header: pid
             name: pid
-            type: INTEGER
+            type: NUMERIC
         - column:
+            header: document_name
             name: document_name
-            type: VARCHAR(128)
+            type: STRING
         - column:
+            header: document_creation_date
             name: document_creation_date
-            type: VARCHAR(128)
+            type: STRING
+        commentLineStartsWith: '#'
+        encoding: UTF-8
+        file: /Users/aburkholder/git/bip-reference-person/bip-reference-person/src/main/resources/db/default/local/changelog/data/personrecord.csv
+        quotchar: '"'
+        separator: ','
+        tableName: personrecord
+
+       type: NUMERIC
+        - column:
+            header: pid
+            name: pid
+            type: NUMERIC
+        - column:
+            header: document_name
+            name: document_name
+            type: STRING
+        - column:
+            header: document_creation_date
+            name: document_creation_date
+            type: STRING
+        commentLineStartsWith: '#'
+        encoding: UTF-8
+        file: /Users/aburkholder/git/bip-reference-person/bip-reference-person/src/main/resources/db/default/local/changelog/data/personrecord.csv
+        quotchar: '"'
+        separator: ','
         tableName: personrecord
 

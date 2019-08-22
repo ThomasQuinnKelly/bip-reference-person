@@ -27,13 +27,16 @@
 		<spring-core.version>5.1.8.RELEASE</spring-core.version>
 		<spring-data-jpa.version>2.1.9.RELEASE</spring-data-jpa.version>
 		
-		<!--  liquibase path options to chose from -->
+		<!--  available liquibase path options to chose from -->
 		<liquibase.changelog.path.default>default</liquibase.changelog.path.default>
 		<liquibase.changelog.path.ds1>ds1</liquibase.changelog.path.ds1>
 		<liquibase.changelog.path.ds2>ds2</liquibase.changelog.path.ds2>
-		<!-- chosen liquibase path -->
+		<!-- this is the chosen liquibase path that is used in the profiles, override with -D -->
 		<liquibase.changelog.path>${liquibase.changelog.path.default}</liquibase.changelog.path>
+		<!-- maven-specific properties for '-Dproperty.name=override-value' -->
 		<liquibase.contexts></liquibase.contexts>
+		<liquibase.diff.types.schema>tables,views,columns,indexes,foreignkeys,primarykeys,uniqueconstraints</liquibase.diff.types.schema>
+		<liquibase.diff.types.data>data</liquibase.diff.types.data>
 <!-- ...DB -->
 	</properties>
 
@@ -517,7 +520,10 @@
 							<propertyFileWillOverride>true</propertyFileWillOverride>
 							<propertyFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/liquibase-generate-changelog.properties</propertyFile>
 							<outputChangeLogFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/changelog/liquibase-generate-changelog.yml</outputChangeLogFile>
-							<contexts>${liquibase.contexts}</contexts>
+							<dataDir>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/changelog/data</dataDir>
+							<diffTypes>${liquibase.diff.types.schema},${liquibase.diff.types.data}</diffTypes>
+							<!-- <contexts>${liquibase.contexts}</contexts> -->
+							<changeSetContext>${liquibase.contexts}</changeSetContext>
 						</configuration>
 						<executions>
 							<execution>

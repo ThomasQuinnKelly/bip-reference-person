@@ -1,6 +1,12 @@
 ---
 ** TODO **
-	-- 448/453 revisit database settings based on changes made by Varun
+	-- 444 determine top possible db / liquibase approaches
+		- spring profiles: jdbc / hikari connector config, jpa config
+		- maven profiles: operations (create, update, reset, etc)
+			- overridable properties: environments => directories for tooling config/changelogs
+		- liquibase contexts: conditional changeset executions
+			- properties files: environment & db connection
+			- changelogs selected by operation (directory), changesets selected by context
 	-- 448/453 describe current and future liquibase uses (current=dev, future=dba/devops)
 	-- 448/453 after Varun is done, test and document multi-datasource configuration
 	-- 455 - prove testing capabilities, flesh out testing documentation
@@ -38,6 +44,8 @@ Recommended technology choices for relational database support:
 	* Applications with multiple datasources that would benefit from XA transactions should use an embedded transaction manager (recommend [Atomikos](https://www.atomikos.com/) or [Bitronix](https://github.com/bitronix/btm)). For more information about Spring Boot JTA, see [Distributed Transactions with JTA](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-jta.html) and [Configuring Spring and JTA without full Java EE](https://spring.io/blog/2011/08/15/configuring-spring-and-jta-without-full-java-ee/). JTA is not nearly as scary as it once was.
 
 * For database schema versioning and data management [Liquibase](http://www.liquibase.org/) is recommended.
+
+* DB admin tools are plentiful, and usually quite interoperable. If you need (or just want) something that can handle multiple vendors, you might try [DBeaver](https://dbeaver.io/) (has an Eclipse plugin too), [OmniDB](https://omnidb.org/en/), or other similar tool.
 
 ### Supported Databases
 
@@ -332,7 +340,17 @@ Some general suggestions:
 
 * Use liquibase properties files to specify the JDBC connection, and input / output file names.
 
-* Use liquibase contexts to control which changesets in a changelog should be executed for an operation (clean and populate data, environment-specific operations, version-specific upgrade, etc).
+* Use liquibase `contexts` to control which changesets in a changelog should be executed for a maven profile operation. Multiple contexts can be assigned to any changeset, and can be specified when executing changelogs. For this reason, contexts can be used to isolate database operations for almost any use-case.
+
+	It is worth noting that Liquibase also provides `labels`. These are functionally equivalent to contexts, but allow _expressions_ to aid in determining which changesets will be included in an operation. Unless absolutely necessary, the use of labels is discouraged due to the complexity and risk that they can introduce.
+
+	A couple use-case examples:
+
+	* version: changesets executed for specific release or snapshot versions
+
+	* environment: changesets executed differently in each environment (dev, test, prod)
+
+	* data: clean / add different data for different uses (test, UAT, etc)
 
 Both the Liquibase and Spring documentation are very brief and somewhat vague about how to integrate Liquibase into a Spring Boot project. Furthermore, as Liqiobase matures and Spring follows with its integrations, handling of Liquibase behaviors and properties is a moving target - there are significant discrepancies between minor spring-boot point releases. As a result, **every source of information about Liquibase integration must be understood in the context of the version of Liquibase and Spring / Spring Boot** used in the discussion or article.
 
