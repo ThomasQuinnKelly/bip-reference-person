@@ -193,12 +193,12 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
-  "/api/v1/persons/sampleReferenceDocument":
+  "/api/v1/persons/documents/sample":
     get:
       tags:
         - reference-person
       summary: Download the sample reference document 
-      description: Will download a document based on the PID, that is stored statically in the application, to demonstrate document downloads
+      description: Will download a document that is stored statically in the application, to demonstrate document downloads
       operationId: downloadSampleDocument
       responses:
         '200':
