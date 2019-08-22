@@ -140,12 +140,14 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 			// send provider response back to consumer
 			LOGGER.debug("Returning providerResponse to consumer");
 			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (PersonServiceException e) {
+			LOGGER.error(e.getMessage(), e);
+			throw e;
 		} catch (Exception e) {
 			LOGGER.error("Upload failed due to unexpected exception", e);
+			// send provider response back to consumer
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		// send provider response back to consumer
-		LOGGER.debug("Returning providerResponse to consumer");
-		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	/**

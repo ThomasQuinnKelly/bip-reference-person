@@ -1,6 +1,5 @@
 package gov.va.bip.reference.person.impl;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -36,6 +35,7 @@ import gov.va.bip.reference.person.ReferencePersonService;
 import gov.va.bip.reference.person.client.ws.PersonPartnerHelper;
 import gov.va.bip.reference.person.data.PersonDatabaseHelper;
 import gov.va.bip.reference.person.data.orm.entity.Personrecord;
+import gov.va.bip.reference.person.exception.PersonServiceException;
 import gov.va.bip.reference.person.messages.PersonMessageKeys;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
@@ -230,7 +230,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			try {
 				documentCreationDate = LocalDate.parse(documentCreationDateString, DateTimeFormatter.ISO_DATE);
 			} catch (DateTimeParseException e) {
-				throw new BipRuntimeException(PersonMessageKeys.BIP_PERSON_INVALID_DATE, MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
+				throw new PersonServiceException(PersonMessageKeys.BIP_PERSON_INVALID_DATE, MessageSeverity.ERROR,
+						HttpStatus.BAD_REQUEST,
 						"");
 			}
 		}

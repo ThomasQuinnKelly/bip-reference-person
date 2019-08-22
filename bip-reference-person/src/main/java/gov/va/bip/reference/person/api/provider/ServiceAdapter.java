@@ -10,6 +10,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import gov.va.bip.framework.exception.BipRuntimeException;
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.messages.MessageSeverity;
@@ -19,6 +20,7 @@ import gov.va.bip.reference.person.ReferencePersonService;
 import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataResponse;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
+import gov.va.bip.reference.person.exception.PersonServiceException;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
 import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainRequest;
@@ -97,6 +99,9 @@ public class ServiceAdapter {
 
 		try {
 			refPersonService.storeMetadata(pid, documentName, documentCreationDate);
+		} catch (PersonServiceException e) {
+			LOGGER.error(e.getMessage(), e);
+			throw e;
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			response.addMessage(MessageSeverity.ERROR, "Unexpected error", "failure message: " + e.getMessage(),
