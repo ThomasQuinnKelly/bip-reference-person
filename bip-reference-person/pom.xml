@@ -454,6 +454,7 @@
 							<propertyFile>${project.basedir}/src/main/resources/db/local/liquibase-diff.properties</propertyFile>
 							<changeLogFile>${project.basedir}/src/main/resources/db/local/changelog/changelog-master.xml</changeLogFile>
 							<contexts>${liquibase.contexts}</contexts>
+							<diffTypes>${liquibase.diff.types.schema}</diffTypes>
 						</configuration>
 						<executions>
 							<execution>
@@ -562,7 +563,7 @@
 									<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
 									<propertyFileWillOverride>true</propertyFileWillOverride>
 									<propertyFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/liquibase-create-db-from-changelog.properties</propertyFile>
-									<changeLogFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/liquibase-changelog/create-db-from-changelog.yml</changeLogFile>
+									<changeLogFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/changelog/liquibase-create-db-from-changelog.yml</changeLogFile>
 									<contexts>${liquibase.contexts}</contexts>
 								</configuration>
 							</execution>

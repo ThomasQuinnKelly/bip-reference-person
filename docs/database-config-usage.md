@@ -4,13 +4,11 @@
 		- spring profiles: jdbc / hikari connector config, jpa config
 		- maven profiles: operations (create, update, reset, etc)
 			- overridable properties: environments => directories for tooling config/changelogs
-		- liquibase contexts: conditional changeset executions
-			- properties files: environment & db connection
-			- changelogs selected by operation (directory), changesets selected by context
+			- grouping and conditional execution mechanisms: includes, preconditions, contexts
+			- ** changelogs selected by operation (directory), changesets selected by preconditions and context
 	-- 448/453 describe current and future liquibase uses (current=dev, future=dba/devops)
-	-- 448/453 after Varun is done, test and document multi-datasource configuration
+	-- 448/453 test and document multi-datasource configuration
 	-- 455 - prove testing capabilities, flesh out testing documentation
-	-- 454 - research if liquibase script execution can be safely done in clustered / distributed environment
 ---
 
 # Databases in BIP
@@ -338,21 +336,21 @@ Some general suggestions:
 
 * Use maven profiles to separate the types of operations performed (drop and recreate schema, update schema, populate data, etc). Each profile should have one or more corresponding properties files and changelogs that are named the same or similar as the profile id.
 
-* Use liquibase properties files to specify the JDBC connection, and input / output file names.
+* Use liquibase properties files to specify the JDBC connection, input / output file names, and other Liquibase properties. The default property values set in the maven profiles can be overriden with the liquibase properties.
 
-* Use liquibase `contexts` to control which changesets in a changelog should be executed for a maven profile operation. Multiple contexts can be assigned to any changeset, and can be specified when executing changelogs. For this reason, contexts can be used to isolate database operations for almost any use-case.
+* Group changelogs and changesets for specific tasks:
 
-	It is worth noting that Liquibase also provides `labels`. These are functionally equivalent to contexts, but allow _expressions_ to aid in determining which changesets will be included in an operation. Unless absolutely necessary, the use of labels is discouraged due to the complexity and risk that they can introduce.
+	* Strategic use of [`include` tag](https://www.liquibase.org/documentation/include.html) and [`includeAll` tag](https://www.liquibase.org/documentation/includeall.html) in changelog files can be used to redirect to different properties or changelog files/directory.
 
-	A couple use-case examples:
+	* The [`preconditions` tags](https://www.liquibase.org/documentation/preconditions.html) can be used in changelogs and changesets to control execution based on the state of the database or connection. They can also specify failure behavior. Examples of using boolean logic in preconditions and the available precondition tags are on the linked page.
 
-	* version: changesets executed for specific release or snapshot versions
+	* Use [`contexts` tags](https://www.liquibase.org/documentation/contexts.html) in changesets to control which changesets in a changelog should be executed. Multiple contexts can be written in to any changeset. At time of execution specify the contexts to be included. A context is just a string you choose, and can be used to isolate database operations for almost any use-case.
 
-	* environment: changesets executed differently in each environment (dev, test, prod)
+		It is worth noting that Liquibase also provides `labels`. These are functionally equivalent to `contexts`, but allow _expressions_ to aid in determining which changesets will be included in an operation. Unless absolutely necessary, the use of labels is discouraged due to the complexity and risk that they can introduce. Preconditions can be just as effective, and are more obvious.
 
-	* data: clean / add different data for different uses (test, UAT, etc)
+* If custom SQL is used in a changeset, rollbacks are not possible with liquibase. For this reason, use of the `sql` tag is discouraged unless absolutely necessary. In most cases, the same can be accomplished with Liquibase [changes (scroll down the left nav)](https://www.liquibase.org/documentation/changes1`/index.html) and [extensions (listed on the right nav)](https://liquibase.jira.com/wiki/spaces/CONTRIB/overview). By using these, your configurations remain database agnostic and retain rollback capability.
 
-Both the Liquibase and Spring documentation are very brief and somewhat vague about how to integrate Liquibase into a Spring Boot project. Furthermore, as Liqiobase matures and Spring follows with its integrations, handling of Liquibase behaviors and properties is a moving target - there are significant discrepancies between minor spring-boot point releases. As a result, **every source of information about Liquibase integration must be understood in the context of the version of Liquibase and Spring / Spring Boot** used in the discussion or article.
+Both the Liquibase and Spring documentation are very brief and somewhat vague about how to integrate Liquibase into a Spring Boot project. Furthermore, as Liqiobase matures and Spring follows with its integrations, handling of Liquibase behaviors and properties is a moving target - there are significant discrepancies between minor spring-boot point releases. As a result, **every source of information about Liquibase integration must be understood in the context of the version of Liquibase and Spring / Spring Boot used in a blog or article**.
 
 Below is a summarization of the key points, assuming the JDBC connections and other database-specific configuration is already done:
 
@@ -400,7 +398,6 @@ Below is a summarization of the key points, assuming the JDBC connections and ot
 				contexts: [value] # Comma-separated list of runtime contexts to use.
 				liquibase-tablespace: [value] # Tablespace to use for Liquibase objects.
 				parameters.[*]: [value] # Change replaceable parameters.
-				labels: [value] # Comma-separated list of runtime labels to use.
 				### For multiple datasources, Spring Boot will tell Liquibase the URL and credentials for the
 				### @Primary datasource on which to operate. However, you can manually set the values here...
 				url: [value] # JDBC URL of the database to migrate. If not set, the primary configured data source is used.
