@@ -24,6 +24,8 @@ spring.profiles.include: remote_client_sims, embedded-redis
 #####################################################################################################
 #####################################################################################################
 ### POSTGRESQL DATABASE CONFIG###
+app.startup.schema: changelog.file.name.yml
+app.startup.data: changelog.file.name.yml
 spring:
   datasource:
     ## explicitly declare the connection pool to eliminate spring boot search algorithm
