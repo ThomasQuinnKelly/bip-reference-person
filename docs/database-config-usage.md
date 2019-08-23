@@ -523,6 +523,21 @@ The [Maven Liquibase Plugin](https://www.liquibase.org/documentation/maven/index
 
 	</details>
 
+### Running liquibase at server startup
+
+Liquibase can be invoked when the server starts. This can be useful for developers (e.g. setting up h2 for unit tests, or reseting an external db to some known state). However, it is imperative that this behavior not be allowed into higher environments.
+
+To [run liquibase on startup](https://docs.spring.io/spring-boot/docs/current/reference/html/howto-database-initialization.html#howto-execute-liquibase-database-migrations-on-startup):
+
+* Add `org.liquibase:liquibase-core` to your project dependencies.
+
+* In the application YAML, set `spring.liquibase.change-log=path/to/changelog.yml` (by default, spring boot will look for `db/changelog/db.changelog-master.yaml`).
+
+* If you want liquibase to run on its own native datasource, set either `spring.liquibase.url` or `spring.liquibase.user` (either will trigger the datasource switch).
+
+* If you have multiple datasources, you already have `@Configuration` for the datasources. On the `@Bean` that you want liquibase to run, add `@LiquibaseDataSource`.  The other datasource must be annotated with `@Primary`.
+
+
 ### Logging Database Activity
 
 [P6spy](https://p6spy.readthedocs.io) - specifically [its spring boot integration](https://github.com/gavlyukovskiy/spring-boot-data-source-decorator) is recommended due to its transparent integration in spring boot applications.  With the p6spy decorator, it is not necessary to pollute the Application class, or provide `@Configuration` beans.
