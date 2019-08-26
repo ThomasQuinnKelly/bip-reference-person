@@ -13,13 +13,11 @@ import gov.va.bip.reference.person.data.orm.entity.Personrecord;
 public interface PersonrecordsRepository extends JpaRepository<Personrecord, Long> {
 
 	/**
-	 * Retrieve a Personrecord based on the pid
-	 * 
-	 * 
-	 * @param pid
-	 * 
+	 * Retrieve a Personrecord based on the pid.
+	 *
+	 * @param pid the pid
 	 * @return Personrecord
 	 */
-	Personrecord findByPid(long pid);
+	Personrecord findByPid(Long pid);
 
 }

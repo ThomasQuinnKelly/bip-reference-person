@@ -1,10 +1,7 @@
 package gov.va.bip.reference.person;
 
-import java.io.IOException;
-
 import org.springframework.core.io.Resource;
 
-import gov.va.bip.framework.exception.BipException;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
 import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainRequest;
