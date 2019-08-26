@@ -427,6 +427,20 @@ components:
           type: string
           example: 912444689
           description: The persons SSN
+    PersonDocumentMetadata:
+      type: object
+      title: PersonDocumentMetadata
+      description: Model for document metadata associated with a person contained in the response from the Person Service
+      properties:
+        documentName:
+           type: string
+           example: samplePersonDocument.txt
+           description : The name of the document
+        documentCreationDate:
+           type: string
+           description : The date of creation of the document in YYYY-MM-DD format
+           pattern: 'YYYY-MM-DD'
+           example: 2019-08-09
     PersonInfoRequest:
       title: PersonInfoRequest
       description: Model for data to request person information from the Person Service
@@ -478,14 +492,9 @@ components:
        - type: object
          # all other properties specific to PersonDocumentMetadataResponse
          properties:
-           documentName:
-             type: string
-             description : The name of the document
-           documentCreationDate:
-             type: string
-             description : The date of creation of the document in YYYY-MM-DD format
-             pattern: 'YYYY-MM-DD'
-             example: 2019-08-09
+           PersonDocumentMetadata:
+             description: The object representing the document metadata information associated with a person
+             '$ref': '#/components/schemas/PersonDocumentMetadata'
     # Schema objects below are from BIP Framework to be declared.
     # These objects need to be mapped in <importMappings> section
     # of openapi-generator-maven-plugin so that no code is generated 
