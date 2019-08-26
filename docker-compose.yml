@@ -9,6 +9,7 @@ services:
       context: ./bip-reference-person
     environment:
       - spring.profiles.active=local-int
+      - spring.profiles.include=remote_client_sims,db-postgres
       - spring.cloud.consul.host=consul
       - spring.redis.host=redis
       - spring.cloud.vault.host=vault
