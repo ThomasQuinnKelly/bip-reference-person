@@ -82,11 +82,8 @@ bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
 ---
-spring.profiles: local-int, ci, dev, stage, prod
+spring.profiles: ci, dev, stage, prod
 spring.profiles.include: remote_client_sims
----
-spring.profiles: local-int
-spring.profiles.include: db-postgres
 ---
 spring.profiles: ci, dev
 spring.profiles.include: db-h2
