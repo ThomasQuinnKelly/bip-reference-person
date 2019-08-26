@@ -21,10 +21,10 @@ import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.messages.MessageKeys;
 import gov.va.bip.framework.messages.MessageSeverity;
-import gov.va.bip.framework.rest.provider.ProviderResponse;
 import gov.va.bip.framework.swagger.SwaggerResponseMessages;
 import gov.va.bip.reference.person.api.ReferencePersonApi;
 import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataResponse;
+import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataUploadResponse;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.exception.PersonServiceException;
@@ -155,7 +155,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * @return the PersonDocumentMetadataResponse wrapped by a response entity
 	 */
 	@Override
-	public ResponseEntity<PersonDocumentMetadataResponse> getDocumentMetadataForPerson(@Min(1) Long pid) {
+	public ResponseEntity<PersonDocumentMetadataResponse> getDocumentMetadataForPerson(@Min(1) final Long pid) {
 		LOGGER.debug("getDocumentMetadata() method invoked");
 
 		PersonDocumentMetadataResponse providerResponse = serviceAdapter.getMetadataDocumentForPid(pid);
@@ -186,16 +186,17 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * @return PersonDocumentMetadataResponse
 	 */
 	@Override
-	public ResponseEntity<PersonDocumentMetadataResponse> upload(@Min(1) Long pid, String documentName, @Valid MultipartFile file,
-			String documentCreationDate) {
+	public ResponseEntity<PersonDocumentMetadataUploadResponse> upload(@Min(1) final Long pid, final String documentName,
+			@Valid final MultipartFile file,
+			final String documentCreationDate) {
 		LOGGER.debug("upload() method invoked");
-		PersonDocumentMetadataResponse response = new PersonDocumentMetadataResponse();
+		PersonDocumentMetadataUploadResponse providerResponse = new PersonDocumentMetadataUploadResponse();
 		try {
-			ProviderResponse providerResponse = serviceAdapter.storeMetaData(Long.valueOf(pid), documentName, documentCreationDate, file);
-			response.addMessages(providerResponse.getMessages());
+			providerResponse =
+					serviceAdapter.storeMetaData(Long.valueOf(pid), documentName, documentCreationDate, file);
 			// send provider response back to consumer
 			LOGGER.debug("Returning providerResponse to consumer");
-			return new ResponseEntity<>(response, HttpStatus.OK);
+			return new ResponseEntity<>(providerResponse, HttpStatus.OK);
 		} catch (PersonServiceException e) {
 			LOGGER.error(e.getMessage(), e);
 			throw e;

@@ -112,7 +112,7 @@ paths:
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/PersonDocumentMetadataResponse'
+                '$ref': '#/components/schemas/PersonDocumentMetadataUploadResponse'
         '400':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -479,6 +479,13 @@ components:
            PersonDocumentMetadata:
              description: The object representing the document metadata information associated with a person
              '$ref': '#/components/schemas/PersonDocumentMetadata'
+    PersonDocumentMetadataUploadResponse: 
+    # Create a wrapper model to avoid having multiple message objects being added to the example response object in the swagger documentation (a possible bug in open-api/swagger?)
+      title: PersonDocumentMetadataResponse
+      description: Model for holding metadata sent along with an uploaded document
+      allOf:
+       - '$ref': '#/components/schemas/ProviderResponse'
+       - type: object
     # Schema objects below are from BIP Framework to be declared.
     # These objects need to be mapped in <importMappings> section
     # of openapi-generator-maven-plugin so that no code is generated 

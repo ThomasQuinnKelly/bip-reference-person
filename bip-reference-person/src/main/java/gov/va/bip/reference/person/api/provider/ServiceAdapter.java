@@ -14,10 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.messages.MessageSeverity;
-import gov.va.bip.framework.rest.provider.ProviderResponse;
 import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.ReferencePersonService;
 import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataResponse;
+import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataUploadResponse;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.exception.PersonServiceException;
@@ -95,9 +95,10 @@ public class ServiceAdapter {
 	 * 
 	 * @return a ProviderResponse
 	 */
-	ProviderResponse storeMetaData(final Long pid, String documentName, final String documentCreationDate, @Valid final MultipartFile file) {
+	PersonDocumentMetadataUploadResponse storeMetaData(final Long pid, String documentName, final String documentCreationDate,
+			@Valid final MultipartFile file) {
 
-		ProviderResponse response = new ProviderResponse();
+		PersonDocumentMetadataUploadResponse response = new PersonDocumentMetadataUploadResponse();
 
 		try {
 			if (StringUtils.isBlank(documentName)) {
