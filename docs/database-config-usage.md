@@ -55,9 +55,9 @@ Spring Boot supports a good variety of databases out of the box. Database availa
 
 * If a local external database is required, teams can select which to use. Consider using a docker image of the desired local database (postgres, oracle, etc). Examples of acquiring and starting/stopping a postgres docker image:
 
-	* acquire and start postgres docker instance: `docker run --rm --name bip-postgres -p 127.0.0.1:5432:5432/tcp -e POSTGRES_PASSWORD=password -d postgres`
+	* acquire and start postgres docker instance: `docker run --rm --name bip-postgres -p 127.0.0.1:5432:5432/tcp -e POSTGRES_PASSWORD=password -d postgres:latest`
 
-	* stop postgres docker intance: `docker stop bip-postgres`
+	* stop postgres docker instance: `docker stop bip-postgres`
 
 **External Databases:**
 
@@ -99,9 +99,11 @@ For single-datasource projects, add only the **one** desired driver dependency (
 	<h2.version>1.4.199</h2.version>
 	<hsqldb.version>2.5.0</hsqldb.version>
 	<derby.version>10.15.1.3</derby.version>
-	<postgres.version>42.2.6</postgres.version>
-	<mysql.version>8.0.17</mysql.version>
-	<oracledb.version>11.2.0.4</oracledb.version>
+	<postgresql.version>42.2.6</postgresql.version>
+	<mysql-connector-java.version>8.0.17</mysql-connector-java.version>
+	<ojdbc6.version>11.2.0.4</ojdbc6.version>
+	<ojdbc7.version>12.1.0.2</ojdbc7.version>
+	<ojdbc8.version>12.2.0.1</ojdbc8.version>
 </properties>
 
 
@@ -154,35 +156,35 @@ For single-datasource projects, add only the **one** desired driver dependency (
 	<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>${postgres.version}</version>
+			<version>${postgresql.version}</version>
 			<scope>runtime</scope>
 		<optional>true</optional>
 	</dependency>
 	<dependency>
 		<groupId>mysql</groupId>
 		<artifactId>mysql-connector-java</artifactId>
-		<version>${mysql.version}</version>
+		<version>${mysql-connector-java.version}</version>
 			<scope>runtime</scope>
 		<optional>true</optional>
 	</dependency>
 	<dependency>
 		<groupId>com.oracle</groupId>
 		<artifactId>ojdbc8</artifactId>
-		<version>${oracledb.version}</version>
+		<version>${ojdbc8.version}</version>
 			<scope>runtime</scope>
 		<optional>true</optional>
 	</dependency>
 	<dependency>
 		<groupId>com.oracle</groupId>
 		<artifactId>ojdbc7</artifactId>
-		<version>${oracledb.version}</version>
+		<version>${ojdbc7.version}</version>
 			<scope>runtime</scope>
 		<optional>true</optional>
 	</dependency>
 	<dependency>
 		<groupId>com.oracle</groupId>
 		<artifactId>ojdbc6</artifactId>
-		<version>${oracledb.version}</version>
+		<version>${ojdbc6.version}</version>
 			<scope>runtime</scope>
 		<optional>true</optional>
 	</dependency>

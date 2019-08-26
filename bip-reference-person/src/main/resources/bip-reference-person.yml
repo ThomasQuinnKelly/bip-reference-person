@@ -28,30 +28,26 @@ app.startup.schema: changelog.file.name.yml
 app.startup.data: changelog.file.name.yml
 spring:
   datasource:
-    ## explicitly declare the connection pool to eliminate spring boot search algorithm
+    ### explicitly declare the connection pool to eliminate spring boot search algorithm
     type: com.zaxxer.hikari.HikariDataSource
-    ## for our purposes, always run db initialization
-    initialization-mode: always
-    url: jdbc:postgresql://localhost:5432/postgres
-    ## see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
-    ## use "driver-class-name" only for drivers not supported by spring (e.g. oracle)
-#    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: password
+    ### skip spring db init - liquibase core is on the classpath, so it runs automatically
+    initialization-mode: never
+    #url: jdbc:postgresql://localhost:5432/postgres
+    ### see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
+    ### use "driver-class-name" only for drivers not supported by spring (e.g. oracle)
+    #driver-class-name: 
+    #username: postgres
+    #password: password
   jpa:
 #    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     properties:
       hibernate:
-        # provide correct dialect to avoid exceptions with CLOBs...
-        dialect: org.hibernate.dialect.PostgreSQL9Dialect
-#    generate-ddl: true
+      #  dialect: org.hibernate.dialect.PostgreSQL9Dialect
+    generate-ddl: false
     hibernate:
       ddl-auto: none
       connection:
         provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
-    # avoid  exceptions with CLOBs...
-    temp:
-        use_jdbc_metadata_defaults: false
 #  h2:
 #    console:
 #        enabled: true

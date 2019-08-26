@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
 	<modelVersion>4.0.0</modelVersion>
 
 	<!--
@@ -11,7 +13,7 @@
 		<groupId>gov.va.bip.framework</groupId>
 		<artifactId>bip-framework-parentpom</artifactId>
 		<version>2.0.3-SNAPSHOT</version>
-		<relativePath/>
+		<relativePath />
 	</parent>
 
 	<groupId>gov.va.bip.reference.person</groupId>
@@ -26,8 +28,8 @@
 		<module>bip-reference-person</module>
 		<module>bip-reference-inttest</module>
 		<module>bip-reference-perftest</module>
-    <module>bip-reference-person-db</module>
-  </modules>
+		<module>bip-reference-person-db</module>
+	</modules>
 
 	<repositories>
 		<repository>
@@ -38,7 +40,14 @@
 	</repositories>
 
 	<properties>
-		<!-- <liquibase.version>3.6.1</liquibase.version> -->
+		<!-- JDBC Driver Versions -->
+		<h2.version>1.4.199</h2.version>
+		<postgresql.version>42.2.6</postgresql.version>
+		<ojdbc6.version>11.2.0.4</ojdbc6.version><!-- also 11.1.0.7 -->
+		<ojdbc7.version>12.1.0.2</ojdbc7.version><!-- also 12.1.0.2 -->
+		<ojdbc8.version>12.2.0.1</ojdbc8.version><!-- also 18.1.0, 19.3 -->
+		<ojdbc10.version>19.3</ojdbc10.version>
+		<!-- Liquibase -->
 		<liquibase-core.version>${liquibase.version}</liquibase-core.version>
 		<liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
 		<!-- fortify scanner version -->
@@ -54,28 +63,60 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-	            <groupId>org.liquibase</groupId>
-	            <artifactId>liquibase-core</artifactId>
-	            <version>${liquibase-core.version}</version>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<scope>runtime</scope>
+				<version>${h2.version}</version> <!-- Need version >= 1.4.198 for row_number analytic -->
 			</dependency>
-		      <dependency>
-		        <groupId>org.apache.logging.log4j</groupId>
-		        <artifactId>log4j-liquibase</artifactId>
-		        <exclusions>
-		        	<exclusion>
-			            <groupId>org.liquibase</groupId>
-			            <artifactId>liquibase-core</artifactId>
-		        	</exclusion>
-		        </exclusions>
-		      </dependency>
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc6</artifactId>
+				<version>${ojdbc6.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc7</artifactId>
+				<version>${ojdbc7.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc8</artifactId>
+				<version>${ojdbc8.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc10</artifactId>
+				<version>${ojdbc10.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-core</artifactId>
+				<version>${liquibase-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-liquibase</artifactId>
+				<exclusions>
+					<exclusion>
+						<groupId>org.liquibase</groupId>
+						<artifactId>liquibase-core</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
 			<dependency>
 				<groupId>org.liquibase.ext</groupId>
 				<artifactId>liquibase-hibernate5</artifactId>
 				<version>${liquibase-hibernate5.version}</version>
 				<exclusions>
 					<exclusion>
-			            <groupId>org.liquibase</groupId>
-			            <artifactId>liquibase-core</artifactId>
+						<groupId>org.liquibase</groupId>
+						<artifactId>liquibase-core</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -184,30 +225,32 @@
 									<tasks>
 										<!-- add the ant tasks from ant-contrib -->
 										<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-											<classpath refid="maven.dependency.classpath"/>
+											<classpath refid="maven.dependency.classpath" />
 										</taskdef>
 										<echo>+++ Executing ANT target for Fortify copy/merge</echo>
 										<echo>+++ Checking file availability of ${fortify-merge-input-filepath}</echo>
 										<if>
-											<available file="${fortify-merge-input-filepath}"/>
+											<available file="${fortify-merge-input-filepath}" />
 											<then>
 												<echo>+++ Found file: ${fortify-merge-input-filepath}</echo>
 												<echo>+++ Executing Fortify merge operation with:</echo>
-												<echo>      FPRUtility -merge</echo>
-												<echo>        -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
-												<echo>        -source ${fortify-merge-input-filepath}</echo>
-												<echo>        -f ${fortify-merge-output-filepath}</echo>
+												<echo> FPRUtility -merge</echo>
+												<echo> -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
+												<echo> -source ${fortify-merge-input-filepath}</echo>
+												<echo> -f ${fortify-merge-output-filepath}</echo>
 												<exec executable="FPRUtility">
-													<arg line="-merge -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr -source ${fortify-merge-input-filepath} -f ${fortify-merge-output-filepath}"/>
+													<arg
+														line="-merge -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr -source ${fortify-merge-input-filepath} -f ${fortify-merge-output-filepath}" />
 												</exec>
 											</then>
 											<else>
 												<echo>+++ Not-found file: ${fortify-merge-input-filepath}</echo>
 												<echo>+++ Executing file copy with:</echo>
-												<echo>      copy</echo>
-												<echo>        ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
-												<echo>        ${fortify-merge-output-filepath}</echo>
-												<copy file="${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr" tofile="${fortify-merge-output-filepath}"/>
+												<echo> copy</echo>
+												<echo> ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
+												<echo> ${fortify-merge-output-filepath}</echo>
+												<copy file="${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr"
+													tofile="${fortify-merge-output-filepath}" />
 											</else>
 										</if>
 									</tasks>
