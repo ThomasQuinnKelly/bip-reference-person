@@ -106,51 +106,6 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	}
 
 	/**
-	 * Accept the document and store the metadata supplied in the multi-part request in database for a given person pid. The document
-	 * is currently discarded. Storage of the document is not demonstrated.
-	 *
-	 * <p>
-	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two return types.
-	 * <ol>
-	 * <li>An object that implements ProviderTransferObjectMarker, e.g.: PersonInfoResponse
-	 * <li>An object of type ResponseEntity&lt;ProviderTransferObjectMarker&gt;, e.g. a ResponseEntity that wraps some class that
-	 * implements ProviderTransferObjectMarker.
-	 * </ol>
-	 * The auditing aspect won't be triggered if the return type in not one of the above.
-	 *
-	 * @param pid the pid
-	 * @param documentName the name of the document
-	 * @param file the file uploaded for the pid
-	 * @param documentCreationDate the date of creation of the document
-	 * 
-	 * @return ProviderResponse
-	 */
-	@Override
-	public ResponseEntity<gov.va.bip.framework.rest.provider.ProviderResponse> upload(
-			@Min(1L) @ApiParam(value = "participant id", required = true) @PathVariable("pid") final Long pid,
-			@ApiParam(value = "The name of the document", required = true) @RequestParam(value = "documentName",
-			required = true) final String documentName,
-			@ApiParam(value = "file detail") @Valid @RequestPart("file") final MultipartFile file,
-			@ApiParam(value = "The date of creation of the document in YYYY-MM-DD format") @RequestParam(
-					value = "documentCreationDate", required = false) final String documentCreationDate) {
-		LOGGER.debug("upload() method invoked");
-		ProviderResponse response = new ProviderResponse();
-		try {
-			response = serviceAdapter.storeMetaData(Long.valueOf(pid), documentName, documentCreationDate, file);
-			// send provider response back to consumer
-			LOGGER.debug("Returning providerResponse to consumer");
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch (PersonServiceException e) {
-			LOGGER.error(e.getMessage(), e);
-			throw e;
-		} catch (Exception e) {
-			LOGGER.error("Upload failed due to unexpected exception", e);
-			// send provider response back to consumer
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
-	/**
 	 * Get the statically stored sample reference document
 	 *
 	 * <p>
@@ -202,9 +157,8 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * 
 	 * @return the PersonDocumentMetadataResponse wrapped by a response entity
 	 */
-	public ResponseEntity<PersonDocumentMetadataResponse>
-	getDocumentMetadataForPerson(
-			@Min(1L) @ApiParam(value = "participant id", required = true) @PathVariable("pid") final Long pid) {
+	@Override
+	public ResponseEntity<PersonDocumentMetadataResponse> getDocumentMetadataForPerson(@Min(1) Long pid) {
 		LOGGER.debug("getDocumentMetadata() method invoked");
 
 		PersonDocumentMetadataResponse providerResponse = serviceAdapter.getMetadataDocumentForPid(pid);
@@ -212,6 +166,47 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 		// send provider response back to consumer
 		LOGGER.debug("Returning providerResponse to consumer");
 		return new ResponseEntity<>(providerResponse, HttpStatus.OK);
+	}
+
+	/**
+	 * Accept the document and store the metadata supplied in the multi-part request in database for a given person pid. The document
+	 * is currently discarded. Storage of the document is not demonstrated.
+	 *
+	 * <p>
+	 * CODING PRACTICE FOR RETURN TYPES - Platform auditing aspects support two return types.
+	 * <ol>
+	 * <li>An object that implements ProviderTransferObjectMarker, e.g.: PersonInfoResponse
+	 * <li>An object of type ResponseEntity&lt;ProviderTransferObjectMarker&gt;, e.g. a ResponseEntity that wraps some class that
+	 * implements ProviderTransferObjectMarker.
+	 * </ol>
+	 * The auditing aspect won't be triggered if the return type in not one of the above.
+	 *
+	 * @param pid the pid
+	 * @param documentName the name of the document
+	 * @param file the file uploaded for the pid
+	 * @param documentCreationDate the date of creation of the document
+	 * 
+	 * @return PersonDocumentMetadataResponse
+	 */
+	@Override
+	public ResponseEntity<PersonDocumentMetadataResponse> upload(@Min(1) Long pid, String documentName, @Valid MultipartFile file,
+			String documentCreationDate) {
+		LOGGER.debug("upload() method invoked");
+		PersonDocumentMetadataResponse response = new PersonDocumentMetadataResponse();
+		try {
+			ProviderResponse providerResponse = serviceAdapter.storeMetaData(Long.valueOf(pid), documentName, documentCreationDate, file);
+			response.addMessages(providerResponse.getMessages());
+			// send provider response back to consumer
+			LOGGER.debug("Returning providerResponse to consumer");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (PersonServiceException e) {
+			LOGGER.error(e.getMessage(), e);
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error("Upload failed due to unexpected exception", e);
+			// send provider response back to consumer
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 }

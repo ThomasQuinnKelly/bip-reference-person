@@ -27,9 +27,9 @@ paths:
         description: personInfoRequest
         required: true
         content:
-          application/json:
-            schema:
-              '$ref': '#/components/schemas/PersonInfoRequest'
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/PersonInfoRequest'
       responses:
         '200':
           description: OK
@@ -112,7 +112,7 @@ paths:
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+                '$ref': '#/components/schemas/PersonDocumentMetadataResponse'
         '400':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -243,9 +243,9 @@ paths:
         person by pid operation.
       operationId: callPersonByPidUsingFeignClientUsingPOST
       requestBody:
-        description: personInfoRequest
-        required: true
-        content:
+          description: personInfoRequest
+          required: true
+          content:
             application/json:
               schema:
                 '$ref': '#/components/schemas/PersonInfoRequest'
@@ -443,22 +443,6 @@ components:
               exclusiveMinimum: false
           required:
             - participantID
-    PersonDocumentMetadataRequest:
-      title: PersonDocumentMetadataRequest
-      description: Model for data to request metadata of the document associated with a person from the Person Service
-      allOf:
-        - '$ref': '#/components/schemas/ProviderRequest'
-        - type: object
-          properties:
-            participantID:
-              type: integer
-              format: int64
-              example: 6666345
-              description: The Participant ID of the person for whom to retrieve data
-              minimum: 1
-              exclusiveMinimum: false
-          required:
-            - participantID        
     PersonInfoResponse:
       title: PersonInfoResponse
       description: Model for the response from the Person Service

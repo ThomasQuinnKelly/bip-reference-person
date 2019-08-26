@@ -303,7 +303,6 @@
 										<performBeanValidation>true</performBeanValidation>
 										<useTags>true</useTags>
 										<swaggerDocketConfig>false</swaggerDocketConfig>
- 										<dateLibrary>java8</dateLibrary>
 									</configOptions>
 								</configuration>
 							</execution>
