@@ -10,20 +10,24 @@ server:
   port: 8080
 ---
 spring.profiles: db-h2
+db:
+  name: testdb
 #####################################################################################################
 # By default, Spring Boot configures the application to connect to an 
 # in-memory store with the username sa and an empty password. We can change 
 # those parameters by adding the following properties
+  #spring.datasource.database=h2
   #spring.datasource.url=jdbc:h2:mem:testdb
   #spring.datasource.driverClassName=org.h2.Driver
   #spring.datasource.username=sa
   #spring.datasource.password=
-  #spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 # By design, the in-memory database is volatile and data will be lost when we restart the application.
 #####################################################################################################
 spring:
   datasource:
+    database: h2
     type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:${spring.datasource.database}:mem:${db.name}
   jpa:
     hibernate:
       ddl-auto: create
@@ -34,36 +38,31 @@ spring:
         enabled: true
 ---
 spring.profiles: db-postgres
+db:
+  name: postgres
 spring:
   datasource:
+    database: postgresql
     type: com.zaxxer.hikari.HikariDataSource
-    initialization-mode: always
-#    schema: schema-postgresql.sql
-#    data: data-postgresql.sql
-    url: jdbc:postgresql://postgres:5432/postgres
-    platform: postgresql
+    ### skip spring init - using liquibase
+    initialization-mode: never
+    url: jdbc:${spring.datasource.database}://postgres:5432/${db.name}
     ## see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
     ## use "driver-class-name" only for drivers not supported by spring (e.g. oracle)
-#    driver-class-name: org.postgresql.Driver
+#    driver-class-name: [fqn_of_jdbc_driver_class]
     username: postgres
     password: password
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
     properties:
 # for available hibernate dialects, see https://docs.jboss.org/hibernate/orm/5.0/javadocs/org/hibernate/dialect/package-summary.html
       hibernate:
-        # provide correct dialect to avoid exceptions with CLOBs...
          dialect: org.hibernate.dialect.PostgreSQL94Dialect
-         temp: 
-           use_jdbc_metadata_defaults: false
-#    generate-ddl: true
+    generate-ddl: false
     hibernate:
       ddl-auto: none
       connection:
         provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
-    # avoid  exceptions with CLOBs...
-#    temp:
-#        use_jdbc_metadata_defaults: false
+
   ## Connection Pool settings can be refined by adjusting
   ## hikari properties directly
   # A list of all Hikari parameters with a good explanation is available on
@@ -86,7 +85,7 @@ spring.profiles: ci, dev, stage, prod
 spring.profiles.include: remote_client_sims
 ---
 spring.profiles: ci, dev
-spring.profiles.include: db-h2
+spring.profiles.include: db-postgres
 ---
 spring: 
   cache:
