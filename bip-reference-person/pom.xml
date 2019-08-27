@@ -22,6 +22,10 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
 		<!-- DB... -->
 		<!--
 		<dependency>

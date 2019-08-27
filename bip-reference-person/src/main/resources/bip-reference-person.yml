@@ -8,8 +8,13 @@ info:
     description: "@project.description@"
 server: 
   port: 8080
+spring.liquibase.change-log: file://@project.basedir@/../bip-reference-person-db/src/main/resources/db/changelog/db.changelog-master.yaml
 ---
 spring.profiles: db-h2
+### db.subprotocol (db type) and db.name (e.g. SID) must be declared for each database spring.profile
+db:
+  subprotocol: h2
+  name: memdb
 #####################################################################################################
 # By default, Spring Boot configures the application to connect to an 
 # in-memory store with the username sa and an empty password. We can change 
@@ -18,52 +23,49 @@ spring.profiles: db-h2
   #spring.datasource.driverClassName=org.h2.Driver
   #spring.datasource.username=sa
   #spring.datasource.password=
-  #spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+  #spring.jpa.database-platform=h2
 # By design, the in-memory database is volatile and data will be lost when we restart the application.
 #####################################################################################################
 spring:
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
   jpa:
+    database: h2
+    generate-ddl: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
       connection:
         provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:${spring.jpa.database}:mem:${db.name}
+    ### skip spring db init - using liquibase
+    initialization-mode: never
   h2:
     console:
         enabled: true
 ---
 spring.profiles: db-postgres
+### db.name (e.g. the SID) must be declared for each database spring.profile
+db:
+  name: postgres
 spring:
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    initialization-mode: always
-#    schema: schema-postgresql.sql
-#    data: data-postgresql.sql
-    url: jdbc:postgresql://postgres:5432/postgres
-    platform: postgresql
-    ## see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
-    ## use "driver-class-name" only for drivers not supported by spring (e.g. oracle)
-#    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: password
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
-    properties:
-# for available hibernate dialects, see https://docs.jboss.org/hibernate/orm/5.0/javadocs/org/hibernate/dialect/package-summary.html
-      hibernate:
-        # provide correct dialect to avoid exceptions with CLOBs...
-         dialect: org.hibernate.dialect.PostgreSQL94Dialect
-         temp: 
-           use_jdbc_metadata_defaults: false
-#    generate-ddl: true
+    database: postgresql
+    generate-ddl: false
     hibernate:
       ddl-auto: none
       connection:
         provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
-    # avoid  exceptions with CLOBs...
-#    temp:
-#        use_jdbc_metadata_defaults: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:${spring.jpa.datasource}://postgres:5432/${db.name}
+    ### skip spring db init - using liquibase
+    initialization-mode: never
+    ## see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
+    ## use "driver-class-name" only for drivers not supported by spring (e.g. oracle)
+#    driver-class-name: [driver_class_name]
+    username: postgres
+    password: password
+
   ## Connection Pool settings can be refined by adjusting
   ## hikari properties directly
   # A list of all Hikari parameters with a good explanation is available on
