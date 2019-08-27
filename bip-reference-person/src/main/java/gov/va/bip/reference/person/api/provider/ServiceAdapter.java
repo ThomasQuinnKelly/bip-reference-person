@@ -115,7 +115,7 @@ public class ServiceAdapter {
 			return response;
 		}
 
-		response.addMessage(MessageSeverity.INFO, "success", "file uploaded", HttpStatus.ACCEPTED);
+		response.addMessage(MessageSeverity.INFO, "success", "file uploaded", HttpStatus.OK);
 		return response;
 	}
 
