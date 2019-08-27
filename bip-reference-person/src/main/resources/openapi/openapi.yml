@@ -481,7 +481,7 @@ components:
              '$ref': '#/components/schemas/PersonDocumentMetadata'
     PersonDocumentMetadataUploadResponse: 
     # Create a wrapper model to avoid having multiple message objects being added to the example response object in the swagger documentation (a possible bug in open-api/swagger?)
-      title: PersonDocumentMetadataResponse
+      title: PersonDocumentMetadataUploadResponse
       description: Model for holding metadata sent along with an uploaded document
       allOf:
        - '$ref': '#/components/schemas/ProviderResponse'
