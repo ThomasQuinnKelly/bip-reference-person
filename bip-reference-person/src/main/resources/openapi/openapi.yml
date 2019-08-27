@@ -5,6 +5,9 @@ info:
    title: BIP Reference Person Spring Boot Service v1 API Documentation
    description: A sample Reference Person API to demonstrate features in the OpenAPI 3.0 specification
    termsOfService: https://developer.va.gov/terms-of-service
+   license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
 tags:
   - name: reference-person
     description: Reference Person Resource
@@ -12,12 +15,12 @@ tags:
     description: Person Rest Client Tester
   - name: token-resource
     description: Token Resource
-paths: 
+paths:
   "/api/v1/persons/pid":
     post:
       tags:
       - reference-person
-      summary: Retrieve person information by PID from Person Service .
+      summary: Retrieve person information by PID from mocked reference partner person service.
       description: Will return a person info object based on search by PID.
       operationId: personByPid
       requestBody: 
@@ -61,7 +64,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
-  "/api/v1/persons/{pid}/submit":
+  "/api/v1/persons/{pid}/documents":
     post:
       parameters:
         - name : pid
@@ -69,12 +72,17 @@ paths:
           description : participant id
           required : true
           schema:
-            type : string
+            type: integer
+            format: int64
+            example: 6666345
+            description: The Participant ID of the person for whom to retrieve data
+            minimum: 1
+            exclusiveMinimum: false
       tags:
         - reference-person
       summary: Upload document for the PID using Multipart form data and store it in the configured / in-memory database.
       description: Will upload a document based on the PID.
-      operationId: submit
+      operationId: upload
       requestBody: 
         description: byteFile and meta-data
         required: true
@@ -82,6 +90,9 @@ paths:
           multipart/form-data: # Media type
             schema:            # Request payload
               type: object
+              required: 
+                - documentName
+                - file
               properties:      # Request parts
                 documentName: # Part 1 (document name)
                   type: string
@@ -101,7 +112,7 @@ paths:
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+                '$ref': '#/components/schemas/PersonDocumentMetadataUploadResponse'
         '400':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -129,20 +140,66 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
-  "/api/v1/persons/{pid}/metadataDocument":
+  "/api/v1/persons/{pid}/documents/metadata":
     get:
       parameters:
-        - name : pid
-          in : path
-          description : participant id
-          required : true
-          schema:
-            type : string
+          - name : pid
+            in : path
+            description : participant id
+            required : true
+            schema:
+              type: integer
+              format: int64
+              example: 6666345
+              description: The Participant ID of the person for whom to retrieve data
+              minimum: 1
+              exclusiveMinimum: false
       tags:
         - reference-person
-      summary: Download a document for the PID using octet-stream from the configured / in-memory database.
-      description:  Will download a document based on the PID.
-      operationId: getMetadataDocument
+      summary: Get metadata about the document uploaded for a pid, that is stored in the database
+      description: Demonstrate retrieval of data from a database
+      operationId: getDocumentMetadataForPerson
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/PersonDocumentMetadataResponse'
+        '400':
+          description: There was an error encountered processing the Request.  Response
+            will contain a  "messages" element that will provide further information
+            on the error.  This request shouldn't be retried until corrected.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+        '403':
+          description: The request is not authorized.  Please verify credentials used
+            in the request.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+        '500':
+          description: There was an error encountered processing the Request.  Response
+            will contain a  "messages" element that will provide further information
+            on the error.  Please retry.  If problem persists, please contact support
+            with a copy of the Response.
+          content:
+            application/problem+json:
+              schema:
+                '$ref': '#/components/schemas/ProviderResponse'
+      security:
+        - bearerAuth: []
+      deprecated: false
+  "/api/v1/persons/documents/sample":
+    get:
+      tags:
+        - reference-person
+      summary: Download the sample reference document 
+      description: Will download a document that is stored statically in the application, to demonstrate document downloads
+      operationId: downloadSampleDocument
       responses:
         '200':
           description: OK
@@ -151,9 +208,6 @@ paths:
               schema:
                 type: string
                 format: binary
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'  
         '400':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -373,6 +427,20 @@ components:
           type: string
           example: 912444689
           description: The persons SSN
+    PersonDocumentMetadata:
+      type: object
+      title: PersonDocumentMetadata
+      description: Model for document metadata associated with a person contained in the response from the Person Service
+      properties:
+        documentName:
+           type: string
+           example: samplePersonDocument.txt
+           description : The name of the document
+        documentCreationDate:
+           type: string
+           description : The date of creation of the document in YYYY-MM-DD format
+           pattern: 'YYYY-MM-DD'
+           example: 2019-08-09
     PersonInfoRequest:
       title: PersonInfoRequest
       description: Model for data to request person information from the Person Service
@@ -400,6 +468,24 @@ components:
             personInfo:
               description: The object representing the person information
               '$ref': '#/components/schemas/PersonInfo'
+    PersonDocumentMetadataResponse:
+      title: PersonDocumentMetadataResponse
+      description: Model for holding metadata sent along with an uploaded document
+      allOf:
+       - '$ref': '#/components/schemas/ProviderResponse'
+       - type: object
+         # all other properties specific to PersonDocumentMetadataResponse
+         properties:
+           PersonDocumentMetadata:
+             description: The object representing the document metadata information associated with a person
+             '$ref': '#/components/schemas/PersonDocumentMetadata'
+    PersonDocumentMetadataUploadResponse: 
+    # Create a wrapper model to avoid having multiple message objects being added to the example response object in the swagger documentation (a possible bug in open-api/swagger?)
+      title: PersonDocumentMetadataResponse
+      description: Model for holding metadata sent along with an uploaded document
+      allOf:
+       - '$ref': '#/components/schemas/ProviderResponse'
+       - type: object
     # Schema objects below are from BIP Framework to be declared.
     # These objects need to be mapped in <importMappings> section
     # of openapi-generator-maven-plugin so that no code is generated 

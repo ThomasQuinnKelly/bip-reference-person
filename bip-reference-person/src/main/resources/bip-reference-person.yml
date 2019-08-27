@@ -9,8 +9,7 @@ info:
 server: 
   port: 8080
 ---
-spring.profiles: default
-spring.profiles.include: remote_client_sims, embedded-redis
+spring.profiles: db-h2
 #####################################################################################################
 # By default, Spring Boot configures the application to connect to an 
 # in-memory store with the username sa and an empty password. We can change 
@@ -22,35 +21,49 @@ spring.profiles.include: remote_client_sims, embedded-redis
   #spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 # By design, the in-memory database is volatile and data will be lost when we restart the application.
 #####################################################################################################
-#####################################################################################################
-### POSTGRESQL DATABASE CONFIG###
-app.startup.schema: changelog.file.name.yml
-app.startup.data: changelog.file.name.yml
 spring:
   datasource:
-    ### explicitly declare the connection pool to eliminate spring boot search algorithm
     type: com.zaxxer.hikari.HikariDataSource
-    ### skip spring db init - liquibase core is on the classpath, so it runs automatically
-    initialization-mode: never
-    #url: jdbc:postgresql://localhost:5432/postgres
-    ### see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
-    ### use "driver-class-name" only for drivers not supported by spring (e.g. oracle)
-    #driver-class-name: 
-    #username: postgres
-    #password: password
   jpa:
-#    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    hibernate:
+      ddl-auto: create
+      connection:
+        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+  h2:
+    console:
+        enabled: true
+---
+spring.profiles: db-postgres
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    initialization-mode: always
+#    schema: schema-postgresql.sql
+#    data: data-postgresql.sql
+    url: jdbc:postgresql://postgres:5432/postgres
+    platform: postgresql
+    ## see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
+    ## use "driver-class-name" only for drivers not supported by spring (e.g. oracle)
+#    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
     properties:
+# for available hibernate dialects, see https://docs.jboss.org/hibernate/orm/5.0/javadocs/org/hibernate/dialect/package-summary.html
       hibernate:
-      #  dialect: org.hibernate.dialect.PostgreSQL9Dialect
-    generate-ddl: false
+        # provide correct dialect to avoid exceptions with CLOBs...
+         dialect: org.hibernate.dialect.PostgreSQL94Dialect
+         temp: 
+           use_jdbc_metadata_defaults: false
+#    generate-ddl: true
     hibernate:
       ddl-auto: none
       connection:
         provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
-#  h2:
-#    console:
-#        enabled: true
+    # avoid  exceptions with CLOBs...
+#    temp:
+#        use_jdbc_metadata_defaults: false
   ## Connection Pool settings can be refined by adjusting
   ## hikari properties directly
   # A list of all Hikari parameters with a good explanation is available on
@@ -62,12 +75,18 @@ spring:
 #    idle-timeout: 300000 # maximum amount of time in milliseconds that a connection is allowed to sit idle in connection pool
 #    max-lifetime: 1200000 #  maximum life time in milliseconds of a connection in pool after it is closed
 #    auto-commit: true # configures the default auto-commit behavior of connections returned from pool. Default value is true.
+---
+spring.profiles: default
+spring.profiles.include: remote_client_sims, embedded-redis, db-h2
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
 ---
-spring.profiles: local-int, ci, dev, stage, prod
+spring.profiles: ci, dev, stage, prod
 spring.profiles.include: remote_client_sims
+---
+spring.profiles: ci, dev
+spring.profiles.include: db-h2
 ---
 spring: 
   cache:
@@ -166,7 +185,6 @@ logging:
     gov.va.bip.reference: INFO
     # Change Value to DEBUG to log all BIP framework logs
     gov.va.bip.framework: INFO
-    liquibase: INFO
 #    org.apache.http: DEBUG
     org.apache.http.impl.client: WARN
 #    org.springframework: DEBUG
@@ -255,7 +273,17 @@ bip.framework:
       excludeUrls:
         - /**
   swagger:
-    enabled: true
+    title: BIP Reference Person Spring Boot Service v1 API Documentation
+    description: Reference Person API to demonstrate the microservice patterns on BIP Platform
+    contactName: va.gov
+    contactUrl: https://www.va.gov/
+    contactEmail: test@va.gov
+    termsOfServiceUrl: https://developer.va.gov/terms-of-service
+    licenseUrl: https://www.apache.org/licenses/LICENSE-2.0
+    license: Apache 2.0
+    groupName: "@project.name@-@project.version@"
+    version: ${info.build.version}
+    securePaths: /api/v?.*/persons/.*
 ##################################################
 # Feign or REST client connection timeout
 # when making inter-service or external REST calls
@@ -280,11 +308,11 @@ bip.framework:
       -
         name: refPersonService_@project.name@_@project.version@
         ttl: 1800
-#################################################################################################
+##################################################
 # Sleuth configuration     
 # To skip specific patterns being exported, added few more customs on top of default skip pattern
 # see org.springframework.cloud.sleuth.instrument.web.TraceFilter.DEFAULT_SKIP_PATTERN
-#################################################################################################
+##################################################
 spring.sleuth.web.skipPattern: (/api/.*/webjars.*|/api/.*/v2/api-docs.*|/api/.*/swagger-resources.*|/api/.*/swagger-ui.*|/api-docs.*|/autoconfig|/configprops|/dump|/health|/info|/metrics.*|/mappings|/trace|/swagger.*|.*\\.png|.*\\.css|.*\\.js|.*\\.html|/favicon.ico|/hystrix.stream)
 # comma separated list of matchers
 spring.sleuth.rxjava.schedulers.ignoredthreads: HystixMetricPoller,^RxComputation.*$,^RxIoScheduler.*$

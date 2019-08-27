@@ -16,26 +16,28 @@ public enum PersonMessageKeys implements MessageKey {
 	/** Minimum allowed value validation for PID; no args */
 	BIP_PERSON_INFO_REQUEST_PID_MIN("Min.personInfoRequest.participantID",
 			"PersonInfoRequest.participantID cannot be zero"),
+	/** Minimum allowed value validation for PID; no args */
+	BIP_PERSON_DOCUMENT_METADATA_REQUEST_PID_MIN("Min.personDocumentMetadataRequest.participantID",
+			"personDocumentMetadataRequest.participantID cannot be zero"),
 	/** PID cannot be null validation; no args */
 	BIP_PERSON_INFO_REQUEST_PID_NOTNULL("NotNull.personInfoRequest.participantID",
 			"PersonInfoRequest.participantID cannot be null"),
 	/** Payload cannot be null validation; no args */
 	BIP_PERSON_INFO_REQUEST_NOTNULL("NotNull.personInfoRequest",
 			"PersonInfoRequest Payload cannot be null"),
-
+	/** Payload cannot be null validation; no args */
+	BIP_PERSON_DOCUMENT_METADATA_NOTNULL("NotNull.personDocumentMetadata",
+			"PersonDocumentMetadata Payload cannot be null"),
 	/** Response has different PID than the request; no args */
 	BIP_PERSON_INFO_REQUEST_PID_INCONSISTENT("bip.reference.person.info.request.pid.inconsistent",
 			"Response returned an invalid Participant ID."),
 	/** Response has different PID than the logged in user; no args */
 	BIP_PERSON_INFO_REQUEST_PID_INVALID("bip.reference.person.info.request.pid.invalid",
 			"Response has different PID than the logged in user."),
-	/** Response has different PID than the request; no args */
-	BIP_PERSON_NO_DOCUMENT_DOWNLOAD("bip.reference.person.info.request.pid.nodocument",
-			"No Document to download for the Participant ID."),
-	/**
-	 * Date value given in the request is not valid.
-	 */
-	BIP_PERSON_INVALID_DATE("bip.framework.invalid.date", "Date value given in the request is not valid.");
+	/** Date value given in the request is not valid; no args */
+	BIP_PERSON_INVALID_DATE("bip.reference.person.invalid.date", "Date value given in the request is not valid."),
+	/** Pid value could not be found; no args */
+	BIP_PERSON_INFO_REQUEST_PID_NOT_FOUND("bip.reference.person.pid.not.found", "Pid value could not be found.");
 
 	/** The filename "name" part of the properties file to get from the classpath */
 	private static final String propertiesFile = "messages";
