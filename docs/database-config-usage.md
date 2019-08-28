@@ -73,14 +73,11 @@ Databases that are not directly supported by spring require additional configura
 
 ### SQL Database Configuration: General Configuration
 
-Projects should be arranged such that the same configurations can be used across all modules
+* Use spring profile(s) to manage datasource configuration (reactor / parent POM is a good place for this)
 
-* allows for common schema and data setups for the service and its unit tests, integration tests, and performance tests
+* Use `<properties>` and `<dependencyManagement>` in the reactor / parent POM to declare versions and predefined dependencies
 
-* dependencies can be provided by `<dependencyManagement` in the reactor POM (or parent POM, if common dependencies have been split out)
-
-* the same strategy should be considered for tools such as Liquibase.
-
+* To the extent possible, keep common schema and data setups for the service and its unit tests, integration tests, and performance tests
 
 ### SQL Database Configuration: Single Datasource
 
@@ -334,6 +331,12 @@ The assumption is that the application is uses JPA in preference over raw JDBC. 
 
 It is worth reviewing the [Liquibase documentation](https://www.liquibase.org/documentation/) to understand changesets, include, preconditions, contexts and parameters.
 
+Constraints with Maven / Spring Boot / Liquibase integrations:
+
+* If you wish to run Liquibase at server startup, the master changelog **must** be in the resource classpath of the service that will be using it. For this reason, maven reactor projects **cannot** support having a separate liquibase module that is a peer to the service that depends on it. Theoretically, a liquibase module __could__ be a child to the service module.
+
+* Liquibase has its own means of acquiring property values ([__parameter values__](https://www.liquibase.org/documentation/changelog_parameters.html) in liquibase parlance). It does not, of course, know anything about properties held in the spring context or maven properties. Values passed between liquibase and maven/spring must be done through Java System properties or environment variables.
+
 Some general suggestions:
 
 * Use maven profiles to separate the types of operations performed (drop and recreate schema, update schema, populate data, etc). Each profile should have one or more corresponding properties files and changelogs that are named the same or similar as the profile id.
@@ -566,8 +569,6 @@ Use [Spring Boot Test](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/ref
 
 * In-memory database should be used so that all ORM layers get coverage.
 
-* Use spring profile(s) to manage datasource configuration.
-
 * When mocking is required, it should be done - generally speaking - as close to the connection pool (or JDBC driver) as possible.
 
 #### Integration Tests
@@ -576,9 +577,7 @@ Integration tests are typically only executed as part of deployment into a serve
 
 * These tests should run against a live external database.
 
-* Use spring profile(s) to manage datasource configuration.
-
-* If possible, use Liquibase to manage the state of data in the database.
+* If possible, use Liquibase to manage the state of data in the IT database.
 
 #### Performance Tests
 
@@ -586,6 +585,4 @@ Performance tests should run in a dedicated Performance Test environment.
 
 * These tests should run against a live external database.
 
-* Use spring profile(s) to manage datasource configuration.
-
-* If possible, use Liquibase to manage the state of data in the database.
+* If possible, use Liquibase to manage the state of data in the perf database.
