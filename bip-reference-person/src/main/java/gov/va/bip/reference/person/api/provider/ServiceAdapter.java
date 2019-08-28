@@ -16,15 +16,15 @@ import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.ReferencePersonService;
-import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataResponse;
-import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataUploadResponse;
+import gov.va.bip.reference.person.api.model.v1.PersonDocsMetadataResponse;
+import gov.va.bip.reference.person.api.model.v1.PersonDocsMetadataUploadResponse;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.exception.PersonServiceException;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
-import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainRequest;
-import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainResponse;
+import gov.va.bip.reference.person.model.PersonDocsMetadataDomainRequest;
+import gov.va.bip.reference.person.model.PersonDocsMetadataDomainResponse;
 import gov.va.bip.reference.person.transform.impl.PersonByPid_DomainToProvider;
 import gov.va.bip.reference.person.transform.impl.PersonByPid_ProviderToDomain;
 import gov.va.bip.reference.person.transform.impl.PersonDocumentMetadata_DomainToProvider;
@@ -95,10 +95,10 @@ public class ServiceAdapter {
 	 * 
 	 * @return a ProviderResponse
 	 */
-	PersonDocumentMetadataUploadResponse storeMetaData(final Long pid, String documentName, final String documentCreationDate,
+	PersonDocsMetadataUploadResponse storeMetaData(final Long pid, String documentName, final String documentCreationDate,
 			@Valid final MultipartFile file) {
 
-		PersonDocumentMetadataUploadResponse response = new PersonDocumentMetadataUploadResponse();
+		PersonDocsMetadataUploadResponse response = new PersonDocsMetadataUploadResponse();
 
 		try {
 			if (StringUtils.isBlank(documentName)) {
@@ -125,20 +125,20 @@ public class ServiceAdapter {
 	 * @param pid the pid
 	 * @return a PersonDocumentMetadataResponse object with the required metadata
 	 */
-	PersonDocumentMetadataResponse
+	PersonDocsMetadataResponse
 	getMetadataDocumentForPid(final @Valid @Min(1) Long pid) {
 		// transform provider request into domain request
 		LOGGER.debug("Transforming from personDocumentMetadataRequest to domainRequest");
-		PersonDocumentMetadataDomainRequest domainRequest = new PersonDocumentMetadataDomainRequest();
+		PersonDocsMetadataDomainRequest domainRequest = new PersonDocsMetadataDomainRequest();
 		domainRequest.setParticipantID(pid);
 
 		// get domain response from the service (domain) layer
 		LOGGER.debug("Calling refPersonService.findPersonByParticipantID");
-		PersonDocumentMetadataDomainResponse domainResponse = refPersonService.getMetadataForPid(domainRequest);
+		PersonDocsMetadataDomainResponse domainResponse = refPersonService.getMetadataForPid(domainRequest);
 
 		// transform domain response into provider response
 		LOGGER.debug("Transforming from domainResponse to providerResponse");
-		PersonDocumentMetadataResponse providerResponse = personDocumentMetadataDomain2Provider.convert(domainResponse);
+		PersonDocsMetadataResponse providerResponse = personDocumentMetadataDomain2Provider.convert(domainResponse);
 
 		return providerResponse;
 	}

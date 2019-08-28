@@ -4,8 +4,8 @@ import org.springframework.core.io.Resource;
 
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
-import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainRequest;
-import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainResponse;
+import gov.va.bip.reference.person.model.PersonDocsMetadataDomainRequest;
+import gov.va.bip.reference.person.model.PersonDocsMetadataDomainResponse;
 
 /**
  * The contract interface for the Person domain (service) layer.
@@ -26,9 +26,9 @@ public interface ReferencePersonService {
 	 * 
 	 * @param domainRequest the object containing information required for fetching metadata
 	 * 
-	 * @return the PersonDocumentMetadataDomainResponse object containing data associated with a pid
+	 * @return the PersonDocsMetadataDomainResponse object containing data associated with a pid
 	 */
-	PersonDocumentMetadataDomainResponse getMetadataForPid(PersonDocumentMetadataDomainRequest domainRequest);
+	PersonDocsMetadataDomainResponse getMetadataForPid(PersonDocsMetadataDomainRequest domainRequest);
 
 	/**
 	 * Store the meta-data associated with the document for a given pid

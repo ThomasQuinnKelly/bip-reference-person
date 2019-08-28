@@ -3,12 +3,12 @@ package gov.va.bip.reference.person.model;
 import gov.va.bip.framework.service.DomainRequest;
 
 /**
- * This domain model represents a request for PersonDocumentMetadataDomain by participant ID.
+ * This domain model represents a request for PersonDocsMetadataDomain by participant ID.
  * <p>
  * The domain service implementation uses this request to derive the appropriate response.
  */
-public class PersonDocumentMetadataDomainRequest extends DomainRequest {
-	public static final String MODEL_NAME = PersonDocumentMetadataDomainRequest.class.getSimpleName();
+public class PersonDocsMetadataDomainRequest extends DomainRequest {
+	public static final String MODEL_NAME = PersonDocsMetadataDomainRequest.class.getSimpleName();
 
 	/** version id. */
 	private static final long serialVersionUID = 1593666859950183199L;

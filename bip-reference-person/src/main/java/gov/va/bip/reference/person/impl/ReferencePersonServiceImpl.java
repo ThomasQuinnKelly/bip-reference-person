@@ -33,15 +33,15 @@ import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.ReferencePersonService;
 import gov.va.bip.reference.person.client.ws.PersonPartnerHelper;
-import gov.va.bip.reference.person.data.PersonDatabaseHelper;
-import gov.va.bip.reference.person.data.orm.entity.Personrecord;
+import gov.va.bip.reference.person.data.PersonDataHelper;
+import gov.va.bip.reference.person.data.entities.PersonDocs;
 import gov.va.bip.reference.person.exception.PersonServiceException;
 import gov.va.bip.reference.person.messages.PersonMessageKeys;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
-import gov.va.bip.reference.person.model.PersonDocumentMetadataDomain;
-import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainRequest;
-import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainResponse;
+import gov.va.bip.reference.person.model.PersonDocsMetadataDomain;
+import gov.va.bip.reference.person.model.PersonDocsMetadataDomainRequest;
+import gov.va.bip.reference.person.model.PersonDocsMetadataDomainResponse;
 import gov.va.bip.reference.person.utils.CacheConstants;
 import gov.va.bip.reference.person.utils.HystrixCommandConstants;
 
@@ -72,7 +72,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 
 	/** The person web service database operations helper. */
 	@Autowired
-	private PersonDatabaseHelper personDatabaseHelper;
+	private PersonDataHelper personDatabaseHelper;
 
 	@Autowired
 	private CacheManager cacheManager;
@@ -198,20 +198,20 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 * Get the meta data associated with documents accepted for a pid
 	 *
 	 * @param the pid to get the metadata for
-	 * @return A PersonDocumentMetadataDomainResponse with the required metadata
+	 * @return A PersonDocsMetadataDomainResponse with the required metadata
 	 */
 	@Override
-	public PersonDocumentMetadataDomainResponse getMetadataForPid(final PersonDocumentMetadataDomainRequest domainRequest) {
-		Personrecord data = personDatabaseHelper.getDataForPid(domainRequest.getParticipantID());
+	public PersonDocsMetadataDomainResponse getMetadataForPid(final PersonDocsMetadataDomainRequest domainRequest) {
+		PersonDocs data = personDatabaseHelper.getDataForPid(domainRequest.getParticipantID());
 		if (data == null) {
 			return null;
 		}
-		PersonDocumentMetadataDomainResponse domainResponse = new PersonDocumentMetadataDomainResponse();
-		PersonDocumentMetadataDomain personDocumentMetadataDomain = new PersonDocumentMetadataDomain();
+		PersonDocsMetadataDomainResponse domainResponse = new PersonDocsMetadataDomainResponse();
+		PersonDocsMetadataDomain personDocumentMetadataDomain = new PersonDocsMetadataDomain();
 		String dateString =
-				data.getDocumentCreationDate() == null ? "" : data.getDocumentCreationDate().format(DateTimeFormatter.ISO_DATE);
+				data.getDocCreateDate() == null ? "" : data.getDocCreateDate().format(DateTimeFormatter.ISO_DATE);
 		personDocumentMetadataDomain.setDocumentCreationDate(dateString);
-		personDocumentMetadataDomain.setDocumentName(data.getDocumentName());
+		personDocumentMetadataDomain.setDocumentName(data.getDocName());
 		domainResponse.setPersonDocumentMetadataDomain(personDocumentMetadataDomain);
 		return domainResponse;
 	}

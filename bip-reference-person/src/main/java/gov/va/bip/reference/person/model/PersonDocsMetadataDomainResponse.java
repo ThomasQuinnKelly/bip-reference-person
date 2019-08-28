@@ -7,20 +7,20 @@ import gov.va.bip.framework.service.DomainResponse;
  * <p>
  * The domain service implementation returns this response to the provider.
  */
-public class PersonDocumentMetadataDomainResponse extends DomainResponse {
+public class PersonDocsMetadataDomainResponse extends DomainResponse {
 
 	/** Id for serialization. */
 	private static final long serialVersionUID = 1L;
 
-	/** A PersonDocumentMetadataDomain instance. */
-	private PersonDocumentMetadataDomain personDocumentMetadataDomain;
+	/** A PersonDocsMetadataDomain instance. */
+	private PersonDocsMetadataDomain personDocumentMetadataDomain;
 
 	/**
 	 * Gets the person metadata
 	 *
 	 * @return A personDocumentMetadataDomain instance
 	 */
-	public final PersonDocumentMetadataDomain getPersonDocumentMetadataDomain() {
+	public final PersonDocsMetadataDomain getPersonDocumentMetadataDomain() {
 		return personDocumentMetadataDomain;
 	}
 
@@ -29,7 +29,7 @@ public class PersonDocumentMetadataDomainResponse extends DomainResponse {
 	 *
 	 * @param personDocumentMetadataDomain A personDocumentMetadataDomain instance
 	 */
-	public final void setPersonDocumentMetadataDomain(final PersonDocumentMetadataDomain personDocumentMetadataDomain) {
+	public final void setPersonDocumentMetadataDomain(final PersonDocsMetadataDomain personDocumentMetadataDomain) {
 		this.personDocumentMetadataDomain = personDocumentMetadataDomain;
 	}
 }
