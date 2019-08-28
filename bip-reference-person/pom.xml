@@ -196,7 +196,6 @@
 	<build>
 		<plugins>
 			<plugin>
-
 				<!--
 					* Meta-information about the web application.<br/><br/>
 					*

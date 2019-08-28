@@ -1,0 +1,7 @@
+databaseChangeLog:
+#  changeSet:
+#    id: 1
+#    author: bipref
+  - include:
+      file: ${env}/${db.name}/${liquibase.operation}.yml
+      relativeToChangelogFile: true

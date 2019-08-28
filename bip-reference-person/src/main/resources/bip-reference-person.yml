@@ -8,13 +8,16 @@ info:
     description: "@project.description@"
 server: 
   port: 8080
-spring.liquibase.change-log: file://@project.basedir@/../bip-reference-person-db/src/main/resources/db/changelog/db.changelog-master.yaml
+#spring.liquibase.change-log: file://@project.basedir@/../bip-reference-person-db/src/main/resources/db/changelog/db.changelog-master.yaml
+spring.liquibase.parameters:
+  env: default
+  db.name: h2memdb
+  liquibase.operation: dbinit
 ---
 spring.profiles: db-h2
-### db.subprotocol (db type) and db.name (e.g. SID) must be declared for each database spring.profile
+### db.name (e.g. SID) must be declared for each database spring.profile
 db:
-  subprotocol: h2
-  name: memdb
+  name: h2memdb
 #####################################################################################################
 # By default, Spring Boot configures the application to connect to an 
 # in-memory store with the username sa and an empty password. We can change 
@@ -42,6 +45,7 @@ spring:
   h2:
     console:
         enabled: true
+### defaults for invoking liquibase from spring boot
 ---
 spring.profiles: db-postgres
 ### db.name (e.g. the SID) must be declared for each database spring.profile
