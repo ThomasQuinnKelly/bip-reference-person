@@ -17,8 +17,8 @@ public enum PersonMessageKeys implements MessageKey {
 	BIP_PERSON_INFO_REQUEST_PID_MIN("Min.personInfoRequest.participantID",
 			"PersonInfoRequest.participantID cannot be zero"),
 	/** Minimum allowed value validation for PID; no args */
-	BIP_PERSON_DOCUMENT_METADATA_REQUEST_PID_MIN("Min.personDocumentMetadataRequest.participantID",
-			"personDocumentMetadataRequest.participantID cannot be zero"),
+	BIP_PERSON_DOCS_METADATA_REQUEST_PID_MIN("Min.personDocsMetadataRequest.participantID",
+			"personDocsMetadataRequest.participantID cannot be zero"),
 	/** PID cannot be null validation; no args */
 	BIP_PERSON_INFO_REQUEST_PID_NOTNULL("NotNull.personInfoRequest.participantID",
 			"PersonInfoRequest.participantID cannot be null"),
@@ -26,8 +26,7 @@ public enum PersonMessageKeys implements MessageKey {
 	BIP_PERSON_INFO_REQUEST_NOTNULL("NotNull.personInfoRequest",
 			"PersonInfoRequest Payload cannot be null"),
 	/** Payload cannot be null validation; no args */
-	BIP_PERSON_DOCUMENT_METADATA_NOTNULL("NotNull.personDocumentMetadata",
-			"PersonDocumentMetadata Payload cannot be null"),
+	BIP_PERSON_DOCS_METADATA_NOTNULL("NotNull.personDocsMetadata", "PersonDocsMetadata Payload cannot be null"),
 	/** Response has different PID than the request; no args */
 	BIP_PERSON_INFO_REQUEST_PID_INCONSISTENT("bip.reference.person.info.request.pid.inconsistent",
 			"Response returned an invalid Participant ID."),

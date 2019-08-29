@@ -13,16 +13,16 @@ import gov.va.bip.framework.security.SecurityUtils;
 import gov.va.bip.framework.validation.AbstractStandardValidator;
 import gov.va.bip.reference.person.exception.PersonServiceException;
 import gov.va.bip.reference.person.messages.PersonMessageKeys;
-import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainRequest;
-import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainResponse;
+import gov.va.bip.reference.person.model.PersonDocsMetadataDomainRequest;
+import gov.va.bip.reference.person.model.PersonDocsMetadataDomainResponse;
 
 /**
- * Validates the PID input on the {@link PersonDocumentMetadataDomainResponse}.
+ * Validates the PID input on the {@link PersonDocsMetadataDomainResponse}.
  */
-public class PersonDocumentMetadataDomainResponseValidator extends AbstractStandardValidator<PersonDocumentMetadataDomainResponse> {
+public class PersonDocsMetadataDomainResponseValidator extends AbstractStandardValidator<PersonDocsMetadataDomainResponse> {
 
 	/** Class logger */
-	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(PersonDocumentMetadataDomainResponseValidator.class);
+	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(PersonDocsMetadataDomainResponseValidator.class);
 
 	/** The method that caused this validator to be invoked */
 	private Method callingMethod;
@@ -33,18 +33,18 @@ public class PersonDocumentMetadataDomainResponseValidator extends AbstractStand
 	 * @see gov.va.bip.framework.validation.AbstractStandardValidator#validate(java.lang.Object, java.util.List)
 	 */
 	@Override
-	public void validate(final PersonDocumentMetadataDomainResponse toValidate, final List<ServiceMessage> messages) {
-		Object supplemental = getSupplemental(PersonDocumentMetadataDomainRequest.class);
-		PersonDocumentMetadataDomainRequest request =
-				supplemental == null ? new PersonDocumentMetadataDomainRequest() : (PersonDocumentMetadataDomainRequest) supplemental;
+	public void validate(final PersonDocsMetadataDomainResponse toValidate, final List<ServiceMessage> messages) {
+		Object supplemental = getSupplemental(PersonDocsMetadataDomainRequest.class);
+		PersonDocsMetadataDomainRequest request =
+				supplemental == null ? new PersonDocsMetadataDomainRequest() : (PersonDocsMetadataDomainRequest) supplemental;
 
 				// if response has errors, fatals or warnings skip validations
 				if (toValidate.hasErrors() || toValidate.hasFatals() || toValidate.hasWarnings()) {
 					return;
 				}
 				// check if empty response, or errors / fatals
-				if ((toValidate == null) || (toValidate.getPersonDocumentMetadataDomain() == null)) {
-					PersonMessageKeys key = PersonMessageKeys.BIP_PERSON_DOCUMENT_METADATA_NOTNULL;
+				if ((toValidate == null) || (toValidate.getPersonDocsMetadataDomain() == null)) {
+					PersonMessageKeys key = PersonMessageKeys.BIP_PERSON_DOCS_METADATA_NOTNULL;
 					LOGGER.info(key.getKey() + " " + key.getMessage());
 					throw new PersonServiceException(key, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
 				}
@@ -55,8 +55,8 @@ public class PersonDocumentMetadataDomainResponseValidator extends AbstractStand
 				 * exception, not just set a warning.
 				 */
 				LOGGER.debug("Request PID: " + request.getParticipantID() + "; Response document name: "
-						+ toValidate.getPersonDocumentMetadataDomain().getDocumentName() + "; Response document creation date: "
-						+ toValidate.getPersonDocumentMetadataDomain().getDocumentCreationDate() + "; PersonTraits PID: "
+						+ toValidate.getPersonDocsMetadataDomain().getDocName() + "; Response document creation date: "
+						+ toValidate.getPersonDocsMetadataDomain().getDocCreateDate() + "; PersonTraits PID: "
 						+ (SecurityUtils.getPersonTraits() == null ? "null" : SecurityUtils.getPersonTraits().getPid()));
 	}
 

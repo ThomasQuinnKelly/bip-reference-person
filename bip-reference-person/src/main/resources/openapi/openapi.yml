@@ -2,8 +2,8 @@
 openapi: 3.0.1
 info:
    version: 0.0.2-SNAPSHOT
-   title: BIP Reference Person Spring Boot Service v1 API Documentation
-   description: A sample Reference Person API to demonstrate features in the OpenAPI 3.0 specification
+   title: BIP Reference Person Spring Boot Example Service
+   description: Reference Person Example Service API to demonstrate implementation of spring boot and cloud enabled microservice on BIP Platform. Documentation is generated using OpenAPI Specification version 3.0. 
    termsOfService: https://developer.va.gov/terms-of-service
    license:
     name: Apache 2.0
@@ -61,6 +61,9 @@ paths:
             application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
+              examples:
+                500GeneralException:
+                  '$ref': '#/components/examples/500GeneralException'
       security:
         - bearerAuth: []
       deprecated: false
@@ -91,13 +94,13 @@ paths:
             schema:            # Request payload
               type: object
               required: 
-                - documentName
+                - docName
                 - file
               properties:      # Request parts
-                documentName: # Part 1 (document name)
+                docName: # Part 1 (document name)
                   type: string
                   description : The name of the document
-                documentCreationDate:  # Part 2 (the document creation date)
+                docCreateDate:  # Part 2 (the document creation date)
                   type: string
                   description : The date of creation of the document in YYYY-MM-DD format
                   pattern: 'YYYY-MM-DD'
@@ -112,7 +115,7 @@ paths:
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/PersonDocumentMetadataUploadResponse'
+                '$ref': '#/components/schemas/PersonDocsMetadataUploadResponse'
         '400':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -137,6 +140,9 @@ paths:
             application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
+              examples:
+                500GeneralException:
+                  '$ref': '#/components/examples/500GeneralException'
       security:
         - bearerAuth: []
       deprecated: false
@@ -165,7 +171,7 @@ paths:
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/PersonDocumentMetadataResponse'
+                '$ref': '#/components/schemas/PersonDocsMetadataResponse'
         '400':
           description: There was an error encountered processing the Request.  Response
             will contain a  "messages" element that will provide further information
@@ -190,6 +196,9 @@ paths:
             application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
+              examples:
+                500GeneralException:
+                  '$ref': '#/components/examples/500GeneralException'
       security:
         - bearerAuth: []
       deprecated: false
@@ -232,6 +241,9 @@ paths:
             application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
+              examples:
+                500GeneralException:
+                  '$ref': '#/components/examples/500GeneralException'
       security:
         - bearerAuth: []
       deprecated: false
@@ -280,6 +292,9 @@ paths:
             application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
+              examples:
+                500GeneralException:
+                  '$ref': '#/components/examples/500GeneralException'
       security:
         - bearerAuth: []
       deprecated: false
@@ -328,6 +343,9 @@ paths:
             application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
+              examples:
+                500GeneralException:
+                  '$ref': '#/components/examples/500GeneralException'
       security:
         - bearerAuth: []
       deprecated: false
@@ -393,6 +411,15 @@ components:
       type: http
       bearerFormat: JWT
       scheme: bearer
+  examples: 
+    500GeneralException: 
+      value: 
+         messages: 
+            - key: bip.framework.global.general.exception
+              severity: ERROR 
+              status: 500 
+              text: Unexpected exception.
+              timestamp: 2019-08-29T18:40:22.766Z
   schemas:
     # Define API (provider) model objects. Use type, format and example;
     # use standard JSR303 constraints (required, min, max, etc) where it makes sense
@@ -427,16 +454,16 @@ components:
           type: string
           example: 912444689
           description: The persons SSN
-    PersonDocumentMetadata:
+    PersonDocsMetadata:
       type: object
-      title: PersonDocumentMetadata
+      title: PersonDocsMetadata
       description: Model for document metadata associated with a person contained in the response from the Person Service
       properties:
-        documentName:
+        docName:
            type: string
            example: samplePersonDocument.txt
            description : The name of the document
-        documentCreationDate:
+        docCreateDate:
            type: string
            description : The date of creation of the document in YYYY-MM-DD format
            pattern: 'YYYY-MM-DD'
@@ -468,20 +495,20 @@ components:
             personInfo:
               description: The object representing the person information
               '$ref': '#/components/schemas/PersonInfo'
-    PersonDocumentMetadataResponse:
-      title: PersonDocumentMetadataResponse
+    PersonDocsMetadataResponse:
+      title: PersonDocsMetadataResponse
       description: Model for holding metadata sent along with an uploaded document
       allOf:
        - '$ref': '#/components/schemas/ProviderResponse'
        - type: object
-         # all other properties specific to PersonDocumentMetadataResponse
+         # all other properties specific to PersonDocsMetadataResponse
          properties:
-           PersonDocumentMetadata:
+           PersonDocsMetadata:
              description: The object representing the document metadata information associated with a person
-             '$ref': '#/components/schemas/PersonDocumentMetadata'
-    PersonDocumentMetadataUploadResponse: 
+             '$ref': '#/components/schemas/PersonDocsMetadata'
+    PersonDocsMetadataUploadResponse: 
     # Create a wrapper model to avoid having multiple message objects being added to the example response object in the swagger documentation (a possible bug in open-api/swagger?)
-      title: PersonDocumentMetadataResponse
+      title: PersonDocsMetadataUploadResponse
       description: Model for holding metadata sent along with an uploaded document
       allOf:
        - '$ref': '#/components/schemas/ProviderResponse'
@@ -585,3 +612,4 @@ components:
     ProviderRequest: 
       type: object
       title: ProviderRequest
+      

@@ -1,4 +1,4 @@
-package gov.va.bip.reference.person.data.orm.entity;
+package gov.va.bip.reference.person.data.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -11,12 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
 /**
- * Personrecord POJO mapped to the records in the PERSONRECORD table in database
+ * PersonDocs POJO mapped to the records in the PERSONDOCS table in database
  *
  */
 @Entity
 @SequenceGenerator(name="seq", initialValue=10, allocationSize=100)
-public class Personrecord implements Serializable {
+public class PersonDocs implements Serializable {
 
 	private static final long serialVersionUID = -1330928616668416505L;
 
@@ -26,24 +26,24 @@ public class Personrecord implements Serializable {
 
 	private long pid;
 
-	private String documentName;
+	private String docName;
 
-	private LocalDate documentCreationDate;
+	private LocalDate docCreateDate;
 
-	public LocalDate getDocumentCreationDate() {
-		return documentCreationDate;
+	public LocalDate getDocCreateDate() {
+		return docCreateDate;
 	}
 
-	public void setDocumentCreationDate(final LocalDate documentCreationDate) {
-		this.documentCreationDate = documentCreationDate;
+	public void setDocCreateDate(final LocalDate docCreateDate) {
+		this.docCreateDate = docCreateDate;
 	}
 
-	public String getDocumentName() {
-		return documentName;
+	public String getDocName() {
+		return docName;
 	}
 
-	public void setDocumentName(final String documentName) {
-		this.documentName = documentName;
+	public void setDocName(final String docName) {
+		this.docName = docName;
 	}
 
 	public long getId() {
@@ -64,7 +64,7 @@ public class Personrecord implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ClassPojo [pid = " + pid + ", documentName = " + documentName + ", documentCreationDate = "
-				+ documentCreationDate.format(DateTimeFormatter.BASIC_ISO_DATE) + "]";
+		return "ClassPojo [pid = " + pid + ", docName = " + docName + ", docCreateDate = "
+				+ docCreateDate.format(DateTimeFormatter.BASIC_ISO_DATE) + "]";
 	}
 }

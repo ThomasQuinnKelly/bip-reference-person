@@ -23,8 +23,8 @@ import gov.va.bip.framework.messages.MessageKeys;
 import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.swagger.SwaggerResponseMessages;
 import gov.va.bip.reference.person.api.ReferencePersonApi;
-import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataResponse;
-import gov.va.bip.reference.person.api.model.v1.PersonDocumentMetadataUploadResponse;
+import gov.va.bip.reference.person.api.model.v1.PersonDocsMetadataResponse;
+import gov.va.bip.reference.person.api.model.v1.PersonDocsMetadataUploadResponse;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.exception.PersonServiceException;
@@ -150,15 +150,15 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * </ol>
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
-	 * @param personDocumentMetadataRequest the PersonDocumentMetadataRequest object containing  information required for requesting metadata information
+	 * @param pid the pid
 	 * 
-	 * @return the PersonDocumentMetadataResponse wrapped by a response entity
+	 * @return the PersonDocsMetadataResponse wrapped by a response entity
 	 */
 	@Override
-	public ResponseEntity<PersonDocumentMetadataResponse> getDocumentMetadataForPerson(@Min(1) final Long pid) {
-		LOGGER.debug("getDocumentMetadata() method invoked");
+	public ResponseEntity<PersonDocsMetadataResponse> getDocumentMetadataForPerson(@Min(1) final Long pid) {
+		LOGGER.debug("getDocumentMetadataForPerson() method invoked");
 
-		PersonDocumentMetadataResponse providerResponse = serviceAdapter.getMetadataDocumentForPid(pid);
+		PersonDocsMetadataResponse providerResponse = serviceAdapter.getMetadataDocumentForPid(pid);
 
 		// send provider response back to consumer
 		LOGGER.debug("Returning providerResponse to consumer");
@@ -179,21 +179,21 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
 	 * @param pid the pid
-	 * @param documentName the name of the document
+	 * @param docName the name of the document
 	 * @param file the file uploaded for the pid
-	 * @param documentCreationDate the date of creation of the document
+	 * @param docCreateDate the date of creation of the document
 	 * 
-	 * @return PersonDocumentMetadataResponse
+	 * @return the PersonDocsMetadataUploadResponse object with info about what happened after the upload method is invoked
 	 */
 	@Override
-	public ResponseEntity<PersonDocumentMetadataUploadResponse> upload(@Min(1) final Long pid, final String documentName,
+	public ResponseEntity<PersonDocsMetadataUploadResponse> upload(@Min(1) final Long pid, final String docName,
 			@Valid final MultipartFile file,
-			final String documentCreationDate) {
+			final String docCreateDate) {
 		LOGGER.debug("upload() method invoked");
-		PersonDocumentMetadataUploadResponse providerResponse = new PersonDocumentMetadataUploadResponse();
+		PersonDocsMetadataUploadResponse providerResponse = new PersonDocsMetadataUploadResponse();
 		try {
 			providerResponse =
-					serviceAdapter.storeMetaData(Long.valueOf(pid), documentName, documentCreationDate, file);
+					serviceAdapter.storeMetaData(Long.valueOf(pid), docName, docCreateDate, file);
 			// send provider response back to consumer
 			LOGGER.debug("Returning providerResponse to consumer");
 			return new ResponseEntity<>(providerResponse, HttpStatus.OK);

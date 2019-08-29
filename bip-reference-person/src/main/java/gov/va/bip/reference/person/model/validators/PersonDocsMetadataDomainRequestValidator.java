@@ -11,15 +11,15 @@ import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.messages.ServiceMessage;
 import gov.va.bip.framework.validation.AbstractStandardValidator;
 import gov.va.bip.reference.person.messages.PersonMessageKeys;
-import gov.va.bip.reference.person.model.PersonDocumentMetadataDomainRequest;
+import gov.va.bip.reference.person.model.PersonDocsMetadataDomainRequest;
 
 /**
- * Validates the PID input on the {@link PersonDocumentMetadataDomainRequest}.
+ * Validates the PID input on the {@link PersonDocsMetadataDomainRequest}.
  */
-public class PersonDocumentMetadataDomainRequestValidator extends AbstractStandardValidator<PersonDocumentMetadataDomainRequest> {
+public class PersonDocsMetadataDomainRequestValidator extends AbstractStandardValidator<PersonDocsMetadataDomainRequest> {
 
 	/** Class logger */
-	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(PersonDocumentMetadataDomainRequestValidator.class);
+	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(PersonDocsMetadataDomainRequestValidator.class);
 
 	/*
 	 * (non-Javadoc)
@@ -27,7 +27,7 @@ public class PersonDocumentMetadataDomainRequestValidator extends AbstractStanda
 	 * @see gov.va.bip.framework.validation.AbstractStandardValidator#validate(java.lang.Object, java.util.List)
 	 */
 	@Override
-	public void validate(final PersonDocumentMetadataDomainRequest toValidate, final List<ServiceMessage> messages) {
+	public void validate(final PersonDocsMetadataDomainRequest toValidate, final List<ServiceMessage> messages) {
 		// validate the request content (PID)
 		Long pid = toValidate.getParticipantID();
 		if (pid == null) {
@@ -37,7 +37,7 @@ public class PersonDocumentMetadataDomainRequestValidator extends AbstractStanda
 		} else if (pid <= 0) {
 			LOGGER.debug("PID is <= 0");
 			messages.add(new ServiceMessage(MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
-					PersonMessageKeys.BIP_PERSON_DOCUMENT_METADATA_REQUEST_PID_MIN));
+					PersonMessageKeys.BIP_PERSON_DOCS_METADATA_REQUEST_PID_MIN));
 		}
 	}
 
