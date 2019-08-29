@@ -3,5 +3,5 @@ databaseChangeLog:
 #    id: 1
 #    author: bipref
   - include:
-      file: ${env}/${db.name}/${liquibase.operation}.yml
+      file: ${db.instance.name}/${liquibase.operation}.yml
       relativeToChangelogFile: true

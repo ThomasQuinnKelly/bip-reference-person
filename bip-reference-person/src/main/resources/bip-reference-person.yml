@@ -8,91 +8,17 @@ info:
     description: "@project.description@"
 server: 
   port: 8080
-#spring.liquibase.change-log: file://@project.basedir@/../bip-reference-person-db/src/main/resources/db/changelog/db.changelog-master.yaml
-spring.liquibase.parameters:
-  env: default
-  db.name: h2memdb
-  liquibase.operation: dbinit
----
-spring.profiles: db-h2
-### db.name (e.g. SID) must be declared for each database spring.profile
-db:
-  name: h2memdb
-#####################################################################################################
-# By default, Spring Boot configures the application to connect to an 
-# in-memory store with the username sa and an empty password. We can change 
-# those parameters by adding the following properties
-  #spring.datasource.url=jdbc:h2:mem:testdb
-  #spring.datasource.driverClassName=org.h2.Driver
-  #spring.datasource.username=sa
-  #spring.datasource.password=
-  #spring.jpa.database-platform=h2
-# By design, the in-memory database is volatile and data will be lost when we restart the application.
-#####################################################################################################
-spring:
-  jpa:
-    database: h2
-    generate-ddl: false
-    hibernate:
-      ddl-auto: none
-      connection:
-        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:${spring.jpa.database}:mem:${db.name}
-    ### skip spring db init - using liquibase
-    initialization-mode: never
-  h2:
-    console:
-        enabled: true
-### defaults for invoking liquibase from spring boot
----
-spring.profiles: db-postgres
-### db.name (e.g. the SID) must be declared for each database spring.profile
-db:
-  name: postgres
-spring:
-  jpa:
-    database: postgresql
-    generate-ddl: false
-    hibernate:
-      ddl-auto: none
-      connection:
-        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:${spring.jpa.datasource}://postgres:5432/${db.name}
-    ### skip spring db init - using liquibase
-    initialization-mode: never
-    ## see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
-    ## use "driver-class-name" only for drivers not supported by spring (e.g. oracle)
-#    driver-class-name: [driver_class_name]
-    username: postgres
-    password: password
 
-  ## Connection Pool settings can be refined by adjusting
-  ## hikari properties directly
-  # A list of all Hikari parameters with a good explanation is available on
-  # https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
-#  hikari:
-#    connection-timeout: 30000 # maximum number of milliseconds that a client will wait for a connection from connection pool
-#    minimum-idle: 5 # minimum number of idle connections that is maintained by HikariCP in connection pool
-#    maximum-pool-size: 12 # configures the maximum pool size
-#    idle-timeout: 300000 # maximum amount of time in milliseconds that a connection is allowed to sit idle in connection pool
-#    max-lifetime: 1200000 #  maximum life time in milliseconds of a connection in pool after it is closed
-#    auto-commit: true # configures the default auto-commit behavior of connections returned from pool. Default value is true.
 ---
 spring.profiles: default
-spring.profiles.include: remote_client_sims, embedded-redis, db-h2
+spring.profiles.include: remote_client_sims, embedded-redis
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
 ---
-spring.profiles: ci, dev, stage, prod
+spring.profiles: local-int, ci, dev, stage, prod
 spring.profiles.include: remote_client_sims
----
-spring.profiles: ci, dev
-spring.profiles.include: db-h2
+
 ---
 spring: 
   cache:
@@ -172,7 +98,6 @@ management:
       enabled: false
 #Application Custom Properties          
 bip-reference-person:
-  env: default
   propSource: internal
   password: secret
   sampleProperty: >
@@ -322,6 +247,7 @@ bip.framework:
 spring.sleuth.web.skipPattern: (/api/.*/webjars.*|/api/.*/v2/api-docs.*|/api/.*/swagger-resources.*|/api/.*/swagger-ui.*|/api-docs.*|/autoconfig|/configprops|/dump|/health|/info|/metrics.*|/mappings|/trace|/swagger.*|.*\\.png|.*\\.css|.*\\.js|.*\\.html|/favicon.ico|/hystrix.stream)
 # comma separated list of matchers
 spring.sleuth.rxjava.schedulers.ignoredthreads: HystixMetricPoller,^RxComputation.*$,^RxIoScheduler.*$
+
 #########################################################################
 # Partner config properties
 #
@@ -362,3 +288,169 @@ bip-reference-partner-person:
         keystorePass: ${javax.net.ssl.keyStorePassword:password}
         truststore: ${javax.net.ssl.trustStore:classpath:test/ssl/dev/vaebnTruststore.jks}
         truststorePass: ${javax.net.ssl.trustStorePassword:password}
+
+
+#########################################################################
+#########################################################################
+####
+####    DATABASE CONFIGURATION
+####    1. Generically defined database types
+####    2. Declaration of database instances
+####    3. Apply database configs to execution environments
+####
+#########################################################################
+#########################################################################
+
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+####    1. Generically defined database types
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+## Generic H2 In-Memory database definition (no url defined in this profile)
+spring.profiles: dbtype-h2
+###
+### By default, Spring Boot configures the application to connect to an 
+### in-memory store with the username sa and an empty password. We can change 
+### those parameters by adding the following properties
+  #spring.datasource.url=jdbc:h2:[mem|file]:[path/to/]dbinstancename
+  #spring.datasource.driverClassName=org.h2.Driver
+  #spring.datasource.username=sa
+  #spring.datasource.password=
+  #spring.jpa.database=h2
+### "mem" databases are by definition ephemeral and do not survive spring restarts
+spring.jpa:
+    database: h2
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      connection:
+        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+spring.datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    ### skip spring db init - using liquibase
+    initialization-mode: never
+---
+### Generic Postgres database definition (no url defined in this profile)
+spring.profiles: dbtype-postgres
+spring.jpa:
+    database: postgresql
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      connection:
+        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+spring.datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    ### skip spring db init - using liquibase
+    initialization-mode: never
+    ## see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
+    ## use "driver-class-name" only for drivers not supported by spring (e.g. oracle)
+#    driver-class-name: [driver_class_name]
+---
+### Generic Postgres database definition (no url defined in this profile)
+spring.profiles: dbtype-oracle6
+spring.jpa:
+    database: oracle
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      connection:
+        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+spring.datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    ### skip spring db init - using liquibase
+    initialization-mode: never
+    driver-class-name: oracle.jdbc.OracleDriver
+---
+
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+####    2. Declaration of database instances
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+## Connection Pool settings can be refined on any below profile by adjusting
+## hikari properties directly
+## A list of all Hikari parameters with a good explanation is available on
+## https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+#  hikari:
+#    connection-timeout: 30000 # maximum number of milliseconds that a client will wait for a connection from connection pool
+#    minimum-idle: 5 # minimum number of idle connections that is maintained by HikariCP in connection pool
+#    maximum-pool-size: 12 # configures the maximum pool size
+#    idle-timeout: 300000 # maximum amount of time in milliseconds that a connection is allowed to sit idle in connection pool
+#    max-lifetime: 1200000 #  maximum life time in milliseconds of a connection in pool after it is closed
+#    auto-commit: true # configures the default auto-commit behavior of connections returned from pool. Default value is true.
+
+spring.profiles: db-h2mem-personlocal
+spring.profiles.include: dbtype-h2
+db.instance.name: personlocal
+spring.datasource:
+    url: jdbc:${spring.jpa.database}:mem:${db.instance.name}
+spring.liquibase.parameters.db.instance.name: ${db.instance.name}
+---
+#>> just to show multiple instances for one environment can be declared
+spring.profiles: db-h2file-corplocal
+db.instance.name: corplocal
+spring.datasource:
+    url: jdbc:${spring.jpa.database}:file:/tmp/${db.instance.name}.db
+spring.liquibase.parameters.db.instance.name: ${db.instance.name}
+---
+spring.profiles: db-postgres-corpdev
+spring.profiles.include: dbtype-postgres
+db.instance.name: corpdev
+spring.datasource:
+    url: jdbc:${spring.jpa.datasource}://postgres:5432/${db.instance.name}
+    username: postgres
+    password: password
+spring.liquibase.parameters.db.instance.name: ${db.instance.name}
+---
+spring.profiles: db-oracle-corpstage
+spring.profiles.include: dbtype-oracle
+db.instance.name: corpstage
+spring.datasource:
+    url: jdbc:${spring.jpa.database}:thin:@oracle:1521/${db.instance.name}
+    username: someuser
+    password: somepassword
+spring.liquibase.parameters.db.instance.name: ${db.instance.name}
+---
+
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+####    3. Apply database configs to execution environments
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+spring.profiles: default
+spring.profiles.include: db-h2mem-personlocal, db-h2file-corplocal
+### Default values for Liquibase
+### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+spring.liquibase:
+  enabled: true
+  test-rollback-on-update: false
+  # default liquibase operation at startup
+  parameters.liquibase.operation: dbinit
+---
+spring.profiles: local-int, ci
+spring.profiles.include: db-h2file-corplocal
+### LocalInt/CI values for Liquibase
+### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+spring.liquibase:
+  enabled: true
+  test-rollback-on-update: true
+  # default liquibase operation at startup
+  parameters.liquibase.operation: dbinit
+---
+spring.profiles: dev
+spring.profiles.include: db-postgres-corpdev
+### Dev values for Liquibase
+### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+spring.liquibase:
+  enabled: true
+  test-rollback-on-update: true
+  # default liquibase operation at startup
+  parameters.liquibase.operation: dbprep
+---
+spring.profiles: stage
+spring.profiles.include: db-oracle6-corpstage
+### Stage values for Liquibase
+### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+spring.liquibase:
+  enabled: true
+  test-rollback-on-update: true
+  # default liquibase operation at startup
+  parameters.liquibase.operation: dbprep

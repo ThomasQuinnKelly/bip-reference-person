@@ -23,12 +23,10 @@
 		<spring-core.version>5.1.8.RELEASE</spring-core.version>
 		<spring-data-jpa.version>2.1.9.RELEASE</spring-data-jpa.version>
 
-		<!-- available liquibase path options to chose from -->
-		<liquibase.changelog.path.default>default</liquibase.changelog.path.default>
-		<liquibase.changelog.path.ds1>ds1</liquibase.changelog.path.ds1>
-		<liquibase.changelog.path.ds2>ds2</liquibase.changelog.path.ds2>
-		<!-- this is the chosen liquibase path that is used in the profiles, override with -D -->
-		<liquibase.changelog.path>${liquibase.changelog.path.default}</liquibase.changelog.path>
+		<!-- Liquibase controls -->
+		<db.name>h2memdb</db.name>
+		<!-- always use /db/changelog/default as these profiles should not be executed in any server environment  -->
+		<liquibase.changelog.path>${project.basedir}/src/main/resources/db/changelog/default/${db.name}/</liquibase.changelog.path>
 		<!-- maven-specific properties for '-Dproperty.name=override-value' -->
 		<liquibase.contexts></liquibase.contexts>
 		<liquibase.diff.types.schema>tables,views,columns,indexes,foreignkeys,primarykeys,uniqueconstraints</liquibase.diff.types.schema>
@@ -179,9 +177,9 @@
 							<logging>debug</logging>
 							<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
 							<propertyFileWillOverride>true</propertyFileWillOverride>
-							<propertyFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/liquibase-generate-changelog.properties</propertyFile>
-							<outputChangeLogFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/changelog/liquibase-generate-changelog.yml</outputChangeLogFile>
-							<dataDir>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/changelog/data</dataDir>
+							<propertyFile>${liquibase.changelog.path}/liquibase-generate-changelog.properties</propertyFile>
+							<outputChangeLogFile>${liquibase.changelog.path}/liquibase-generate-changelog.yml</outputChangeLogFile>
+							<dataDir>${liquibase.changelog.path}/data</dataDir>
 							<diffTypes>${liquibase.diff.types.schema},${liquibase.diff.types.data}</diffTypes>
 							<!-- <contexts>${liquibase.contexts}</contexts> -->
 							<changeSetContext>${liquibase.contexts}</changeSetContext>
@@ -222,8 +220,8 @@
 									<logging>debug</logging>
 									<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
 									<propertyFileWillOverride>true</propertyFileWillOverride>
-									<propertyFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/liquibase-create-db-from-changelog.properties</propertyFile>
-									<changeLogFile>${project.basedir}/src/main/resources/db/${liquibase.changelog.path}/local/changelog/liquibase-create-db-from-changelog.yml</changeLogFile>
+									<propertyFile>${liquibase.changelog.path}/liquibase-create-db-from-changelog.properties</propertyFile>
+									<changeLogFile>${liquibase.changelog.path}/liquibase-create-db-from-changelog.yml</changeLogFile>
 									<contexts>${liquibase.contexts}</contexts>
 								</configuration>
 							</execution>
