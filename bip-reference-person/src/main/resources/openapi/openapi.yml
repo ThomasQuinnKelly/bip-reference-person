@@ -396,15 +396,15 @@ components:
       type: http
       bearerFormat: JWT
       scheme: bearer
-  examples:
-    ProvideResponse500Example:
-      value:
-         messages:
-           - key: "bip.framework.global.general.exception"
-             severity: ERROR
-             status: 500
-             text: "Unexpected exception."
-             timestamp: "2019-08-29T15:36:13.853Z"
+  examples: 
+    ProvideResponse500Example: 
+      value: 
+         messages: 
+            - key: bip.framework.global.general.exception
+              severity: ERROR 
+              status: 500 
+              text: Unexpected exception.
+              timestamp: 2019-08-29T15:36:13.853Z 
   schemas:
     # Define API (provider) model objects. Use type, format and example;
     # use standard JSR303 constraints (required, min, max, etc) where it makes sense
