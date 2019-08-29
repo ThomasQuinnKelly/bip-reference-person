@@ -43,8 +43,8 @@ public class PersonDocsMetadataDomainResponseValidator extends AbstractStandardV
 					return;
 				}
 				// check if empty response, or errors / fatals
-				if ((toValidate == null) || (toValidate.getPersonDocumentMetadataDomain() == null)) {
-					PersonMessageKeys key = PersonMessageKeys.BIP_PERSON_DOCUMENT_METADATA_NOTNULL;
+				if ((toValidate == null) || (toValidate.getPersonDocsMetadataDomain() == null)) {
+					PersonMessageKeys key = PersonMessageKeys.BIP_PERSON_DOCS_METADATA_NOTNULL;
 					LOGGER.info(key.getKey() + " " + key.getMessage());
 					throw new PersonServiceException(key, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
 				}
@@ -55,8 +55,8 @@ public class PersonDocsMetadataDomainResponseValidator extends AbstractStandardV
 				 * exception, not just set a warning.
 				 */
 				LOGGER.debug("Request PID: " + request.getParticipantID() + "; Response document name: "
-						+ toValidate.getPersonDocumentMetadataDomain().getDocumentName() + "; Response document creation date: "
-						+ toValidate.getPersonDocumentMetadataDomain().getDocumentCreationDate() + "; PersonTraits PID: "
+						+ toValidate.getPersonDocsMetadataDomain().getDocName() + "; Response document creation date: "
+						+ toValidate.getPersonDocsMetadataDomain().getDocCreateDate() + "; PersonTraits PID: "
 						+ (SecurityUtils.getPersonTraits() == null ? "null" : SecurityUtils.getPersonTraits().getPid()));
 	}
 

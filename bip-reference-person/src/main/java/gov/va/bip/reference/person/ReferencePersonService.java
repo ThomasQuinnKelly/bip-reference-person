@@ -34,10 +34,10 @@ public interface ReferencePersonService {
 	 * Store the meta-data associated with the document for a given pid
 	 * 
 	 * @param pid the pid
-	 * @param documentName the name of the document
-	 * @param documentCreationDate the date of creation of the document
+	 * @param docName the name of the document
+	 * @param docCreateDate the date of creation of the document
 	 */
-	void storeMetadata(Long pid, String documentName, String documentCreationDate);
+	void storeMetadata(Long pid, String docName, String docCreateDate);
 
 	/**
 	 * Get a static document as a byte array containing some sample reference data

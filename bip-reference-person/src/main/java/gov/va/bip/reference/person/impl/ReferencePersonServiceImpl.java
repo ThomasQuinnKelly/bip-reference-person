@@ -207,12 +207,12 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			return null;
 		}
 		PersonDocsMetadataDomainResponse domainResponse = new PersonDocsMetadataDomainResponse();
-		PersonDocsMetadataDomain personDocumentMetadataDomain = new PersonDocsMetadataDomain();
+		PersonDocsMetadataDomain personDocsMetadataDomain = new PersonDocsMetadataDomain();
 		String dateString =
 				data.getDocCreateDate() == null ? "" : data.getDocCreateDate().format(DateTimeFormatter.ISO_DATE);
-		personDocumentMetadataDomain.setDocumentCreationDate(dateString);
-		personDocumentMetadataDomain.setDocumentName(data.getDocName());
-		domainResponse.setPersonDocumentMetadataDomain(personDocumentMetadataDomain);
+		personDocsMetadataDomain.setDocCreateDate(dateString);
+		personDocsMetadataDomain.setDocName(data.getDocName());
+		domainResponse.setPersonDocsMetadataDomain(personDocsMetadataDomain);
 		return domainResponse;
 	}
 
@@ -220,25 +220,25 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 * Store the meta-data associated with the document to the same record as the pid in the database
 	 *
 	 * @param pid the pid
-	 * @param documentName the name of the document
-	 * @param documentCreationDateString the date of creation of the document
+	 * @param docName the name of the document
+	 * @param docCreateDateString the date of creation of the document as a String
 	 */
 	@Override
-	public void storeMetadata(final Long pid, final String documentName, final String documentCreationDateString) {
-		LocalDate documentCreationDate = null;
-		if (StringUtils.isBlank(documentCreationDateString)) {
-			documentCreationDate = LocalDate.now();
+	public void storeMetadata(final Long pid, final String docName, final String docCreateDateString) {
+		LocalDate docCreateDate = null;
+		if (StringUtils.isBlank(docCreateDateString)) {
+			docCreateDate = LocalDate.now();
 		} else {
 			// If more validation code is added this can be moved to a separate validator class
 			try {
-				documentCreationDate = LocalDate.parse(documentCreationDateString, DateTimeFormatter.ISO_DATE);
+				docCreateDate = LocalDate.parse(docCreateDateString, DateTimeFormatter.ISO_DATE);
 			} catch (DateTimeParseException e) {
 				throw new PersonServiceException(PersonMessageKeys.BIP_PERSON_INVALID_DATE, MessageSeverity.ERROR,
 						HttpStatus.BAD_REQUEST,
 						"");
 			}
 		}
-		personDatabaseHelper.storeMetadata(pid, documentName, documentCreationDate);
+		personDatabaseHelper.storeMetadata(pid, docName, docCreateDate);
 	}
 
 	/**

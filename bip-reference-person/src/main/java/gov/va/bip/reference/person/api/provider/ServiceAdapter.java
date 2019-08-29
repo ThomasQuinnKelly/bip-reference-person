@@ -27,7 +27,7 @@ import gov.va.bip.reference.person.model.PersonDocsMetadataDomainRequest;
 import gov.va.bip.reference.person.model.PersonDocsMetadataDomainResponse;
 import gov.va.bip.reference.person.transform.impl.PersonByPid_DomainToProvider;
 import gov.va.bip.reference.person.transform.impl.PersonByPid_ProviderToDomain;
-import gov.va.bip.reference.person.transform.impl.PersonDocumentMetadata_DomainToProvider;
+import gov.va.bip.reference.person.transform.impl.PersonDocsMetadata_DomainToProvider;
 import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 
 /**
@@ -45,8 +45,8 @@ public class ServiceAdapter {
 	/** Transform Domain (service) response to Provider (REST) response */
 	private PersonByPid_DomainToProvider personByPidDomain2Provider = new PersonByPid_DomainToProvider();
 	/** Transform Domain (service) response to Provider (REST) response */
-	private PersonDocumentMetadata_DomainToProvider personDocumentMetadataDomain2Provider =
-			new PersonDocumentMetadata_DomainToProvider();
+	private PersonDocsMetadata_DomainToProvider personDocsMetadataDomain2Provider =
+			new PersonDocsMetadata_DomainToProvider();
 
 	/** The service layer API contract for processing personByPid() requests */
 	@Autowired
@@ -89,22 +89,22 @@ public class ServiceAdapter {
 	 * Store meta data for a document for a given pid
 	 * 
 	 * @param pid the pid
-	 * @param documentName the name of the document
-	 * @param documentCreationDate the date of creation of the document
+	 * @param docName the name of the document
+	 * @param docCreateDate the date of creation of the document
 	 * @param file
 	 * 
 	 * @return a ProviderResponse
 	 */
-	PersonDocsMetadataUploadResponse storeMetaData(final Long pid, String documentName, final String documentCreationDate,
+	PersonDocsMetadataUploadResponse storeMetaData(final Long pid, String docName, final String docCreateDate,
 			@Valid final MultipartFile file) {
 
 		PersonDocsMetadataUploadResponse response = new PersonDocsMetadataUploadResponse();
 
 		try {
-			if (StringUtils.isBlank(documentName)) {
-				documentName = file.getResource().getFilename();
+			if (StringUtils.isBlank(docName)) {
+				docName = file.getResource().getFilename();
 			}
-			refPersonService.storeMetadata(pid, documentName, documentCreationDate);
+			refPersonService.storeMetadata(pid, docName, docCreateDate);
 		} catch (PersonServiceException e) {
 			LOGGER.error(e.getMessage(), e);
 			throw e;
@@ -123,12 +123,12 @@ public class ServiceAdapter {
 	 * Get the meta data associated with documents accepted for a pid
 	 * 
 	 * @param pid the pid
-	 * @return a PersonDocumentMetadataResponse object with the required metadata
+	 * @return a PersonDocsMetadataResponse object with the required metadata
 	 */
 	PersonDocsMetadataResponse
 	getMetadataDocumentForPid(final @Valid @Min(1) Long pid) {
 		// transform provider request into domain request
-		LOGGER.debug("Transforming from personDocumentMetadataRequest to domainRequest");
+		LOGGER.debug("Transforming from rest input data (only pid in this case) to domainRequest");
 		PersonDocsMetadataDomainRequest domainRequest = new PersonDocsMetadataDomainRequest();
 		domainRequest.setParticipantID(pid);
 
@@ -138,7 +138,7 @@ public class ServiceAdapter {
 
 		// transform domain response into provider response
 		LOGGER.debug("Transforming from domainResponse to providerResponse");
-		PersonDocsMetadataResponse providerResponse = personDocumentMetadataDomain2Provider.convert(domainResponse);
+		PersonDocsMetadataResponse providerResponse = personDocsMetadataDomain2Provider.convert(domainResponse);
 
 		return providerResponse;
 	}
