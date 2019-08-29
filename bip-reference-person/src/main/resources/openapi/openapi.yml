@@ -62,8 +62,8 @@ paths:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
               examples:
-                ProvideResponse500Example:
-                  '$ref': '#/components/examples/ProvideResponse500Example'
+                500GeneralException:
+                  '$ref': '#/components/examples/500GeneralException'
       security:
         - bearerAuth: []
       deprecated: false
@@ -140,6 +140,9 @@ paths:
             application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
+              examples:
+                500GeneralException:
+                  '$ref': '#/components/examples/500GeneralException'
       security:
         - bearerAuth: []
       deprecated: false
@@ -193,6 +196,9 @@ paths:
             application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
+              examples:
+                500GeneralException:
+                  '$ref': '#/components/examples/500GeneralException'
       security:
         - bearerAuth: []
       deprecated: false
@@ -235,6 +241,9 @@ paths:
             application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
+              examples:
+                500GeneralException:
+                  '$ref': '#/components/examples/500GeneralException'
       security:
         - bearerAuth: []
       deprecated: false
@@ -283,6 +292,9 @@ paths:
             application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
+              examples:
+                500GeneralException:
+                  '$ref': '#/components/examples/500GeneralException'
       security:
         - bearerAuth: []
       deprecated: false
@@ -331,6 +343,9 @@ paths:
             application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
+              examples:
+                500GeneralException:
+                  '$ref': '#/components/examples/500GeneralException'
       security:
         - bearerAuth: []
       deprecated: false
@@ -397,14 +412,14 @@ components:
       bearerFormat: JWT
       scheme: bearer
   examples: 
-    ProvideResponse500Example: 
+    500GeneralException: 
       value: 
          messages: 
             - key: bip.framework.global.general.exception
               severity: ERROR 
               status: 500 
               text: Unexpected exception.
-              timestamp: 2019-08-29T15:36:13.853Z 
+              timestamp: 2019-08-29T18:40:22.766Z
   schemas:
     # Define API (provider) model objects. Use type, format and example;
     # use standard JSR303 constraints (required, min, max, etc) where it makes sense
