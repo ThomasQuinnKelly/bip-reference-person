@@ -56,7 +56,7 @@ spring:
     properties:
 # for available hibernate dialects, see https://docs.jboss.org/hibernate/orm/5.0/javadocs/org/hibernate/dialect/package-summary.html
       hibernate:
-         dialect: org.hibernate.dialect.PostgreSQL94Dialect
+         dialect: org.hibernate.dialect.PostgreSQL95Dialect
     generate-ddl: false
     hibernate:
       ddl-auto: none

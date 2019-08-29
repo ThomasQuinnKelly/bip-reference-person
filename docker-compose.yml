@@ -19,7 +19,8 @@ services:
       - spring.cloud.consul.discovery.register=true
       - spring.cloud.vault.enabled=true
       - spring.cloud.vault.consul.enabled=true
-      - bip.framework.security.jwt.enabled=true
+      - bip.framework.security.jwt.enabled=false
+      - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQL95Dialect
       - spring.cloud.vault.kv.application-name=blue/bip-reference-person,blue/bip-reference-person/example-service
     ports:
       - "8080:8080"
