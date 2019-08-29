@@ -17,10 +17,33 @@ databaseChangeLog:
             name: pid
             type: INTEGER
         - column:
-            name: document_name
+            name: first_name
             type: VARCHAR(128)
         - column:
-            name: document_creation_date
+            name: middle_name
             type: VARCHAR(128)
-        tableName: personrecord
-
+        - column:
+            name: last_name
+            type: VARCHAR(128)
+        - column:
+            name: prefix
+            type: VARCHAR(128)
+        - column:
+            name: suffix
+            type: VARCHAR(128)
+        - column:
+            name: gender
+            type: VARCHAR(16)
+        - column:
+            name: gender
+            type: VARCHAR(16)
+        - column:
+            name: email
+            type: VARCHAR(256)
+        - column:
+            name: assurance_level
+            type: INTEGER
+        - column:
+            name: correlation_ids
+            type: VARCHAR(64)[]
+        tableName: persontraits

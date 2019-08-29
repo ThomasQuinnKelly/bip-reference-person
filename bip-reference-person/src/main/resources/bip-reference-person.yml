@@ -427,7 +427,7 @@ spring.liquibase:
 ---
 spring.profiles: local-int, ci
 spring.profiles.include: db-h2file-corplocal
-### LocalInt/CI values for Liquibase
+### Local-Int & CI values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
   enabled: true
