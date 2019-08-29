@@ -61,6 +61,9 @@ paths:
             application/problem+json:
               schema:
                 '$ref': '#/components/schemas/ProviderResponse'
+              examples:
+                ProvideResponse500Example:
+                  '$ref': '#/components/examples/ProvideResponse500Example'
       security:
         - bearerAuth: []
       deprecated: false
@@ -393,6 +396,15 @@ components:
       type: http
       bearerFormat: JWT
       scheme: bearer
+  examples:
+    ProvideResponse500Example:
+      value:
+         messages:
+           - key: "bip.framework.global.general.exception"
+             severity: ERROR
+             status: 500
+             text: "Unexpected exception."
+             timestamp: "2019-08-29T15:36:13.853Z"
   schemas:
     # Define API (provider) model objects. Use type, format and example;
     # use standard JSR303 constraints (required, min, max, etc) where it makes sense
@@ -585,3 +597,4 @@ components:
     ProviderRequest: 
       type: object
       title: ProviderRequest
+      
