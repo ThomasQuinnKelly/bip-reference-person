@@ -26,19 +26,19 @@ public class PersonDataHelper {
 	 * Store meta-data about document in person repository for a given pid.
 	 *
 	 * @param pid the pid
-	 * @param documentName the name of the document
-	 * @param documentCreationDate the date of creation of the document
+	 * @param docName the name of the document
+	 * @param docCreateDate the date of creation of the document
 	 * @return a file as a byte array
 	 */
-	public void storeMetadata(final Long pid, final String documentName, final LocalDate documentCreationDate) {
+	public void storeMetadata(final Long pid, final String docName, final LocalDate docCreateDate) {
 		try {
 			PersonDocs result = personDocsRepository.findByPid(pid);
 			if (result == null) {
 				result = new PersonDocs();
 				result.setPid(pid);
 			}
-			result.setDocName(documentName);
-			result.setDocCreateDate(documentCreationDate);
+			result.setDocName(docName);
+			result.setDocCreateDate(docCreateDate);
 			personDocsRepository.save(result);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

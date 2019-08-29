@@ -150,13 +150,13 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * </ol>
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
-	 * @param personDocumentMetadataRequest the PersonDocumentMetadataRequest object containing  information required for requesting metadata information
+	 * @param pid the pid
 	 * 
-	 * @return the PersonDocumentMetadataResponse wrapped by a response entity
+	 * @return the PersonDocsMetadataResponse wrapped by a response entity
 	 */
 	@Override
 	public ResponseEntity<PersonDocsMetadataResponse> getDocumentMetadataForPerson(@Min(1) final Long pid) {
-		LOGGER.debug("getDocumentMetadata() method invoked");
+		LOGGER.debug("getDocumentMetadataForPerson() method invoked");
 
 		PersonDocsMetadataResponse providerResponse = serviceAdapter.getMetadataDocumentForPid(pid);
 
@@ -179,21 +179,21 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
 	 * @param pid the pid
-	 * @param documentName the name of the document
+	 * @param docName the name of the document
 	 * @param file the file uploaded for the pid
-	 * @param documentCreationDate the date of creation of the document
+	 * @param docCreateDate the date of creation of the document
 	 * 
-	 * @return PersonDocumentMetadataResponse
+	 * @return the PersonDocsMetadataUploadResponse object with info about what happened after the upload method is invoked
 	 */
 	@Override
-	public ResponseEntity<PersonDocsMetadataUploadResponse> upload(@Min(1) final Long pid, final String documentName,
+	public ResponseEntity<PersonDocsMetadataUploadResponse> upload(@Min(1) final Long pid, final String docName,
 			@Valid final MultipartFile file,
-			final String documentCreationDate) {
+			final String docCreateDate) {
 		LOGGER.debug("upload() method invoked");
 		PersonDocsMetadataUploadResponse providerResponse = new PersonDocsMetadataUploadResponse();
 		try {
 			providerResponse =
-					serviceAdapter.storeMetaData(Long.valueOf(pid), documentName, documentCreationDate, file);
+					serviceAdapter.storeMetaData(Long.valueOf(pid), docName, docCreateDate, file);
 			// send provider response back to consumer
 			LOGGER.debug("Returning providerResponse to consumer");
 			return new ResponseEntity<>(providerResponse, HttpStatus.OK);

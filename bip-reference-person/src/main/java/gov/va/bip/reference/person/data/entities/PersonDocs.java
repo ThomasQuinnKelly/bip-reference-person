@@ -64,7 +64,7 @@ public class PersonDocs implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ClassPojo [pid = " + pid + ", documentName = " + docName + ", documentCreationDate = "
+		return "ClassPojo [pid = " + pid + ", docName = " + docName + ", docCreateDate = "
 				+ docCreateDate.format(DateTimeFormatter.BASIC_ISO_DATE) + "]";
 	}
 }

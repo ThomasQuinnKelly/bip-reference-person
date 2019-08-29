@@ -37,7 +37,7 @@ public class PersonDocsMetadataDomainRequestValidator extends AbstractStandardVa
 		} else if (pid <= 0) {
 			LOGGER.debug("PID is <= 0");
 			messages.add(new ServiceMessage(MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
-					PersonMessageKeys.BIP_PERSON_DOCUMENT_METADATA_REQUEST_PID_MIN));
+					PersonMessageKeys.BIP_PERSON_DOCS_METADATA_REQUEST_PID_MIN));
 		}
 	}
 

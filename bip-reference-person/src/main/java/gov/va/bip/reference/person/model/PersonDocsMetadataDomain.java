@@ -12,25 +12,25 @@ public class PersonDocsMetadataDomain implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/** The name of the document. */
-	private String documentName;
+	private String docName;
 
 	/** The date of creation of the document. */
-	private String documentCreationDate;
+	private String docCreateDate;
 
-	public String getDocumentName() {
-		return documentName;
+	public String getDocName() {
+		return docName;
 	}
 
-	public void setDocumentName(final String documentName) {
-		this.documentName = documentName;
+	public void setDocName(final String docName) {
+		this.docName = docName;
 	}
 
-	public String getDocumentCreationDate() {
-		return documentCreationDate;
+	public String getDocCreateDate() {
+		return docCreateDate;
 	}
 
-	public void setDocumentCreationDate(final String documentCreationDate) {
-		this.documentCreationDate = documentCreationDate;
+	public void setDocCreateDate(final String docCreateDate) {
+		this.docCreateDate = docCreateDate;
 	}
 
 }

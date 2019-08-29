@@ -6,12 +6,11 @@ import gov.va.bip.reference.person.api.model.v1.PersonDocsMetadataResponse;
 import gov.va.bip.reference.person.model.PersonDocsMetadataDomainResponse;
 
 /**
- * Transform a service Domain {@link PersonDocsMetadataDomainResponse} into a REST Provider {@link PersonDocumentMetadataResponse}
- * object.
+ * Transform a service Domain {@link PersonDocsMetadataDomainResponse} into a REST Provider {@link PersonDocsMetadataResponse} object.
  *
  */
-public class PersonDocumentMetadata_DomainToProvider
-		extends AbstractDomainToProvider<PersonDocsMetadataDomainResponse, PersonDocsMetadataResponse> {
+public class PersonDocsMetadata_DomainToProvider
+extends AbstractDomainToProvider<PersonDocsMetadataDomainResponse, PersonDocsMetadataResponse> {
 
 	@Override
 	public PersonDocsMetadataResponse convert(final PersonDocsMetadataDomainResponse domainObject) {
@@ -19,9 +18,9 @@ public class PersonDocumentMetadata_DomainToProvider
 
 		// add data
 		PersonDocsMetadata providerData = new PersonDocsMetadata();
-		if ((domainObject != null) && (domainObject.getPersonDocumentMetadataDomain() != null)) {
-			providerData.setDocName(domainObject.getPersonDocumentMetadataDomain().getDocumentName());
-			providerData.setDocCreateDate(domainObject.getPersonDocumentMetadataDomain().getDocumentCreationDate());
+		if ((domainObject != null) && (domainObject.getPersonDocsMetadataDomain() != null)) {
+			providerData.setDocName(domainObject.getPersonDocsMetadataDomain().getDocName());
+			providerData.setDocCreateDate(domainObject.getPersonDocsMetadataDomain().getDocCreateDate());
 		}
 		providerObject.setPersonDocsMetadata(providerData);
 

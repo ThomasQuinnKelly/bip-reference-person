@@ -13,23 +13,23 @@ public class PersonDocsMetadataDomainResponse extends DomainResponse {
 	private static final long serialVersionUID = 1L;
 
 	/** A PersonDocsMetadataDomain instance. */
-	private PersonDocsMetadataDomain personDocumentMetadataDomain;
+	private PersonDocsMetadataDomain personDocsMetadataDomain;
 
 	/**
 	 * Gets the person metadata
 	 *
-	 * @return A personDocumentMetadataDomain instance
+	 * @return A personDocsMetadataDomain instance
 	 */
-	public final PersonDocsMetadataDomain getPersonDocumentMetadataDomain() {
-		return personDocumentMetadataDomain;
+	public final PersonDocsMetadataDomain getPersonDocsMetadataDomain() {
+		return personDocsMetadataDomain;
 	}
 
 	/**
 	 * Sets the person metadata object for the provider
 	 *
-	 * @param personDocumentMetadataDomain A personDocumentMetadataDomain instance
+	 * @param personDocsMetadataDomain A personDocsMetadataDomain instance
 	 */
-	public final void setPersonDocumentMetadataDomain(final PersonDocsMetadataDomain personDocumentMetadataDomain) {
-		this.personDocumentMetadataDomain = personDocumentMetadataDomain;
+	public final void setPersonDocsMetadataDomain(final PersonDocsMetadataDomain personDocsMetadataDomain) {
+		this.personDocsMetadataDomain = personDocsMetadataDomain;
 	}
 }
