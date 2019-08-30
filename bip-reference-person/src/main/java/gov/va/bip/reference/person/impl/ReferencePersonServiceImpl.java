@@ -35,6 +35,7 @@ import gov.va.bip.reference.person.ReferencePersonService;
 import gov.va.bip.reference.person.client.ws.PersonPartnerHelper;
 import gov.va.bip.reference.person.data.PersonDataHelper;
 import gov.va.bip.reference.person.data.docs.entities.PersonDoc;
+import gov.va.bip.reference.person.data.info.entities.PersonInfo;
 import gov.va.bip.reference.person.exception.PersonServiceException;
 import gov.va.bip.reference.person.messages.PersonMessageKeys;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
@@ -72,7 +73,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 
 	/** The person web service database operations helper. */
 	@Autowired
-	private PersonDataHelper personDatabaseHelper;
+	private PersonDataHelper personDataHelper;
 
 	@Autowired
 	private CacheManager cacheManager;
@@ -99,11 +100,25 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 */
 	@Override
 	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE,
-	key = "#root.methodName + T(gov.va.bip.framework.cache.BipCacheUtil).createKey(#personByPidDomainRequest.participantID)",
-	unless = "T(gov.va.bip.framework.cache.BipCacheUtil).checkResultConditions(#result)")
+			key = "#root.methodName + T(gov.va.bip.framework.cache.BipCacheUtil).createKey(#personByPidDomainRequest.participantID)",
+			unless = "T(gov.va.bip.framework.cache.BipCacheUtil).checkResultConditions(#result)")
 	@HystrixCommand(commandKey = "GetPersonInfoByPIDCommand",
-	ignoreExceptions = { IllegalArgumentException.class, BipException.class, BipRuntimeException.class })
+			ignoreExceptions = { IllegalArgumentException.class, BipException.class, BipRuntimeException.class })
 	public PersonByPidDomainResponse findPersonByParticipantID(final PersonByPidDomainRequest personByPidDomainRequest) {
+		/* Retrieve person info for pid - NO VALUE RETURNED, just a multi-datasource example */
+
+		try {
+			PersonInfo info = personDataHelper.getInfoForIcn(54321L);
+		} catch (Exception e1) {
+			PersonByPidDomainResponse domainResponse = new PersonByPidDomainResponse();
+			// check exception..create domain model response
+			domainResponse.addMessage(MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
+					MessageKeys.BIP_GLOBAL_GENERAL_EXCEPTION, new String[] { this.getClass().getSimpleName(),
+							"Could not retrieve person by ICN 54321L - " + e1.getClass().getSimpleName() + ": " + e1.getMessage() });
+			return domainResponse;
+		}
+
+		/* Retrieve document for pid */
 
 		String cacheKey = "findPersonByParticipantID" + BipCacheUtil.createKey(personByPidDomainRequest.getParticipantID());
 
@@ -202,7 +217,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 */
 	@Override
 	public PersonDocsMetadataDomainResponse getMetadataForPid(final PersonDocsMetadataDomainRequest domainRequest) {
-		PersonDoc data = personDatabaseHelper.getDocForPid(domainRequest.getParticipantID());
+		PersonDoc data = personDataHelper.getDocForPid(domainRequest.getParticipantID());
 		if (data == null) {
 			return null;
 		}
@@ -238,12 +253,12 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 						"");
 			}
 		}
-		personDatabaseHelper.storeMetadata(pid, docName, docCreateDate);
+		personDataHelper.storeMetadata(pid, docName, docCreateDate);
 	}
 
 	/**
 	 * Get the sample reference document
-	 * 
+	 *
 	 * @return a static reference document
 	 */
 	@Override

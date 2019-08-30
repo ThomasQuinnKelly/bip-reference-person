@@ -392,39 +392,39 @@ spring.datasource:
 #    auto-commit: true # configures the default auto-commit behavior of connections returned from pool. Default value is true.
 
 spring.profiles: db-docslocal
-spring.profiles.include: dbtype-h2
-#spring.profiles.include: dbtype-postgres
+#spring.profiles.include: dbtype-h2
+spring.profiles.include: dbtype-postgres
 db.instance.name: docslocal
 spring.datasource:
-    url: jdbc:${spring.jpa.database}:mem:${db.instance.name}
-#    url: jdbc:${spring.jpa.database}://localhost:5432/${db.instance.name}
-#    username: postgres
-#    password: password
+#    url: jdbc:${spring.jpa.database}:mem:${db.instance.name}
+    url: jdbc:${spring.jpa.database}://localhost:5432/${db.instance.name}
+    username: postgres
+    password: password
 spring.liquibase:
   parameters:
     db.instance.name: ${db.instance.name}
     db.type.name: ${spring.jpa.database}
   url: ${spring.datasource.url}
-#  user: ${spring.datasource.username}
-#  password: ${spring.datasource.password}
+  user: ${spring.datasource.username}
+  password: ${spring.datasource.password}
 ---
 #>> just to show multiple instances for one environment can be declared
 spring.profiles: db-persinfolocal
-spring.profiles.include: dbtype-h2
-#spring.profiles.include: dbtype-postgres
+#spring.profiles.include: dbtype-h2
+spring.profiles.include: dbtype-postgres
 db.instance.name: persinfolocal
 spring.datasource:
-    url: jdbc:${spring.jpa.database}:file:/tmp/${db.instance.name}.db
-#    url: jdbc:${spring.jpa.database}://localhost:5432/${db.instance.name}
-#    username: postgres
-#    password: password
+#    url: jdbc:${spring.jpa.database}:file:/tmp/${db.instance.name}.db
+    url: jdbc:${spring.jpa.database}://localhost:5432/${db.instance.name}
+    username: postgres
+    password: password
 spring.liquibase:
   parameters:
     db.instance.name: ${db.instance.name}
     db.type.name: ${spring.jpa.database}
   url: ${spring.datasource.url}
-#  user: ${spring.datasource.username}
-#  password: ${spring.datasource.password}
+  user: ${spring.datasource.username}
+  password: ${spring.datasource.password}
 ---
 ### EXAMPLE of a possible dev db instance
 spring.profiles: db-corpdev

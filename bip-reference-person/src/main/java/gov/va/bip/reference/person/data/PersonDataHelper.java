@@ -9,6 +9,8 @@ import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.reference.person.data.docs.entities.PersonDoc;
 import gov.va.bip.reference.person.data.docs.repo.PersonDocsRepo;
+import gov.va.bip.reference.person.data.info.entities.PersonInfo;
+import gov.va.bip.reference.person.data.info.repo.PersonInfoRepo;
 
 /**
  * Helper class for abstracting the data base layer
@@ -22,28 +24,28 @@ public class PersonDataHelper {
 	@Autowired
 	PersonDocsRepo personDocsRepo;
 
-//	@Autowired
-//	PersonInfoRepo personInfoRepo;
-//
-//	public PersonInfo getInfoForIcn(String icn) {
-//		try {
-//			PersonInfo result = personInfoRepo.findByIcn(icn);
-//			return result;
-//		} catch (Exception e) {
-//			LOGGER.error(e.getMessage(), e);
-//			throw e;
-//		}
-//	}
-//
-//	public PersonInfo getInfoForEmail(String email) {
-//		try {
-//			PersonInfo result = personInfoRepo.findByEmail(email);
-//			return result;
-//		} catch (Exception e) {
-//			LOGGER.error(e.getMessage(), e);
-//			throw e;
-//		}
-//	}
+	@Autowired
+	PersonInfoRepo personInfoRepo;
+
+	public PersonInfo getInfoForIcn(Long icn) {
+		try {
+			PersonInfo result = personInfoRepo.findByIcn(icn);
+			return result;
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw e;
+		}
+	}
+
+	public PersonInfo getInfoForEmail(String email) {
+		try {
+			PersonInfo result = personInfoRepo.findByEmail(email);
+			return result;
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw e;
+		}
+	}
 
 	/**
 	 * Store meta-data about document in person repository for a given pid.

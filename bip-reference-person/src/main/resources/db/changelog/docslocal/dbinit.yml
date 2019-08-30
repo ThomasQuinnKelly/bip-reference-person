@@ -1,7 +1,7 @@
 databaseChangeLog:
 - changeSet:
-    id: 1565891667819-1
-    author: aburkholder (generated)
+    id: docslocal-dbinit-create
+    author: bipref
     changes:
     - createTable:
         columns:
@@ -22,5 +22,40 @@ databaseChangeLog:
         - column:
             name: document_creation_date
             type: VARCHAR(128)
-        tableName: personrecord
+        tableName: persondocs
 
+- changeSet:
+    id: docslocal-dbinit-insert
+    author: bipref
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: id
+            value: 1
+        - column:
+            name: pid
+            value: 6666345
+        - column:
+            name: document_name
+            value: test1
+        - column:
+            name: document_creation_date
+            value: NULL
+        tableName: persondocs
+    - insert:
+        columns:
+        - column:
+            name: id
+            value: 2
+        - column:
+            name: pid
+            value: 6666346
+        - column:
+            name: document_name
+            value: test2
+        - column:
+            name: document_creation_date
+            value: NULL
+        tableName: persondocs
+        
