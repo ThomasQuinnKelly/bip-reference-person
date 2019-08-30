@@ -1,4 +1,4 @@
-package gov.va.bip.reference.person.data.entities;
+package gov.va.bip.reference.person.data.docs.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -11,12 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
 /**
- * PersonDocs POJO mapped to the records in the PERSONDOCS table in database
+ * PersonDoc POJO mapped to the records in the PERSONDOCS table in database
  *
  */
 @Entity
 @SequenceGenerator(name="seq", initialValue=10, allocationSize=100)
-public class PersonDocs implements Serializable {
+public class PersonDoc implements Serializable {
 
 	private static final long serialVersionUID = -1330928616668416505L;
 

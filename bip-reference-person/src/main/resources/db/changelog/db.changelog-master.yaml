@@ -1,7 +1,11 @@
 databaseChangeLog:
-#  changeSet:
-#    id: 1
-#    author: bipref
   - include:
       file: ${db.instance.name}/${liquibase.operation}.yml
       relativeToChangelogFile: true
+#  - include:
+#      file: db/extensions/createdb/postgres/docslocal.yml
+#      relativeToChangelogFile: false
+#  - include:
+#      file: db/extensions/createdb/postgres/persinfolocal.yml
+#      relativeToChangelogFile: false
+      

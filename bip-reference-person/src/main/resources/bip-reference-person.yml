@@ -310,7 +310,9 @@ bip-reference-partner-person:
 ####         declare specific database instances
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+---
 ## Generic H2 In-Memory database definition (no url defined in this profile)
+### Ensure driver dependency is included in pom.xml
 spring.profiles: dbtype-h2
 ##
 ## By default, Spring Boot configures the application to connect to an 
@@ -324,7 +326,7 @@ spring.profiles: dbtype-h2
 ## "mem" databases are by definition ephemeral and do not survive spring restarts
 spring.jpa:
     database: h2
-    generate-ddl: false
+    generate-ddl: true
     hibernate:
       ddl-auto: none
       connection:
@@ -335,10 +337,14 @@ spring.datasource:
     initialization-mode: never
 ---
 ### Generic Postgres database definition (no url defined in this profile)
+### Ensure driver dependency is included in pom.xml
 spring.profiles: dbtype-postgres
 spring.jpa:
     database: postgresql
     generate-ddl: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
     hibernate:
       ddl-auto: none
       connection:
@@ -348,7 +354,8 @@ spring.datasource:
     ### skip spring db init - using liquibase
     initialization-mode: never
 ---
-### Generic Postgres database definition (no url defined in this profile)
+### Generic Oracle 11.2 / ojdbc6 database definition (no url defined in this profile)
+### Ensure driver dependency is included in pom.xml
 spring.profiles: dbtype-oracle6
 spring.jpa:
     database: oracle
@@ -384,37 +391,72 @@ spring.datasource:
 #    max-lifetime: 1200000 #  maximum life time in milliseconds of a connection in pool after it is closed
 #    auto-commit: true # configures the default auto-commit behavior of connections returned from pool. Default value is true.
 
-spring.profiles: db-h2mem-personlocal
+spring.profiles: db-docslocal
 spring.profiles.include: dbtype-h2
-db.instance.name: personlocal
+#spring.profiles.include: dbtype-postgres
+db.instance.name: docslocal
 spring.datasource:
     url: jdbc:${spring.jpa.database}:mem:${db.instance.name}
-spring.liquibase.parameters.db.instance.name: ${db.instance.name}
+#    url: jdbc:${spring.jpa.database}://localhost:5432/${db.instance.name}
+#    username: postgres
+#    password: password
+spring.liquibase:
+  parameters:
+    db.instance.name: ${db.instance.name}
+    db.type.name: ${spring.jpa.database}
+  url: ${spring.datasource.url}
+#  user: ${spring.datasource.username}
+#  password: ${spring.datasource.password}
 ---
 #>> just to show multiple instances for one environment can be declared
-spring.profiles: db-h2file-corplocal
-db.instance.name: corplocal
+spring.profiles: db-persinfolocal
+spring.profiles.include: dbtype-h2
+#spring.profiles.include: dbtype-postgres
+db.instance.name: persinfolocal
 spring.datasource:
     url: jdbc:${spring.jpa.database}:file:/tmp/${db.instance.name}.db
-spring.liquibase.parameters.db.instance.name: ${db.instance.name}
+#    url: jdbc:${spring.jpa.database}://localhost:5432/${db.instance.name}
+#    username: postgres
+#    password: password
+spring.liquibase:
+  parameters:
+    db.instance.name: ${db.instance.name}
+    db.type.name: ${spring.jpa.database}
+  url: ${spring.datasource.url}
+#  user: ${spring.datasource.username}
+#  password: ${spring.datasource.password}
 ---
-spring.profiles: db-postgres-corpdev
+### EXAMPLE of a possible dev db instance
+spring.profiles: db-corpdev
 spring.profiles.include: dbtype-postgres
 db.instance.name: corpdev
 spring.datasource:
     url: jdbc:${spring.jpa.database}://postgres:5432/${db.instance.name}
     username: postgres
     password: password
-spring.liquibase.parameters.db.instance.name: ${db.instance.name}
+spring.liquibase:
+  parameters:
+    db.instance.name: ${db.instance.name}
+    db.type.name: ${spring.jpa.database}
+  url: ${spring.datasource.url}
+  user: ${spring.datasource.username}
+  password: ${spring.datasource.password}
 ---
-spring.profiles: db-oracle-corpstage
+### EXAMPLE of a possible staging db instance
+spring.profiles: db-corpstage
 spring.profiles.include: dbtype-oracle
 db.instance.name: corpstage
 spring.datasource:
     url: jdbc:${spring.jpa.database}:thin:@oracle:1521/${db.instance.name}
     username: someuser
     password: somepassword
-spring.liquibase.parameters.db.instance.name: ${db.instance.name}
+spring.liquibase:
+  parameters:
+    db.instance.name: ${db.instance.name}
+    db.type.name: ${spring.jpa.database}
+  url: ${spring.datasource.url}
+  user: ${spring.datasource.username}
+  password: ${spring.datasource.password}
 ---
 
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -425,7 +467,7 @@ spring.liquibase.parameters.db.instance.name: ${db.instance.name}
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 spring.profiles: default
-spring.profiles.include: db-h2mem-personlocal, db-h2file-corplocal
+spring.profiles.include: db-docslocal, db-persinfolocal
 ### Default values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
@@ -434,8 +476,9 @@ spring.liquibase:
   # default liquibase operation at startup
   parameters.liquibase.operation: dbinit
 ---
+### EXAMPLE of a possible local-int / ci db run
 spring.profiles: local-int, ci
-spring.profiles.include: db-h2file-corplocal
+spring.profiles.include: db-docslocal, db-persinfolocal
 ### Local-Int & CI values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
@@ -444,22 +487,24 @@ spring.liquibase:
   # default liquibase operation at startup
   parameters.liquibase.operation: dbinit
 ---
+### EXAMPLE of a possible dev db run
 spring.profiles: dev
-spring.profiles.include: db-postgres-corpdev
+spring.profiles.include: db-corpdev
 ### Dev values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
-  enabled: true
+  enabled: false
   test-rollback-on-update: true
   # default liquibase operation at startup
   parameters.liquibase.operation: dbprep
 ---
+### EXAMPLE of a possible staging db run
 spring.profiles: stage
-spring.profiles.include: db-oracle6-corpstage
+spring.profiles.include: db-corpstage
 ### Stage values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
-  enabled: true
+  enabled: false
   test-rollback-on-update: true
   # default liquibase operation at startup
   parameters.liquibase.operation: dbprep

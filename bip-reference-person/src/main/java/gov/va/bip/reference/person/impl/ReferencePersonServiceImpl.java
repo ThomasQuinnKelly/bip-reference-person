@@ -34,7 +34,7 @@ import gov.va.bip.framework.validation.Defense;
 import gov.va.bip.reference.person.ReferencePersonService;
 import gov.va.bip.reference.person.client.ws.PersonPartnerHelper;
 import gov.va.bip.reference.person.data.PersonDataHelper;
-import gov.va.bip.reference.person.data.entities.PersonDocs;
+import gov.va.bip.reference.person.data.docs.entities.PersonDoc;
 import gov.va.bip.reference.person.exception.PersonServiceException;
 import gov.va.bip.reference.person.messages.PersonMessageKeys;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
@@ -202,7 +202,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 */
 	@Override
 	public PersonDocsMetadataDomainResponse getMetadataForPid(final PersonDocsMetadataDomainRequest domainRequest) {
-		PersonDocs data = personDatabaseHelper.getDataForPid(domainRequest.getParticipantID());
+		PersonDoc data = personDatabaseHelper.getDocForPid(domainRequest.getParticipantID());
 		if (data == null) {
 			return null;
 		}
