@@ -38,32 +38,13 @@ paths:
               schema:
                 '$ref': '#/components/schemas/PersonInfoResponse'
         '400':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  This request shouldn't be retried until corrected.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+           '$ref': '#/components/responses/400'
+        '401':
+           '$ref': '#/components/responses/401'
         '403':
-          description: The request is not authorized.  Please verify credentials used
-            in the request.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+           '$ref': '#/components/responses/403'
         '500':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  Please retry.  If problem persists, please contact support
-            with a copy of the Response.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-              examples:
-                500GeneralException:
-                  '$ref': '#/components/examples/500GeneralException'
+           '$ref': '#/components/responses/500'
       security:
         - bearerAuth: []
       deprecated: false
@@ -117,32 +98,13 @@ paths:
               schema:
                 '$ref': '#/components/schemas/PersonDocsMetadataUploadResponse'
         '400':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  This request shouldn't be retried until corrected.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+           '$ref': '#/components/responses/400'
+        '401':
+           '$ref': '#/components/responses/401'
         '403':
-          description: The request is not authorized.  Please verify credentials used
-            in the request.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+           '$ref': '#/components/responses/403'
         '500':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  Please retry.  If problem persists, please contact support
-            with a copy of the Response.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-              examples:
-                500GeneralException:
-                  '$ref': '#/components/examples/500GeneralException'
+           '$ref': '#/components/responses/500'
       security:
         - bearerAuth: []
       deprecated: false
@@ -173,32 +135,13 @@ paths:
               schema:
                 '$ref': '#/components/schemas/PersonDocsMetadataResponse'
         '400':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  This request shouldn't be retried until corrected.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+          '$ref': '#/components/responses/400'
+        '401':
+           '$ref': '#/components/responses/401'
         '403':
-          description: The request is not authorized.  Please verify credentials used
-            in the request.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+           '$ref': '#/components/responses/403'
         '500':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  Please retry.  If problem persists, please contact support
-            with a copy of the Response.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-              examples:
-                500GeneralException:
-                  '$ref': '#/components/examples/500GeneralException'
+           '$ref': '#/components/responses/500'
       security:
         - bearerAuth: []
       deprecated: false
@@ -218,32 +161,13 @@ paths:
                 type: string
                 format: binary
         '400':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  This request shouldn't be retried until corrected.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+           '$ref': '#/components/responses/400'
+        '401':
+           '$ref': '#/components/responses/401'
         '403':
-          description: The request is not authorized.  Please verify credentials used
-            in the request.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+           '$ref': '#/components/responses/403'
         '500':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  Please retry.  If problem persists, please contact support
-            with a copy of the Response.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-              examples:
-                500GeneralException:
-                  '$ref': '#/components/examples/500GeneralException'
+           '$ref': '#/components/responses/500'
       security:
         - bearerAuth: []
       deprecated: false
@@ -269,32 +193,13 @@ paths:
               schema:
                 '$ref': '#/components/schemas/PersonInfoResponse'
         '400':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  This request shouldn't be retried until corrected.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+           '$ref': '#/components/responses/400'
+        '401':
+           '$ref': '#/components/responses/401'
         '403':
-          description: The request is not authorized.  Please verify credentials used
-            in the request.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+           '$ref': '#/components/responses/403'
         '500':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  Please retry.  If problem persists, please contact support
-            with a copy of the Response.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-              examples:
-                500GeneralException:
-                  '$ref': '#/components/examples/500GeneralException'
+           '$ref': '#/components/responses/500'
       security:
         - bearerAuth: []
       deprecated: false
@@ -320,32 +225,13 @@ paths:
               schema:
                 '$ref': '#/components/schemas/PersonInfoResponse'
         '400':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  This request shouldn't be retried until corrected.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+           '$ref': '#/components/responses/400'
+        '401':
+           '$ref': '#/components/responses/401'
         '403':
-          description: The request is not authorized.  Please verify credentials used
-            in the request.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+           '$ref': '#/components/responses/403'
         '500':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  Please retry.  If problem persists, please contact support
-            with a copy of the Response.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
-              examples:
-                500GeneralException:
-                  '$ref': '#/components/examples/500GeneralException'
+           '$ref': '#/components/responses/500'
       security:
         - bearerAuth: []
       deprecated: false
@@ -375,29 +261,13 @@ paths:
               schema:
                 type: string
         '400':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  This request shouldn't be retried until corrected.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+           '$ref': '#/components/responses/400'
+        '401':
+           '$ref': '#/components/responses/401'
         '403':
-          description: The request is not authorized.  Please verify credentials used
-            in the request.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+           '$ref': '#/components/responses/403'
         '500':
-          description: There was an error encountered processing the Request.  Response
-            will contain a  "messages" element that will provide further information
-            on the error.  Please retry.  If problem persists, please contact support
-            with a copy of the Response.
-          content:
-            application/problem+json:
-              schema:
-                '$ref': '#/components/schemas/ProviderResponse'
+           '$ref': '#/components/responses/500'
       deprecated: false
 components:
   # securitySchemes are defined by the framework.
@@ -411,15 +281,6 @@ components:
       type: http
       bearerFormat: JWT
       scheme: bearer
-  examples: 
-    500GeneralException: 
-      value: 
-         messages: 
-            - key: bip.framework.global.general.exception
-              severity: ERROR 
-              status: 500 
-              text: Unexpected exception.
-              timestamp: 2019-08-29T18:40:22.766Z
   schemas:
     # Define API (provider) model objects. Use type, format and example;
     # use standard JSR303 constraints (required, min, max, etc) where it makes sense
@@ -612,4 +473,62 @@ components:
     ProviderRequest: 
       type: object
       title: ProviderRequest
-      
+  responses:
+    400:
+      description: There was an error encountered processing the Request.  Response
+        will contain a  "messages" element that will provide further information
+        on the error.  This request shouldn't be retried until corrected.
+      content:
+        application/problem+json:
+          schema:
+            '$ref': '#/components/schemas/ProviderResponse'
+          example:
+              messages: 
+                - key: bip.framework.global.validator.method.argument.not.valid
+                  severity: ERROR 
+                  status: 400 
+                  text: Argument not valid.
+                  timestamp: 2019-08-29T18:40:22.766Z
+    401:
+      description: The authentication mechanism failed and hence access is forbidden.
+      content:
+        application/problem+json:
+          schema:
+            '$ref': '#/components/schemas/ProviderResponse'
+          example:
+              messages: 
+                - key: UNAUTHORIZED
+                  severity: ERROR 
+                  status: 401 
+                  text: No JWT Token in Header.
+                  timestamp: 2019-08-29T18:40:22.766Z
+    403:
+      description: The request is not authorized.  Please verify credentials used
+        in the request.
+      content:
+        application/problem+json:
+          schema:
+            '$ref': '#/components/schemas/ProviderResponse'
+          example:
+              messages: 
+                - key: bip.framework.not.authorized.exception
+                  severity: ERROR 
+                  status: 403 
+                  text: Access denied.
+                  timestamp: 2019-08-29T18:40:22.766Z
+    500:
+      description: There was an error encountered processing the Request.  Response
+            will contain a  "messages" element that will provide further information
+            on the error.  Please retry.  If problem persists, please contact support
+            with a copy of the Response.
+      content:
+        application/problem+json:
+          schema:
+            '$ref': '#/components/schemas/ProviderResponse'
+          example:
+              messages: 
+                - key: bip.framework.global.general.exception
+                  severity: ERROR 
+                  status: 500 
+                  text: Unexpected exception.
+                  timestamp: 2019-08-29T18:40:22.766Z
