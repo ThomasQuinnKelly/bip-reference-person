@@ -1,7 +1,16 @@
+#################################################################
+## Demonstration: Liquibase update - create a db from a changelog
+## Maven profile: liquibase-create-db-from-changelog
+## Depends on: ../liquibase-create-db-from-changelog.properties
+## Description:
+##   This file is the input changelog file from which Liquibase
+##   will create a database on the configured datasource.
+#################################################################
 databaseChangeLog:
 - changeSet:
-    id: persinfolocal-dbinit-create
-    author: bipref
+    id: 1567524164549-1
+    author: aburkholder (generated)
+    context: bip-tester
     changes:
     - createTable:
         columns:
@@ -59,117 +68,81 @@ databaseChangeLog:
             name: assurance_level
             type: INTEGER
         tableName: persinfo
-
-
-
 - changeSet:
-    id: persinfolocal-dbinit-insert
-    author: bipref
+    id: 1567524164549-2
+    author: aburkholder (generated)
+    context: bip-tester
     changes:
-    - insert:
-        columns:
-#        catalogName: cat
-        - column:
-            name: id
-            value: 1
-        - column:
-            name: dodedipnid
-            value: 1234567
-        - column:
-            name: pnid
-            value: 123456
-        - column:
-            name: pnidType
-            value: FAKE
-        - column:
-            name: pid
-            value: 6666345
-        - column:
-            name: icn
-            value: 54321
-        - column:
-            name: fileNumber
-            value: 6666345
-        - column:
-            name: tokenId
-            value: ANOTHER123FAKE456VALUE789
-        - column:
-            name: first_name
-            value: Fred
-        - column:
-            name: middle_name
-            value: Rocky
-        - column:
-            name: last_name
-            value: Flintstone
-        - column:
-            name: prefix
-            value: Mr
-        - column:
-            name: suffix
-            value: Sr
-        - column:
-            name: gender
-            value: MALE
-        - column:
-            name: email
-            value: Fred.flintstone@nowhere.com
-        - column:
-            name: assurance_level
-            value: 3
-        tableName: persinfo
-    - insert:
-#        catalogName: cat
+    - loadData:
         columns:
         - column:
+            header: id
             name: id
-            value: 2
+            type: NUMERIC
         - column:
+            header: dodedipnid
             name: dodedipnid
-            value: 7654321
+            type: NUMERIC
         - column:
+            header: pnid
             name: pnid
-            value: 654321
+            type: NUMERIC
         - column:
+            header: pnidType
             name: pnidType
-            value: FAKE
+            type: STRING
         - column:
+            header: pid
             name: pid
-            value: 6666346
+            type: NUMERIC
         - column:
+            header: icn
             name: icn
-            value: 54321
+            type: NUMERIC
         - column:
+            header: fileNumber
             name: fileNumber
-            value: 6666346
+            type: NUMERIC
         - column:
+            header: tokenId
             name: tokenId
-            value: YET000ANOTHER123FAKE456VALUE789
+            type: STRING
         - column:
+            header: first_name
             name: first_name
-            value: Barney
+            type: STRING
         - column:
+            header: middle_name
             name: middle_name
-            value: Softboy
+            type: STRING
         - column:
+            header: last_name
             name: last_name
-            value: Rubble
+            type: STRING
         - column:
+            header: prefix
             name: prefix
-            value: Mr
+            type: STRING
         - column:
+            header: suffix
             name: suffix
-            value: Jr
+            type: STRING
         - column:
+            header: gender
             name: gender
-            value: MALE
+            type: STRING
         - column:
+            header: email
             name: email
-            value: barney.rubble@nowhere.com
+            type: STRING
         - column:
+            header: assurance_level
             name: assurance_level
-            value: 3
+            type: NUMERIC
+        commentLineStartsWith: '#'
+        encoding: UTF-8
+        file: /Users/aburkholder/git/bip-reference-person/bip-reference-person-db/src/main/resources/db/changelog/persinfolocal/data/persinfo.csv
+        quotchar: '"'
+        separator: ','
         tableName: persinfo
-#      dbms: h2, postgresql
-#      schemaName: public
 

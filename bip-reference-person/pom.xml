@@ -22,12 +22,13 @@
 	</properties>
 
 	<dependencies>
+		<!-- DATABASE related dependencies, configured in app yaml -->
 		<dependency>
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
 		</dependency>
-		<!-- DB... -->
 		<dependency>
+			<!-- currently backward compatible to PostgreSQL 8.2 -->
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
@@ -35,7 +36,12 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
-
+ 		<dependency>
+			<!-- TODO Oracle 11.1.x is on TRM Unapproved list -->
+			<!-- TODO Oracle 11.2.x is on TRM Divest schedule -->
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -46,7 +52,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- ...DB -->
 
 		<!-- framework dependencies -->
 		<dependency>

@@ -293,7 +293,7 @@ bip-reference-partner-person:
 #########################################################################
 #########################################################################
 ####
-####    DATABASE CONFIGURATION
+####    DATABASE RELATED CONFIGURATION
 ####    1. Generically define database types
 ####    2. Declaration of database instances
 ####    3. Apply database configs to execution environments
@@ -311,7 +311,7 @@ bip-reference-partner-person:
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 ---
-## Generic H2 In-Memory database definition (no url defined in this profile)
+### Generic H2 In-Memory database definition (no url defined in this profile)
 ### Ensure driver dependency is included in pom.xml
 spring.profiles: dbtype-h2
 ##
@@ -323,7 +323,7 @@ spring.profiles: dbtype-h2
   #spring.datasource.username=sa
   #spring.datasource.password=
   #spring.jpa.database=h2
-## "mem" databases are by definition ephemeral and do not survive spring restarts
+## "mem" dbs are ephemeral and do not survive spring restarts, "file" dbs do survive
 spring.jpa:
     database: h2
     generate-ddl: true
@@ -374,9 +374,9 @@ spring.datasource:
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ####    2. Declaration of database instances
 ####       - Use previously defined database types to declare profiles
-####         for specific database instances
+####         for specific database instances and common liquibase params
 ####       - These instance declarations will later be used to configure
-####         them into their execution environments
+####         specific execution environments
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 ## Connection Pool settings can be refined on any below profile by adjusting
@@ -392,12 +392,12 @@ spring.datasource:
 #    auto-commit: true # configures the default auto-commit behavior of connections returned from pool. Default value is true.
 
 spring.profiles: db-docslocal
-#spring.profiles.include: dbtype-h2
-spring.profiles.include: dbtype-postgres
+spring.profiles.include: dbtype-h2
+#spring.profiles.include: dbtype-postgres
 db.instance.name: docslocal
 spring.datasource:
-#    url: jdbc:${spring.jpa.database}:mem:${db.instance.name}
-    url: jdbc:${spring.jpa.database}://localhost:5432/${db.instance.name}
+    url: jdbc:${spring.jpa.database}:mem:${db.instance.name}
+#    url: jdbc:${spring.jpa.database}://localhost:5432/${db.instance.name}
     username: postgres
     password: password
 spring.liquibase:
@@ -408,14 +408,14 @@ spring.liquibase:
   user: ${spring.datasource.username}
   password: ${spring.datasource.password}
 ---
-#>> just to show multiple instances for one environment can be declared
+## >> just to show multiple instances for one environment can be declared
 spring.profiles: db-persinfolocal
-#spring.profiles.include: dbtype-h2
-spring.profiles.include: dbtype-postgres
+spring.profiles.include: dbtype-h2
+#spring.profiles.include: dbtype-postgres
 db.instance.name: persinfolocal
 spring.datasource:
-#    url: jdbc:${spring.jpa.database}:file:/tmp/${db.instance.name}.db
-    url: jdbc:${spring.jpa.database}://localhost:5432/${db.instance.name}
+    url: jdbc:${spring.jpa.database}:file:/tmp/${db.instance.name}.db
+#    url: jdbc:${spring.jpa.database}://localhost:5432/${db.instance.name}
     username: postgres
     password: password
 spring.liquibase:
@@ -461,7 +461,7 @@ spring.liquibase:
 
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ####    3. Apply database configs to execution environments
-####       - Configure database instances into their execution
+####       - Configure database instances for their execution
 ####         environment
 ####       - Set liquibase config and parameters for the environment
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

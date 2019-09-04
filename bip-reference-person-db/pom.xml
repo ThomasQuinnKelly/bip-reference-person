@@ -8,6 +8,7 @@
 		<groupId>gov.va.bip.reference.person</groupId>
 		<artifactId>bip-reference-reactor</artifactId>
 		<version>0.0.2-SNAPSHOT</version>
+		<relativePath>..</relativePath>
 	</parent>
 
 	<artifactId>bip-reference-person-db</artifactId>
@@ -18,17 +19,10 @@
 	<properties>
 		<bip-framework.version>2.0.3-SNAPSHOT</bip-framework.version>
 
-		<!-- spring versions derived from bip-framework spring dependencies -->
-		<validation-api.version>2.0.1.Final</validation-api.version>
-		<spring-core.version>5.1.8.RELEASE</spring-core.version>
-		<spring-data-jpa.version>2.1.9.RELEASE</spring-data-jpa.version>
-
 		<!-- Liquibase controls -->
-		<db.name>h2memdb</db.name>
-		<!-- always use /db/changelog/default as these profiles should not be executed in any server environment  -->
-		<liquibase.changelog.path>${project.basedir}/src/main/resources/db/changelog/default/${db.name}/</liquibase.changelog.path>
-		<!-- maven-specific properties for '-Dproperty.name=override-value' -->
-		<liquibase.contexts></liquibase.contexts>
+		<db.name>docslocal</db.name>
+		<liquibase.changelog.path>${project.basedir}/src/main/resources/db/changelog/${db.name}</liquibase.changelog.path>
+		<liquibase.contexts>tempdev</liquibase.contexts>
 		<liquibase.diff.types.schema>tables,views,columns,indexes,foreignkeys,primarykeys,uniqueconstraints</liquibase.diff.types.schema>
 		<liquibase.diff.types.data>data</liquibase.diff.types.data>
 	</properties>
@@ -61,25 +55,35 @@
 	</pluginRepositories>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
-		</dependency>
 		<!--
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-		</dependency>
+			Available managed dependencies from bip-frameowrk-parent-pom/pom.xml:
+			com.h2database:h2:${h2.version}
+			org.postgresql:postgresql:${postgresql.version}
+			com.oracle:ojdbc6:${ojdbc6.version}
+			com.oracle:ojdbc7:${ojdbc7.version}
+			com.oracle:ojdbc8:${ojdbc8.version}
+			com.oracle:ojdbc10:${ojdbc8.version}
+			org.liquibase:liquibase-core:${liquibase-core.version}
+			org.liquibase.ext:liquibase-hibernate5:${liquibase-hibernate5.version}
 		-->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
+		<!--
+			<dependency>
+			<groupId>org.postgresql</groupId>
+			s <artifactId>postgresql</artifactId>
+			</dependency>
+		-->
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
 	</dependencies>
 
 	<profiles>
 		<profile>
-			<!-- currently broken due to https://github.com/liquibase/liquibase-hibernate/issues/198 -->
 			<id>liquibase-diff</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
@@ -89,28 +93,13 @@
 					<plugin>
 						<groupId>org.liquibase</groupId>
 						<artifactId>liquibase-maven-plugin</artifactId>
-						<version>${liquibase-core.version}</version>
-						<dependencies>
-							<dependency>
-								<groupId>org.liquibase.ext</groupId>
-								<artifactId>liquibase-hibernate5</artifactId>
-								<version>${liquibase-hibernate5.version}</version>
-								<exclusions>
-									<exclusion>
-										<groupId>org.liquibase</groupId>
-										<artifactId>liquibase-core</artifactId>
-									</exclusion>
-								</exclusions>
-							</dependency>
-						</dependencies>
-						<!-- NOTE config may incomplete until bug is fixed, see https://github.com/liquibase/liquibase-hibernate/issues/198 -->
 						<configuration>
 							<verbose>true</verbose>
 							<logging>debug</logging>
 							<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
 							<propertyFileWillOverride>true</propertyFileWillOverride>
-							<propertyFile>${project.basedir}/src/main/resources/db/local/liquibase-diff.properties</propertyFile>
-							<changeLogFile>${project.basedir}/src/main/resources/db/local/changelog/changelog-master.xml</changeLogFile>
+							<propertyFile>${liquibase.changelog.path}/liquibase-diff.properties</propertyFile>
+							<changeLogFile>${liquibase.changelog.path}/input/liquibase-diff.yml</changeLogFile>
 							<contexts>${liquibase.contexts}</contexts>
 							<diffTypes>${liquibase.diff.types.schema}</diffTypes>
 						</configuration>
@@ -129,7 +118,6 @@
 		</profile>
 
 		<profile>
-			<!-- currently broken due to https://github.com/liquibase/liquibase-hibernate/issues/198 -->
 			<id>liquibase-generate-changelog</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
@@ -141,35 +129,11 @@
 						<artifactId>liquibase-maven-plugin</artifactId>
 						<version>${liquibase-core.version}</version>
 						<dependencies>
+							<!-- required by liquibase/hibernate to reverse engineer entities in the project -->
 							<dependency>
-								<groupId>org.liquibase.ext</groupId>
-								<artifactId>liquibase-hibernate5</artifactId>
-								<version>${liquibase-hibernate5.version}</version>
-							</dependency>
-							<dependency>
-								<groupId>javax.validation</groupId>
-								<artifactId>validation-api</artifactId>
-								<version>${validation-api.version}</version>
-							</dependency>
-							<dependency>
-								<groupId>org.springframework</groupId>
-								<artifactId>spring-core</artifactId>
-								<version>${spring-core.version}</version>
-							</dependency>
-							<dependency>
-								<groupId>org.springframework</groupId>
-								<artifactId>spring-context</artifactId>
-								<version>${spring-core.version}</version>
-							</dependency>
-							<dependency>
-								<groupId>org.springframework</groupId>
-								<artifactId>spring-beans</artifactId>
-								<version>${spring-core.version}</version>
-							</dependency>
-							<dependency>
-								<groupId>org.springframework.data</groupId>
-								<artifactId>spring-data-jpa</artifactId>
-								<version>${spring-data-jpa.version}</version>
+								<groupId>gov.va.bip.reference.person</groupId>
+								<artifactId>bip-reference-person</artifactId>
+								<version>${project.parent.version}</version>
 							</dependency>
 						</dependencies>
 						<configuration>
@@ -178,7 +142,7 @@
 							<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
 							<propertyFileWillOverride>true</propertyFileWillOverride>
 							<propertyFile>${liquibase.changelog.path}/liquibase-generate-changelog.properties</propertyFile>
-							<outputChangeLogFile>${liquibase.changelog.path}/liquibase-generate-changelog.yml</outputChangeLogFile>
+							<outputChangeLogFile>${liquibase.changelog.path}/output/liquibase-generate-changelog.yml</outputChangeLogFile>
 							<dataDir>${liquibase.changelog.path}/data</dataDir>
 							<diffTypes>${liquibase.diff.types.schema},${liquibase.diff.types.data}</diffTypes>
 							<!-- <contexts>${liquibase.contexts}</contexts> -->
@@ -206,8 +170,6 @@
 						<groupId>org.liquibase</groupId>
 						<artifactId>liquibase-maven-plugin</artifactId>
 						<executions>
-
-							<!-- create database -->
 							<execution>
 								<id>create-local-database</id>
 								<goals>
@@ -221,7 +183,7 @@
 									<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
 									<propertyFileWillOverride>true</propertyFileWillOverride>
 									<propertyFile>${liquibase.changelog.path}/liquibase-create-db-from-changelog.properties</propertyFile>
-									<changeLogFile>${liquibase.changelog.path}/liquibase-create-db-from-changelog.yml</changeLogFile>
+									<changeLogFile>${liquibase.changelog.path}/input/liquibase-create-db-from-changelog.yml</changeLogFile>
 									<contexts>${liquibase.contexts}</contexts>
 								</configuration>
 							</execution>
