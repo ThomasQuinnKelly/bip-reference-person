@@ -64,13 +64,13 @@
 
      **bip.framework.security.jwt.header**: Request header name to read JWT token value from. Defaults to "**Authorization**"
 
-		 **bip.framework.security.jwt.validation.required-parameters**: Specifies which fields in the `PersonTraits` object must contain a value. Fields are specified by setting this property value to a comma-separated list of field names. If the JWT person object does not have a value in the specified field(s), the request will be rejected.
+     **bip.framework.security.jwt.validation.required-parameters**: Specifies which fields in the `PersonTraits` object must contain a value. Fields are specified by setting this property value to a comma-separated list of field names. If the JWT person object does not have a value in the specified field(s), the request will be rejected.
 
 ## Retrieving Person Traits from Security Context
 
-Information about the logged in individual is transmitted as part of the encrypted token. BIP applications can retrieve this information into the frameworks `PersonTraits` object.
+Information about the logged in individual is transmitted as part of the encrypted token. BIP applications can retrieve this information from the frameworks `PersonTraits` object.
 
-Because the values of the Person Traits are derived by other authorities in the VA, it is not permissible to alter them directly, so the framework does not provide any means to do so.
+Because the values of the Person Traits are derived by other authorities in the VA, it isn't permissible to alter them directly, so the framework doesn't provide any means to do so.
 
 ```java
 	import gov.va.bip.framework.security.PersonTraits;
