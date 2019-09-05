@@ -31,6 +31,7 @@
  - By default in ${spring.config.name}.yml file, BIP framework security is enabled for all the application profiles. To disable the security, developer would have to set the property bip.framework.security.jwt.enabled to false
 
     An Example from bip-reference-person service is shown below.
+    
 		```yml
 		###############################################################################
 		#Property configuration to enable or disable JWT security for the service calls
