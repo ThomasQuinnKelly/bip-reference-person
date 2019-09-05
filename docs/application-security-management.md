@@ -32,24 +32,21 @@
 
     An Example from bip-reference-person service is shown below.
     ```yml
-    
-		
-		###############################################################################
-		#Property configuration to enable or disable JWT security for the service calls
-		#JWT security is enabled by default. So to disable it you have to
-		#set the environment system property os.reference.security.jwt.enabled=false
-		###############################################################################
-		bip.framework:
-		  security:
-		    jwt:
-		      enabled: true
-		      filterProcessUrls:
-		        - /api/v1/persons/**
-		        - /api/v2/persons/**
-		      excludeUrls:
-		        - /**
+	###############################################################################
+	#Property configuration to enable or disable JWT security for the service calls
+	#JWT security is enabled by default. So to disable it you have to
+	#set the environment system property os.reference.security.jwt.enabled=false
+	###############################################################################
+	bip.framework:
+	  security:
+	    jwt:
+	      enabled: true
+	      filterProcessUrls:
+		- /api/v1/persons/**
+		- /api/v2/persons/**
+	      excludeUrls:
+		- /**
    ```
-
 - By default TokenResource bean with "/token" end point is enabled for all the application profiles. To disable this end point, you can set `bip.framework.security.jwt.generate.enabled: false`
 
 -  All the properties for JWT Security with prefix `bip.framework.security.jwt` that are configurable are listed below.
