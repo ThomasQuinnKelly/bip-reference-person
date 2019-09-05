@@ -19,11 +19,18 @@
 	<properties>
 		<bip-framework.version>2.0.3-SNAPSHOT</bip-framework.version>
 
-		<!-- Liquibase controls -->
+		<!--
+			Liquibase controls
+		-->
+		<!-- default database to operate on -->
 		<db.name>docslocal</db.name>
+		<!-- root path (no file name) for changelog directories -->
 		<liquibase.changelog.path>${project.basedir}/src/main/resources/db/changelog/${db.name}</liquibase.changelog.path>
+		<!-- default context -->
 		<liquibase.contexts>tempdev</liquibase.contexts>
+		<!-- convenience variable for schema related diffTypes -->
 		<liquibase.diff.types.schema>tables,views,columns,indexes,foreignkeys,primarykeys,uniqueconstraints</liquibase.diff.types.schema>
+		<!-- convenience variable for data related diffTypes -->
 		<liquibase.diff.types.data>data</liquibase.diff.types.data>
 	</properties>
 
@@ -54,37 +61,22 @@
 		</pluginRepository>
 	</pluginRepositories>
 
-	<dependencies>
-		<!--
-			Available managed dependencies from bip-frameowrk-parent-pom/pom.xml:
-			com.h2database:h2:${h2.version}
-			org.postgresql:postgresql:${postgresql.version}
-			com.oracle:ojdbc6:${ojdbc6.version}
-			com.oracle:ojdbc7:${ojdbc7.version}
-			com.oracle:ojdbc8:${ojdbc8.version}
-			com.oracle:ojdbc10:${ojdbc8.version}
-			org.liquibase:liquibase-core:${liquibase-core.version}
-			org.liquibase.ext:liquibase-hibernate5:${liquibase-hibernate5.version}
-		-->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-		</dependency>
-		<!--
-			<dependency>
-			<groupId>org.postgresql</groupId>
-			s <artifactId>postgresql</artifactId>
-			</dependency>
-		-->
-		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
-		</dependency>
-	</dependencies>
+	<!--
+		Database operations encapsulated in maven profiles.
+		See: https://www.liquibase.org/documentation/maven/index.html
+		To run a profile:
+		1. Verify the profile is configured as desired, or create a new profile
+		2. Ensure the properties are correct in the file pointed to by 
+		   profile > build > plugins > plugin > configuration > propertyFile
+		4. From the reactor project root directory, execute the maven command:
+		   $ mvn process-classes -Pliquibase-[profile-name] [-D[property.name]=[override.value]]
+		   Example: $ mvn process-classes -Pliquibase-create-db-from-changelog -Ddb.name=MyDb
+	-->
 
 	<profiles>
 		<profile>
 			<id>liquibase-diff</id>
+			<!-- https://www.liquibase.org/documentation/maven/maven_diff.html -->
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
@@ -100,7 +92,7 @@
 							<propertyFileWillOverride>true</propertyFileWillOverride>
 							<propertyFile>${liquibase.changelog.path}/liquibase-diff.properties</propertyFile>
 							<changeLogFile>${liquibase.changelog.path}/input/liquibase-diff.yml</changeLogFile>
-							<contexts>${liquibase.contexts}</contexts>
+							<contexts></contexts>
 							<diffTypes>${liquibase.diff.types.schema}</diffTypes>
 						</configuration>
 						<executions>
@@ -119,6 +111,7 @@
 
 		<profile>
 			<id>liquibase-generate-changelog</id>
+			<!-- https://www.liquibase.org/documentation/maven/maven_generateChangeLog.html -->
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
@@ -145,7 +138,7 @@
 							<outputChangeLogFile>${liquibase.changelog.path}/output/liquibase-generate-changelog.yml</outputChangeLogFile>
 							<dataDir>${liquibase.changelog.path}/data</dataDir>
 							<diffTypes>${liquibase.diff.types.schema},${liquibase.diff.types.data}</diffTypes>
-							<!-- <contexts>${liquibase.contexts}</contexts> -->
+							<contexts>${liquibase.contexts}</contexts>
 							<changeSetContext>${liquibase.contexts}</changeSetContext>
 						</configuration>
 						<executions>
@@ -164,6 +157,10 @@
 
 		<profile>
 			<id>liquibase-create-db-from-changelog</id>
+			<!-- https://www.liquibase.org/documentation/maven/maven_update.html -->
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
 			<build>
 				<plugins>
 					<plugin>

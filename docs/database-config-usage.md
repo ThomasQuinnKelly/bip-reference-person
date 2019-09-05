@@ -1,25 +1,13 @@
----
-** TODO **
-	-- 444 determine top possible db / liquibase approaches
-		- spring profiles: jdbc / hikari connector config, jpa config
-		- maven profiles: operations (create, update, reset, etc)
-			- overridable properties: environments => directories for tooling config/changelogs
-			- grouping and conditional execution mechanisms: includes, preconditions, contexts
-			- ** changelogs selected by operation (directory), changesets selected by preconditions and context
-	-- 448/453 describe current and future liquibase uses (current=dev, future=dba/devops)
-	-- 448/453 test and document multi-datasource configuration
-	-- 455 - prove testing capabilities, flesh out testing documentation
----
-
 # Databases in BIP
 
 Spring offers a variety of ways to configure and use databases. The [Spring Boot features for working with databases](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-sql.html)  and [data access how-to](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/htmlsingle/#howto-data-access) are useful pages.
 
-Spring boot uses the excellent database support from the Spring Data module. Because BIP application datasource needs can vary widely, spring's database offering is about as granular as is possible. As a result, there is no real value-add that BIP Framework can currently offer for SQL database access.
+The current focus is on relational databases. BIP Framework, the Reference Person application, and the BIP Archetype currently do not include support for NoSQL / flat-file databases.
 
-However to encourage some level of consistency between applications, this document makes general recommendations and offers issue solutions. Working examples of the suggestions found on this page can be found as part of the bip-reference-person **[????](????)** endpoint.
-
-# SQL/Relational Databases
+BIP Framework provides Maven Dependency Management for common relational databases and JDBC drivers that are known to be in use in BIP projects:
+- H2 (embedded)
+- Postgres
+- Oracle
 
 ### Recommended SQL Data Access Technologies
 
@@ -31,7 +19,20 @@ Recommended technology choices for relational database support:
 
 * Statement caching is the responsibility of the database (most JDBC drivers know how to access the db cache). Do not try to cache at the connection pool.
 
-* For query logging, consider [P6Spy](https://github.com/p6spy/p6spy).
+* For query logging, consider using the existing Spring/Hibernate logging mechanisms. If more sophisticated query is required, tools such as [P6Spy](https://github.com/p6spy/p6spy) may be worth investigating, but will complicate your project.
+
+	<details><summary>Click here: Spring/Hibernate logging</summary>
+
+	```properties
+	# in app yaml - directly print to stdout ...
+	spring.jpa.show-sql=true
+	spring.jpa.properties.hibernate.format_sql=true
+	# in app yaml - use more efficient logger
+	logging.level.org.hibernate.SQL=DEBUG
+	logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
+	```
+
+	</details>
 
 * Entity Manager / ORM: default implementation of [Spring JPA](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-sql.html#boot-features-jpa-and-spring-data) with [hibernate](https://hibernate.org/orm/documentation/).
 
@@ -39,9 +40,11 @@ Recommended technology choices for relational database support:
 
 	* Applications with a single datasource, or multiple-but-independent datasources, the default transaction manager that is preconfigured with [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-sql.html#boot-features-jpa-and-spring-data) is sufficient.
 
-	* Applications with multiple datasources that would benefit from XA transactions should use an embedded transaction manager (recommend [Atomikos](https://www.atomikos.com/) or [Bitronix](https://github.com/bitronix/btm)). For more information about Spring Boot JTA, see [Distributed Transactions with JTA](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-jta.html) and [Configuring Spring and JTA without full Java EE](https://spring.io/blog/2011/08/15/configuring-spring-and-jta-without-full-java-ee/). JTA is not nearly as scary as it once was.
+	* Applications with multiple datasources that would benefit from XA transactions should use an embedded transaction manager (recommend [Atomikos](https://www.atomikos.com/) or [Bitronix](https://github.com/bitronix/btm)). For more information about Spring Boot JTA, see [Distributed Transactions with JTA](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-jta.html) and [Configuring Spring and JTA without full Java EE](https://spring.io/blog/2011/08/15/configuring-spring-and-jta-without-full-java-ee/).
 
-* For database schema versioning and data management [Liquibase](http://www.liquibase.org/) is recommended.
+		**XA NOTE:** If XA transaction management is required, it will likely be necessary to add - at a minimum - a `JtaTransactionManager` bean to your application Configuration class.
+
+* For database schema versioning and data management [Liquibase](http://www.liquibase.org/) is recommended, and is included in the Reference Person sample application.
 
 * DB admin tools are plentiful, and usually quite interoperable. If you need (or just want) something that can handle multiple vendors, you might try [DBeaver](https://dbeaver.io/) (has an Eclipse plugin too), [OmniDB](https://omnidb.org/en/), or other similar tool.
 
@@ -53,7 +56,7 @@ Spring Boot supports a good variety of databases out of the box. Database availa
 
 * Recommendation for in-memory database is the spring default [H2 Database](https://www.h2database.com/html/main.html).
 
-* If a local external database is required, teams can select which to use. Consider using a docker image of the desired local database (postgres, oracle, etc). Examples of acquiring and starting/stopping a postgres docker image:
+* If a local external database is required, teams can select which to use. Consider using a docker image of the desired local database (postgres, oracle, etc). The two bullets below show and example of acquiring and starting/stopping a postgres docker image:
 
 	* acquire and start postgres docker instance: `docker run --rm --name bip-postgres -p 127.0.0.1:5432:5432/tcp -e POSTGRES_PASSWORD=password -d postgres:latest`
 
@@ -67,497 +70,475 @@ Spring Boot supports a good variety of databases out of the box. Database availa
 
 	* Configurations for JDBC driver, any additional driver customizations, and potentially other tools / implementations will have to take into account the changes in database vendors for the environments.
 
-For these reasons, it is advisable for developers to adopt the database vendor that is used in the upper environments.
+For these reasons, it is advisable for developers to adopt the database vendor that is used in the upper environments, or that can easily be managed by your database tools (e.g. Liquibase).
 
 Databases that are not directly supported by spring require additional configuration. Their use is discouraged, unless the database is used in higher environments.
 
-### SQL Database Configuration: General Configuration
+### SQL Database Configuration
 
-* Use spring profile(s) to manage datasource configuration (reactor / parent POM is a good place for this)
+Configuration for a database takes place in the POM for build time dependencies, and in the application yaml file for runtime configuration.
 
-* Use `<properties>` and `<dependencyManagement>` in the reactor / parent POM to declare versions and predefined dependencies
+Multiple datasources can be managed in the application yaml using spring profiles. In most cases, no java code would be required. An example of this approach can be found in the [bip-reference-pserson service POM](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/pom.xml) (search for "database related" to quickly find the relevant entries). Comments are provided in this POM to explain how each stage of the configuration works.
 
-* To the extent possible, keep common schema and data setups for the service and its unit tests, integration tests, and performance tests
+To the extent possible, keep common schema and data setups for the service and its unit tests, integration tests, and performance tests.
 
-### SQL Database Configuration: Single Datasource
+### SQL Database Configuration
 
-As mentioned above, dependencies should be declared in the service `pom.xml`. The URL and other configuration properties for a given environment should be declared in the `[application-name].yml` file for the specific profile (the _default_ profile, _local-int_, _ci_, _dev_, _stage_, _prod_).
+BIP Framework provides managed dependencies for H2, Postgres, and Oracle.
 
-#### POM Dependencies
+<details><summary>Click here: BIP Framework managed dependencies</summary>
 
-Consider isolating dependency versions in the properties section.
-
-For single-datasource projects, add only the **one** desired driver dependency (in the example below, would copy `groupId` and `artifactId` from the `dependencyManagement` section). If more than one driver appears in the dependencies, experience suggests that _which_ driver is selected by spring is undetermined due to uncertainty around the order classpath lookups in Java. For the same reason, with multiple-datasource projects, add only the necessary drivers to the dependencies.
-
-<details><summary>Click here: POM Dependencies</summary>
-
-```xml
-<properties>
-	<h2.version>1.4.199</h2.version>
-	<hsqldb.version>2.5.0</hsqldb.version>
-	<derby.version>10.15.1.3</derby.version>
-	<postgresql.version>42.2.6</postgresql.version>
-	<mysql-connector-java.version>8.0.17</mysql-connector-java.version>
-	<ojdbc6.version>11.2.0.4</ojdbc6.version>
-	<ojdbc7.version>12.1.0.2</ojdbc7.version>
-	<ojdbc8.version>12.2.0.1</ojdbc8.version>
-</properties>
-
-
-<dependencies>
-	<!-- activate spring boot JPA -->
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-data-jpa</artifactId>
-	</dependency>
-
-</dependencies>
-
-<dependencyManagement>
-	<!--
-		Oracle and other licensed drivers must be installed in .m2 manually.
-		Pick from below (or add your own) and add to dependencies.
-		Example
+	```xml
+	<properties>
+		...
+		<h2.version>1.4.199</h2.version>
+		<postgresql.version>42.2.6</postgresql.version>
+		<ojdbc6.version>11.2.0.4</ojdbc6.version><!-- also 11.1.0.7 -->
+		<ojdbc7.version>12.1.0.2</ojdbc7.version><!-- also 12.1.0.2 -->
+		<ojdbc8.version>12.2.0.1</ojdbc8.version><!-- also 18.1.0, 19.3 -->
+		<ojdbc10.version>19.3</ojdbc10.version>
+		<!-- Liquibase -->
+		<liquibase-core.version>${liquibase.version}</liquibase-core.version>
+		<liquibase-hibernate5.version>3.8</liquibase-hibernate5.version>
+		<!--
+			For liquibase-maven-plugin: versions derived from spring dependencies.
+			Required dependencies for various Liquibase Change operations, more may be needed.
+			THESE NEED TO BE ADJUSTED IF SPRING IS UPGRADED
+		-->
+		<validation-api.version>2.0.1.Final</validation-api.version>
+		<spring-core.version>5.1.8.RELEASE</spring-core.version>
+		<spring-data-jpa.version>2.1.9.RELEASE</spring-data-jpa.version>
+	</properties>
+	<dependencyManagement>
 		<dependencies>
 			...
 			<dependency>
 				<groupId>com.h2database</groupId>
 				<artifactId>h2</artifactId>
+				<scope>runtime</scope>
+				<version>${h2.version}</version> <!-- Need version >= 1.4.198 for row_number analytic -->
+			</dependency>
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql.version}</version>
+			</dependency>
+			<dependency>
+				<!-- TODO Oracle 11.1.x is on TRM Unapproved list -->
+				<!-- TODO Oracle 11.2.x is on TRM Divest schedule -->
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc6</artifactId>
+				<version>${ojdbc6.version}</version>
+			</dependency>
+			<dependency>
+				<!-- TODO Oracle 12.1.x is on TRM Divest schedule -->
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc7</artifactId>
+				<version>${ojdbc7.version}</version>
+			</dependency>
+			<dependency>
+				<!-- TODO Oracle 12.2.x is on TRM Divest schedule -->
+				<!-- Oracle 18.1.0 or 19.3 is TRM Approved -->
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc8</artifactId>
+				<version>${ojdbc8.version}</version>
+			</dependency>
+			<dependency>
+				<!-- Oracle 19.3 is TRM Approved -->
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc10</artifactId>
+				<version>${ojdbc10.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-core</artifactId>
+				<version>${liquibase-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-liquibase</artifactId>
+				<exclusions>
+					<exclusion>
+						<groupId>org.liquibase</groupId>
+						<artifactId>liquibase-core</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.liquibase.ext</groupId>
+				<artifactId>liquibase-hibernate5</artifactId>
+				<version>${liquibase-hibernate5.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.liquibase</groupId>
+						<artifactId>liquibase-core</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 		</dependencies>
-	-->
+	</dependencyManagement>
+	```
 
-	<!-- in-memory dbs -->
+</details>
+
+#### Reactor POM Dependencies
+
+Add dependencies in the reactor POM to provide them to any module in the project (particularly important for the "db" project that will be discussed later).
+
+<details><summary>Click here: Reactor POM dependencies</summary>
+
+	```xml
+	<dependency>
+		<groupId>org.liquibase</groupId>
+		<artifactId>liquibase-core</artifactId>
+	</dependency>
+	<dependency>
+		<!-- currently backward compatible to PostgreSQL 8.2 -->
+		<groupId>org.postgresql</groupId>
+		<artifactId>postgresql</artifactId>
+	</dependency>
 	<dependency>
 		<groupId>com.h2database</groupId>
 		<artifactId>h2</artifactId>
-		<version>${h2.version}</version>
-		<scope>runtime</scope>
-		<optional>true</optional>
 	</dependency>
 	<dependency>
-		<groupId>org.hsqldb</groupId>
-		<artifactId>hsqldb</artifactId>
-		<version>${hsqldb.version}</version>
-		<scope>runtime</scope>
-		<optional>true</optional>
-	</dependency>
-	<dependency>
-		<groupId>org.apache.derby</groupId>
-		<artifactId>derby</artifactId>
-		<version>${derby.version}</version>
-		<scope>runtime</scope>
-		<optional>true</optional>
-	</dependency>
-	<!-- standalone db servers -->
-	<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>${postgresql.version}</version>
-			<scope>runtime</scope>
-		<optional>true</optional>
-	</dependency>
-	<dependency>
-		<groupId>mysql</groupId>
-		<artifactId>mysql-connector-java</artifactId>
-		<version>${mysql-connector-java.version}</version>
-			<scope>runtime</scope>
-		<optional>true</optional>
-	</dependency>
-	<dependency>
-		<groupId>com.oracle</groupId>
-		<artifactId>ojdbc8</artifactId>
-		<version>${ojdbc8.version}</version>
-			<scope>runtime</scope>
-		<optional>true</optional>
-	</dependency>
-	<dependency>
-		<groupId>com.oracle</groupId>
-		<artifactId>ojdbc7</artifactId>
-		<version>${ojdbc7.version}</version>
-			<scope>runtime</scope>
-		<optional>true</optional>
-	</dependency>
-	<dependency>
+		<!-- TODO Oracle 11.1.x is on TRM Unapproved list -->
+		<!-- TODO Oracle 11.2.x is on TRM Divest schedule -->
 		<groupId>com.oracle</groupId>
 		<artifactId>ojdbc6</artifactId>
-		<version>${ojdbc6.version}</version>
-			<scope>runtime</scope>
-		<optional>true</optional>
 	</dependency>
-</dependencyManagement>
-```
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-data-jpa</artifactId>
+		<exclusions>
+			<exclusion>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-core</artifactId>
+			</exclusion>
+		</exclusions>
+	</dependency>
+	```
 
 </details>
+
+#### Service POM Dependencies
+
+With the dependencies declared in the reactor POM, no dependencies are required in the service POM.
 
 #### Application YAML Configuration
 
-This is where datasource and related configuration properties are set.
+This is where datasource and related configuration properties are set. It is recommended to declare datasource configurations inside spring profiles. This allows multiple datasources to be declared without having to add any java beans or configurations. The exception to this is if an XA transaction manager is required, which will - at the least - require adding a `JtaTransactionManager` bean to your application Configuration class.
 
-**Note:** If a spring supported in-memory database is used (that is, it is included in the dependencies) for local development and testing, _no configuration is required_ for that profile. Spring Boot will automatically configure the URL and default credentials for it.
+In the example below (in the collapsed section), multiple datasources are declared, and then applied to environments as needed. The comments describe each part of the configuration in detail.
 
-Some important configuration points:
-
-* If you are using the default connection pool (Hikari), do not use the standard `url` property. [HikariCP uses the `jdbc-url`](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/htmlsingle/#howto-configure-a-datasource) property as shown in the example below.
-
-* If CLOBs will be used in your schema, hibernate and spring will generate an exception. To avoid this, add the following properties to your application YAML for all profiles:
-
-	```yaml
-	# for available hibernate dialects, see https://docs.jboss.org/hibernate/orm/5.0/javadocs/org/hibernate/dialect/package-summary.html
-	spring.jpa.database-platform: org.hibernate.dialect.[database]Dialect
-	spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false
-	```
-
-<details><summary>Click here: Single Datasource Example</summary>
+<details><summary>Click here: application yaml - database configuration</summary>
 
 ```yaml
-### yaml document for default local database configuration
-	spring.profiles: default
-	spring.profiles.include: remote_client_sims, embedded-redis
-	spring:
-		datasource:
-			## hikariCP uses jdbc-url property, not "url"
-			## see https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/htmlsingle/#howto-configure-a-datasource
-			jdbc-url: jdbc:postgresql://localhost:5432/postgres
-			## use "driver-class-name" only for drivers not supported by spring
-			## Example for Oracle's ojdbc driver ...
-#			driver-class-name: oracle.jdbc.driver.OracleDriver
-			username: postgres
-			password: password
-			## Connection Pool settings can be refined by adjusting
-			## hikari properties directly
-#			hikari:
-#				connectionTimeout: 30000
-#				maximum-pool-size: 5
-#				idleTimeout: 600000
-#				maxLifetime: 1800000
-	jpa:
-		# the hibernate dialect to use
-		database-platform: org.hibernate.dialect.PostgreSQL9Dialect
-		hibernate:
-			# always turn off hibernate DDL to avoid collision with spring or liquibase...
-			ddl-auto: none
-			# avoid exceptions with CLOBs...
-			temp:
-				use_jdbc_metadata_defaults: false
-## In the logging section of the YAML file, you could add things like...
-#logging.level.org.hibernate.SQL=debug
+#########################################################################
+#########################################################################
+####
+####    DATABASE RELATED CONFIGURATION
+####    1. Generically define database types
+####    2. Declaration of database instances
+####    3. Apply database configs to execution environments
+####
+#### see https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-configure-a-datasource
+#########################################################################
+#########################################################################
+
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+####    1. Generically define database types
+####       - Declare the parts of spring jpa and datasource config that
+####         are common to a specific type of database
+####       - These generic definitions can be reused later when we
+####         declare specific database instances
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+---
+### Generic H2 In-Memory database definition (no url defined in this profile)
+### Ensure driver dependency is included in pom.xml
+spring.profiles: dbtype-h2
+##
+## By default, Spring Boot configures the application to connect to an
+## in-memory store with the username sa and an empty password. We can change
+## those parameters by adding the following properties
+  #spring.datasource.url=jdbc:h2:[mem|file]:[path/to/]dbinstancename
+  #spring.datasource.driverClassName=org.h2.Driver
+  #spring.datasource.username=sa
+  #spring.datasource.password=
+  #spring.jpa.database=h2
+## "mem" dbs are ephemeral and do not survive spring restarts, "file" dbs do survive
+spring.jpa:
+    database: h2
+    generate-ddl: true
+    hibernate:
+      ddl-auto: none
+      connection:
+        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+spring.datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    ### skip spring db init - using liquibase
+    initialization-mode: never
+---
+### Generic Postgres database definition (no url defined in this profile)
+### Ensure driver dependency is included in pom.xml
+spring.profiles: dbtype-postgres
+spring.jpa:
+    database: postgresql
+    generate-ddl: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+    hibernate:
+      ddl-auto: none
+      connection:
+        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+spring.datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    ### skip spring db init - using liquibase
+    initialization-mode: never
+---
+### Generic Oracle 11.2 / ojdbc6 database definition (no url defined in this profile)
+### Ensure driver dependency is included in pom.xml
+spring.profiles: dbtype-oracle6
+spring.jpa:
+    database: oracle
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      connection:
+        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+spring.datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    ### skip spring db init - using liquibase
+    initialization-mode: never
+    driver-class-name: oracle.jdbc.OracleDriver
+---
+
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+####    2. Declaration of database instances
+####       - Use previously defined database types to declare profiles
+####         for specific database instances and common liquibase params
+####       - These instance declarations will later be used to configure
+####         specific execution environments
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+## Connection Pool settings can be refined on any below profile by adjusting
+## hikari properties directly
+## A list of all Hikari parameters with a good explanation is available on
+## https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+#  hikari:
+#    connection-timeout: 30000 # maximum number of milliseconds that a client will wait for a connection from connection pool
+#    minimum-idle: 5 # minimum number of idle connections that is maintained by HikariCP in connection pool
+#    maximum-pool-size: 12 # configures the maximum pool size
+#    idle-timeout: 300000 # maximum amount of time in milliseconds that a connection is allowed to sit idle in connection pool
+#    max-lifetime: 1200000 #  maximum life time in milliseconds of a connection in pool after it is closed
+#    auto-commit: true # configures the default auto-commit behavior of connections returned from pool. Default value is true.
+
+spring.profiles: db-docslocal
+spring.profiles.include: dbtype-h2
+#spring.profiles.include: dbtype-postgres
+db.instance.name: docslocal
+spring.datasource:
+    url: jdbc:${spring.jpa.database}:mem:${db.instance.name}
+#    url: jdbc:${spring.jpa.database}://localhost:5432/${db.instance.name}
+    username: postgres
+    password: password
+spring.liquibase:
+  parameters:
+    db.instance.name: ${db.instance.name}
+    db.type.name: ${spring.jpa.database}
+  url: ${spring.datasource.url}
+  user: ${spring.datasource.username}
+  password: ${spring.datasource.password}
+---
+## >> just to show multiple instances for one environment can be declared
+spring.profiles: db-persinfolocal
+spring.profiles.include: dbtype-h2
+#spring.profiles.include: dbtype-postgres
+db.instance.name: persinfolocal
+spring.datasource:
+    url: jdbc:${spring.jpa.database}:file:/tmp/${db.instance.name}.db
+#    url: jdbc:${spring.jpa.database}://localhost:5432/${db.instance.name}
+    username: postgres
+    password: password
+spring.liquibase:
+  parameters:
+    db.instance.name: ${db.instance.name}
+    db.type.name: ${spring.jpa.database}
+  url: ${spring.datasource.url}
+  user: ${spring.datasource.username}
+  password: ${spring.datasource.password}
+---
+### EXAMPLE of a possible dev db instance
+spring.profiles: db-corpdev
+spring.profiles.include: dbtype-postgres
+db.instance.name: corpdev
+spring.datasource:
+    url: jdbc:${spring.jpa.database}://postgres:5432/${db.instance.name}
+    username: postgres
+    password: password
+spring.liquibase:
+  parameters:
+    db.instance.name: ${db.instance.name}
+    db.type.name: ${spring.jpa.database}
+  url: ${spring.datasource.url}
+  user: ${spring.datasource.username}
+  password: ${spring.datasource.password}
+---
+### EXAMPLE of a possible staging db instance
+spring.profiles: db-corpstage
+spring.profiles.include: dbtype-oracle
+db.instance.name: corpstage
+spring.datasource:
+    url: jdbc:${spring.jpa.database}:thin:@oracle:1521/${db.instance.name}
+    username: someuser
+    password: somepassword
+spring.liquibase:
+  parameters:
+    db.instance.name: ${db.instance.name}
+    db.type.name: ${spring.jpa.database}
+  url: ${spring.datasource.url}
+  user: ${spring.datasource.username}
+  password: ${spring.datasource.password}
+---
+
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+####    3. Apply database configs to execution environments
+####       - Configure database instances for their execution
+####         environment
+####       - Set liquibase config and parameters for the environment
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+spring.profiles: default
+spring.profiles.include: db-docslocal, db-persinfolocal
+### Default values for Liquibase
+### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+spring.liquibase:
+  enabled: true
+  test-rollback-on-update: false
+  # default liquibase operation at startup
+  parameters.liquibase.operation: dbinit
+---
+### EXAMPLE of a possible local-int / ci db run
+spring.profiles: local-int, ci
+spring.profiles.include: db-docslocal, db-persinfolocal
+### Local-Int & CI values for Liquibase
+### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+spring.liquibase:
+  enabled: true
+  test-rollback-on-update: true
+  # default liquibase operation at startup
+  parameters.liquibase.operation: dbinit
+---
+### EXAMPLE of a possible dev db run
+spring.profiles: dev
+spring.profiles.include: db-corpdev
+### Dev values for Liquibase
+### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+spring.liquibase:
+  enabled: false
+  test-rollback-on-update: true
+  # default liquibase operation at startup
+  parameters.liquibase.operation: dbprep
+---
+### EXAMPLE of a possible staging db run
+spring.profiles: stage
+spring.profiles.include: db-corpstage
+### Stage values for Liquibase
+### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+spring.liquibase:
+  enabled: false
+  test-rollback-on-update: true
+  # default liquibase operation at startup
+  parameters.liquibase.operation: dbprep
+
 ```
 
 </details>
 
-### SQL Database Configuration: Multiple Datasources
+Before you can use Liquibase, there are a couple more steps required. Read on ...
 
-If your project requires multiple datasources to participate in XA transactions, there is a little more work involved. Remember that configurations will need to be set up in spring profiles so they are activated in the appropriate environment.
 
-The Spring Boot docs have short sections on how to [Configure Two DataSources](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/htmlsingle/#howto-two-datasources), which uses techniques from the prior section [Configure a Custom DataSource](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/htmlsingle/#howto-configure-a-datasource).
+#### Using the Database Configurations
 
-The short version of what to do:
+Use standard Spring JPA repos and entities. Examples are provided in [bip-reference-person](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/data).
 
-* Perform the steps in the above [SQL Database Configuration: Single Datasource](#sql-database-configuration-single-datasource) section.
+* Ideally, references to repo and entities should be encapsulated in a helper class (for an example, see [PersonDataHelper](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/data/PersonDataHelper.java) in bip-reference-person).
 
-	* Add an identifier to the property path to distinguish config for each datasource, e.g. `spring.datasource.ds1.*`, `spring.datasource.ds2.*`
-
-		<details><summary>Click here: Multi-Datasource Configuration</summary>
-
-		```yaml
-		spring:
-			datasource:
-				ds1:
-					jdbc-url: jdbc:postgresql://localhost:5432/postgres
-					username: postgres
-					password: password
-				ds2:
-					jdbc-url: jdbc:mysql://localhost/testing
-					username: dbuser
-					password: dbpass
-		```
-
-		</details>
-
-* Create `@Configuration` classes for each database. These config classes are to declare beans for the datasource, entity manager, and transaction manager.
-
-	* Set `@ConfigurationProperties` to the appropriate property paths
-
-	* If you intend ever to use the spring boot database initializer, you must add the `@Primary` annotation to the datasource bean that will be updated from `schema.sql` and/or `data.sql`.
-
-		<details><summary>Click here: Multi-Datasource Beans</summary>
-
-		```java
-		@Bean
-		@Primary
-		@ConfigurationProperties("spring.datasource.ds1")
-		public DataSourceProperties ds1DataSourceProperties() {
-			return new DataSourceProperties();
-		}
-
-		@Bean
-		@Primary
-		@ConfigurationProperties("spring.datasource.ds1.configuration")
-		public HikariDataSource ds1DataSource() {
-			return ds1DataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
-		}
-
-		@Bean
-		@ConfigurationProperties("spring.datasource.ds2")
-		public DataSourceProperties ds2DataSource() {
-			return new DataSourceProperties();
-		}
-
-		@Bean
-		@ConfigurationProperties("spring.datasource.ds2.configuration")
-		public HikariDataSource ds1DataSource() {
-			return ds2DataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
-		}
-		```
-
-		</details>
-
-For additional reference, these links are worth reviewing ...
-
-* Spring docs has a short page on [Distributed Transactions with JTA](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-jta.html).
-
-* Spring Blog has a detailed article on [Configuring Spring and JTA without full Java EE](https://spring.io/blog/2011/08/15/configuring-spring-and-jta-without-full-java-ee/).
-
-* Baeldung provides a good example of how to set up [Spring JPA – Multiple Databases](https://www.baeldung.com/spring-data-jpa-multiple-databases). Classes for configuration are provided, and the boot autoconfiguration is shown in part _**6. Multiple Databases in Spring Boot**_. _Beware of implementation differences between the spring boot version used in their example and your code base._
+* If multiple datasources are in use, it is recommended to package them under `**.data.[dbIdentifier].[repo|entities]`
 
 # Schema and Data Management
 
-Spring Boot has rudimentary database initialization capabilities. What spring does not provide out of the box is a means for managing schema and data changes over time. [Liquibase](http://www.liquibase.org/) is recommended for its database changeset and schema version management features.
+Spring Boot has rudimentary database initialization capabilities. What spring does not provide out of the box is a means for managing schema and data changes over time. [Liquibase](http://www.liquibase.org/) is recommended for its database initialization, changeset and schema version management features.
 
 The assumption is that the application is uses JPA in preference over raw JDBC. The spring boot dependency is `spring-boot-starter-data-jpa`.
 
 ### Database Management and Versioning With Liquibase
 
-It is worth reviewing the [Liquibase documentation](https://www.liquibase.org/documentation/) to understand changesets, include, preconditions, contexts and parameters.
+It is worth reviewing the [Liquibase documentation](https://www.liquibase.org/documentation/) to understand changesets, includes, preconditions, contexts and parameters.
 
-Constraints with Maven / Spring Boot / Liquibase integrations:
+Spring Boot will enable liquibase as the database manager if the spring initializer is disabled and it finds liquibase on the classpath. If you followed the configuration as described in the sections above, the reactor POM already adds liquibase. The configuration elements are:
 
-* If you wish to run Liquibase at server startup, the master changelog **must** be in the resource classpath of the service that will be using it. For this reason, maven reactor projects **cannot** support having a separate liquibase module that is a peer to the service that depends on it. Theoretically, a liquibase module __could__ be a child to the service module.
+<details><summary>Click here: Enable Liquibase as DB Initializer</summary>
 
-* Liquibase has its own means of acquiring property values ([__parameter values__](https://www.liquibase.org/documentation/changelog_parameters.html) in liquibase parlance). It does not, of course, know anything about properties held in the spring context or maven properties. Values passed between liquibase and maven/spring must be done through Java System properties or environment variables.
-
-Some general suggestions:
-
-* Use maven profiles to separate the types of operations performed (drop and recreate schema, update schema, populate data, etc). Each profile should have one or more corresponding properties files and changelogs that are named the same or similar as the profile id.
-
-* Use liquibase properties files to specify the JDBC connection, input / output file names, and other Liquibase properties. The default property values set in the maven profiles can be overriden with the liquibase properties.
-
-* Group changelogs and changesets for specific tasks:
-
-	* Strategic use of [`include` tag](https://www.liquibase.org/documentation/include.html) and [`includeAll` tag](https://www.liquibase.org/documentation/includeall.html) in changelog files can be used to redirect to different properties or changelog files/directory.
-
-	* The [`preconditions` tags](https://www.liquibase.org/documentation/preconditions.html) can be used in changelogs and changesets to control execution based on the state of the database or connection. They can also specify failure behavior. Examples of using boolean logic in preconditions and the available precondition tags are on the linked page.
-
-	* Use [`contexts` tags](https://www.liquibase.org/documentation/contexts.html) in changesets to control which changesets in a changelog should be executed. Multiple contexts can be written in to any changeset. At time of execution specify the contexts to be included. A context is just a string you choose, and can be used to isolate database operations for almost any use-case.
-
-		It is worth noting that Liquibase also provides `labels`. These are functionally equivalent to `contexts`, but allow _expressions_ to aid in determining which changesets will be included in an operation. Unless absolutely necessary, the use of labels is discouraged due to the complexity and risk that they can introduce. Preconditions can be just as effective, and are more obvious.
-
-* If custom SQL is used in a changeset, rollbacks are not possible with liquibase. For this reason, use of the `sql` tag is discouraged unless absolutely necessary. In most cases, the same can be accomplished with Liquibase [changes (scroll down the left nav)](https://www.liquibase.org/documentation/changes1`/index.html) and [extensions (listed on the right nav)](https://liquibase.jira.com/wiki/spaces/CONTRIB/overview). By using these, your configurations remain database agnostic and retain rollback capability.
-
-Both the Liquibase and Spring documentation are very brief and somewhat vague about how to integrate Liquibase into a Spring Boot project. Furthermore, as Liqiobase matures and Spring follows with its integrations, handling of Liquibase behaviors and properties is a moving target - there are significant discrepancies between minor spring-boot point releases. As a result, **every source of information about Liquibase integration must be understood in the context of the version of Liquibase and Spring / Spring Boot used in a blog or article**.
-
-Below is a summarization of the key points, assuming the JDBC connections and other database-specific configuration is already done:
-
-* Add Liquibase to the maven dependencies for liquibase to a root POM (spring-boot 2.1.6 uses Liquibase 3.6.3):
-
-	<details><summary>Click here: Liquibase Maven Dependencies</summary>
-
-	```xml
-	<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
-			<!-- version is supplied by spring boot -->
-	</dependency>
+	```yaml
+	# turn off database initialization
+	spring.jpa:
+		hibernate:
+			ddl-auto: none
+	# turn on liquibase
+	spring.liquibase:
+		enabled: true
 	```
 
-	</details>
+</details>
 
-* Add an empty master changelog as a starting point. Default location is `src/main/resources/db/db.changelog.xml`
+By default, liquibase will search for a master changelog at `src/main/resources/db/changelog/db.changelog-master.yaml`. You must provide, at minimum, an "empty" changelog file at this location.
 
-	<details><summary>Click here: Empty Master Changelog</summary>
+<details><summary>Click here: Empty db.changelog-master.yml File</summary>
 
-	```yml
-	databaseChangeLog
+```yaml
+###############################################################################
+###   MASTER CHANGELOG
+###   This file controls which operations will be created for a given
+###   Liquibase operation, on a database instance in a given environment.
+###   - Only items common to ALL database instances, environments, operations
+###     should appear in this root changelog file.
+###   - Include other changelog files as needed.
+###   - To use a variable it must be in the environment, or have been put in
+###     the Liquibase Parameters list at the time of invocation, for example
+###     in app yaml or commandline -D param: spring.liquibase.parameters.**
+###############################################################################
 
-	```
+databaseChangeLog:
 
-	</details>
-
-* Spring Boot properties for Liquibase, as of spring-boot 2.1.6-RELEASE:
-
-	* The most recent round of liquibase property deprecations and their replacement properties can be found in the [META-INF/additional-spring-configuration-metadata.json](https://github.com/spring-projects/spring-boot/blob/v2.1.6.RELEASE/spring-boot-project/spring-boot-autoconfigure/src/main/resources/META-INF/additional-spring-configuration-metadata.json) file (to see what was deprecated in other releases, just change the version number in the URL). Search for `liquibase`.
-
-	* Some useful properties, especially when considering spring profiles and multi-datasource scenarios:
-
-		<details><summary>Click here: Liquibase maven dependency</summary>
-
-		```yaml
-		spring.profiles: default
-		spring.profiles.include: remote_client_sims, embedded-redis
-		spring:
-			liquibase:
-				enabled: true # Whether to enable Liquibase support.
-				change-log: classpath:/db/changelog/db.changelog-master.yaml # Master changelog location.
-				check-change-log-location: true # Whether to check that the changelog location exists.
-				contexts: [value] # Comma-separated list of runtime contexts to use.
-				liquibase-tablespace: [value] # Tablespace to use for Liquibase objects.
-				parameters.[*]: [value] # Change replaceable parameters.
-				### For multiple datasources, Spring Boot will tell Liquibase the URL and credentials for the
-				### @Primary datasource on which to operate. However, you can manually set the values here...
-				url: [value] # JDBC URL of the database to migrate. If not set, the primary configured data source is used.
-				user: [value] # Login user of the database to migrate.		
-				password: [value] # Login password of the database to migrate.
-				#
-				### some additional properties that may be useful...
-				#
-				database-change-log-lock-table: DATABASECHANGELOGLOCK # Name of table to use for tracking concurrent Liquibase usage.
-				database-change-log-table: DATABASECHANGELOG # Name of table to use for tracking change history.
-				default-schema: [value] # Default database schema.
-				drop-first: false # Whether to first drop the database schema.
-				liquibase-schema: [value] # Schema to use for Liquibase objects.
-				rollback-file: [value] # File to which rollback SQL is written when an update is performed.
-				test-rollback-on-update: false # Whether rollback should be tested before update is performed.
-		```
-
-		</details>
-
-* By default, Liquibase stores all changelogs in one file. This is convenient, however it does not take long for the file to become large and unmanageable. If you want to split _changeset_ declarations into multiple changelog files, put them in their own directory, and set the databaseChangeLog `includeAll` directive:
-
-		<details><summary>Click here: Changelog Location & Separate Changesets</summary>
-
-		```yml
-			### yaml document for default local database configuration
-			spring.profiles: default
-			spring.profiles.include: remote_client_sims, embedded-redis
-			spring:
-				# ... other data configuration here ...
-				liquibase:
-					## run liquibase at startup?
-					enabled: true
-					## change where the master changelog is stored...
-					change-log: classpath:/db/changelog/changelog-master.xml
-			## direct liquibase to store changesets separately...
-		databaseChangeLog:
-			- includeAll:
-				## this example reads -all- changelog files under the specified path
-				path: classpath*:db/changelog/changes/
-		### in the logging section of the YAML document, you can add...
-		#logging.level.liquibase: DEBUG
-		```
-
-		</details>
-
-* Liquibase extensions are available to add missing support for specific databases. If the functionality is needed by a project, the extension plugins can be useful.  See the [Available Plugins](https://liquibase.jira.com/wiki/spaces/CONTRIB/overview) list (right side of the page). The Oracle Extensions plugin may be of interest.
-
-### The maven-liquibase-plugin
-
-The [Maven Liquibase Plugin](https://www.liquibase.org/documentation/maven/index.html) provides a rich suite of goals to developers. Many schema and data management activities can be automated (or at least simplify liquibase executions) in maven profiles.
-
-* Add the liquibase-maven-plugin to your POM (must use spring-boot's `${liquibase.version}`) from liquibase-core. Note that the example below is simple and does not fully configure the plugin, does not configure any goals and executions, or leverage `pluginManagement` (e.g. used in parent pom). Note that JDBC driver dependencies are also declared within the plugin. Refer to the [liquibase-maven-plugin documentation](https://www.liquibase.org/documentation/maven/index.html) for more information.
-
-	<details><summary>Click here: Liquibase maven dependencies</summary>
-
-	```xml
-	<dependencies>
-			<!-- ... -->
-		<dependency>
-		    <groupId>org.liquibase</groupId>
-		    <artifactId>liquibase-maven-plugin</artifactId>
-				<!-- same version as liquibase-core -->
-		    <version>${liquibase.version}</version>
-		</dependency>
-		<!-- ... -->
-	</dependencies>
-	<!-- ... -->
-	<plugins>
-	    <plugin>
-	        <groupId>org.liquibase</groupId>
-	        <artifactId>liquibase-maven-plugin</artifactId>
-	        <version>${liquibase.version}</version>
-					<dependencies>
-							<dependency>
-								<groupId>org.postgresql</groupId>
-								<artifactId>postgresql</artifactId>
-								<version>${postgres.version}</version>
-							</dependency>
-							<!-- additional dependencies as necessary -->
-					</dependencies>
-	        <configuration>                  
-	            <propertyFile>src/main/resources/liquibase.properties</propertyFile>
-							<!-- additional configurations 	as necessary -->
-	        </configuration>                
-	    </plugin>
-	</plugins>
-	```
-
-	</details>
-
-* Configure Maven Profiles for expected activities
-
-	* Make sure profiles use the correct `${liquibase.changelog.path.*}` variables in their `<configuration>` properties.
-
-	* Profiles:
-
-		* `liquibase-generate-changelog` creates a changelog file derived from an existing datasource (including any JPA/Hibernate `@Entity` classes).
-
-			* Configure each execution in `src/main/resources/db/${liquibase.changelog.path.*}/liquibase-generate-changelog.properties`
-
-			* Execute: `mvn clean process-classes -Pliquibase-generate-changelog`
-
-			* Produces output in `src/main/resources/db/${liquibase.changelog.path.*}/changelog/liquibase-generate-changelog.yml`
-
-			* Contexts can be added by including `-Dliquibase.contexts=context1[,context2...]` to the maven command
-
-		* `liquibase-create-db-from-changelog` drops any existing database by that name, and recreates if from a changelog file.
-
-			* Configure each execution in `src/main/resources/db/${liquibase.changelog.path.*}/liquibase-create-db-from-changelog.properties`
-
-			* Execute: `mvn clean process-classes -Pliquibase-create-db-from-changelog`
-
-			* Produces output in `src/main/resources/db/${liquibase.changelog.path.*}/changelog/liquibase-create-db-from-changelog.yml`
-
-			* Contexts can be added by including `-Dliquibase.contexts=context1[,context2...]` to the maven command
-
-
-	<details><summary>Click here: Liquibase maven dependencies</summary>
-
-	```xml
-	<!-- TBD -->
-	```
-
-	</details>
-
-### Running liquibase at server startup
-
-Liquibase can be invoked when the server starts. This can be useful for developers (e.g. setting up h2 for unit tests, or reseting an external db to some known state). However, it is imperative that this behavior not be allowed into higher environments.
-
-To [run liquibase on startup](https://docs.spring.io/spring-boot/docs/current/reference/html/howto-database-initialization.html#howto-execute-liquibase-database-migrations-on-startup):
-
-* Add `org.liquibase:liquibase-core` to your project dependencies.
-
-* In the application YAML, set `spring.liquibase.change-log=path/to/changelog.yml` (by default, spring boot will look for `db/changelog/db.changelog-master.yaml`).
-
-* If you want liquibase to run on its own native datasource, set either `spring.liquibase.url` or `spring.liquibase.user` (either will trigger the datasource switch).
-
-* If you have multiple datasources, you already have `@Configuration` for the datasources. On the `@Bean` that you want liquibase to run, add `@LiquibaseDataSource`.  The other datasource must be annotated with `@Primary`.
-
-
-### Logging Database Activity
-
-[P6spy](https://p6spy.readthedocs.io) - specifically [its spring boot integration](https://github.com/gavlyukovskiy/spring-boot-data-source-decorator) is recommended due to its transparent integration in spring boot applications.  With the p6spy decorator, it is not necessary to pollute the Application class, or provide `@Configuration` beans.
-
-<details><summary>Click here: p6spy configuration</summary>
-
-```xml
-	<dependency>
-	    <groupId>com.github.gavlyukovskiy</groupId>
-	    <artifactId>p6spy-spring-boot-starter</artifactId>
-	    <version>1.5.6</version>
-	</dependency>
 ```
 
 </details>
+
+If you look at the [db/changelog/db.changelog-master.yaml](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/resources/db/changelog/db.changelog-master.yaml) file, you will see that it contains only an include statement. This statement uses the `db.instance.name` and `liquibase.operation` parameters to determine which changelog file it should read instructions from. These properties are configured in the application yaml, and are passed to Liquibase as parameters at runtime.
+
+If you want your application to run Liquibase at startup, the master changelog must be in the resource classpath of the service that will be using it. The `db/changelog/**` directory cannot be moved to another module in the maven project.
+
+### Using Liquibase as a Development Tool
+
+Liquibase provides maven integration with the [liquibase-maven-plugin](https://www.liquibase.org/documentation/maven/index.html). The "change" operations and configuration options are a one-to-one match with the Liquibase [Changelogs and Commands](https://www.liquibase.org/documentation/index.html) available in the standalone product.
+
+The `bip-reference-person` project has a [bip-reference-person-db](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-person-db) module that provides guidance on how to set up a developer-only project. Operations in this project can be used for ongoing maintenance of local databases, for experimentation, and for one-shot operations.
+
+* Property values to be passed into Liquibase _must_ be declared in the plugin's `<configuration>` section. Liquibase does not see properties in the maven config, spring context, or environment unless they have been explicitly passed as a parameter through the plugin configuration.
+
+* The POM for this project should -in theory - only need to be modified to add new "change" operations. It configures Liquibase by:
+
+ 	* Using profiles to separate some different types of database operations, and to provide configurations that can be controlled via properties set in the POM or provided from the command line.
+
+	* Altering the default changelog path to point to a specific changelog file that is related to a database-specific folder under `/db/changelogs/`
+
+	* Configuring a properties file that can be used to override Liquibase default values. Note that the properties declared in these `*.properties` files can override any property that has been passed to Liquibase through the maven plugin's `<configuration>` or from the command line.
+
+	* Sets some default behaviors for Liquibase.
 
 ### SQL Database Testing
 
