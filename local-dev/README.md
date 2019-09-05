@@ -19,6 +19,9 @@ The `bip-reference-person` spring boot app must be running for these links to be
 * [Prometheus](http://localhos:9090)
 * [Grafana](http://localhost:3000) - Username/Password is `admin/admin` by default
 
+On servers, logs and audit logs are accessed via Kibana using your personal OCP credentials. If you do not have access, please contact the BIP Platform team.
+* [Kibana](http://kibana.dev.bip.va.gov) - log and audit viewer/analyzer
+
 ## Clearing the Redis Cache
 By default, the RedisEmbeddedServer will be spun up in a docker instance. Appropriate configuration in the application YAML allows the framework to connect to the server.
 
