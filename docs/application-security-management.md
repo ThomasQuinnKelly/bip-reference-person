@@ -42,10 +42,10 @@
 	    jwt:
 	      enabled: true
 	      filterProcessUrls:
-		- /api/v1/persons/**
-		- /api/v2/persons/**
+	       - /api/v1/persons/**
+	       - /api/v2/persons/**
 	      excludeUrls:
-		- /**
+	       - /**
    ```
 - By default TokenResource bean with "/token" end point is enabled for all the application profiles. To disable this end point, you can set `bip.framework.security.jwt.generate.enabled: false`
 
