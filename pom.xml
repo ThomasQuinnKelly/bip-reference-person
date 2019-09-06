@@ -35,8 +35,6 @@
 	</repositories>
 
 	<properties>
-		<!-- fortify scanner version -->
-		<sca-maven-plugin.version>18.20</sca-maven-plugin.version>
 		<!-- intentionally using old ant-contrib because newer version doesn't work with maven-antrun-plugin -->
 		<ant-contrib.version>20020829</ant-contrib.version>
 		<!-- the maven phase to bind fortify-sca -->
@@ -74,12 +72,6 @@
  		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-		</dependency>
- 		<dependency>
-			<!-- TODO Oracle 11.1.x is on TRM Unapproved list -->
-			<!-- TODO Oracle 11.2.x is on TRM Divest schedule -->
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
