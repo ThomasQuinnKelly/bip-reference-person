@@ -9,6 +9,15 @@ info:
 server: 
   port: 8080
 ---
+spring.profiles: default
+spring.profiles.include: remote_client_sims, embedded-redis
+bip-reference-person:
+  ribbon:
+    listOfServers: localhost:${server.port}
+---
+spring.profiles: local-int, ci, dev, stage, prod
+spring.profiles.include: remote_client_sims
+---
 spring: 
   cache:
     type: redis
@@ -17,36 +26,24 @@ spring:
     ssl: false
     host: localhost
     port: 6379
-    # If host takes a password
-    # password: 
-    # URL overrides host/port/password
-    # url: 
-    # The database index to use
-    # database: 0
-    # Connection timeout (millis)
-    # timeout: 
+    # password:    # If host takes a password
+    # url:         # URL overrides host/port/password
+    # database: 0  # The database index to use
+    # timeout:     # Connection timeout (millis)
     # Jedis is activated by being on the classpath
     jedis:
       # At least one variable *must* be set in order to enable the pool
       pool:
-        # Max number of idle connections in the pool
-        # max-idle: 8
-        # Min number of idle connections to maintain
-        # min-idle: 0
-        # Max number of allocated connections (-1 for unlimited)
-        # max-active: 8
-        # Max wait millis when pool is exhausted (-1 for unlimited)
-        max-wait: -1
+        # max-idle: 8   # Max number of idle connections in the pool
+        # min-idle: 0   # Min number of idle connections to maintain
+        # max-active: 8 # Max number of allocated connections (-1 for unlimited)
+        max-wait: -1    # Max wait millis when pool is exhausted (-1 for unlimited)
     # cluster:
-      # Maximum number of redirects to follow when executing commands across the cluster
-      # max-redirects: 
-      # Comma-separated list of "host:port" pairs to bootstrap from
-      # nodes:
+      # max-redirects: # Maximum number of redirects to follow when executing commands across the cluster
+      # nodes:         # Comma-separated list of "host:port" pairs to bootstrap from
     # sentinel:
-      # Name of the Redis server
-      # master: 
-      # Comma-separated list of "host:port" pairs
-      # nodes: 
+      # master:  # Name of the Redis server
+      # nodes:   # Comma-separated list of "host:port" pairs
   sleuth:
     stream:
       enabled: false 
@@ -106,9 +103,9 @@ logging:
     org.h2: DEBUG
     # Change Value to DEBUG to log all BIP framework logs
     gov.va.bip.framework: INFO
-#    org.apache.http: DEBUG
+    #org.apache.http: DEBUG
     org.apache.http.impl.client: WARN
-#    org.springframework: DEBUG
+    #org.springframework: DEBUG
     org.springframework.cache: WARN
     org.springframework.client.discovery: WARN
     org.springframework.cloud.consul: WARN
@@ -423,7 +420,7 @@ spring.datasource:
 ####       - Set liquibase config and parameters for the environment
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 spring.profiles: default
-spring.profiles.include: remote_client_sims, embedded-redis, dbtool-liquibase, db-docslocal, db-persinfolocal
+spring.profiles.include: dbtool-liquibase, db-docslocal, db-persinfolocal
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
@@ -436,7 +433,7 @@ spring.liquibase:
 ---
 ### EXAMPLE of a possible local-int / ci db run
 spring.profiles: local-int, ci
-spring.profiles.include: remote_client_sims, dbtool-liquibase, db-docslocal, db-persinfolocal
+spring.profiles.include: dbtool-liquibase, db-docslocal, db-persinfolocal
 ### Local-Int & CI values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
@@ -446,7 +443,7 @@ spring.liquibase:
 ---
 ### EXAMPLE of a possible dev db run
 spring.profiles: dev
-spring.profiles.include: remote_client_sims, dbtool-liquibase, db-corpdev
+spring.profiles.include: dbtool-liquibase, db-corpdev
 ### Dev values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
@@ -457,7 +454,7 @@ spring.liquibase:
 ---
 ### EXAMPLE of a possible staging db run
 spring.profiles: stage
-spring.profiles.include: remote_client_sims, dbtool-liquibase, db-corpstage
+spring.profiles.include: dbtool-liquibase, db-corpstage
 ### Stage values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
