@@ -437,20 +437,19 @@ spring.profiles.include: dbtool-liquibase, db-docslocal, db-persinfolocal
 ### Local-Int & CI values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
-  test-rollback-on-update: true
+  test-rollback-on-update: false
   # default liquibase operation at startup
   parameters.liquibase.operation: dbinit
 ---
 ### EXAMPLE of a possible dev db run
 spring.profiles: dev
-spring.profiles.include: dbtool-liquibase, db-corpdev
+spring.profiles.include: dbtool-liquibase, db-docslocal
 ### Dev values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
-  enabled: false
-  test-rollback-on-update: true
+  test-rollback-on-update: false
   # default liquibase operation at startup
-  parameters.liquibase.operation: dbprep
+  parameters.liquibase.operation: dbinit
 ---
 ### EXAMPLE of a possible staging db run
 spring.profiles: stage
