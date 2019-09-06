@@ -8,17 +8,6 @@ info:
     description: "@project.description@"
 server: 
   port: 8080
-
----
-spring.profiles: default
-spring.profiles.include: remote_client_sims, embedded-redis
-bip-reference-person:
-  ribbon:
-    listOfServers: localhost:${server.port}
----
-spring.profiles: local-int, ci, dev, stage, prod
-spring.profiles.include: remote_client_sims
-
 ---
 spring: 
   cache:
@@ -114,6 +103,7 @@ logging:
     gov.va.bip.reference.person.client.rest.feign.FeignPersonClient: INFO
     # Change Value to DEBUG to log all application logs
     gov.va.bip.reference: INFO
+    org.h2: DEBUG
     # Change Value to DEBUG to log all BIP framework logs
     gov.va.bip.framework: INFO
 #    org.apache.http: DEBUG
@@ -204,17 +194,8 @@ bip.framework:
       excludeUrls:
         - /**
   swagger:
-    title: BIP Reference Person Spring Boot Service v1 API Documentation
-    description: Reference Person API to demonstrate the microservice patterns on BIP Platform
-    contactName: va.gov
-    contactUrl: https://www.va.gov/
-    contactEmail: test@va.gov
-    termsOfServiceUrl: https://developer.va.gov/terms-of-service
-    licenseUrl: https://www.apache.org/licenses/LICENSE-2.0
-    license: Apache 2.0
-    groupName: "@project.name@-@project.version@"
-    version: ${info.build.version}
-    securePaths: /api/v?.*/persons/.*
+    # enable/disable the swagger/openapi UI ...
+    enabled: true
 ##################################################
 # Feign or REST client connection timeout
 # when making inter-service or external REST calls
@@ -289,7 +270,6 @@ bip-reference-partner-person:
         truststore: ${javax.net.ssl.trustStore:classpath:test/ssl/dev/vaebnTruststore.jks}
         truststorePass: ${javax.net.ssl.trustStorePassword:password}
 
-
 #########################################################################
 #########################################################################
 ####
@@ -335,6 +315,7 @@ spring.datasource:
     type: com.zaxxer.hikari.HikariDataSource
     ### skip spring db init - using liquibase
     initialization-mode: never
+spring.h2.console.enabled: true
 ---
 ### Generic Postgres database definition (no url defined in this profile)
 ### Ensure driver dependency is included in pom.xml
@@ -370,7 +351,17 @@ spring.datasource:
     initialization-mode: never
     driver-class-name: oracle.jdbc.OracleDriver
 ---
-
+### LIQUIBASE (LiquibaseProperties) that are common for all DB profiles
+spring.profiles: dbtool-liquibase
+spring.liquibase:
+  enabled: true
+  parameters:
+    db.instance.name: ${db.instance.name}
+    db.type.name: ${spring.jpa.database}
+  url: ${spring.datasource.url}
+  user: ${spring.datasource.username}
+  password: ${spring.datasource.password}
+---
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ####    2. Declaration of database instances
 ####       - Use previously defined database types to declare profiles
@@ -390,41 +381,22 @@ spring.datasource:
 #    idle-timeout: 300000 # maximum amount of time in milliseconds that a connection is allowed to sit idle in connection pool
 #    max-lifetime: 1200000 #  maximum life time in milliseconds of a connection in pool after it is closed
 #    auto-commit: true # configures the default auto-commit behavior of connections returned from pool. Default value is true.
-
 spring.profiles: db-docslocal
 spring.profiles.include: dbtype-h2
-#spring.profiles.include: dbtype-postgres
 db.instance.name: docslocal
 spring.datasource:
     url: jdbc:${spring.jpa.database}:mem:${db.instance.name}
-#    url: jdbc:${spring.jpa.database}://localhost:5432/${db.instance.name}
     username: postgres
     password: password
-spring.liquibase:
-  parameters:
-    db.instance.name: ${db.instance.name}
-    db.type.name: ${spring.jpa.database}
-  url: ${spring.datasource.url}
-  user: ${spring.datasource.username}
-  password: ${spring.datasource.password}
 ---
 ## >> just to show multiple instances for one environment can be declared
 spring.profiles: db-persinfolocal
 spring.profiles.include: dbtype-h2
-#spring.profiles.include: dbtype-postgres
 db.instance.name: persinfolocal
 spring.datasource:
     url: jdbc:${spring.jpa.database}:file:/tmp/${db.instance.name}.db
-#    url: jdbc:${spring.jpa.database}://localhost:5432/${db.instance.name}
     username: postgres
     password: password
-spring.liquibase:
-  parameters:
-    db.instance.name: ${db.instance.name}
-    db.type.name: ${spring.jpa.database}
-  url: ${spring.datasource.url}
-  user: ${spring.datasource.username}
-  password: ${spring.datasource.password}
 ---
 ### EXAMPLE of a possible dev db instance
 spring.profiles: db-corpdev
@@ -434,13 +406,6 @@ spring.datasource:
     url: jdbc:${spring.jpa.database}://postgres:5432/${db.instance.name}
     username: postgres
     password: password
-spring.liquibase:
-  parameters:
-    db.instance.name: ${db.instance.name}
-    db.type.name: ${spring.jpa.database}
-  url: ${spring.datasource.url}
-  user: ${spring.datasource.username}
-  password: ${spring.datasource.password}
 ---
 ### EXAMPLE of a possible staging db instance
 spring.profiles: db-corpstage
@@ -450,46 +415,38 @@ spring.datasource:
     url: jdbc:${spring.jpa.database}:thin:@oracle:1521/${db.instance.name}
     username: someuser
     password: somepassword
-spring.liquibase:
-  parameters:
-    db.instance.name: ${db.instance.name}
-    db.type.name: ${spring.jpa.database}
-  url: ${spring.datasource.url}
-  user: ${spring.datasource.username}
-  password: ${spring.datasource.password}
 ---
-
-#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-####    3. Apply database configs to execution environments
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+####    3. Include profiles and apply database configs to execution environments
 ####       - Configure database instances for their execution
 ####         environment
 ####       - Set liquibase config and parameters for the environment
-#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 spring.profiles: default
-spring.profiles.include: db-docslocal, db-persinfolocal
+spring.profiles.include: remote_client_sims, embedded-redis, dbtool-liquibase, db-docslocal, db-persinfolocal
+bip-reference-person:
+  ribbon:
+    listOfServers: localhost:${server.port}
 ### Default values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
-  enabled: true
   test-rollback-on-update: false
   # default liquibase operation at startup
   parameters.liquibase.operation: dbinit
 ---
 ### EXAMPLE of a possible local-int / ci db run
 spring.profiles: local-int, ci
-spring.profiles.include: db-docslocal, db-persinfolocal
+spring.profiles.include: remote_client_sims, dbtool-liquibase, db-docslocal, db-persinfolocal
 ### Local-Int & CI values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
-  enabled: true
   test-rollback-on-update: true
   # default liquibase operation at startup
   parameters.liquibase.operation: dbinit
 ---
 ### EXAMPLE of a possible dev db run
 spring.profiles: dev
-spring.profiles.include: db-corpdev
+spring.profiles.include: remote_client_sims, dbtool-liquibase, db-corpdev
 ### Dev values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
@@ -500,7 +457,7 @@ spring.liquibase:
 ---
 ### EXAMPLE of a possible staging db run
 spring.profiles: stage
-spring.profiles.include: db-corpstage
+spring.profiles.include: remote_client_sims, dbtool-liquibase, db-corpstage
 ### Stage values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
