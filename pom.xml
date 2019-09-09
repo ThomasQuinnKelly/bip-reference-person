@@ -46,7 +46,7 @@
 	<dependencies>
 		<!--
 			DATABASE related dependencies, configured in app yaml.
-			Available managed dependencies from bip-frameowrk-parent-pom/pom.xml:
+			Available managed dependencies from bip-framework-parentpom/pom.xml:
 			com.h2database:h2:${h2.version}
 			org.postgresql:postgresql:${postgresql.version}
 			com.oracle:ojdbc6:${ojdbc6.version}
