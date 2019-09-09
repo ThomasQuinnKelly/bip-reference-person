@@ -78,7 +78,7 @@ Databases that are not directly supported by spring require additional configura
 
 Configuration for a database takes place in the POM for build time dependencies, and in the application yaml file for runtime configuration.
 
-Multiple datasources can be managed in the application yaml using spring profiles. In most cases, no java code would be required. An example of this approach can be found in the [bip-reference-pserson service POM](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/pom.xml) (search for "database related" to quickly find the relevant entries). Comments are provided in this POM to explain how each stage of the configuration works.
+Multiple datasources can be managed in the application yaml using spring profiles. In most cases, no java code would be required. An example of this approach can be found in the [bip-reference-person reactor POM](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/pom.xml) (search for "database related" to quickly find the relevant entries). Comments are provided in this POM to explain how each stage of the configuration works.
 
 To the extent possible, keep common schema and data setups for the service and its unit tests, integration tests, and performance tests.
 
@@ -499,7 +499,7 @@ Spring Boot will enable liquibase as the database manager if the spring initiali
 
 By default, liquibase will search for a master changelog at `src/main/resources/db/changelog/db.changelog-master.yaml`. You must provide, at minimum, an "empty" changelog file at this location.
 
-<details><summary>Click here: Empty db.changelog-master.yml File</summary>
+<details><summary>Click here: Empty db.changelog-master.yaml File</summary>
 
 ```yaml
 ###############################################################################
