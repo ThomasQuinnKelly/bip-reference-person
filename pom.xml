@@ -35,6 +35,8 @@
 	</repositories>
 
 	<properties>
+		<!-- fortify scanner version -->
+		<sca-maven-plugin.version>19.10</sca-maven-plugin.version>
 		<!-- intentionally using old ant-contrib because newer version doesn't work with maven-antrun-plugin -->
 		<ant-contrib.version>20020829</ant-contrib.version>
 		<!-- the maven phase to bind fortify-sca -->
@@ -64,8 +66,8 @@
 			<groupId>org.liquibase.ext</groupId>
 			<artifactId>liquibase-hibernate5</artifactId>
 		</dependency>
+		<!-- postgresql: currently backward compatible to PostgreSQL 8.2 -->
 		<dependency>
-			<!-- currently backward compatible to PostgreSQL 8.2 -->
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
@@ -73,6 +75,14 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
+		<!-- TODO Oracle 11.1.x is on TRM Unapproved list -->
+		<!-- TODO Oracle 11.2.x is on TRM Divest schedule -->
+		<!--
+ 		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+		</dependency>
+		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>

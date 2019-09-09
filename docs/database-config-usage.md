@@ -82,9 +82,11 @@ Multiple datasources can be managed in the application yaml using spring profile
 
 To the extent possible, keep common schema and data setups for the service and its unit tests, integration tests, and performance tests.
 
-### SQL Database Configuration
-
 BIP Framework provides managed dependencies for H2, Postgres, and Oracle.
+
+Note that for non-embedded database types (e.g. postgres, oracle), the database schema must already exist. Preparation can be very simple, for example:
+* In pgadmin right-click on _Databases > Create > Database..._ and in the dialog specify the database name and click _Save_. This creates the schema.
+* You can manually add tables, or you can make table creation a changeset in your master changelog. An example of this can be found in the bip-reference-person [db.changelog-master.yaml](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/resources/db/changelog/db.changelog-master.yaml) file.
 
 <details><summary>Click here: BIP Framework managed dependencies</summary>
 

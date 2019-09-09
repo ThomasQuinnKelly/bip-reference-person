@@ -9,7 +9,7 @@ services:
       context: ./bip-reference-person
     environment:
       - spring.profiles.active=local-int
-      - spring.profiles.include=remote_client_sims,db-postgres
+      - spring.profiles.include=remote_client_sims
       - spring.cloud.consul.host=consul
       - spring.redis.host=redis
       - spring.cloud.vault.host=vault
@@ -19,31 +19,17 @@ services:
       - spring.cloud.consul.discovery.register=true
       - spring.cloud.vault.enabled=true
       - spring.cloud.vault.consul.enabled=true
-      - bip.framework.security.jwt.enabled=false
-      - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQL95Dialect
+      - bip.framework.security.jwt.enabled=true
       - spring.cloud.vault.kv.application-name=blue/bip-reference-person,blue/bip-reference-person/example-service
     ports:
       - "8080:8080"
-      - "8000:8000"
     networks:
        - bip
-    entrypoint: ["/wait-for-it.sh","postgres:5432","--timeout=0","--strict", "--", "java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=bip-reference-person:8000","-jar","/bip-reference-person.jar" ]
     depends_on:
       - consul
       - redis
       - vault
       - vault-config
-      - postgres
-
-  postgres:
-    image: postgres:12-alpine
-    restart: always
-    ports:
-      - "5432:5432"
-    networks:
-      - bip
-#   environment:
-#     POSTGRES_PASSWORD: password
 
   consul:
     image: bipdev/consul:1.4.3
