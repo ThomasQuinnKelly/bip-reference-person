@@ -12,9 +12,9 @@ Feature: Uploads a valid document for a person
     @DEV
     Examples: 
       | Veteran           | tokenrequestfile               | ServiceURL          			   | Document               		   | Payload |
-      | dev-janedoe       | dev/janedoetoken.request       | /api/v1/persons/6666345/documents | persondocs_sample_file.txt        | persondocs_payload.json |
-
+      | dev-janedoe       | dev/janedoetoken.request       | /api/v1/persons/6666345/documents | persondocs_sample_file.txt        | person_docs_metadata.json |
+  
     @VA
     Examples: 
       | Veteran          | tokenrequestfile              | ServiceURL          				 | Document                         | Payload |
-      | va-janedoe       | va/janedoetoken.request       | /api/v1/persons/6666345/documents | persondocs_sample_file.txt       | persondocs_payload.json |
+      | va-janedoe       | va/janedoetoken.request       | /api/v1/persons/6666345/documents | persondocs_sample_file.txt       | person_docs_metadata.json |

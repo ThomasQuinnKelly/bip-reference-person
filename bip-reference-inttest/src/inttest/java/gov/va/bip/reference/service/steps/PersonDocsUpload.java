@@ -11,11 +11,8 @@ import cucumber.api.java.en.When;
 import gov.va.bip.framework.test.rest.BaseStepDefHandler;
 
 /**
- * The person info feature and scenario implementations for the API needs are specified here.
- * <p>
- * For more details please Read the <a
- * href="https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/docs/referenceperson-intest.md">Integration
- * Testing Guide</a>
+ * The person documents upload feature and scenario implementations for the API needs are
+ * specified here to demonstrate using MultiPart upload.
  */
 public class PersonDocsUpload {
 
@@ -40,7 +37,7 @@ public class PersonDocsUpload {
 		builder.append(baseUrl).append(serviceURL);
 		handler.invokeAPIUsingPostWithMultiPart(builder.toString(), document, submitPayload);
 	}
-	
+
 	@And("^upload a document \"([^\"]*)\"$")
 	public void document(String document) throws Throwable {
 		this.document = document;
