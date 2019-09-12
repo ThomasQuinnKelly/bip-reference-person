@@ -39,7 +39,7 @@ public class PersonDocsDatasourceConfig extends PersonDatasourceBase {
 	private static final String DOCS_LIQUIBASE_PROPERTY_PREFIX = "db.liquibase.docs";
 	private static final String DOCS_PERSISTENCE_UNIT = "docs";
 
-	private static final String[] ENTITIES_PACKAGES = { "gov.va.bip.reference.person.data.docs.entities" };
+	private static final String[] DOCS_ENTITIES_PACKAGES = { "gov.va.bip.reference.person.data.docs.entities" };
 
 	/**
 	 * Properties for the datasource and to populate liquibase config.
@@ -85,7 +85,7 @@ public class PersonDocsDatasourceConfig extends PersonDatasourceBase {
 			@Qualifier("docsDataSource") DataSource dataSource) {
 		return builder
 				.dataSource(dataSource)
-				.packages(ENTITIES_PACKAGES)
+				.packages(DOCS_ENTITIES_PACKAGES)
 				.persistenceUnit(DOCS_PERSISTENCE_UNIT)
 				.build();
 	}

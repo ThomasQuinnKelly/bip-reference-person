@@ -11,7 +11,7 @@ import liquibase.integration.spring.SpringLiquibase;
  *
  * @author aburkholder
  */
-public class PersonDatasourceBase {
+public abstract class PersonDatasourceBase {
 
 	/**
 	 * Set Liquibase object properties using the provided datasource and properties.

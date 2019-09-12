@@ -27,20 +27,30 @@ public class PersonDataHelper {
 	@Autowired
 	PersonInfoRepo personInfoRepo;
 
+	/**
+	 * Find from PersonInfoRepo by veteran's ICN.
+	 *
+	 * @param icn
+	 * @return PersonInfo
+	 */
 	public PersonInfo getInfoForIcn(Long icn) {
 		try {
-			PersonInfo result = personInfoRepo.findByIcn(icn);
-			return result;
+			return personInfoRepo.findByIcn(icn);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw e;
 		}
 	}
 
+	/**
+	 * Find from PersonInfoRepo by veteran's email address.
+	 *
+	 * @param email
+	 * @return PersonInfo
+	 */
 	public PersonInfo getInfoForEmail(String email) {
 		try {
-			PersonInfo result = personInfoRepo.findByEmail(email);
-			return result;
+			return personInfoRepo.findByEmail(email);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw e;
@@ -79,8 +89,7 @@ public class PersonDataHelper {
 	 */
 	public PersonDoc getDocForPid(final Long pid) {
 		try {
-			PersonDoc result = personDocsRepo.findByPid(pid);
-			return result;
+			return personDocsRepo.findByPid(pid);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw e;

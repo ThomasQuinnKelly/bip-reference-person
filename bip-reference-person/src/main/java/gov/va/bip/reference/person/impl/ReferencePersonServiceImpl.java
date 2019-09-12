@@ -109,13 +109,14 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 
 		try {
 			PersonInfo info = personDataHelper.getInfoForIcn(54321L);
+			LOGGER.info("Retrieved: " + info.toString());
 		} catch (Exception e1) {
 			PersonByPidDomainResponse domainResponse = new PersonByPidDomainResponse();
 			LOGGER.error("Could not retrieve person by ICN 54321L - " + e1.getClass().getSimpleName() + ": " + e1.getMessage(), e1);
 			// check exception..create domain model response
 			domainResponse.addMessage(MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
-					MessageKeys.BIP_GLOBAL_GENERAL_EXCEPTION, new String[] { this.getClass().getSimpleName(),
-							"Could not retrieve person by ICN 54321L - " + e1.getClass().getSimpleName() + ": " + e1.getMessage() });
+					MessageKeys.BIP_GLOBAL_GENERAL_EXCEPTION, this.getClass().getSimpleName(),
+					"Could not retrieve person by ICN 54321L - " + e1.getClass().getSimpleName() + ": " + e1.getMessage());
 			return domainResponse;
 		}
 
@@ -138,18 +139,16 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		}
 
 		// try from partner
-		if (response == null) {
-			LOGGER.debug("findPersonByParticipantID no cached data found");
-			try {
-				response = personPartnerHelper.findPersonByPid(personByPidDomainRequest);
-			} catch (BipException | BipRuntimeException bipException) {
-				PersonByPidDomainResponse domainResponse = new PersonByPidDomainResponse();
-				// check exception..create domain model response
-				domainResponse.addMessage(bipException.getExceptionData().getSeverity(), bipException.getExceptionData().getStatus(),
-						bipException.getExceptionData().getMessageKey(),
-						bipException.getExceptionData().getParams());
-				return domainResponse;
-			}
+		LOGGER.debug("findPersonByParticipantID no cached data found");
+		try {
+			response = personPartnerHelper.findPersonByPid(personByPidDomainRequest);
+		} catch (BipException | BipRuntimeException bipException) {
+			PersonByPidDomainResponse domainResponse = new PersonByPidDomainResponse();
+			// check exception..create domain model response
+			domainResponse.addMessage(bipException.getExceptionData().getSeverity(), bipException.getExceptionData().getStatus(),
+					bipException.getExceptionData().getMessageKey(),
+					bipException.getExceptionData().getParams());
+			return domainResponse;
 		}
 
 		return response;

@@ -17,10 +17,10 @@ databaseChangeLog:
             name: pid
             type: INTEGER
         - column:
-            name: document_name
+            name: doc_name
             type: VARCHAR(128)
         - column:
-            name: document_creation_date
+            name: doc_create_date
             type: VARCHAR(128)
         tableName: persondocs
 
@@ -37,10 +37,10 @@ databaseChangeLog:
             name: pid
             value: 6666345
         - column:
-            name: document_name
+            name: doc_name
             value: test1
         - column:
-            name: document_creation_date
+            name: doc_create_date
             value: NULL
         tableName: persondocs
     - insert:
@@ -52,10 +52,10 @@ databaseChangeLog:
             name: pid
             value: 6666346
         - column:
-            name: document_name
+            name: doc_name
             value: test2
         - column:
-            name: document_creation_date
+            name: doc_create_date
             value: NULL
         tableName: persondocs
         

@@ -39,13 +39,13 @@ public enum PersonMessageKeys implements MessageKey {
 	BIP_PERSON_INFO_REQUEST_PID_NOT_FOUND("bip.reference.person.pid.not.found", "Pid value could not be found.");
 
 	/** The filename "name" part of the properties file to get from the classpath */
-	private static final String propertiesFile = "messages";
+	private static final String PROPERTIES_FILE = "messages";
 	/** The message source containing properties for this enum */
 	private static ReloadableResourceBundleMessageSource messageSource;
 	/* Populate the message source from the properties file */
 	static {
 		messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasename("classpath:" + propertiesFile);
+		messageSource.setBasename("classpath:" + PROPERTIES_FILE);
 		messageSource.setDefaultEncoding("UTF-8");
 	}
 

@@ -38,7 +38,7 @@ public class PersonInfoDatasourceConfig extends PersonDatasourceBase {
 	private static final String INFO_LIQUIBASE_PROPERTY_PREFIX = "db.liquibase.info";
 	private static final String INFO_PERSISTENCE_UNIT = "info";
 
-	private static final String[] ENTITIES_PACKAGES = { "gov.va.bip.reference.person.data.info.entities" };
+	private static final String[] INFO_ENTITIES_PACKAGES = { "gov.va.bip.reference.person.data.info.entities" };
 
 	/**
 	 * Properties for the datasource and to populate liquibase config.
@@ -81,7 +81,7 @@ public class PersonInfoDatasourceConfig extends PersonDatasourceBase {
 			@Qualifier("infoDataSource") DataSource dataSource) {
 		return builder
 				.dataSource(dataSource)
-				.packages(ENTITIES_PACKAGES)
+				.packages(INFO_ENTITIES_PACKAGES)
 				.persistenceUnit(INFO_PERSISTENCE_UNIT)
 				.build();
 	}

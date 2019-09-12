@@ -44,13 +44,12 @@ public class PersonByPidDomainResponseValidator extends AbstractStandardValidato
 				supplemental == null ? new PersonByPidDomainRequest() : (PersonByPidDomainRequest) supplemental;
 
 		// if response has errors, fatals or warnings skip validations
-		if (toValidate.hasErrors()
-				|| toValidate.hasFatals()
-				|| toValidate.hasWarnings()) {
+		if (toValidate != null
+				&& (toValidate.hasErrors() || toValidate.hasFatals() || toValidate.hasWarnings())) {
 			return;
 		}
 		// check if empty response, or errors / fatals
-		if (toValidate == null || toValidate.getPersonInfo() == null) {
+		if (toValidate.getPersonInfo() == null) {
 			PersonMessageKeys key = PersonMessageKeys.BIP_PERSON_INFO_REQUEST_NOTNULL;
 			LOGGER.info(key.getKey() + " " + key.getMessage());
 			throw new PersonServiceException(key, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -77,15 +76,17 @@ public class PersonByPidDomainResponseValidator extends AbstractStandardValidato
 		}
 		// check logged in user's pid matches returned pid
 		PersonTraits personTraits = SecurityUtils.getPersonTraits();
-		if (personTraits != null && StringUtils.isNotBlank(personTraits.getPid())) {
-			if (toValidate.getPersonInfo() != null
-					&& toValidate.getPersonInfo().getParticipantId() != null
-					&& !personTraits.getPid().equals(toValidate.getPersonInfo().getParticipantId().toString())) {
+		boolean hasTraits = personTraits != null
+				&& StringUtils.isNotBlank(personTraits.getPid());
+		boolean canValidate = toValidate.getPersonInfo() != null
+				&& toValidate.getPersonInfo().getParticipantId() != null;
 
-				PersonMessageKeys key = PersonMessageKeys.BIP_PERSON_INFO_REQUEST_PID_INVALID;
-				LOGGER.info(key.getKey() + " " + key.getMessage());
-				toValidate.addMessage(MessageSeverity.WARN, HttpStatus.OK, key);
-			}
+		if (hasTraits && canValidate
+				&& !personTraits.getPid().equals(toValidate.getPersonInfo().getParticipantId().toString())) {
+
+			PersonMessageKeys key = PersonMessageKeys.BIP_PERSON_INFO_REQUEST_PID_INVALID;
+			LOGGER.info(key.getKey() + " " + key.getMessage());
+			toValidate.addMessage(MessageSeverity.WARN, HttpStatus.OK, key);
 		}
 	}
 

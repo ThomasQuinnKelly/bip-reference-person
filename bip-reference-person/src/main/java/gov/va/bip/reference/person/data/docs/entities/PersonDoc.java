@@ -15,7 +15,7 @@ import javax.persistence.SequenceGenerator;
  *
  */
 @Entity
-@SequenceGenerator(name="seq", initialValue=10, allocationSize=100)
+@SequenceGenerator(name = "seq", initialValue = 10, allocationSize = 100)
 public class PersonDoc implements Serializable {
 
 	private static final long serialVersionUID = -1330928616668416505L;
@@ -65,6 +65,6 @@ public class PersonDoc implements Serializable {
 	@Override
 	public String toString() {
 		return "ClassPojo [pid = " + pid + ", docName = " + docName + ", docCreateDate = "
-				+ docCreateDate.format(DateTimeFormatter.BASIC_ISO_DATE) + "]";
+				+ (docCreateDate == null ? "null" : docCreateDate.format(DateTimeFormatter.BASIC_ISO_DATE)) + "]";
 	}
 }

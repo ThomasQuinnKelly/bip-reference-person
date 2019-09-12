@@ -12,6 +12,13 @@ import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 public class PersonDomainValidator {
 
 	/**
+	 * Do not instantiate.
+	 */
+	private PersonDomainValidator() {
+		throw new IllegalAccessError("PersonDomainValidator is a static class. Do not instantiate it.");
+	}
+
+	/**
 	 * Validates {@link PersonByPidDomainRequest} and {@link PersonByPidDomainRequest#getParticipantID()}
 	 * for {@code null} and participantID is greater than zero.
 	 *

@@ -56,10 +56,9 @@ public class FeignPersonClientFallbackFactory implements FallbackFactory<FeignPe
 				/*
 				 * HystrixBadRequestException does not trigger fallback and
 				 * hence not handled here
-				 * else if (cause instanceof HystrixBadRequestException ) {
-				 * message = "HystrixBadRequestException: " + message;
-				 *
-				 * }
+				 * else_if_(_cause_instanceof_HystrixBadRequestException_)_{_
+				 * _message_=_"HystrixBadRequestException: "_+_message_;_
+				 * _}_
 				 */
 
 				PersonInfoResponse response = new PersonInfoResponse();

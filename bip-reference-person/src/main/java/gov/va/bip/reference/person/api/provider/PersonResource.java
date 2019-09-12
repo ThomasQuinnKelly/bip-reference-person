@@ -42,6 +42,8 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	/** Logger instance */
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(PersonResource.class);
 
+	private static final String LOG_MSG_RETURNING = "Returning providerResponse to consumer";
+
 	/** The root path to this resource */
 	public static final String URL_PREFIX = "/api/v1/persons";
 
@@ -51,6 +53,9 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	@Autowired
 	BuildProperties buildProperties;
 
+	/**
+	 * Log build properties.
+	 */
 	@PostConstruct
 	public void postConstruct() {
 		// Print build properties
@@ -68,8 +73,8 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 */
 	@InitBinder
 	public void initBinder(final WebDataBinder binder) {
-		binder.setAllowedFields(new String[] { "personInfo", "firstName", "lastName", "middleName", "fileNumber",
-				"participantId", "ssn" });
+		binder.setAllowedFields("personInfo", "firstName", "lastName", "middleName", "fileNumber",
+				"participantId", "ssn");
 	}
 
 	/**
@@ -98,7 +103,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 
 		PersonInfoResponse providerResponse = serviceAdapter.personByPid(personInfoRequest);
 		// send provider response back to consumer
-		LOGGER.debug("Returning providerResponse to consumer");
+		LOGGER.debug(LOG_MSG_RETURNING);
 		return new ResponseEntity<>(providerResponse, HttpStatus.OK);
 	}
 
@@ -124,7 +129,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 			Resource resource = serviceAdapter.getSampleReferenceDocument();
 
 			// send provider response back to consumer
-			LOGGER.debug("Returning providerResponse to consumer");
+			LOGGER.debug(LOG_MSG_RETURNING);
 			return ResponseEntity.ok()
 					.contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
 					.header(HttpHeaders.CONTENT_DISPOSITION,
@@ -151,7 +156,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * The auditing aspect won't be triggered if the return type in not one of the above.
 	 *
 	 * @param pid the pid
-	 * 
+	 *
 	 * @return the PersonDocsMetadataResponse wrapped by a response entity
 	 */
 	@Override
@@ -161,7 +166,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 		PersonDocsMetadataResponse providerResponse = serviceAdapter.getMetadataDocumentForPid(pid);
 
 		// send provider response back to consumer
-		LOGGER.debug("Returning providerResponse to consumer");
+		LOGGER.debug(LOG_MSG_RETURNING);
 		return new ResponseEntity<>(providerResponse, HttpStatus.OK);
 	}
 
@@ -182,7 +187,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	 * @param docName the name of the document
 	 * @param file the file uploaded for the pid
 	 * @param docCreateDate the date of creation of the document
-	 * 
+	 *
 	 * @return the PersonDocsMetadataUploadResponse object with info about what happened after the upload method is invoked
 	 */
 	@Override
@@ -195,7 +200,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 			providerResponse =
 					serviceAdapter.storeMetaData(Long.valueOf(pid), docName, docCreateDate, file);
 			// send provider response back to consumer
-			LOGGER.debug("Returning providerResponse to consumer");
+			LOGGER.debug(LOG_MSG_RETURNING);
 			return new ResponseEntity<>(providerResponse, HttpStatus.OK);
 		} catch (PersonServiceException e) {
 			LOGGER.error(e.getMessage(), e);
