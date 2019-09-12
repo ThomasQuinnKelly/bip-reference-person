@@ -1,6 +1,6 @@
 package gov.va.bip.reference.service.steps;
 
-import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.slf4j.Logger;
@@ -142,11 +142,10 @@ public class PersonDocuments {
 	 * @throws Throwable
 	 *             the throwable
 	 */
-	@And("^validate sample document download returned message \"([^\"]*)\"$")
-	public void validatePersonDocumentsDownloadTextMessage(final String text) throws Throwable {
-		LOGGER.debug("String Response: {}", handler.getStrResponse());
-		String textMessage = handler.getStrResponse();
-		assertThat(textMessage, containsString(text));
+	@And("^validate sample document download returned content type \"([^\"]*)\"$")
+	public void validatePersonDocumentsDownloadContentType(final String type) throws Throwable {
+		String contentType = handler.getRestUtil().getResponseHttpHeaders().getContentType().toString();
+		assertThat(contentType, equalTo(type));
 	}
 
 	@After({})

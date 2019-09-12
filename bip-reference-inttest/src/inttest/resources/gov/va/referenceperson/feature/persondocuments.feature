@@ -37,20 +37,20 @@ Feature: Upload And Download of Documents For a Person
       | va-janedoe       | va/janedoetoken.request       | /api/v1/persons/6666345/documents/metadata |
       
    @persondocsdownload @happypath
-  Scenario Outline: Get Metadata for a person with PID
+  Scenario Outline: Download Sample Document for a person
     Given the claimant is a "<Veteran>"
     And invoke token API by passing header from "<tokenrequestfile>" and sets the authorization in the header
     When download a sample document using "<ServiceURL>"
     Then the service returns status code = 200
-    And validate sample document download returned message "<Text>"
+    And validate sample document download returned content type "<Type>"
 
     @DEV
     Examples: 
-      | Veteran           | tokenrequestfile               | ServiceURL         | 	Text |		   
-      | dev-janedoe-download       | dev/janedoetoken.request       | /api/v1/persons/documents/sample | Sample Reference data |
+      | Veteran           		   | tokenrequestfile               | ServiceURL         			   |   Type                     |
+      | dev-janedoe-download       | dev/janedoetoken.request       | /api/v1/persons/documents/sample |   application/octet-stream |
   
     @VA
     Examples: 
-      | Veteran          		| tokenrequestfile              | ServiceURL      |   Text | 				 
-      | va-janedoe-download     | va/janedoetoken.request       | /api/v1/persons/documents/sample | Sample Reference data |
+      | Veteran          		| tokenrequestfile              | ServiceURL      |   Type                     |		 
+      | va-janedoe-download     | va/janedoetoken.request       | /api/v1/persons/documents/sample |  application/octet-stream |
 
