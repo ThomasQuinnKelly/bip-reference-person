@@ -44,7 +44,7 @@ public class PersonDocsMetadataDomainResponseValidator extends AbstractStandardV
 			return;
 		}
 		// check if empty response, or errors / fatals
-		if (toValidate.getPersonDocsMetadataDomain() == null) {
+		if (toValidate == null || toValidate.getPersonDocsMetadataDomain() == null) {
 			PersonMessageKeys key = PersonMessageKeys.BIP_PERSON_DOCS_METADATA_NOTNULL;
 			LOGGER.info(key.getKey() + " " + key.getMessage());
 			throw new PersonServiceException(key, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);

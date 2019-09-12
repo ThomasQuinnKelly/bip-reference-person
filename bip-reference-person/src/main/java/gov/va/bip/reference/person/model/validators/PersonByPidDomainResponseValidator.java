@@ -49,7 +49,7 @@ public class PersonByPidDomainResponseValidator extends AbstractStandardValidato
 			return;
 		}
 		// check if empty response, or errors / fatals
-		if (toValidate.getPersonInfo() == null) {
+		if (toValidate == null || toValidate.getPersonInfo() == null) {
 			PersonMessageKeys key = PersonMessageKeys.BIP_PERSON_INFO_REQUEST_NOTNULL;
 			LOGGER.info(key.getKey() + " " + key.getMessage());
 			throw new PersonServiceException(key, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
