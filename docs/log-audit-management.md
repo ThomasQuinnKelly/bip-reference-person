@@ -93,7 +93,15 @@ logging:
              gov.va.bip.reference.partner: DEBUG
 ```
 
+## Viewing and Analyzing Logs
+
+Kibana is the log analyzer used as part of the EFK stack. The EFK stack is resource intensive, so is not enabled for lcoal environments. In dev, Kibana is accessed at http://kibana.dev.bip.va.gov using your personal OCP credentials. If you do not have access, please contact the BIP Platform team.
+
+You can learn how to use this powerful tool in the [Kibana User Guide](https://www.elastic.co/guide/en/kibana/current/index.html) - particularly the **Discover** section.
+
 ## Sample JSON Output for application and audit logs
+
+Note that this format is required for Kibana. It is recommended to use Kibana to view and query logs.
 
 - Log type as Audit. "logType":"auditlogs"
 
