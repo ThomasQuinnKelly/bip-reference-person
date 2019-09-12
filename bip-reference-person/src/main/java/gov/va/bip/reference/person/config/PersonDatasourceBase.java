@@ -27,7 +27,7 @@ public abstract class PersonDatasourceBase {
 	 * @param properties the properties to use
 	 * @return SpringLiquibase the liquibase object
 	 */
-	static SpringLiquibase springLiquibase(DataSource dataSource, LiquibaseProperties properties) {
+	SpringLiquibase springLiquibase(DataSource dataSource, LiquibaseProperties properties) {
 		SpringLiquibase liquibase = new SpringLiquibase();
 		liquibase.setDataSource(dataSource);
 		liquibase.setChangeLog(properties.getChangeLog());
