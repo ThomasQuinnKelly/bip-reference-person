@@ -103,15 +103,15 @@ logging:
     # Change Value to DEBUG to log all BIP framework logs
     gov.va.bip.framework: INFO
     # database logging
-    org.h2: DEBUG
-    org.postgresql: DEBUG
-    org.hibernate: DEBUG
-    org.springframework.data: DEBUG
-    org.springframework.jpa: DEBUG
-    org.springframework.orm: DEBUG
-    org.springframework.boot.autoconfigure.jdbc: DEBUG
-    com.zaxxer.hikari: DEBUG
-    org.liquibase: DEBUG
+    org.h2: INFO
+    org.postgresql: INFO
+    org.hibernate: INFO
+    org.springframework.data: INFO
+    org.springframework.jpa: INFO
+    org.springframework.orm: INFO
+    org.springframework.boot.autoconfigure.jdbc: INFO
+    com.zaxxer.hikari: INFO
+    org.liquibase: INFO
     #org.apache.http: DEBUG
     org.apache.http.impl.client: WARN
     #org.springframework: DEBUG
@@ -287,6 +287,7 @@ bip-reference-partner-person:
         truststore: ${javax.net.ssl.trustStore:classpath:test/ssl/dev/vaebnTruststore.jks}
         truststorePass: ${javax.net.ssl.trustStorePassword:password}
 
+
 #########################################################################
 #########################################################################
 ####
@@ -380,17 +381,12 @@ spring.jpa:
 ##    as declared in gov.va.bip.reference.person.config.PersonDocsDatasourceConfig
 ## The datasource property name must match the property prefix in PersonDocsDatasourceConfig
 spring.profiles: db-docslocal
-#spring.profiles.include: dbtype-postgres
 spring.profiles.include: dbtype-h2
 db.datasource.docs:
     instance.name: docslocal
     type: com.zaxxer.hikari.HikariDataSource
     ### skip spring db init - using liquibase
     initialization-mode: never
-#    driver-class-name: org.postgresql.Driver
-#    url: jdbc:${spring.jpa.database}://localhost:5432/${db.datasource.docs.instance.name}
-#    username: postgres
-#    password: password
     driver-class-name: org.h2.Driver
     url: jdbc:${spring.jpa.database}:mem:${db.datasource.docs.instance.name}
     username: 
@@ -417,16 +413,11 @@ db.liquibase.docs:
 ## The datasource property name must match the property prefix in PersonInfoDatasourceConfig
 spring.profiles: db-persinfolocal
 spring.profiles.include: dbtype-h2
-#spring.profiles.include: dbtype-postgres
 db.datasource.info:
     instance.name: persinfolocal
     type: com.zaxxer.hikari.HikariDataSource
     ### skip spring db init - using liquibase
     initialization-mode: never
-#    driver-class-name: org.postgresql.Driver
-#    url: jdbc:${spring.jpa.database}://localhost:5432/${db.datasource.info.instance.name}
-#    username: postgres
-#    password: password
     driver-class-name: org.h2.Driver
     url: jdbc:${spring.jpa.database}:mem:${db.datasource.info.instance.name}
 #    url: jdbc:${spring.jpa.database}:file:/tmp/${db.datasource.info.instance.name}.db
@@ -451,7 +442,6 @@ db.liquibase.info:
 ### EXAMPLE of a possible dev db instance
 spring.profiles: db-corpdev
 spring.profiles.include: dbtype-h2
-#spring.profiles.include: dbtype-postgres
 db.instance.name1: corpdev
 spring.datasource:
     type: com.zaxxer.hikari.HikariDataSource
@@ -461,10 +451,6 @@ spring.datasource:
     url: jdbc:${spring.jpa.database}:mem:${db.instance.name1}
     username: 
     password: 
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:${spring.jpa.database}://postgres:5432/${db.instance.name1}
-#    username: postgres
-#    password: password
 ---
 ### EXAMPLE of a possible staging db instance
 spring.profiles: db-corpstage
@@ -490,7 +476,8 @@ spring.profiles.include: db-docslocal, db-persinfolocal
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
-spring.liquibase.enabled: false
+spring.liquibase:
+  enabled: false
 ---
 ### EXAMPLE of a possible local-int / ci db run
 spring.profiles: local-int, ci
@@ -499,7 +486,7 @@ spring.profiles.include: db-docslocal, db-persinfolocal
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 ### Person*DatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
 spring.liquibase:
-  enabled: true
+  enabled: false
   test-rollback-on-update: false
   parameters:
     db.instance.name: ${db.instance.name}
@@ -509,7 +496,7 @@ spring.liquibase:
 ---
 ### EXAMPLE of a possible dev db run
 spring.profiles: dev
-spring.profiles.include: db-docslocal
+spring.profiles.include: db-docslocal, db-persinfolocal
 ### Dev values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 ### Person*DatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
@@ -525,7 +512,10 @@ spring.liquibase:
 ### EXAMPLE of a possible staging db run
 spring.profiles: stage
 spring.profiles.include: db-corpstage
-#dbtool-liquibase, 
+spring.datasource:
+  url: ${spring.datasource.url}
+  user: ${spring.datasource.username}
+  password: ${spring.datasource.password}
 ### Stage values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
@@ -533,9 +523,6 @@ spring.liquibase:
   parameters:
     db.instance.name: ${db.instance.name}
     db.type.name: ${spring.jpa.database}
-  url: ${spring.datasource.url}
-  user: ${spring.datasource.username}
-  password: ${spring.datasource.password}
+    # default liquibase operation at startup
+    liquibase.operation: dbprep
   test-rollback-on-update: true
-  # default liquibase operation at startup
-  parameters.liquibase.operation: dbprep
