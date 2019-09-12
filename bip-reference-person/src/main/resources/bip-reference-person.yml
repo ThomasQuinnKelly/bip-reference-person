@@ -316,11 +316,11 @@ spring.profiles: dbtype-h2
 ## By default, Spring Boot configures the application to connect to an 
 ## in-memory store with the username sa and an empty password. We can change 
 ## those parameters by adding the following properties
-  #spring.datasource.url=jdbc:h2:[mem|file]:[path/to/]dbinstancename
-  #spring.datasource.driverClassName=org.h2.Driver
-  #spring.datasource.username=sa
-  #spring.datasource.password=
   #spring.jpa.database=h2
+  #spring.datasource.driverClassName=org.h2.Driver
+  #spring.datasource.url=jdbc:h2:[mem|file]:[path/to/]dbinstancename
+  #spring.datasource.username=
+  #spring.datasource.password=
 ## "mem" dbs are ephemeral and do not survive spring restarts, "file" dbs do survive
 spring.jpa:
     database: h2
@@ -399,13 +399,11 @@ db.datasource.docs:
 ### Liquibase values. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 ### PersonDocsDatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
 db.liquibase.docs:
-  enabled: true
   parameters:
     db.instance.name: ${db.datasource.docs.instance.name}
     db.type.name: ${spring.jpa.database}
     # default liquibase changelog operation at startup
     liquibase.operation: dbinit
-  test-rollback-on-update: false
 ---
 ## >> To show multiple instances for one environment
 ##    This is the "non-primary" datasource,
@@ -431,13 +429,11 @@ db.datasource.info:
 ### Liquibase values. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 ### PersonInfoDatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
 db.liquibase.info:
-  enabled: true
   parameters:
     db.instance.name: ${db.datasource.info.instance.name}
     db.type.name: ${spring.jpa.database}
     # default liquibase changelog operation at startup
     liquibase.operation: dbinit
-  test-rollback-on-update: false
 ---
 ### EXAMPLE of a possible dev db instance
 spring.profiles: db-corpdev
@@ -466,9 +462,8 @@ spring.datasource:
     password: somepassword
 ---
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-####    3. Include profiles and apply database configs to execution environments
-####       - Configure database instances for their execution
-####         environment
+####    3. Include profiles to apply database configs in execution environments
+####       - Configure database instances for their execution environment
 ####       - Set liquibase config and parameters for the environment
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 spring.profiles: default
@@ -478,6 +473,7 @@ bip-reference-person:
     listOfServers: localhost:${server.port}
 spring.liquibase:
   enabled: false
+  test-rollback-on-update: false
 ---
 ### EXAMPLE of a possible local-int / ci db run
 spring.profiles: local-int, ci
@@ -488,11 +484,6 @@ spring.profiles.include: db-docslocal, db-persinfolocal
 spring.liquibase:
   enabled: false
   test-rollback-on-update: false
-  parameters:
-    db.instance.name: ${db.instance.name}
-    db.type.name: ${spring.jpa.database}
-    # default liquibase operation at startup
-    liquibase.operation: dbinit
 ---
 ### EXAMPLE of a possible dev db run
 spring.profiles: dev
@@ -501,13 +492,8 @@ spring.profiles.include: db-docslocal, db-persinfolocal
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 ### Person*DatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
 spring.liquibase:
-  enabled: true
+  enabled: false
   test-rollback-on-update: false
-  parameters:
-    db.instance.name: ${db.instance.name}
-    db.type.name: ${spring.jpa.database}
-    # default liquibase operation at startup
-    liquibase.operation: dbinit
 ---
 ### EXAMPLE of a possible staging db run
 spring.profiles: stage
@@ -520,9 +506,4 @@ spring.datasource:
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
   enabled: false
-  parameters:
-    db.instance.name: ${db.instance.name}
-    db.type.name: ${spring.jpa.database}
-    # default liquibase operation at startup
-    liquibase.operation: dbprep
   test-rollback-on-update: true
