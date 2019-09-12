@@ -100,9 +100,18 @@ logging:
     gov.va.bip.reference.person.client.rest.feign.FeignPersonClient: INFO
     # Change Value to DEBUG to log all application logs
     gov.va.bip.reference: INFO
-    org.h2: DEBUG
     # Change Value to DEBUG to log all BIP framework logs
     gov.va.bip.framework: INFO
+    # database logging
+    org.h2: DEBUG
+    org.postgresql: DEBUG
+    org.hibernate: DEBUG
+    org.springframework.data: DEBUG
+    org.springframework.jpa: DEBUG
+    org.springframework.orm: DEBUG
+    org.springframework.boot.autoconfigure.jdbc: DEBUG
+    com.zaxxer.hikari: DEBUG
+    org.liquibase: DEBUG
     #org.apache.http: DEBUG
     org.apache.http.impl.client: WARN
     #org.springframework: DEBUG
@@ -191,6 +200,17 @@ bip.framework:
       excludeUrls:
         - /**
   swagger:
+    title: BIP Reference Person Spring Boot Service v1 API Documentation
+    description: Reference Person API to demonstrate the microservice patterns on BIP Platform
+    contactName: va.gov
+    contactUrl: https://www.va.gov/
+    contactEmail: test@va.gov
+    termsOfServiceUrl: https://developer.va.gov/terms-of-service
+    licenseUrl: https://www.apache.org/licenses/LICENSE-2.0
+    license: Apache 2.0
+    groupName: "@project.name@-@project.version@"
+    version: ${info.build.version}
+    securePaths: /api/v?.*/persons/.*
     # enable/disable the swagger/openapi UI ...
     enabled: true
 ##################################################
@@ -303,15 +323,11 @@ spring.profiles: dbtype-h2
 ## "mem" dbs are ephemeral and do not survive spring restarts, "file" dbs do survive
 spring.jpa:
     database: h2
-    generate-ddl: true
+    generate-ddl: false
     hibernate:
       ddl-auto: none
       connection:
         provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
-spring.datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    ### skip spring db init - using liquibase
-    initialization-mode: never
 spring.h2.console.enabled: true
 ---
 ### Generic Postgres database definition (no url defined in this profile)
@@ -327,10 +343,6 @@ spring.jpa:
       ddl-auto: none
       connection:
         provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
-spring.datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    ### skip spring db init - using liquibase
-    initialization-mode: never
 ---
 ### Generic Oracle 11.2 / ojdbc6 database definition (no url defined in this profile)
 ### Ensure driver dependency is included in pom.xml
@@ -342,22 +354,6 @@ spring.jpa:
       ddl-auto: none
       connection:
         provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
-spring.datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    ### skip spring db init - using liquibase
-    initialization-mode: never
-    driver-class-name: oracle.jdbc.OracleDriver
----
-### LIQUIBASE (LiquibaseProperties) that are common for all DB profiles
-spring.profiles: dbtool-liquibase
-spring.liquibase:
-  enabled: true
-  parameters:
-    db.instance.name: ${db.instance.name}
-    db.type.name: ${spring.jpa.database}
-  url: ${spring.datasource.url}
-  user: ${spring.datasource.username}
-  password: ${spring.datasource.password}
 ---
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ####    2. Declaration of database instances
@@ -365,12 +361,11 @@ spring.liquibase:
 ####         for specific database instances and common liquibase params
 ####       - These instance declarations will later be used to configure
 ####         specific execution environments
-#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-## Connection Pool settings can be refined on any below profile by adjusting
-## hikari properties directly
-## A list of all Hikari parameters with a good explanation is available on
-## https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+####    ALSO: Connection Pool settings can be refined on any below profile
+####          by adjusting hikari properties directly
+####          A list of all Hikari parameters with good explanations is available at
+####          https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+####          Example properties:
 #  hikari:
 #    connection-timeout: 30000 # maximum number of milliseconds that a client will wait for a connection from connection pool
 #    minimum-idle: 5 # minimum number of idle connections that is maintained by HikariCP in connection pool
@@ -378,38 +373,109 @@ spring.liquibase:
 #    idle-timeout: 300000 # maximum amount of time in milliseconds that a connection is allowed to sit idle in connection pool
 #    max-lifetime: 1200000 #  maximum life time in milliseconds of a connection in pool after it is closed
 #    auto-commit: true # configures the default auto-commit behavior of connections returned from pool. Default value is true.
+#### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+## >> To show multiple instances for one environment
+##    This is the "primary" datasource for spring and liquibase,
+##    as declared in gov.va.bip.reference.person.config.PersonDocsDatasourceConfig
+## The datasource property name must match the property prefix in PersonDocsDatasourceConfig
 spring.profiles: db-docslocal
+#spring.profiles.include: dbtype-postgres
 spring.profiles.include: dbtype-h2
-db.instance.name: docslocal
-spring.datasource:
-    url: jdbc:${spring.jpa.database}:mem:${db.instance.name}
-    username: postgres
-    password: password
+db.datasource.docs:
+    instance.name: docslocal
+    type: com.zaxxer.hikari.HikariDataSource
+    ### skip spring db init - using liquibase
+    initialization-mode: never
+#    driver-class-name: org.postgresql.Driver
+#    url: jdbc:${spring.jpa.database}://localhost:5432/${db.datasource.docs.instance.name}
+#    username: postgres
+#    password: password
+    driver-class-name: org.h2.Driver
+    url: jdbc:${spring.jpa.database}:mem:${db.datasource.docs.instance.name}
+    username: 
+    password: 
+    hikari:
+      connection-timeout: 54321
+      minimum-idle: 5
+      maximum-pool-size: 15
+      idle-timeout: 500000
+### Liquibase values. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+### PersonDocsDatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
+db.liquibase.docs:
+  enabled: true
+  parameters:
+    db.instance.name: ${db.datasource.docs.instance.name}
+    db.type.name: ${spring.jpa.database}
+    # default liquibase changelog operation at startup
+    liquibase.operation: dbinit
+  test-rollback-on-update: false
 ---
-## >> just to show multiple instances for one environment can be declared
+## >> To show multiple instances for one environment
+##    This is the "non-primary" datasource,
+##    as declared in gov.va.bip.reference.person.config.PersonInfoDatasourceConfig
+## The datasource property name must match the property prefix in PersonInfoDatasourceConfig
 spring.profiles: db-persinfolocal
 spring.profiles.include: dbtype-h2
-db.instance.name: persinfolocal
-spring.datasource:
-    url: jdbc:${spring.jpa.database}:file:/tmp/${db.instance.name}.db
-    username: postgres
-    password: password
+#spring.profiles.include: dbtype-postgres
+db.datasource.info:
+    instance.name: persinfolocal
+    type: com.zaxxer.hikari.HikariDataSource
+    ### skip spring db init - using liquibase
+    initialization-mode: never
+#    driver-class-name: org.postgresql.Driver
+#    url: jdbc:${spring.jpa.database}://localhost:5432/${db.datasource.info.instance.name}
+#    username: postgres
+#    password: password
+    driver-class-name: org.h2.Driver
+    url: jdbc:${spring.jpa.database}:mem:${db.datasource.info.instance.name}
+#    url: jdbc:${spring.jpa.database}:file:/tmp/${db.datasource.info.instance.name}.db
+    username: 
+    password: 
+    hikari:
+      connection-timeout: 44321
+      minimum-idle: 4
+      maximum-pool-size: 14
+      idle-timeout: 400000
+### Liquibase values. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+### PersonInfoDatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
+db.liquibase.info:
+  enabled: true
+  parameters:
+    db.instance.name: ${db.datasource.info.instance.name}
+    db.type.name: ${spring.jpa.database}
+    # default liquibase changelog operation at startup
+    liquibase.operation: dbinit
+  test-rollback-on-update: false
 ---
 ### EXAMPLE of a possible dev db instance
 spring.profiles: db-corpdev
-spring.profiles.include: dbtype-postgres
-db.instance.name: corpdev
+spring.profiles.include: dbtype-h2
+#spring.profiles.include: dbtype-postgres
+db.instance.name1: corpdev
 spring.datasource:
-    url: jdbc:${spring.jpa.database}://postgres:5432/${db.instance.name}
-    username: postgres
-    password: password
+    type: com.zaxxer.hikari.HikariDataSource
+    ### skip spring db init - using liquibase
+    initialization-mode: never
+    driver-class-name: org.h2.Driver
+    url: jdbc:${spring.jpa.database}:mem:${db.instance.name1}
+    username: 
+    password: 
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:${spring.jpa.database}://postgres:5432/${db.instance.name1}
+#    username: postgres
+#    password: password
 ---
 ### EXAMPLE of a possible staging db instance
 spring.profiles: db-corpstage
 spring.profiles.include: dbtype-oracle
-db.instance.name: corpstage
 spring.datasource:
-    url: jdbc:${spring.jpa.database}:thin:@oracle:1521/${db.instance.name}
+    type: com.zaxxer.hikari.HikariDataSource
+    ### skip spring db init - using liquibase
+    initialization-mode: never
+    ### need to declare the driver name for oracle
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:${spring.jpa.database}:thin:@oracle:1521/corpstage
     username: someuser
     password: somepassword
 ---
@@ -420,44 +486,56 @@ spring.datasource:
 ####       - Set liquibase config and parameters for the environment
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 spring.profiles: default
-spring.profiles.include: dbtool-liquibase, db-docslocal, db-persinfolocal
+spring.profiles.include: db-docslocal, db-persinfolocal
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
-### Default values for Liquibase
-### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
-spring.liquibase:
-  test-rollback-on-update: false
-  # default liquibase operation at startup
-  parameters.liquibase.operation: dbinit
+spring.liquibase.enabled: false
 ---
 ### EXAMPLE of a possible local-int / ci db run
 spring.profiles: local-int, ci
-spring.profiles.include: dbtool-liquibase, db-docslocal, db-persinfolocal
+spring.profiles.include: db-docslocal, db-persinfolocal
 ### Local-Int & CI values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+### Person*DatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
 spring.liquibase:
+  enabled: true
   test-rollback-on-update: false
-  # default liquibase operation at startup
-  parameters.liquibase.operation: dbinit
+  parameters:
+    db.instance.name: ${db.instance.name}
+    db.type.name: ${spring.jpa.database}
+    # default liquibase operation at startup
+    liquibase.operation: dbinit
 ---
 ### EXAMPLE of a possible dev db run
 spring.profiles: dev
-spring.profiles.include: dbtool-liquibase, db-docslocal
+spring.profiles.include: db-docslocal
 ### Dev values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+### Person*DatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
 spring.liquibase:
+  enabled: true
   test-rollback-on-update: false
-  # default liquibase operation at startup
-  parameters.liquibase.operation: dbinit
+  parameters:
+    db.instance.name: ${db.instance.name}
+    db.type.name: ${spring.jpa.database}
+    # default liquibase operation at startup
+    liquibase.operation: dbinit
 ---
 ### EXAMPLE of a possible staging db run
 spring.profiles: stage
-spring.profiles.include: dbtool-liquibase, db-corpstage
+spring.profiles.include: db-corpstage
+#dbtool-liquibase, 
 ### Stage values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 spring.liquibase:
   enabled: false
+  parameters:
+    db.instance.name: ${db.instance.name}
+    db.type.name: ${spring.jpa.database}
+  url: ${spring.datasource.url}
+  user: ${spring.datasource.username}
+  password: ${spring.datasource.password}
   test-rollback-on-update: true
   # default liquibase operation at startup
   parameters.liquibase.operation: dbprep

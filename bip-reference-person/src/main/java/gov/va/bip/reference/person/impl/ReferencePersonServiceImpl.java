@@ -111,6 +111,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			PersonInfo info = personDataHelper.getInfoForIcn(54321L);
 		} catch (Exception e1) {
 			PersonByPidDomainResponse domainResponse = new PersonByPidDomainResponse();
+			LOGGER.error("Could not retrieve person by ICN 54321L - " + e1.getClass().getSimpleName() + ": " + e1.getMessage(), e1);
 			// check exception..create domain model response
 			domainResponse.addMessage(MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
 					MessageKeys.BIP_GLOBAL_GENERAL_EXCEPTION, new String[] { this.getClass().getSimpleName(),

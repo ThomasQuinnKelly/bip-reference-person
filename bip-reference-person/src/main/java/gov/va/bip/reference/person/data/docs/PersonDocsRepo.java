@@ -1,4 +1,4 @@
-package gov.va.bip.reference.person.data.docs.repo;
+package gov.va.bip.reference.person.data.docs;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

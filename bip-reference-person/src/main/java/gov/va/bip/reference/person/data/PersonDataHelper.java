@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
+import gov.va.bip.reference.person.data.docs.PersonDocsRepo;
 import gov.va.bip.reference.person.data.docs.entities.PersonDoc;
-import gov.va.bip.reference.person.data.docs.repo.PersonDocsRepo;
+import gov.va.bip.reference.person.data.info.PersonInfoRepo;
 import gov.va.bip.reference.person.data.info.entities.PersonInfo;
-import gov.va.bip.reference.person.data.info.repo.PersonInfoRepo;
 
 /**
  * Helper class for abstracting the data base layer

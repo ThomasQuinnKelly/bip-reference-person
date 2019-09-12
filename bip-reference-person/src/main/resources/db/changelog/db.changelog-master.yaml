@@ -24,3 +24,9 @@ databaseChangeLog:
   - include:
       file: ${db.instance.name}/${liquibase.operation}.yml
       relativeToChangelogFile: true
+#  - include:
+#      file: docslocal/${liquibase.operation}.yml
+#      relativeToChangelogFile: true
+#  - include:
+#      file: persinfolocal/${liquibase.operation}.yml
+#      relativeToChangelogFile: true
