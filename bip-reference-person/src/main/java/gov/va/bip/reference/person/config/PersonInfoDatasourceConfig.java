@@ -33,6 +33,7 @@ import liquibase.integration.spring.SpringLiquibase;
 		basePackages = "gov.va.bip.reference.person.data.info")
 public class PersonInfoDatasourceConfig extends PersonDatasourceBase {
 
+	private static final String INFO_JPA_PREFIX = "db.jpa.info";
 	private static final String INFO_DATASOURCE_PREFIX = "db.datasource.info";
 	private static final String INFO_HIKARI_DATASOURCE_PREFIX = "db.datasource.info.hikari";
 	private static final String INFO_LIQUIBASE_PROPERTY_PREFIX = "db.liquibase.info";
@@ -76,6 +77,7 @@ public class PersonInfoDatasourceConfig extends PersonDatasourceBase {
 	 * @return LocalContainerEntityManagerFactoryBean entity manager for infoDataSource
 	 */
 	@Bean
+	@ConfigurationProperties(prefix = INFO_JPA_PREFIX)
 	public LocalContainerEntityManagerFactoryBean infoEntityManagerFactory(
 			EntityManagerFactoryBuilder builder,
 			@Qualifier("infoDataSource") DataSource dataSource) {

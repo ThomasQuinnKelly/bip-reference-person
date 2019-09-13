@@ -23,7 +23,7 @@
 			Liquibase controls
 		-->
 		<!-- default database to operate on -->
-		<db.name>docslocal</db.name>
+		<db.name>persondocs</db.name>
 		<!-- root path (no file name) for changelog directories -->
 		<liquibase.changelog.path>${project.basedir}/src/main/resources/db/changelog/${db.name}</liquibase.changelog.path>
 		<!-- default context -->

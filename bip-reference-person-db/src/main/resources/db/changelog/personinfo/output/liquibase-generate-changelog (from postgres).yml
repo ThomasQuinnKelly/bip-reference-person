@@ -9,7 +9,7 @@ databaseChangeLog:
         - column:
             constraints:
               primaryKey: true
-              primaryKeyName: persinfo_pkey
+              primaryKeyName: personinfo_pkey
             name: id
             type: INTEGER
         - column:
@@ -59,7 +59,7 @@ databaseChangeLog:
         - column:
             name: assurance_level
             type: INTEGER
-        tableName: persinfo
+        tableName: personinfo
 - changeSet:
     id: 1567524164549-2
     author: aburkholder (generated)
@@ -133,8 +133,8 @@ databaseChangeLog:
             type: NUMERIC
         commentLineStartsWith: '#'
         encoding: UTF-8
-        file: /Users/aburkholder/git/bip-reference-person/bip-reference-person-db/src/main/resources/db/changelog/persinfolocal/data/persinfo.csv
+        file: /Users/aburkholder/git/bip-reference-person/bip-reference-person-db/src/main/resources/db/changelog/personinfo/data/personinfo.csv
         quotchar: '"'
         separator: ','
-        tableName: persinfo
+        tableName: personinfo
 

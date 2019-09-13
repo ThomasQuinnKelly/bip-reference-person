@@ -34,6 +34,7 @@ import liquibase.integration.spring.SpringLiquibase;
 		basePackages = "gov.va.bip.reference.person.data.docs")
 public class PersonDocsDatasourceConfig extends PersonDatasourceBase {
 
+	private static final String DOCS_JPA_PREFIX = "db.jpa.docs";
 	private static final String DOCS_DATASOURCE_PREFIX = "db.datasource.docs";
 	private static final String DOCS_HIKARI_DATASOURCE_PREFIX = "db.datasource.docs.hikari";
 	private static final String DOCS_LIQUIBASE_PROPERTY_PREFIX = "db.liquibase.docs";
@@ -80,6 +81,7 @@ public class PersonDocsDatasourceConfig extends PersonDatasourceBase {
 	 */
 	@Primary
 	@Bean
+	@ConfigurationProperties(prefix = DOCS_JPA_PREFIX)
 	public LocalContainerEntityManagerFactoryBean docsEntityManagerFactory(
 			EntityManagerFactoryBuilder builder,
 			@Qualifier("docsDataSource") DataSource dataSource) {

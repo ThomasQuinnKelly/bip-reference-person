@@ -4,17 +4,21 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Table;
+
 /**
  * PersonDoc POJO mapped to the records in the PERSONDOCS table in database
  *
  */
-@Entity
+@Entity(name = "PersonDocs")
+@Table(appliesTo = "PersonDocs")
 @SequenceGenerator(name = "seq", initialValue = 10, allocationSize = 100)
 public class PersonDoc implements Serializable {
 
@@ -26,8 +30,10 @@ public class PersonDoc implements Serializable {
 
 	private long pid;
 
+	@Column(name = "doc_name")
 	private String docName;
 
+	@Column(name = "doc_create_date")
 	private LocalDate docCreateDate;
 
 	public LocalDate getDocCreateDate() {

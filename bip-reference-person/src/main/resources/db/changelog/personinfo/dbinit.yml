@@ -1,6 +1,6 @@
 databaseChangeLog:
 - changeSet:
-    id: persinfolocal-dbinit-create
+    id: personinfo-dbinit-create
     author: bipref
     changes:
     - createTable:
@@ -8,7 +8,7 @@ databaseChangeLog:
         - column:
             constraints:
               primaryKey: true
-              primaryKeyName: persinfo_pkey
+              primaryKeyName: personinfo_pkey
             name: id
             type: INTEGER
         - column:
@@ -18,7 +18,7 @@ databaseChangeLog:
             name: pnid
             type: INTEGER
         - column:
-            name: pnidType
+            name: pnid_type
             type: VARCHAR(8)
         - column:
             constraints:
@@ -29,11 +29,14 @@ databaseChangeLog:
             name: icn
             type: INTEGER
         - column:
-            name: fileNumber
+            name: file_number
             type: INTEGER
         - column:
-            name: tokenId
+            name: token_id
             type: VARCHAR(1024)
+        - column:
+            name: birth_date
+            type: VARCHAR(128)
         - column:
             name: first_name
             type: VARCHAR(128)
@@ -58,12 +61,12 @@ databaseChangeLog:
         - column:
             name: assurance_level
             type: INTEGER
-        tableName: persinfo
+        tableName: personinfo
 
 
 
 - changeSet:
-    id: persinfolocal-dbinit-insert
+    id: personinfo-dbinit-insert
     author: bipref
     changes:
     - insert:
@@ -79,20 +82,23 @@ databaseChangeLog:
             name: pnid
             value: 123456
         - column:
-            name: pnidType
+            name: pnid_type
             value: FAKE
         - column:
             name: pid
             value: 6666345
         - column:
             name: icn
-            value: 54321
+            value: 12345
         - column:
-            name: fileNumber
+            name: file_number
             value: 6666345
         - column:
-            name: tokenId
+            name: token_id
             value: ANOTHER123FAKE456VALUE789
+        - column:
+            name: birth_date
+            value: NULL
         - column:
             name: first_name
             value: Fred
@@ -117,7 +123,7 @@ databaseChangeLog:
         - column:
             name: assurance_level
             value: 3
-        tableName: persinfo
+        tableName: personinfo
     - insert:
 #        catalogName: cat
         columns:
@@ -131,7 +137,7 @@ databaseChangeLog:
             name: pnid
             value: 654321
         - column:
-            name: pnidType
+            name: pnid_type
             value: FAKE
         - column:
             name: pid
@@ -140,11 +146,14 @@ databaseChangeLog:
             name: icn
             value: 54321
         - column:
-            name: fileNumber
+            name: file_number
             value: 6666346
         - column:
-            name: tokenId
+            name: token_id
             value: YET000ANOTHER123FAKE456VALUE789
+        - column:
+            name: birth_date
+            value: NULL
         - column:
             name: first_name
             value: Barney
@@ -169,7 +178,7 @@ databaseChangeLog:
         - column:
             name: assurance_level
             value: 3
-        tableName: persinfo
+        tableName: personinfo
 #      dbms: h2, postgresql
 #      schemaName: public
 

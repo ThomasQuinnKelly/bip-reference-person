@@ -1,6 +1,6 @@
 databaseChangeLog:
 - changeSet:
-    id: docslocal-dbinit-create
+    id: persondocs-dbinit-create
     author: bipref
     changes:
     - createTable:
@@ -8,7 +8,7 @@ databaseChangeLog:
         - column:
             constraints:
               primaryKey: true
-              primaryKeyName: personrecord_pkey
+              primaryKeyName: persondocs_pkey
             name: id
             type: INTEGER
         - column:
@@ -25,7 +25,7 @@ databaseChangeLog:
         tableName: persondocs
 
 - changeSet:
-    id: docslocal-dbinit-insert
+    id: persondocs-dbinit-insert
     author: bipref
     changes:
     - insert:

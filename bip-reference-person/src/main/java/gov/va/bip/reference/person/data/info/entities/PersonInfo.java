@@ -1,18 +1,23 @@
 package gov.va.bip.reference.person.data.info.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Table;
+
 /**
  * PersonInfo POJO mapped to the records in the PERSONDOCS table in database
  *
  */
-@Entity
+@Entity(name = "PersonInfo")
+@Table(appliesTo = "PersonInfo")
 @SequenceGenerator(name = "seq", initialValue = 10, allocationSize = 100)
 public class PersonInfo implements Serializable {
 
@@ -23,20 +28,29 @@ public class PersonInfo implements Serializable {
 	private long id;
 
 	private Long dodedipnid;
+
+	@Column(name = "pnid_type")
 	private String pnidType;
 	private Long pnid;
 	private Long pid;
 	private Long icn;
+	@Column(name = "file_number")
 	private Long fileNumber;
+	@Column(name = "token_id")
 	private String tokenId;
 
-	private String birthDate;
+	@Column(name = "birth_date")
+	private LocalDate birthDate;
+	@Column(name = "first_name")
 	private String firstName;
+	@Column(name = "last_name")
 	private String lastName;
+	@Column(name = "middle_name")
 	private String middleName;
 	private String prefix;
 	private String suffix;
 	private String gender;
+	@Column(name = "assurance_level")
 	private Integer assuranceLevel;
 	private String email;
 
@@ -155,14 +169,14 @@ public class PersonInfo implements Serializable {
 	/**
 	 * @return the birthDate
 	 */
-	public String getBirthDate() {
+	public LocalDate getBirthDate() {
 		return birthDate;
 	}
 
 	/**
 	 * @param birthDate the birthDate to set
 	 */
-	public void setBirthDate(String birthDate) {
+	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
 
