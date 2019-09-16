@@ -103,16 +103,16 @@ logging:
     # Change Value to DEBUG to log all BIP framework logs
     gov.va.bip.framework: INFO
     # database logging
-    org.h2: TRACE
+    org.h2: INFO
     org.postgresql: INFO
-    org.hibernate: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    org.springframework.data: DEBUG
-    org.springframework.jpa: DEBUG
-    org.springframework.orm: DEBUG
-    org.springframework.boot.autoconfigure.jdbc: DEBUG
-    com.zaxxer.hikari: DEBUG
-    org.liquibase: DEBUG
+    org.hibernate: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: INFO
+    org.springframework.data: INFO
+    org.springframework.jpa: INFO
+    org.springframework.orm: INFO
+    org.springframework.boot.autoconfigure.jdbc: INFO
+    com.zaxxer.hikari: INFO
+    org.liquibase: INFO
     #org.apache.http: DEBUG
     org.apache.http.impl.client: WARN
     #org.springframework: DEBUG

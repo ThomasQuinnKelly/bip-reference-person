@@ -33,6 +33,7 @@ public class PersonDoc implements Serializable {
 	@Column(name = "doc_name")
 	private String docName;
 
+	@SuppressWarnings("squid:S3437") //LocalDate is serializable
 	@Column(name = "doc_create_date")
 	private LocalDate docCreateDate;
 

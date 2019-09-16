@@ -11,7 +11,7 @@ import gov.va.bip.reference.partner.person.ws.transfer.ObjectFactory;
  *
  * @author aburkholder
  */
-public class PersonByPid_PartnerToDomain extends AbstractPartnerToDomain<FindPersonByPtcpntIdResponse, PersonByPidDomainResponse> {
+public class PersonByPidPartnerToDomain extends AbstractPartnerToDomain<FindPersonByPtcpntIdResponse, PersonByPidDomainResponse> {
 
 	/** The Constant PERSON_OBJECT_FACTORY. */
 	protected static final ObjectFactory PERSON_OBJECT_FACTORY = new ObjectFactory();
