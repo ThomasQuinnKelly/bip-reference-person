@@ -395,7 +395,7 @@ Projects using only one datasource can leverage Spring Boot's autoconfiguration.
 
 	* If you intend to use liquibase to run changelogs on server startup, make sure you turn off the spring/hibernate equivalent. The specific elements from the above example are ...
 
-	<details><summary>Click here: Turning Off Sring/Hibernate Startup Scripting</summary>
+	<details><summary>Click here: Turning Off Spring/Hibernate Startup Scripting</summary>
 
 	```yaml
 	spring.profiles: some-db-profile-identifier
