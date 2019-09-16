@@ -323,6 +323,8 @@ bip-reference-partner-person:
 ##    This is the "primary" datasource for spring and liquibase,
 ##    as declared in gov.va.bip.reference.person.config.PersonDocsDatasourceConfig
 ## The datasource property name must match the property prefix in PersonDocsDatasourceConfig
+
+### Datasource for database named "persondocs"
 spring.profiles: db-persondocs
 spring.h2.console.enabled: true
 db.jpa.docs:
@@ -349,11 +351,11 @@ db.datasource.docs:
     username: 
     password: 
     hikari:
-      connection-timeout: 900000
-      maxLifetime: 900000
-      minimum-idle: 5
-      maximum-pool-size: 15
-      idle-timeout: 0
+      connection-timeout: 4000
+      maxLifetime: 4000
+      minimum-idle: 4
+      maximum-pool-size: 14
+      idle-timeout: 40000
 ### Liquibase values. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 ### PersonDocsDatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
 db.liquibase.docs:
@@ -367,6 +369,8 @@ db.liquibase.docs:
 ##    This is the "non-primary" datasource,
 ##    as declared in gov.va.bip.reference.person.config.PersonInfoDatasourceConfig
 ## The datasource property name must match the property prefix in PersonInfoDatasourceConfig
+
+### Datasource for database named "personinfo"
 spring.profiles: db-personinfo
 db.jpa.info:
     database: h2
@@ -395,11 +399,11 @@ db.datasource.info:
     hibernate:
       naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     hikari:
-      connection-timeout: 800000
-      maxLifetime: 800000
+      connection-timeout: 5000
+      maxLifetime: 50000
       minimum-idle: 5
       maximum-pool-size: 15
-      idle-timeout: 0
+      idle-timeout: 50000
 ### Liquibase values. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 ### PersonInfoDatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
 db.liquibase.info:
@@ -409,10 +413,10 @@ db.liquibase.info:
     # default liquibase changelog operation at startup
     liquibase.operation: dbinit
 ---
-### EXAMPLE of a possible dev db instance
+### EXAMPLE of a possible single-datasource dev db instance
 spring.profiles: db-single-persondocs
 spring.h2.console.enabled: true
-db.jpa.docs:
+spring.jpa:
     database: h2
     generate-ddl: false
     properties:
@@ -425,33 +429,46 @@ db.jpa.docs:
       ddl-auto: none
       connection:
         provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
-db.datasource.docs:
+spring.datasource:
     instance.name: persondocs
     type: com.zaxxer.hikari.HikariDataSource
     ### skip spring db init - using liquibase
     initialization-mode: never
     driver-class-name: org.h2.Driver
-    url: jdbc:${db.jpa.docs.database}:mem:${db.datasource.docs.instance.name}
+    url: jdbc:${spring.jpa.database}:mem:${spring.datasource.instance.name}
     ### user/pass must be set up in Vault, e.g. ${bip.database.[local|ci|dev|stage|prod].persondocs.[username|password]}
     username: 
     password: 
     hikari:
-      connection-timeout: 900000
-      maxLifetime: 900000
-      minimum-idle: 5
-      maximum-pool-size: 15
-      idle-timeout: 0
+      connection-timeout: 6000
+      maxLifetime: 6000
+      minimum-idle: 6
+      maximum-pool-size: 16
+      idle-timeout: 60000
 ### Liquibase values. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 ### PersonDocsDatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
-db.liquibase.docs:
+spring.liquibase:
   parameters:
-    db.instance.name: ${db.datasource.docs.instance.name}
-    db.type.name: ${db.jpa.docs.database}
+    db.instance.name: ${spring.datasource.instance.name}
+    db.type.name: ${spring.jpa.database}
     # default liquibase changelog operation at startup
     liquibase.operation: dbinit
 ---
 ### EXAMPLE of a possible oracle db instance
 spring.profiles: db-single-oracle
+spring.jpa:
+    database: oracle
+    generate-ddl: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.OracleDialect
+        hibernate.format_sql: true
+    hibernate:
+      show-sql: true
+      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: none
+      connection:
+        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
 spring.datasource:
     instance.name: persondocs
     type: com.zaxxer.hikari.HikariDataSource
@@ -464,17 +481,17 @@ spring.datasource:
     username: ${bip.database.stage.persondocs.username}
     password: ${bip.database.stage.persondocs.password}
     hikari:
-      connection-timeout: 900000
-      maxLifetime: 900000
-      minimum-idle: 5
-      maximum-pool-size: 15
-      idle-timeout: 0
+      connection-timeout: 7000
+      maxLifetime: 7000
+      minimum-idle: 7
+      maximum-pool-size: 17
+      idle-timeout: 7000
 ### Liquibase values. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 ### PersonDocsDatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
 spring.liquibase.docs:
   parameters:
     db.instance.name: ${spring.datasource.instance.name}
-    db.type.name: ${db.jpa.docs.database}
+    db.type.name: ${spring.jpa.database}
     # default liquibase changelog operation at startup
     liquibase.operation: dbinit
 ---
@@ -483,6 +500,8 @@ spring.liquibase.docs:
 ####       - Add db config to the relevant environment
 ####       - Tweak any instance/environment specific settings
 #### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+### Add the "db-persondocs" and "db-personinfo" datasource profiles to the "default" environment
 spring.profiles: default
 spring.profiles.include: db-persondocs, db-personinfo
 bip-reference-person:
@@ -493,6 +512,7 @@ spring.liquibase:
   test-rollback-on-update: false
 ---
 ### EXAMPLE of a possible local-int / ci db run
+### Add the "db-persondocs" and "db-personinfo" datasource profiles to the "local-int" and "ci" environments
 spring.profiles: local-int, ci
 spring.profiles.include: db-persondocs, db-personinfo
 ### Local-Int & CI values for Liquibase
@@ -503,6 +523,7 @@ spring.liquibase:
   test-rollback-on-update: false
 ---
 ### EXAMPLE of a possible dev db run
+### Add the "db-persondocs" and "db-personinfo" datasource profiles to the "dev" environment
 spring.profiles: dev
 spring.profiles.include: db-persondocs, db-personinfo
 ### Dev values for Liquibase
@@ -513,6 +534,7 @@ spring.liquibase:
   test-rollback-on-update: false
 ---
 ### EXAMPLE of a possible staging db run
+### Addd the "db-single-oracle" datasource profile to the "stage" environment
 spring.profiles: stage
 spring.profiles.include: db-single-oracle
 spring.datasource:
