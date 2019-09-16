@@ -1,12 +1,12 @@
 ## What is this repository for?
 
-This project attempts to demonstrate a relatively generic pattern that should be able to serve any BIP project as a starting point for database and related java development. Maven, Spring and Liquibase are flexible products, and there are hundreds of ways to set up and configure these tools to work together. Here, we have strived to provide some best practices, and some suggestions for maintainable solutions to complex problems.
+This project attempts to demonstrate a relatively generic pattern that should be able to serve any BIP project as a starting point for database and related java development. There are hundreds of ways to set up and configure a project like this. Here, we have strived to provide some best practices, and some suggestions for maintainable solutions to complex problems.
 
 Use this project as a guide to set up, configure, automate, and test things such as one-time schema or data updates, datasets for testing, enhancements, on-going manual maintenance operations, etc.
 
 ## About the database project
 
-The project consists of configurations working together in maven, spring, and liquibase that can be used to perform repeatable or one-shot operations on databases. It provides suggestions and example implementations that can be used as a starting point, and that can be tailored to the specific needs of any project.
+The project consists of configurations working together using the liquibase-maven-plugin that can be used to perform repeatable or one-shot operations on databases. It provides suggestions and example implementations that can be used as a starting point, and that can be tailored to the specific needs of any project.
 
 - Utilizes dependency management provided by the bip-framework-parent-pom project to help manage TRM compliance and product interoperability.
 
