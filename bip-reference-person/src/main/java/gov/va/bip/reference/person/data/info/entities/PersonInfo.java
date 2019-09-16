@@ -39,6 +39,7 @@ public class PersonInfo implements Serializable {
 	@Column(name = "token_id")
 	private String tokenId;
 
+	@SuppressWarnings("squid:S3437") //LocalDate is serializable
 	@Column(name = "birth_date")
 	private LocalDate birthDate;
 	@Column(name = "first_name")

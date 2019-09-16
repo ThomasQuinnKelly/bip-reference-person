@@ -25,9 +25,9 @@ import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
 import gov.va.bip.reference.person.model.PersonDocsMetadataDomainRequest;
 import gov.va.bip.reference.person.model.PersonDocsMetadataDomainResponse;
-import gov.va.bip.reference.person.transform.impl.PersonByPid_DomainToProvider;
-import gov.va.bip.reference.person.transform.impl.PersonByPid_ProviderToDomain;
-import gov.va.bip.reference.person.transform.impl.PersonDocsMetadata_DomainToProvider;
+import gov.va.bip.reference.person.transform.impl.PersonByPidDomainToProvider;
+import gov.va.bip.reference.person.transform.impl.PersonByPidProviderToDomain;
+import gov.va.bip.reference.person.transform.impl.PersonDocsMetadataDomainToProvider;
 import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 
 /**
@@ -41,12 +41,12 @@ public class ServiceAdapter {
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(ServiceAdapter.class);
 
 	/** Transform Provider (REST) request to Domain (service) request */
-	private PersonByPid_ProviderToDomain personByPidProvider2Domain = new PersonByPid_ProviderToDomain();
+	private PersonByPidProviderToDomain personByPidProvider2Domain = new PersonByPidProviderToDomain();
 	/** Transform Domain (service) response to Provider (REST) response */
-	private PersonByPid_DomainToProvider personByPidDomain2Provider = new PersonByPid_DomainToProvider();
+	private PersonByPidDomainToProvider personByPidDomain2Provider = new PersonByPidDomainToProvider();
 	/** Transform Domain (service) response to Provider (REST) response */
-	private PersonDocsMetadata_DomainToProvider personDocsMetadataDomain2Provider =
-			new PersonDocsMetadata_DomainToProvider();
+	private PersonDocsMetadataDomainToProvider personDocsMetadataDomain2Provider =
+			new PersonDocsMetadataDomainToProvider();
 
 	/** The service layer API contract for processing personByPid() requests */
 	@Autowired
