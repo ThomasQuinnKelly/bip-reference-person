@@ -11,22 +11,8 @@
 ###############################################################################
 
 databaseChangeLog:
-### Special includes to create databases as a one-time operation.
-#  - include:
-#      file: db/extensions/createdb/postgres/persondocs.yml
-#      relativeToChangelogFile: false
-#  - include:
-#      file: db/extensions/createdb/postgres/personinfo.yml
-#      relativeToChangelogFile: false
-
 ### The common include, usually all that is needed.
 ### Invocation *MUST* specify the db instance and the operation to perform
   - include:
       file: ${db.instance.name}/${liquibase.operation}.yml
       relativeToChangelogFile: true
-#  - include:
-#      file: persondocs/${liquibase.operation}.yml
-#      relativeToChangelogFile: true
-#  - include:
-#      file: personinfo/${liquibase.operation}.yml
-#      relativeToChangelogFile: true
