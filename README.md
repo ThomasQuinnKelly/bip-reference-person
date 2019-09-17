@@ -18,12 +18,12 @@ BIP Framework has been updated to use the OpenAPI v3 "design first" approach to 
 
 2. [bip-reference-partner-person](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-partner-person): Partner service for reference person, showing sample mock data for BGS. It should be noted by service designers and tech leads that Partner projects would typically be stand-alone (in their own repo, and not part of a reactor project). The intent is for Partner projects to be freely available for use by any number of service applications that might need them by including them as a maven dependency.
 
-3. [bip-reference-person](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-person): Service implementation project. This project demonstrates the recommended design patterns, configuration pointers, and coding examples. It shows how to produce a documented endpoint, how to register the app with Consul, how to use secrets from Vault, how to implement a Hystrix circuit breaker, how to get and use loggers, etc. The design consists of three layers:
-	- The Provider (or "web") layer contains the REST endpoints and model, JSR 303 annotations in the resource class and the model, and the use of an adapter class to transform models and call the service interface.
+3. [bip-reference-person](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-person): Service implementation project. This project demonstrates the recommended design patterns, configuration pointers, and coding examples. It shows how to produce a documented end-point, how to register the app with Consul, how to use secrets from Vault, how to implement a Hystrix circuit breaker, how to get and use loggers, etc. The design consists of three layers:
+	- The Provider (or "web") layer contains the REST end-points and model, JSR 303 annotations in the resource class and the model, and the use of an adapter class to transform models and call the service interface. The end-points demonstrate use cases such that fetching some data based on a request, submitting data, file uploads and downloads.
 	- The Domain (or "service") layer contains examples of business validation, business logic,  to call Partner services and process the returned data, and exception handling.
 	- The Partner (or "client") layer shows how to perform model transformation, how to call a partner client interface, and how to handle responses (or exceptions thrown) from the partner client.
 
-4. [bip-reference-inttest](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-inttest): Contains the integration tests using the framework Test Library Spring Rest Template, Cucumber libraries, and other capabilities). It includes functioning test cases that run against the endpoints in `bip-reference-person`.
+4. [bip-reference-inttest](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-inttest): Contains the integration tests using the framework Test Library Spring Rest Template, Cucumber libraries, and other capabilities). It includes functioning test cases that run against the end-points in `bip-reference-person`.
 
 5. [bip-reference-perftest](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-perftest): Contains functioning performance JMX test scripts for Apache JMeter that run against the endpoints in `bip-reference-person`.
 
@@ -98,6 +98,7 @@ The fastest way to get set up is to visit the [Quick Start Guide](docs/quick-sta
 * [Cache Management](docs/cache-management.md)
 * [Validation Management](docs/validation.md)
 * [Exception Handling](docs/exception-handling.md)
+* [Database Management](docs/database-config-usage.md)
 * [Hystrix Circuit Breaker Management](docs/hystrix-management.md)
 * [Actuator Management](docs/actuator-management.md)
 * [Build Info and Git Properties Plugin](docs/build-and-git-properties.md)

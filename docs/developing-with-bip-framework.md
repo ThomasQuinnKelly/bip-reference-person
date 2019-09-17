@@ -6,14 +6,14 @@ For more information, refer to the [bip-framework README.md](https://github.ec.v
 ## Design Considerations
 BIP Framework provides for distinct separation of model objects between the **Provider**, **Domain**, and **Partner** layers. For more information, see [Design: Layer and Model Separation](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/docs/design-layer-separation.md).
 
-Refer to the [bip-reference-spring-boot](https://github.ec.va.gov/EPMO/bip-reference-person) application for detailed information. It demonstrate suggested patterns, packaging, and framework usage when developing a new application for the BIP platform.
+Refer to the [bip-reference-person](https://github.ec.va.gov/EPMO/bip-reference-person) application for detailed information. It demonstrate suggested patterns, packaging, and framework usage when developing a new application for the BIP platform.
 
 The BIP Framework makes use of the Spring AOP implementation of AspectJ for audit and performance logging. Compile-time code weaving is not used.
 
 ## Configuration
-Platform capabilities are initialized in the bip-framework-autoconfigure artifact. The service application must enable these capabilities with the appropriate annotations in the application classes. Properties for managing these capabilities can be added to the application YAML. The [bip-reference README](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master#application-core-concepts-and-patterns) section provides links for more detailed information.
+Platform capabilities are initialized in the bip-framework-autoconfigure artifact. The service application must enable these capabilities with the appropriate annotations in the application classes. Properties for managing these capabilities can be added to the application YAML. The [bip-reference-person README.md](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master#application-core-concepts-and-patterns) section provides links for more detailed information.
 
-Application configuration of framework capabilities can be managed in the application YAML as identified in the sections below. See [bip-reference-person.yml](https://github.ec.va.gov/EPMO/bip-reference-person/blob/mastaer/bip-reference-person/src/main/resources/bip-reference-person.yml) for an example of a functioning configuration.
+Application configuration of framework capabilities can be managed in the application YAML as identified in the sections below. See [bip-reference-person.yml](https://github.ec.va.gov/EPMO/bip-reference-person/blob/master/bip-reference-person/src/main/resources/bip-reference-person.yml) for an example of a functioning configuration. Locate the configuration starting with prefix `bip.framework:` that has properties for JWT security, Swagger, REST and Cache.
 
 Remaining application configuration should conform to normal spring configuration with a `@SpringBootApplication` class and other classes annotated with `@Configuration`.
 
@@ -39,8 +39,8 @@ The framework offers useful extensions that help exceptions natively integrate t
 For configuration and implementation information, see [Log and Audit Management](log-audit-management.md).
 
 ## Audit Logging
-Audit events may be triggered from an aspect or interceptor, and occur automatically when:
-* A request is received at a REST resource class annotated with `@Controller`
+Audit events are triggered from an aspect or interceptor, and occur automatically when:
+* A request is received at a REST resource class annotated with `@RestController`
 * A call is made to a remoted or inter-service partner
 * Data is retrieved from the Cache
 
@@ -54,7 +54,7 @@ Audit can manually be invoked:
 For configuration and implementation information, see [Log and Audit Management](log-audit-management.md).
 
 ## Performance Logging
-Performance logging is automatically invoked by the `RestProviderTimerAspect`, and occurs automatically.
+Performance logging is automatically invoked by the `RestProviderTimerAspect` and `ServiceTimerAspect`, and occurs automatically as an around advice to log the response time for the rest controller and service methods with cross cutting concerns as defined in [`BaseHttpProviderPointcuts` class](https://github.ec.va.gov/EPMO/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/rest/provider/aspect/BaseHttpProviderPointcuts.java)
 
 ## Model Transformation
 The framework encourages separation of layers (or "tiers") and their associated model objects. Layer separation is supported with a simple transformer pattern. For more information, see [Layer and Model Separation Design](design-layer-separation.md).
@@ -67,7 +67,7 @@ Validation at the REST API should be performed using only standard JSR 303 annot
 For more information, see [Validation](validation.md).
 
 ## Cache
-Service impelementation classes can add properly declared `@CachePut` annotations to the overridden methods of their inteface. Once configuration and annotation is done, no other intervention is needed.
+Service impelementation classes can add properly declared `@CachePut` annotations to the overridden methods of their interface. Once configuration and annotation is done, no other intervention is needed.
 
 For more information about cache and redis configuration, see [Cache Management](cache-management.md). An example of annotating a method, see the [ReferencePersonServiceImpl class](https://github.ec.va.gov/EPMO/bip-reference-person/blob/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/impl/ReferencePersonServiceImpl.java) and [bip-framework-autoconfigure cache.autoconfigure](https://github.ec.va.gov/EPMO/bip-framework/tree/master/bip-framework-autoconfigure#govvabipframeworkcacheautoconfigure).
 
