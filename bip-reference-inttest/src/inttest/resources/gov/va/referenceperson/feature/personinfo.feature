@@ -1,4 +1,4 @@
-Feature: PID based Person Info from Person Partner Service.
+Feature: PID Based Person Information from Person Partner Service.
 
   @personinfo @happypath
   Scenario Outline: PID based Person Info from Person Partner Service for valid PID.
