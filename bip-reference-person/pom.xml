@@ -14,7 +14,6 @@
 
 	<artifactId>bip-reference-person</artifactId>
 	<packaging>jar</packaging>
-
 	<name>${project.artifactId}</name>
 	<description>Reference Person Service Implementation for BIP Spring Boot Project</description>
 
@@ -23,6 +22,7 @@
 	</properties>
 
 	<dependencies>
+		<!-- framework dependencies -->
 		<dependency>
 			<groupId>gov.va.bip.framework</groupId>
 			<artifactId>bip-framework-libraries</artifactId>
@@ -168,16 +168,15 @@
 	<build>
 		<plugins>
 			<plugin>
-
 				<!--
 					* Meta-information about the web application.<br/><br/>
 					*
-					* The templating maven plugin handles generating and copying files from a source to a given output directory, while 
+					* The templating maven plugin handles generating and copying files from a source to a given output directory, while
 					filtering them.
-					* This plugin is useful to filter Java Source Code as there is a need to have things in the code replaced with properties 
+					* This plugin is useful to filter Java Source Code as there is a need to have things in the code replaced with properties
 					values.
 					* Generates class to store project.* properties in the ApplicationInfo.java placed under <sourceDirectory>
-					* This mojo helps adding a filtered source folder in one go. This is useful as we want to use properties coming from 
+					* This mojo helps adding a filtered source folder in one go. This is useful as we want to use properties coming from
 					the POM inside
 					* parts of our source code that requires real constants
 					*

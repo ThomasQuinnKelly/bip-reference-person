@@ -9,7 +9,7 @@ import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
  *
  * @author aburkholder
  */
-public class PersonByPid_DomainToPartner extends AbstractDomainToPartner<PersonByPidDomainRequest, FindPersonByPtcpntId> {
+public class PersonByPidDomainToPartner extends AbstractDomainToPartner<PersonByPidDomainRequest, FindPersonByPtcpntId> {
 
 	/**
 	 * Transform a service Domain {@link PersonByPidDomainRequest} into a Partner client {@link FindPersonByPtcpntId} request object.

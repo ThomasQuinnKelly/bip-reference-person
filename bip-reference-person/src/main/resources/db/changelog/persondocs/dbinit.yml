@@ -1,0 +1,61 @@
+databaseChangeLog:
+- changeSet:
+    id: persondocs-dbinit-create
+    author: bipref
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: persondocs_pkey
+            name: id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: pid
+            type: INTEGER
+        - column:
+            name: doc_name
+            type: VARCHAR(128)
+        - column:
+            name: doc_create_date
+            type: VARCHAR(128)
+        tableName: persondocs
+
+- changeSet:
+    id: persondocs-dbinit-insert
+    author: bipref
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: id
+            value: 1
+        - column:
+            name: pid
+            value: 6666345
+        - column:
+            name: doc_name
+            value: test1
+        - column:
+            name: doc_create_date
+            value: NULL
+        tableName: persondocs
+    - insert:
+        columns:
+        - column:
+            name: id
+            value: 2
+        - column:
+            name: pid
+            value: 6666346
+        - column:
+            name: doc_name
+            value: test2
+        - column:
+            name: doc_create_date
+            value: NULL
+        tableName: persondocs
+        

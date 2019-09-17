@@ -1,0 +1,65 @@
+databaseChangeLog:
+- changeSet:
+    id: 1567641846581-1
+    author: aburkholder (generated)
+    context: tempdev
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: PersonInfoPK
+            name: id
+            type: BIGINT
+        - column:
+            name: assuranceLevel
+            type: INT
+        - column:
+            name: birthDate
+            type: VARCHAR(255)
+        - column:
+            name: dodedipnid
+            type: BIGINT
+        - column:
+            name: email
+            type: VARCHAR(255)
+        - column:
+            name: fileNumber
+            type: BIGINT
+        - column:
+            name: firstName
+            type: VARCHAR(255)
+        - column:
+            name: gender
+            type: VARCHAR(255)
+        - column:
+            name: icn
+            type: BIGINT
+        - column:
+            name: lastName
+            type: VARCHAR(255)
+        - column:
+            name: middleName
+            type: VARCHAR(255)
+        - column:
+            name: pid
+            type: BIGINT
+        - column:
+            name: pnid
+            type: BIGINT
+        - column:
+            name: pnidType
+            type: VARCHAR(255)
+        - column:
+            name: prefix
+            type: VARCHAR(255)
+        - column:
+            name: suffix
+            type: VARCHAR(255)
+        - column:
+            name: tokenId
+            type: VARCHAR(255)
+        tableName: PersonInfo
+

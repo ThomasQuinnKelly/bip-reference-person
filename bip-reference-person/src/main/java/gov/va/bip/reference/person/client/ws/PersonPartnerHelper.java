@@ -11,8 +11,8 @@ import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.reference.person.exception.PersonServiceException;
 import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
-import gov.va.bip.reference.person.transform.impl.PersonByPid_DomainToPartner;
-import gov.va.bip.reference.person.transform.impl.PersonByPid_PartnerToDomain;
+import gov.va.bip.reference.person.transform.impl.PersonByPidDomainToPartner;
+import gov.va.bip.reference.person.transform.impl.PersonByPidPartnerToDomain;
 import gov.va.bip.reference.partner.person.client.ws.PersonWsClient;
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntId;
 import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
@@ -40,10 +40,10 @@ public class PersonPartnerHelper {
 	private PersonWsClient personWsClient;
 
 	/** Transformer for domain-to-partner model transformation */
-	private PersonByPid_DomainToPartner personByPidD2P = new PersonByPid_DomainToPartner();
+	private PersonByPidDomainToPartner personByPidD2P = new PersonByPidDomainToPartner();
 
 	/** Transformer for partner-to-domain model transformation */
-	private PersonByPid_PartnerToDomain personByPidP2D = new PersonByPid_PartnerToDomain();
+	private PersonByPidPartnerToDomain personByPidP2D = new PersonByPidPartnerToDomain();
 
 	/**
 	 * Make the partner call to find person information by participant id.
