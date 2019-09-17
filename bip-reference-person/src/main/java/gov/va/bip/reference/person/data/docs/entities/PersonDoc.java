@@ -1,22 +1,26 @@
-package gov.va.bip.reference.person.data.entities;
+package gov.va.bip.reference.person.data.docs.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Table;
+
 /**
- * PersonDocs POJO mapped to the records in the PERSONDOCS table in database
+ * PersonDoc POJO mapped to the records in the PERSONDOCS table in database
  *
  */
-@Entity
-@SequenceGenerator(name="seq", initialValue=10, allocationSize=100)
-public class PersonDocs implements Serializable {
+@Entity(name = "PersonDocs")
+@Table(appliesTo = "PersonDocs")
+@SequenceGenerator(name = "seq", initialValue = 10, allocationSize = 100)
+public class PersonDoc implements Serializable {
 
 	private static final long serialVersionUID = -1330928616668416505L;
 
@@ -26,8 +30,11 @@ public class PersonDocs implements Serializable {
 
 	private long pid;
 
+	@Column(name = "doc_name")
 	private String docName;
 
+	@SuppressWarnings("squid:S3437") //LocalDate is serializable
+	@Column(name = "doc_create_date")
 	private LocalDate docCreateDate;
 
 	public LocalDate getDocCreateDate() {
@@ -65,6 +72,6 @@ public class PersonDocs implements Serializable {
 	@Override
 	public String toString() {
 		return "ClassPojo [pid = " + pid + ", docName = " + docName + ", docCreateDate = "
-				+ docCreateDate.format(DateTimeFormatter.BASIC_ISO_DATE) + "]";
+				+ (docCreateDate == null ? "null" : docCreateDate.format(DateTimeFormatter.BASIC_ISO_DATE)) + "]";
 	}
 }

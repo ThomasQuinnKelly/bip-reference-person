@@ -29,47 +29,43 @@ public class FeignPersonClientFallbackFactory implements FallbackFactory<FeignPe
 	@Override
 	public FeignPersonClient create(final Throwable cause) {
 
-		return new FeignPersonClient() {
-			@Override
-			public PersonInfoResponse personByPid(@RequestBody final PersonInfoRequest personInfoRequest) {
-				LOGGER.info("FeignPersonClient fallback invoked");
-				String message = cause.getMessage();
+		return (@RequestBody final PersonInfoRequest personInfoRequest) -> {
+			LOGGER.info("FeignPersonClient fallback invoked");
+			String message = cause.getMessage();
 
-				LOGGER.error("FeignPersonClient fallback Throwable: {}", cause);
+			LOGGER.error("FeignPersonClient fallback Throwable: {}", cause);
 
-				if (cause instanceof HystrixRuntimeException) {
-					message = "HystrixRuntimeException: " + message;
+			if (cause instanceof HystrixRuntimeException) {
+				message = "HystrixRuntimeException: " + message;
 
-				} else if (cause instanceof HystrixTimeoutException) {
-					message = "HystrixTimeoutException: " + message;
+			} else if (cause instanceof HystrixTimeoutException) {
+				message = "HystrixTimeoutException: " + message;
 
-				} else if (cause instanceof BipFeignRuntimeException) {
-					BipFeignRuntimeException exception = (BipFeignRuntimeException) cause;
-					PersonInfoResponse response = new PersonInfoResponse();
-					response.addMessage(MessageSeverity.ERROR,
-							exception.getExceptionData().getKey(),
-							exception.getMessage(),
-							exception.getExceptionData().getStatus());
-					return response;
-				}
-
-				/*
-				 * HystrixBadRequestException does not trigger fallback and
-				 * hence not handled here
-				 * else if (cause instanceof HystrixBadRequestException ) {
-				 * message = "HystrixBadRequestException: " + message;
-				 *
-				 * }
-				 */
-
-				PersonInfoResponse response = new PersonInfoResponse();
-				response.addMessage(MessageSeverity.FATAL,
-						HttpStatus.SERVICE_UNAVAILABLE.getReasonPhrase(),
-						message,
-						HttpStatus.SERVICE_UNAVAILABLE);
-				return response;
-
+			} else if (cause instanceof BipFeignRuntimeException) {
+				BipFeignRuntimeException exception = (BipFeignRuntimeException) cause;
+				PersonInfoResponse response1 = new PersonInfoResponse();
+				response1.addMessage(MessageSeverity.ERROR,
+						exception.getExceptionData().getKey(),
+						exception.getMessage(),
+						exception.getExceptionData().getStatus());
+				return response1;
 			}
+
+			/*
+			 * HystrixBadRequestException does not trigger fallback and
+			 * hence not handled here
+			 * else_if_(_cause_instanceof_HystrixBadRequestException_)_{_
+			 * _message_=_"HystrixBadRequestException: "_+_message_;_
+			 * _}_
+			 */
+
+			PersonInfoResponse response2 = new PersonInfoResponse();
+			response2.addMessage(MessageSeverity.FATAL,
+					HttpStatus.SERVICE_UNAVAILABLE.getReasonPhrase(),
+					message,
+					HttpStatus.SERVICE_UNAVAILABLE);
+			return response2;
+
 		};
 	}
 

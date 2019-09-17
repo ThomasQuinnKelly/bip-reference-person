@@ -98,6 +98,7 @@ The fastest way to get set up is to visit the [Quick Start Guide](docs/quick-sta
 * [Cache Management](docs/cache-management.md)
 * [Validation Management](docs/validation.md)
 * [Exception Handling](docs/exception-handling.md)
+* [Database Management](docs/database-config-usage.md)
 * [Hystrix Circuit Breaker Management](docs/hystrix-management.md)
 * [Actuator Management](docs/actuator-management.md)
 * [Build Info and Git Properties Plugin](docs/build-and-git-properties.md)

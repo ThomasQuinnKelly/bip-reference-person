@@ -25,9 +25,9 @@ import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
 import gov.va.bip.reference.person.model.PersonDocsMetadataDomainRequest;
 import gov.va.bip.reference.person.model.PersonDocsMetadataDomainResponse;
-import gov.va.bip.reference.person.transform.impl.PersonByPid_DomainToProvider;
-import gov.va.bip.reference.person.transform.impl.PersonByPid_ProviderToDomain;
-import gov.va.bip.reference.person.transform.impl.PersonDocsMetadata_DomainToProvider;
+import gov.va.bip.reference.person.transform.impl.PersonByPidDomainToProvider;
+import gov.va.bip.reference.person.transform.impl.PersonByPidProviderToDomain;
+import gov.va.bip.reference.person.transform.impl.PersonDocsMetadataDomainToProvider;
 import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
 
 /**
@@ -41,12 +41,12 @@ public class ServiceAdapter {
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(ServiceAdapter.class);
 
 	/** Transform Provider (REST) request to Domain (service) request */
-	private PersonByPid_ProviderToDomain personByPidProvider2Domain = new PersonByPid_ProviderToDomain();
+	private PersonByPidProviderToDomain personByPidProvider2Domain = new PersonByPidProviderToDomain();
 	/** Transform Domain (service) response to Provider (REST) response */
-	private PersonByPid_DomainToProvider personByPidDomain2Provider = new PersonByPid_DomainToProvider();
+	private PersonByPidDomainToProvider personByPidDomain2Provider = new PersonByPidDomainToProvider();
 	/** Transform Domain (service) response to Provider (REST) response */
-	private PersonDocsMetadata_DomainToProvider personDocsMetadataDomain2Provider =
-			new PersonDocsMetadata_DomainToProvider();
+	private PersonDocsMetadataDomainToProvider personDocsMetadataDomain2Provider =
+			new PersonDocsMetadataDomainToProvider();
 
 	/** The service layer API contract for processing personByPid() requests */
 	@Autowired
@@ -80,19 +80,17 @@ public class ServiceAdapter {
 
 		// transform domain response into provider response
 		LOGGER.debug("Transforming from domainResponse to providerResponse");
-		PersonInfoResponse providerResponse = personByPidDomain2Provider.convert(domainResponse);
-
-		return providerResponse;
+		return personByPidDomain2Provider.convert(domainResponse);
 	}
 
 	/**
 	 * Store meta data for a document for a given pid
-	 * 
+	 *
 	 * @param pid the pid
 	 * @param docName the name of the document
 	 * @param docCreateDate the date of creation of the document
 	 * @param file
-	 * 
+	 *
 	 * @return a ProviderResponse
 	 */
 	PersonDocsMetadataUploadResponse storeMetaData(final Long pid, String docName, final String docCreateDate,
@@ -121,12 +119,12 @@ public class ServiceAdapter {
 
 	/**
 	 * Get the meta data associated with documents accepted for a pid
-	 * 
+	 *
 	 * @param pid the pid
 	 * @return a PersonDocsMetadataResponse object with the required metadata
 	 */
 	PersonDocsMetadataResponse
-	getMetadataDocumentForPid(final @Valid @Min(1) Long pid) {
+			getMetadataDocumentForPid(final @Valid @Min(1) Long pid) {
 		// transform provider request into domain request
 		LOGGER.debug("Transforming from rest input data (only pid in this case) to domainRequest");
 		PersonDocsMetadataDomainRequest domainRequest = new PersonDocsMetadataDomainRequest();
@@ -138,14 +136,12 @@ public class ServiceAdapter {
 
 		// transform domain response into provider response
 		LOGGER.debug("Transforming from domainResponse to providerResponse");
-		PersonDocsMetadataResponse providerResponse = personDocsMetadataDomain2Provider.convert(domainResponse);
-
-		return providerResponse;
+		return personDocsMetadataDomain2Provider.convert(domainResponse);
 	}
 
 	/**
 	 * Get the static document representing a sample reference document
-	 * 
+	 *
 	 * @return a file as a resource
 	 */
 	Resource getSampleReferenceDocument() {

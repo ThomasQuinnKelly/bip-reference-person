@@ -1,0 +1,18 @@
+###############################################################################
+###   MASTER CHANGELOG
+###   This file controls which operations will be created for a given
+###   Liquibase operation, on a database instance in a given environment.
+###   - Only items common to ALL database instances, environments, operations
+###     should appear in this root changelog file.
+###   - Include other changelog files as needed.
+###   - To use a variable it must be in the environment, or have been put in
+###     the Liquibase Parameters list at the time of invocation, for example
+###     in app yaml or commandline -D param: spring.liquibase.parameters.**
+###############################################################################
+
+databaseChangeLog:
+### The common include, usually all that is needed.
+### Invocation *MUST* specify the db instance and the operation to perform
+  - include:
+      file: ${db.instance.name}/${liquibase.operation}.yml
+      relativeToChangelogFile: true

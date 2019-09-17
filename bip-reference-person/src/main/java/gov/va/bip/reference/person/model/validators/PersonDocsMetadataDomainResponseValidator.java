@@ -38,26 +38,27 @@ public class PersonDocsMetadataDomainResponseValidator extends AbstractStandardV
 		PersonDocsMetadataDomainRequest request =
 				supplemental == null ? new PersonDocsMetadataDomainRequest() : (PersonDocsMetadataDomainRequest) supplemental;
 
-				// if response has errors, fatals or warnings skip validations
-				if (toValidate.hasErrors() || toValidate.hasFatals() || toValidate.hasWarnings()) {
-					return;
-				}
-				// check if empty response, or errors / fatals
-				if ((toValidate == null) || (toValidate.getPersonDocsMetadataDomain() == null)) {
-					PersonMessageKeys key = PersonMessageKeys.BIP_PERSON_DOCS_METADATA_NOTNULL;
-					LOGGER.info(key.getKey() + " " + key.getMessage());
-					throw new PersonServiceException(key, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
-				}
+		// if response has errors, fatals or warnings skip validations
+		if (toValidate != null
+				&& (toValidate.hasErrors() || toValidate.hasFatals() || toValidate.hasWarnings())) {
+			return;
+		}
+		// check if empty response, or errors / fatals
+		if (toValidate == null || toValidate.getPersonDocsMetadataDomain() == null) {
+			PersonMessageKeys key = PersonMessageKeys.BIP_PERSON_DOCS_METADATA_NOTNULL;
+			LOGGER.info(key.getKey() + " " + key.getMessage());
+			throw new PersonServiceException(key, MessageSeverity.FATAL, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
-				/*
-				 * In a real-world service, it is highly unlikely that a user would be allowed to query for someone else's data. In general,
-				 * responses should *always* contain only data for the logged-in person. Therefore, the checks below would typically throw an
-				 * exception, not just set a warning.
-				 */
-				LOGGER.debug("Request PID: " + request.getParticipantID() + "; Response document name: "
-						+ toValidate.getPersonDocsMetadataDomain().getDocName() + "; Response document creation date: "
-						+ toValidate.getPersonDocsMetadataDomain().getDocCreateDate() + "; PersonTraits PID: "
-						+ (SecurityUtils.getPersonTraits() == null ? "null" : SecurityUtils.getPersonTraits().getPid()));
+		/*
+		 * In a real-world service, it is highly unlikely that a user would be allowed to query for someone else's data. In general,
+		 * responses should *always* contain only data for the logged-in person. Therefore, the checks below would typically throw an
+		 * exception, not just set a warning.
+		 */
+		LOGGER.debug("Request PID: " + request.getParticipantID() + "; Response document name: "
+				+ toValidate.getPersonDocsMetadataDomain().getDocName() + "; Response document creation date: "
+				+ toValidate.getPersonDocsMetadataDomain().getDocCreateDate() + "; PersonTraits PID: "
+				+ (SecurityUtils.getPersonTraits() == null ? "null" : SecurityUtils.getPersonTraits().getPid()));
 	}
 
 	/*

@@ -10,7 +10,7 @@ import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
  *
  * @author aburkholder
  */
-public class PersonByPid_DomainToProvider extends AbstractDomainToProvider<PersonByPidDomainResponse, PersonInfoResponse> {
+public class PersonByPidDomainToProvider extends AbstractDomainToProvider<PersonByPidDomainResponse, PersonInfoResponse> {
 
 	/**
 	 * Transform a service Domain {@link PersonByPidDomainResponse} into a REST Provider {@link PersonInfoResponse} object.

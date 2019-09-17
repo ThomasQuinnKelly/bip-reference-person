@@ -9,7 +9,7 @@ import gov.va.bip.reference.person.model.PersonDocsMetadataDomainResponse;
  * Transform a service Domain {@link PersonDocsMetadataDomainResponse} into a REST Provider {@link PersonDocsMetadataResponse} object.
  *
  */
-public class PersonDocsMetadata_DomainToProvider
+public class PersonDocsMetadataDomainToProvider
 extends AbstractDomainToProvider<PersonDocsMetadataDomainResponse, PersonDocsMetadataResponse> {
 
 	@Override

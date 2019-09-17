@@ -50,4 +50,4 @@ spring.cloud.vault:
 # If you are relying on overriding, you will need to set spring.main.allow-bean-definition-overriding to true.
 # https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.1-Release-Notes
 spring.main:
-     allow-bean-definition-overriding: true
+  allow-bean-definition-overriding: true

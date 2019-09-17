@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
-import gov.va.bip.reference.person.data.entities.PersonDocs;
-import gov.va.bip.reference.person.data.repositories.PersonDocsRepository;
+import gov.va.bip.reference.person.data.docs.PersonDocsRepo;
+import gov.va.bip.reference.person.data.docs.entities.PersonDoc;
+import gov.va.bip.reference.person.data.info.PersonInfoRepo;
+import gov.va.bip.reference.person.data.info.entities.PersonInfo;
 
 /**
  * Helper class for abstracting the data base layer
@@ -20,7 +22,40 @@ public class PersonDataHelper {
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(PersonDataHelper.class);
 
 	@Autowired
-	PersonDocsRepository personDocsRepository;
+	PersonDocsRepo personDocsRepo;
+
+	@Autowired
+	PersonInfoRepo personInfoRepo;
+
+	/**
+	 * Find from PersonInfoRepo by veteran's ICN.
+	 *
+	 * @param icn
+	 * @return PersonInfo
+	 */
+	public PersonInfo getInfoForIcn(Long icn) {
+		try {
+			return personInfoRepo.findByIcn(icn);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw e;
+		}
+	}
+
+	/**
+	 * Find from PersonInfoRepo by veteran's email address.
+	 *
+	 * @param email
+	 * @return PersonInfo
+	 */
+	public PersonInfo getInfoForEmail(String email) {
+		try {
+			return personInfoRepo.findByEmail(email);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw e;
+		}
+	}
 
 	/**
 	 * Store meta-data about document in person repository for a given pid.
@@ -32,14 +67,14 @@ public class PersonDataHelper {
 	 */
 	public void storeMetadata(final Long pid, final String docName, final LocalDate docCreateDate) {
 		try {
-			PersonDocs result = personDocsRepository.findByPid(pid);
+			PersonDoc result = personDocsRepo.findByPid(pid);
 			if (result == null) {
-				result = new PersonDocs();
+				result = new PersonDoc();
 				result.setPid(pid);
 			}
 			result.setDocName(docName);
 			result.setDocCreateDate(docCreateDate);
-			personDocsRepository.save(result);
+			personDocsRepo.save(result);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw e;
@@ -47,15 +82,14 @@ public class PersonDataHelper {
 	}
 
 	/**
-	 * Get the record corresponding to the pid in PERSONDOCS table.
+	 * Get the document corresponding to the pid in PERSONDOCS table.
 	 *
 	 * @param pid the pid
 	 * @return the data for pid
 	 */
-	public PersonDocs getDataForPid(final Long pid) {
+	public PersonDoc getDocForPid(final Long pid) {
 		try {
-			PersonDocs result = personDocsRepository.findByPid(pid);
-			return result;
+			return personDocsRepo.findByPid(pid);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw e;
