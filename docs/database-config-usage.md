@@ -32,15 +32,14 @@ Recommended technology choices for relational database support:
 	<details><summary>Click here: Spring/Hibernate logging</summary>
 
 	```yaml
-	# in app yaml - directly print to stdout (inefficient) ...
-	spring.jpa:
-			show-sql: true
-			properties.hibernate
-				format_sql: true
-	# OR, in app yaml - use more efficient logger
-	logging.level:
-		org.hibernate.SQL: DEBUG
-		org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  # in app yaml - directly print to stdout (inefficient) ...
+  spring.jpa:
+    show-sql: true
+    properties.hibernate.format_sql: true
+  # OR, in app yaml - use more efficient logger
+  logging.level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 	```
 
 	</details>
@@ -53,7 +52,7 @@ Recommended technology choices for relational database support:
 
 	* Applications with multiple datasources that would benefit from XA transactions should use an embedded transaction manager (recommend [Atomikos](https://www.atomikos.com/) or [Bitronix](https://github.com/bitronix/btm)). For more information about Spring Boot JTA, see [Distributed Transactions with JTA](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-jta.html) and [Configuring Spring and JTA without full Java EE](https://spring.io/blog/2011/08/15/configuring-spring-and-jta-without-full-java-ee/).
 
-		**XA NOTE:** If XA (distributed) transaction management is required, it will likely be necessary to add - at a minimum - a `JtaTransactionManager` bean to your application Configuration class.
+		**XA NOTE:** If XA transaction management is required, it will likely be necessary to add - at a minimum - a `JtaTransactionManager` bean to your application Configuration class.
 
 * For database schema versioning and data management [Liquibase](http://www.liquibase.org/) is recommended, and is included in the Reference Person sample application.
 
@@ -75,15 +74,9 @@ Spring Boot supports a good variety of databases out of the box. Database availa
 
 **External Databases:**
 
-* Developers _may_ be allowed to use any spring-supported database, however doing so can introduce some additional complexity:
+If you delegate vendor-specific features and SQL grammar to the ORM (or Liquibase Changes), it should be exceedingly rare for the choice of database to matter to the application developer - aside from installation and initial configuration. The choice of external database may have more impact on devops and/or database administrators. Any choice for an external database should be done in consultation with them.
 
-	* if there is a possibility that there will be a need to bypass the ORM layer and write SQL directly to the JDBC driver, differences in SQL implementations may cause problems in higher environments.
-
-	* Configurations for JDBC driver, any additional driver customizations, and potentially other tools / implementations will have to take into account the changes in database vendors for the environments.
-
-For these reasons, it is advisable for developers to adopt the database vendor that is used in the upper environments, or that can easily be managed by your database tools (e.g. Liquibase).
-
-Databases that are not directly supported by spring require additional configuration. Their use is discouraged, unless the database is used in higher environments.
+Databases that are not directly supported by spring will require additional configuration. Their use is discouraged.
 
 ### SQL Database Configuration
 
@@ -259,7 +252,7 @@ BIP Framework provides managed dependencies and plugins for supported databases.
 
 **Common Configuration**
 
-It is recommended to provide dependencies in the projects root reactor POM to provide them transparently to the modules that need them (the service, integration testing, performance testing, local liquibase db changelogs).
+It is recommended for projects to add `spring-boot-starter-data-jpa` and set database related dependencies in the root reactor POM to provide them transparently to the modules that need them (the service, integration testing, performance testing, local liquibase db changelogs).
 
 <details><summary>Click here: Reactor POM Configuration</summary>
 
@@ -267,7 +260,7 @@ It is recommended to provide dependencies in the projects root reactor POM to pr
 <!-- ASSUMES THAT THE PROPERTIES AND MANAGED DEPENDENCIES ARE AVAILABLE FROM bip-framework-parentpom -->
 <dependencies>
 	<!--
-		DATABASE related dependencies, configured in app yaml.
+		DATABASE related dependencies are configured in app yaml.
 		Available managed dependencies from bip-framework-parentpom/pom.xml:
 		com.h2database:h2:${h2.version}
 		org.postgresql:postgresql:${postgresql.version}
@@ -320,13 +313,11 @@ It is recommended to provide dependencies in the projects root reactor POM to pr
 
 To the extent possible, keep common schema and data setups in your liquibase `db/changelog/**` for the service and its unit tests, integration tests, and performance tests.
 
-BIP Framework provides managed dependencies for H2, Postgres, and Oracle.
+Note that for non-embedded database types (e.g. postgres, oracle), the database schema(s) must already exist. Preparation can be very simple, for example:
 
-Note that for non-embedded database types (e.g. postgres, oracle), the database schema must already exist. Preparation can be very simple, for example:
+* In pgadmin right-click on _Databases > Create > Database..._ and in the dialog specify the database name and click _Save_. This creates the named schema in the db container.
 
-* In pgadmin right-click on _Databases > Create > Database..._ and in the dialog specify the database name and click _Save_. This creates the schema.
-
-* You can manually add tables, or you can make table creation a changeset in your master changelog. An example of this can be found in the bip-reference-person [db.changelog-master.yaml](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/resources/db/changelog/db.changelog-master.yaml) file.
+* It is recommended to create tables as a changeset in your master changelog, rather than manually creating them. An example of this can be found in the bip-reference-person [db/changelog/persondocs/dbinit.yml](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/resources/db/changelog/persondocs/dbinit.yml) file.
 
 **Single Datasource Projects**
 
@@ -334,79 +325,79 @@ Projects using only one datasource can leverage Spring Boot's autoconfiguration.
 
 * In the application YAML
 
-	* Use the standard datasource property path as described in the Spring documentation, e.g. `spring.jpa.**`, `spring.datasource.**`, etc.
+	* Use the standard datasource property path as described in the [Spring Boot documentation](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-sql.html), e.g. `spring.jpa.**`, `spring.datasource.**`, etc.
 
 	* Create the database configuration. It is recommended to use profiles to separate the configurations for the Datasources and the Environments. Working examples for this profile separation are provided with documentation in [bip-reference-person.yml](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/resources/bip-reference-person.yml) (search for "DATABASE RELATED CONFIGURATION").
 
-	<details><summary>Click here: Example Single Datasource Configuration</summary>
+		<details><summary>Click here: Example Single Datasource Configuration</summary>
 
-	```yaml
-	---
-	### EXAMPLE of a possible single-datasource dev db instance
-	spring.profiles: db-single-ds-mydb
-	spring.h2.console.enabled: true
-	spring.jpa:
-	    database: h2
-	    generate-ddl: false
-	    properties:
-	      hibernate:
-	        dialect: org.hibernate.dialect.H2Dialect
-	        hibernate.format_sql: true
-	    hibernate:
-	      show-sql: true
-	      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-	      ddl-auto: none
-	      connection:
-	        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
-	spring.datasource:
-	    instance.name: mydb
-	    type: com.zaxxer.hikari.HikariDataSource
-	    ### skip spring db init - using liquibase
-	    initialization-mode: never
-	    driver-class-name: org.h2.Driver
-	    url: jdbc:${spring.jpa.database}:mem:${spring.datasource.instance.name}
-	    username:
-	    password:
-	    hikari:
-	      connection-timeout: 6000
-	      maxLifetime: 6000
-	      minimum-idle: 6
-	      maximum-pool-size: 16
-	      idle-timeout: 60000
-	### Liquibase values. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
-	### The spring DatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
-	spring.liquibase:
-	  parameters:
-	    db.instance.name: ${spring.datasource.instance.name}
-	    db.type.name: ${spring.jpa.database}
-	    # default liquibase changelog operation at startup
-	    liquibase.operation: dbinit
-	---
-	# Add the "db-single-ds-mydb" datasource profile to the desired environments
-	spring.profiles: default,local-int,ci,dev
-	spring.profiles.include: db-single-ds-mydb
-	spring.liquibase:
-	  enabled: false
-	  test-rollback-on-update: false
-	---
-	```
+		```yaml
+    ---
+    ### EXAMPLE of a possible single-datasource dev db instance
+    spring.profiles: db-single-ds-mydb
+    spring.h2.console.enabled: true
+    spring.jpa:
+        database: h2
+        generate-ddl: false
+        properties:
+          hibernate:
+            dialect: org.hibernate.dialect.H2Dialect
+            format_sql: true
+        hibernate:
+          show-sql: true
+          naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+          ddl-auto: none
+          connection:
+            provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+    spring.datasource:
+        instance.name: mydb
+        type: com.zaxxer.hikari.HikariDataSource
+        ### skip spring db init - using liquibase
+        initialization-mode: never
+        driver-class-name: org.h2.Driver
+        url: jdbc:${spring.jpa.database}:mem:${spring.datasource.instance.name}
+        username:
+        password:
+        hikari:
+          connection-timeout: 6000
+          maxLifetime: 6000
+          minimum-idle: 6
+          maximum-pool-size: 16
+          idle-timeout: 60000
+    ### Liquibase values. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+    ### The spring DatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
+    spring.liquibase:
+      parameters:
+        db.instance.name: ${spring.datasource.instance.name}
+        db.type.name: ${spring.jpa.database}
+        # default liquibase changelog operation at startup
+        liquibase.operation: dbinit
+    ---
+    # Add the "db-single-ds-mydb" datasource profile to the desired environments
+    spring.profiles: default,local-int,ci,dev
+    spring.profiles.include: db-single-ds-mydb
+    spring.liquibase:
+      enabled: false
+      test-rollback-on-update: false
+    ---
+		```
 
-	</details>
+		</details>
 
 	* If you intend to use liquibase to run changelogs on server startup, make sure you turn off the spring/hibernate equivalent. The specific elements from the above example are ...
 
-	<details><summary>Click here: Turning Off Spring/Hibernate Startup Scripting</summary>
+			<details><summary>Click here: Turning Off Spring/Hibernate Startup Scripting</summary>
 
-	```yaml
-	spring.profiles: some-db-profile-identifier
-	spring.jpa:
-		generate-ddl: false
-		hibernate:
-			ddl-auto: none
-		# ... etc ...
-	```
+			```yaml
+      spring.profiles: some-db-profile-identifier
+      spring.jpa:
+        generate-ddl: false
+        hibernate:
+          ddl-auto: none
+        # ... etc ...
+			```
 
-	</details>
+			</details>
 
 * Test and adjust as necessary
 
@@ -420,270 +411,270 @@ Projects that use multiple datasources will automatically cause Spring Boot's au
 
 	* Create the initial database configuration. It is recommended to use profiles to separate the configurations for JPA database types, the Datasources, and the Environments. Working examples for this profile separation are provided with documentation in [bip-reference-person.yml](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/resources/bip-reference-person.yml) (search for "DATABASE RELATED CONFIGURATION").
 
-	<details><summary>Click here: Mutli-Datasource YAML Configuration</summary>
+		<details><summary>Click here: Mutli-Datasource YAML Configuration</summary>
 
-	```yaml
-	---
-	### Datasource for database named "one"
-	spring.profiles: db-ds-one
-	spring.h2.console.enabled: true
-	db.jpa.one:
-	    database: h2
-	    generate-ddl: false
-	    properties:
-	      hibernate:
-	        dialect: org.hibernate.dialect.H2Dialect
-	        hibernate.format_sql: true
-	    hibernate:
-	      show-sql: true
-	      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-	      ddl-auto: none
-	      connection:
-	        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
-	db.datasource.one:
-	    instance.name: one
-	    type: com.zaxxer.hikari.HikariDataSource
-	    ### skip spring db init - using liquibase
-	    initialization-mode: never
-	    driver-class-name: org.h2.Driver
-	    url: jdbc:${db.jpa.one.database}:mem:${db.datasource.one.instance.name}
-	    ### user/pass must be set up in Vault, e.g. ${bip.database.[local|ci|dev|stage|prod].one.[username|password]}
-	    username:
-	    password:
-	    hikari:
-	      connection-timeout: 4000
-	      maxLifetime: 4000
-	      minimum-idle: 4
-	      maximum-pool-size: 14
-	      idle-timeout: 40000
-	### Liquibase values. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
-	### The OneDatasourceConfig class automatically passes the datasource, so no need to specify url, user, or pass
-	db.liquibase.one:
-	  parameters:
-	    db.instance.name: ${db.datasource.one.instance.name}
-	    db.type.name: ${db.jpa.one.database}
-	    # default liquibase changelog operation at startup
-	    liquibase.operation: dbinit
-	---
-		### Datasource for database named "two"
-	spring.profiles: db-ds-two
-	db.jpa.two:
-	    database: h2
-	    generate-ddl: false
-	    properties:
-	      hibernate:
-	        dialect: org.hibernate.dialect.H2Dialect
-	        hibernate.format_sql: true
-	    hibernate:
-	      show-sql: true
-	      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-	      ddl-auto: none
-	      connection:
-	        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
-	db.datasource.two:
-	    instance.name: two
-	    type: com.zaxxer.hikari.HikariDataSource
-	    ### skip spring db init - using liquibase
-	    initialization-mode: never
-	    driver-class-name: org.h2.Driver
-	    url: jdbc:${db.jpa.two.database}:mem:${db.datasource.two.instance.name}
-	    ### user/pass must be set up in Vault, e.g. ${bip.database.[local|ci|dev|stage|prod].persondocs.[username|password]}
-	    username:
-	    password:
-	    hibernate:
-	      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-	    hikari:
-	      connection-timeout: 5000
-	      maxLifetime: 50000
-	      minimum-idle: 5
-	      maximum-pool-size: 15
-	      idle-timeout: 50000
-	### Liquibase values. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
-	### The TwoDatasourceConfig class automatically passes the datasource, so no need to specify url, user, or pass
-	db.liquibase.two:
-	  parameters:
-	    db.instance.name: ${db.datasource.two.instance.name}
-	    db.type.name: ${db.jpa.two.database}
-	    # default liquibase changelog operation at startup
-	    liquibase.operation: dbinit
-	---
-	# Add the "db-ds-one" and "db-ds-two" datasource profiles to the desired environments
-	spring.profiles: default,local-int,ci,dev
-	spring.profiles.include: db-ds-one, db-ds-two
-	spring.liquibase:
-	  enabled: false
-	  test-rollback-on-update: false
-	---
-	```
+		```yaml
+    ---
+    ### Datasource for database named "one"
+    spring.profiles: db-ds-one
+    spring.h2.console.enabled: true
+    db.jpa.one:
+        database: h2
+        generate-ddl: false
+        properties:
+          hibernate:
+            dialect: org.hibernate.dialect.H2Dialect
+            hibernate.format_sql: true
+        hibernate:
+          show-sql: true
+          naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+          ddl-auto: none
+          connection:
+            provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+    db.datasource.one:
+        instance.name: one
+        type: com.zaxxer.hikari.HikariDataSource
+        ### skip spring db init - using liquibase
+        initialization-mode: never
+        driver-class-name: org.h2.Driver
+        url: jdbc:${db.jpa.one.database}:mem:${db.datasource.one.instance.name}
+        ### user/pass must be set up in Vault, e.g. ${bip.database.[local|ci|dev|stage|prod].one.[username|password]}
+        username:
+        password:
+        hikari:
+          connection-timeout: 4000
+          maxLifetime: 4000
+          minimum-idle: 4
+          maximum-pool-size: 14
+          idle-timeout: 40000
+    ### Liquibase values. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+    ### The OneDatasourceConfig class automatically passes the datasource, so no need to specify url, user, or pass
+    db.liquibase.one:
+      parameters:
+        db.instance.name: ${db.datasource.one.instance.name}
+        db.type.name: ${db.jpa.one.database}
+        # default liquibase changelog operation at startup
+        liquibase.operation: dbinit
+    ---
+      ### Datasource for database named "two"
+    spring.profiles: db-ds-two
+    db.jpa.two:
+        database: h2
+        generate-ddl: false
+        properties:
+          hibernate:
+            dialect: org.hibernate.dialect.H2Dialect
+            hibernate.format_sql: true
+        hibernate:
+          show-sql: true
+          naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+          ddl-auto: none
+          connection:
+            provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+    db.datasource.two:
+        instance.name: two
+        type: com.zaxxer.hikari.HikariDataSource
+        ### skip spring db init - using liquibase
+        initialization-mode: never
+        driver-class-name: org.h2.Driver
+        url: jdbc:${db.jpa.two.database}:mem:${db.datasource.two.instance.name}
+        ### user/pass must be set up in Vault, e.g. ${bip.database.[local|ci|dev|stage|prod].persondocs.[username|password]}
+        username:
+        password:
+        hibernate:
+          naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        hikari:
+          connection-timeout: 5000
+          maxLifetime: 50000
+          minimum-idle: 5
+          maximum-pool-size: 15
+          idle-timeout: 50000
+    ### Liquibase values. https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+    ### The TwoDatasourceConfig class automatically passes the datasource, so no need to specify url, user, or pass
+    db.liquibase.two:
+      parameters:
+        db.instance.name: ${db.datasource.two.instance.name}
+        db.type.name: ${db.jpa.two.database}
+        # default liquibase changelog operation at startup
+        liquibase.operation: dbinit
+    ---
+    # Add the "db-ds-one" and "db-ds-two" datasource profiles to the desired environments
+    spring.profiles: default,local-int,ci,dev
+    spring.profiles.include: db-ds-one, db-ds-two
+    spring.liquibase:
+      enabled: false
+      test-rollback-on-update: false
+    ---
+		```
 
-	</details>
+		</details>
 
 	* If you intend to use liquibase to run changelogs on server startup, make sure you turn off the spring/hibernate equivalent. The specific elements from the above example are ...
 
-	<details><summary>Click here: Turning Off Sring/Hibernate Startup Scripting</summary>
+		<details><summary>Click here: Turning Off Spring/Hibernate Startup Scripting</summary>
 
-	```yaml
-	---
-	spring.profiles: db.datasource.one
-	spring.jpa:
-		generate-ddl: false
-		hibernate:
-			ddl-auto: none
-		# ... etc ...
-		---
-		spring.profiles: db.datasource.two
-		spring.jpa:
-			generate-ddl: false
-			hibernate:
-				ddl-auto: none
-			# ... etc ...
-			---
-	```
+		```yaml
+    ---
+    spring.profiles: db.datasource.one
+    spring.jpa:
+      generate-ddl: false
+      hibernate:
+        ddl-auto: none
+      # ... etc ...
+      ---
+      spring.profiles: db.datasource.two
+      spring.jpa:
+        generate-ddl: false
+        hibernate:
+          ddl-auto: none
+        # ... etc ...
+        ---
+		```
 
-	</details>
+		</details>
 
 * Make sure that the java packages related to each datasource are separated from each other, for example `gov.va.bip.bip-myproject.data.db1` and `gov.va.bip.bip-myproject.data.db2`.
 
 * For each datasource, add a new `@Configuration` class in your `gov.va.bip.bip-myproject.config` package (this package should already being scanned by Spring). Each of these classes must provide beans that read from the related property path you decided in the first step. **Note that** the beans in one datasource _must_ be assigned `@Primary`, and any other datasources _not_ assigned as primary. An example of a primary datasource class is in the collapsible section ...
 
-<details><summary>Click here: PRIMARY Configuration Class for a DataSource "one"</summary>
+	<details><summary>Click here: PRIMARY Configuration Class for a DataSource "one"</summary>
 
-```java
-package gov.va.bip.reference.person.config;
+	```java
+	package gov.va.bip.reference.person.config;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
+	import javax.persistence.EntityManagerFactory;
+	import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+	import org.springframework.beans.factory.annotation.Qualifier;
+	import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+	import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
+	import org.springframework.boot.context.properties.ConfigurationProperties;
+	import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+	import org.springframework.context.annotation.Bean;
+	import org.springframework.context.annotation.Configuration;
+	import org.springframework.context.annotation.Primary;
+	import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+	import org.springframework.orm.jpa.JpaTransactionManager;
+	import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+	import org.springframework.transaction.PlatformTransactionManager;
+	import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.zaxxer.hikari.HikariDataSource;
+	import com.zaxxer.hikari.HikariDataSource;
 
-import liquibase.integration.spring.SpringLiquibase;
-
-/**
- * Configuration for the "One" datasource, entity manager factory, transaction manager, and liquibase beans.
- */
-@Configuration
-@EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "oneEntityManagerFactory",
-		transactionManagerRef = "oneTransactionManager",
-		// jpa repo base package
-		basePackages = "gov.va.bip.reference.person.data.one")
-public class PersonOneDatasourceConfig extends PersonDatasourceBase {
-
-	private static final String ONE_JPA_PREFIX = "db.jpa.one";
-	private static final String ONE_DATASOURCE_PREFIX = "db.datasource.one";
-	private static final String ONE_HIKARI_DATASOURCE_PREFIX = "db.datasource.one.hikari";
-	private static final String ONE_LIQUIBASE_PROPERTY_PREFIX = "db.liquibase.one";
-	private static final String ONE_PERSISTENCE_UNIT = "one";
-
-	private static final String[] ONE_ENTITIES_PACKAGES = { "gov.va.bip.reference.person.data.one.entities" };
+	import liquibase.integration.spring.SpringLiquibase;
 
 	/**
-	 * Properties for the datasource and to populate liquibase config.
-	 *
-	 * @return DataSourceProperties
+	 * Configuration for the "One" datasource, entity manager factory, transaction manager, and liquibase beans.
 	 */
-	@Bean
-	@Primary
-	@ConfigurationProperties(ONE_DATASOURCE_PREFIX)
-	public DataSourceProperties oneDataSourceProperties() {
-		return new DataSourceProperties();
-	}
+	@Configuration
+	@EnableTransactionManagement
+	@EnableJpaRepositories(entityManagerFactoryRef = "oneEntityManagerFactory",
+			transactionManagerRef = "oneTransactionManager",
+			// jpa repo base package
+			basePackages = "gov.va.bip.reference.person.data.one")
+	public class PersonOneDatasourceConfig extends PersonDatasourceBase {
 
-	/**
-	 * Datasource for person "one" database, via hikari datasource pool.
-	 * <p>
-	 * Application yaml configures this datasource with db.datasource.one.** properties.
-	 * <p>
-	 * This datasource puts all values into the hikari config, but does not populate the
-	 * "normal" datasource properties (url, user, pass). These values are manually added
-	 * back so that liquibase can be initiated correctly.
-	 *
-	 * @return DataSource - the one datasource
-	 */
-	@Primary
-	@Bean
-	@ConfigurationProperties(prefix = ONE_HIKARI_DATASOURCE_PREFIX)
-	public HikariDataSource oneDataSource() {
-		return oneDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
-	}
+		private static final String ONE_JPA_PREFIX = "db.jpa.one";
+		private static final String ONE_DATASOURCE_PREFIX = "db.datasource.one";
+		private static final String ONE_HIKARI_DATASOURCE_PREFIX = "db.datasource.one.hikari";
+		private static final String ONE_LIQUIBASE_PROPERTY_PREFIX = "db.liquibase.one";
+		private static final String ONE_PERSISTENCE_UNIT = "one";
 
-	/**
-	 * Entity Manager for person "one" entities.
-	 *
-	 * @param builder a builder for entity manager factory
-	 * @param dataSource must be the "oneDataSource" bean
-	 * @return LocalContainerEntityManagerFactoryBean entity manager for oneDataSource
-	 */
-	@Primary
-	@Bean
-	@ConfigurationProperties(prefix = ONE_JPA_PREFIX)
-	public LocalContainerEntityManagerFactoryBean oneEntityManagerFactory(
-			EntityManagerFactoryBuilder builder,
-			@Qualifier("oneDataSource") DataSource dataSource) {
-		return builder
-				.dataSource(dataSource)
-				.packages(ONE_ENTITIES_PACKAGES)
-				.persistenceUnit(ONE_PERSISTENCE_UNIT)
-				.build();
-	}
+		private static final String[] ONE_ENTITIES_PACKAGES = { "gov.va.bip.reference.person.data.one.entities" };
 
-	/**
-	 * Transaction Manager for person "one" entities.
-	 *
-	 * @param entityManagerFactory must be the "oneEntityManagerFactory" bean
-	 * @return PlatformTransactionManager transaction manager for oneEntityManagerFactory
-	 */
-	@Primary
-	@Bean
-	public PlatformTransactionManager oneTransactionManager(
-			@Qualifier("oneEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
-		return new JpaTransactionManager(entityManagerFactory);
-	}
+		/**
+		 * Properties for the datasource and to populate liquibase config.
+		 *
+		 * @return DataSourceProperties
+		 */
+		@Bean
+		@Primary
+		@ConfigurationProperties(ONE_DATASOURCE_PREFIX)
+		public DataSourceProperties oneDataSourceProperties() {
+			return new DataSourceProperties();
+		}
 
-	/**
-	 * Bean for liquibase properties.
-	 *
-	 * @return LiquibaseProperties properties for liquibase
-	 */
-	@Bean
-	@ConfigurationProperties(prefix = ONE_LIQUIBASE_PROPERTY_PREFIX)
-	public LiquibaseProperties oneLiquibaseProperties() {
-		return new LiquibaseProperties();
-	}
+		/**
+		 * Datasource for person "one" database, via hikari datasource pool.
+		 * <p>
+		 * Application yaml configures this datasource with db.datasource.one.** properties.
+		 * <p>
+		 * This datasource puts all values into the hikari config, but does not populate the
+		 * "normal" datasource properties (url, user, pass). These values are manually added
+		 * back so that liquibase can be initiated correctly.
+		 *
+		 * @return DataSource - the one datasource
+		 */
+		@Primary
+		@Bean
+		@ConfigurationProperties(prefix = ONE_HIKARI_DATASOURCE_PREFIX)
+		public HikariDataSource oneDataSource() {
+			return oneDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
+		}
 
-	/**
-	 * The liquibase object configured for the datasource with the liquibase properties.
-	 *
-	 * @return SpringLiquibase
-	 */
-	@Bean
-	public SpringLiquibase oneLiquibase() {
-		return springLiquibase(oneDataSource(), oneLiquibaseProperties());
-	}
-}
-```
+		/**
+		 * Entity Manager for person "one" entities.
+		 *
+		 * @param builder a builder for entity manager factory
+		 * @param dataSource must be the "oneDataSource" bean
+		 * @return LocalContainerEntityManagerFactoryBean entity manager for oneDataSource
+		 */
+		@Primary
+		@Bean
+		@ConfigurationProperties(prefix = ONE_JPA_PREFIX)
+		public LocalContainerEntityManagerFactoryBean oneEntityManagerFactory(
+				EntityManagerFactoryBuilder builder,
+				@Qualifier("oneDataSource") DataSource dataSource) {
+			return builder
+					.dataSource(dataSource)
+					.packages(ONE_ENTITIES_PACKAGES)
+					.persistenceUnit(ONE_PERSISTENCE_UNIT)
+					.build();
+		}
 
-</details>
+		/**
+		 * Transaction Manager for person "one" entities.
+		 *
+		 * @param entityManagerFactory must be the "oneEntityManagerFactory" bean
+		 * @return PlatformTransactionManager transaction manager for oneEntityManagerFactory
+		 */
+		@Primary
+		@Bean
+		public PlatformTransactionManager oneTransactionManager(
+				@Qualifier("oneEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+			return new JpaTransactionManager(entityManagerFactory);
+		}
+
+		/**
+		 * Bean for liquibase properties.
+		 *
+		 * @return LiquibaseProperties properties for liquibase
+		 */
+		@Bean
+		@ConfigurationProperties(prefix = ONE_LIQUIBASE_PROPERTY_PREFIX)
+		public LiquibaseProperties oneLiquibaseProperties() {
+			return new LiquibaseProperties();
+		}
+
+		/**
+		 * The liquibase object configured for the datasource with the liquibase properties.
+		 *
+		 * @return SpringLiquibase
+		 */
+		@Bean
+		public SpringLiquibase oneLiquibase() {
+			return springLiquibase(oneDataSource(), oneLiquibaseProperties());
+		}
+	}
+	```
+
+	</details>
 
 # Using Liquibase
 
 Spring Boot has rudimentary database initialization capabilities. What spring does not provide out of the box is a means for managing schema and data changes over time. [Liquibase](http://www.liquibase.org/) is recommended for its database initialization, changeset and schema version management features.
 
-Version changes in Liquibase, the Liquibase Maven plugin, and the Spring integrations can be significant and subtle - so beware of the information you find in any internet searches.
+Liquibase, the Liquibase Maven plugin, and the Spring integrations are evolving rapidly, and changes from one version to the next can be significant and subtle - so beware of the information you find in any internet searches.
 
 Version-specific documentation links:
 
@@ -731,15 +722,29 @@ databaseChangeLog:
 
 </details>
 
-If you look at the [db/changelog/db.changelog-master.yaml](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/resources/db/changelog/db.changelog-master.yaml) file, you will see that it contains only an include statement. This statement uses the `db.instance.name` and `liquibase.operation` parameters to determine which changelog file it should read instructions from. These properties are configured in the application yaml, and are passed to Liquibase as parameters at runtime.
+If you look at the [db/changelog/db.changelog-master.yaml](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person/src/main/resources/db/changelog/db.changelog-master.yaml) file, you will see that it contains only an include statement. This statement uses the `db.instance.name` and `liquibase.operation` parameters to determine which changelog file it should read instructions from.
+
+REcall from [SQL Database Configuration](#sql-database-configuration) that Liquibase Parameters are configured in the application yaml along with jpa and datasource, using the appropriate `*.liquibase.parameters.*` property path for single or multi datasource configuration.
 
 ### The `${project.artifactId}-db` Liquibase Project
 
-The `${project.artifactId}-db` project provides a place where developers can create, test, and prepare database changes that are (or may eventually be) promoted to higher environments.
+The `${project.artifactId}-db` project provides a place where developers can create, test, and prepare database changes that are (or may eventually be) promoted to higher environments.  Take a few minutes to get familiar with the project POM and the resource files in the project.
 
-The [liquibase-maven-plugin](https://www.liquibase.org/documentation/maven/index.html). The "change" operations and configuration options are a one-to-one match with the Liquibase [Changelogs and Commands](https://www.liquibase.org/documentation/index.html) available in the standalone product. With this plugin, you can configure maven profiles to perform specific operations. And by using liquibase Parameters, you can make add flexibility as to exactly how and with what changelogs or resources the operation is performed. Examples of this are provided in the project POM already, or can be viewed in [bip-reference-person-db POM](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person-db/pom.xml).
+* The [liquibase-maven-plugin](https://www.liquibase.org/documentation/maven/index.html) is used in the project POM to configure "change" operations.
 
-### Using Liquibase as a Development Tool
+* [Liquibase Parameters](https://www.liquibase.org/documentation/changelog_parameters.html) (runtime properties) can be set from a number of places:
+
+	* From the command line
+
+	* By the maven plugin configuration in the project POM
+
+	* By property values declared in a properties file (the path to the `.properties` file can be specified on the command line or in the plugin configuration)
+
+* Parameter values (passed from the POMs plugin configuration) can be used in the changelog files as replaceable parameters.
+
+Using liquibase Parameters, you can add flexibility for how and with what changelogs or resources an operation is performed. Examples of this are provided in the project POM already, or can be viewed in [bip-reference-person-db POM](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/bip-reference-person-db/pom.xml).
+
+### Using the DB Project as a Development Tool
 
 The `bip-reference-person` project has a [bip-reference-person-db](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-person-db) module that provides guidance on how to configure and use this developer-only project. Operations in this project can be used for ongoing maintenance of local databases, for experimentation, and for one-shot operations.
 
