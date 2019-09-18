@@ -75,6 +75,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	@Autowired
 	private PersonDataHelper personDataHelper;
 
+	/** The cache manager (redis implementation) */
 	@Autowired
 	private CacheManager cacheManager;
 
@@ -105,8 +106,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	@HystrixCommand(commandKey = "GetPersonInfoByPIDCommand",
 			ignoreExceptions = { IllegalArgumentException.class, BipException.class, BipRuntimeException.class })
 	public PersonByPidDomainResponse findPersonByParticipantID(final PersonByPidDomainRequest personByPidDomainRequest) {
-		/* Retrieve person info for pid - NO VALUE RETURNED, just a multi-datasource example */
 
+		/* Retrieve person info for pid - NO VALUE RETURNED, just a multi-datasource example */
 		try {
 			PersonInfo info = personDataHelper.getInfoForIcn(54321L);
 			LOGGER.info("Retrieved: " + info.toString());
@@ -184,7 +185,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			final Throwable throwable) {
 		LOGGER.info("findPersonByParticipantIDFallBack has been activated");
 
-		/**
+		/*
 		 * Fallback Method for Demonstration Purpose. In this use case, there is no static / mock data
 		 * that can be sent back to the consumers. Hence the method isn't configured as fallback.
 		 *

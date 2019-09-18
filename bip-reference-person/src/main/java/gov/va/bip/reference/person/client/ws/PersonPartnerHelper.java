@@ -21,7 +21,7 @@ import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdRespo
  * Make external calls to the partner using the partner client.
  * <p>
  * This Helper isolates references to partner clients. There should not be
- * references to partner client classes outside of this class.
+ * references to partner client classes outside of this package.
  *
  * @author aburkholder
  */
@@ -57,7 +57,9 @@ public class PersonPartnerHelper {
 		// transform from domain model request to partner model request
 		FindPersonByPtcpntId partnerRequest = personByPidD2P.convert(request);
 
+		// make a variable for the response from the partner
 		FindPersonByPtcpntIdResponse partnerResponse = null;
+		// make a variable for the response to send back to the service code
 		PersonByPidDomainResponse domainResponse = null;
 		// call the partner
 		try {

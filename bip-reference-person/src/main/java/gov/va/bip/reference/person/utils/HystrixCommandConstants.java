@@ -9,9 +9,9 @@ public final class HystrixCommandConstants {
 	public static final String REFERENCE_PERSON_SERVICE_GROUP_KEY = "ReferencePersonServiceGroup";
 
 	/**
-	 * Instantiates a new hystrix command constants.
+	 * Do not instantiate
 	 */
 	private HystrixCommandConstants() {
-
+		throw new UnsupportedOperationException("HystrixCommandConstants is a static class. Do not instantiate it.");
 	}
 }

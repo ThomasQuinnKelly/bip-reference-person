@@ -10,7 +10,7 @@ BIP Framework has been updated to use the OpenAPI v3 "design first" approach to 
 ## Project Breakdown
 
 1. bip-reference-reactor: This is the root reactor project (you are in that repo now). This project forms the aggregate of modules that make up the complete service app, and manages the Fortify scans. In addition to its typical reactor duties, this project contains:
-	- a maven profile, and a `./fortify.sh` script to run Fortify
+	- maven profiles, and a `./fortify.sh` script to run Fortify
 	- a local-dev folder with docker images to run in the spring "local-int" (docker) mode, and with tools to simplify SwA code review submissions.
 	- a `template.yaml` file which is the Openshift deployment template used during the CI/CD pipeline for deployment.
 	- a `testing.yaml` file which is used to configure the Helm Chart used by the CI/CD pipeline for the Kubernetes deployments.
@@ -31,7 +31,7 @@ BIP Framework has been updated to use the OpenAPI v3 "design first" approach to 
 
 The projects in this repository are dependent on the libraries from [BIP framework](https://github.com/department-of-veterans-affairs/bip-framework) and [BIP framework test library](https://github.com/department-of-veterans-affairs/bip-framework/tree/master/bip-framework-test-lib) for  auto configuration, common shared libraries, parent pom maven configuration and test libary. These libraries can be included as shown below.
 
-1. Make `bip-framework-parentpom` the parent of your application's parent POM
+1. Make `bip-framework-parentpom` the parent of your application's parent (e.g. reactor) POM
 	```xml
        <!-- ./bip-[application-name]-parentpom POM file -->
        <parent>

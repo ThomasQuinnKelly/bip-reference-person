@@ -33,11 +33,11 @@ public class PersonInfo {
 	/** The Constant LOGGER. */
 	final static Logger LOGGER = LoggerFactory.getLogger(PersonInfo.class);
 
-	/** The handler. */
+	/** The step definition handler. */
 	private BaseStepDefHandler handler = null;
 
 	/**
-	 * Instantiates a new person info.
+	 * Instantiates a new person info object.
 	 *
 	 * @param handler
 	 *            the handler
@@ -47,7 +47,7 @@ public class PersonInfo {
 	}
 
 	/**
-	 * Sets the up REST.
+	 * Sets up and initializes REST.
 	 */
 	@Before({})
 	public void setUpREST() {

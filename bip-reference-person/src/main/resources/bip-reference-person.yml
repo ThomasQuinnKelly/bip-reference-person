@@ -255,6 +255,7 @@ spring.sleuth.rxjava.schedulers.ignoredthreads: HystixMetricPoller,^RxComputatio
 # 
 # BGS-Specific SERVICE CLIENT PROPERTIES
 #########################################################################
+# BGS host-specific properties
 bgs:
   url: http://localhost:58540
   username: unitTestUsername
@@ -268,6 +269,7 @@ bgs:
     readTimeout: 60000
     connectionTimeout: 60000
 
+# Properties for specific client JAR
 bip-reference-partner-person: 
   ws:
     client: 

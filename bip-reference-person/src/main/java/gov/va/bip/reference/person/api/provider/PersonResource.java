@@ -47,9 +47,11 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 	/** The root path to this resource */
 	public static final String URL_PREFIX = "/api/v1/persons";
 
+	/** Data adapter between provider and service layers */
 	@Autowired
 	ServiceAdapter serviceAdapter;
 
+	/** Properties for build information */
 	@Autowired
 	BuildProperties buildProperties;
 

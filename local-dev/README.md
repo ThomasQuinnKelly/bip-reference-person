@@ -1,5 +1,5 @@
 # Local Development Environment
-This local development environment is a set of docker images, and is strictly for demonstration and local testing of the BIP Platform.
+This local development environment is a set of docker images, and is strictly for demonstration and local testing of applications and  BIP Platform.
 
 The local-dev folder also contains tools to assist with preparing to submit [SwA Code Reviews](../docs/fortify-and-swa.md).
 
