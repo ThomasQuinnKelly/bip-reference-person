@@ -198,7 +198,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 		PersonDocsMetadataUploadResponse providerResponse = new PersonDocsMetadataUploadResponse();
 		try {
 			providerResponse =
-					serviceAdapter.storeMetaData(Long.valueOf(pid), docName, docCreateDate, file);
+					serviceAdapter.storeMetaData(pid, docName, docCreateDate, file);
 			// send provider response back to consumer
 			LOGGER.debug(LOG_MSG_RETURNING);
 			return new ResponseEntity<>(providerResponse, HttpStatus.OK);
