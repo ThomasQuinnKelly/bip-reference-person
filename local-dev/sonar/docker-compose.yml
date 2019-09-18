@@ -2,7 +2,7 @@ version: "3"
 # Make sure to start vault container before running
 services:
   sonarqube:
-    image: bipdev/sonarqube
+    image: bipdev/sonarqube:7.6
     build: .
     ports:
       - "9000:9000"
