@@ -1,18 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 >
 	<modelVersion>4.0.0</modelVersion>
 
-	<!--
-		DO NOT add any "parent" tag to the reactor POM,
-		otherwise the Fortify scan will fail due to issues in the sca-maven-plugin.
-		The parentpom project inherits module requirements from bip-framework-parentpom to run Fortify.
-	-->
 	<parent>
 		<groupId>gov.va.bip.framework</groupId>
 		<artifactId>bip-framework-parentpom</artifactId>
 		<version>2.0.4-SNAPSHOT</version>
-		<relativePath/>
+		<relativePath />
 	</parent>
 
 	<groupId>gov.va.bip.reference.person</groupId>
@@ -24,6 +20,7 @@
 
 	<modules>
 		<module>bip-reference-partner-person</module>
+		<module>bip-reference-person-db</module>
 		<module>bip-reference-person</module>
 		<module>bip-reference-inttest</module>
 		<module>bip-reference-perftest</module>
@@ -46,6 +43,56 @@
 		<fortify-merge-output-filepath>${project.basedir}/${project.artifactId}.fpr</fortify-merge-output-filepath>
 	</properties>
 
+	<dependencies>
+		<!--
+			DATABASE related dependencies, configured in app yaml.
+			Available managed dependencies from bip-framework-parentpom/pom.xml:
+			com.h2database:h2:${h2.version}
+			org.postgresql:postgresql:${postgresql.version}
+			com.oracle:ojdbc6:${ojdbc6.version}
+			com.oracle:ojdbc7:${ojdbc7.version}
+			com.oracle:ojdbc8:${ojdbc8.version}
+			com.oracle:ojdbc10:${ojdbc8.version}
+			org.liquibase:liquibase-core:${liquibase-core.version}
+			org.liquibase.ext:liquibase-hibernate5:${liquibase-hibernate5.version}
+		-->
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.liquibase.ext</groupId>
+			<artifactId>liquibase-hibernate5</artifactId>
+		</dependency>
+		<!-- postgresql: currently backward compatible to PostgreSQL 8.2 -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+ 		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+		<!-- TODO Oracle 11.1.x is on TRM Unapproved list -->
+		<!-- TODO Oracle 11.2.x is on TRM Divest schedule -->
+		<!--
+ 		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.liquibase</groupId>
+					<artifactId>liquibase-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+
 	<profiles>
 		<!--
 			The fortify-sca profile runs the aggregate scan for all modules.
@@ -59,7 +106,7 @@
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
-				<!-- Don't run tests from SCA - profile should be run as: "mvn install -P fortify-sca" -->
+				<!-- Don't run tests from SCA - profile should be run as: "mvn install -Pfortify-sca" -->
 				<skipTests>true</skipTests>
 				<skipITs>true</skipITs>
 				<skipPerfTests>true</skipPerfTests>
@@ -118,7 +165,7 @@
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
-				<!-- Don't run tests from SCA - profile should be run as: "mvn install -P fortify-sca" -->
+				<!-- Don't run tests from SCA - profile should be run as: "mvn install -Pfortify-merge" -->
 				<skipTests>true</skipTests>
 				<skipITs>true</skipITs>
 				<skipPerfTests>true</skipPerfTests>
@@ -157,10 +204,10 @@
 											<then>
 												<echo>+++ Found file: ${fortify-merge-input-filepath}</echo>
 												<echo>+++ Executing Fortify merge operation with:</echo>
-												<echo>      FPRUtility -merge</echo>
-												<echo>        -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
-												<echo>        -source ${fortify-merge-input-filepath}</echo>
-												<echo>        -f ${fortify-merge-output-filepath}</echo>
+												<echo> FPRUtility -merge</echo>
+												<echo> -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
+												<echo> -source ${fortify-merge-input-filepath}</echo>
+												<echo> -f ${fortify-merge-output-filepath}</echo>
 												<exec executable="FPRUtility">
 													<arg
 														line="-merge -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr -source ${fortify-merge-input-filepath} -f ${fortify-merge-output-filepath}" />
@@ -169,9 +216,9 @@
 											<else>
 												<echo>+++ Not-found file: ${fortify-merge-input-filepath}</echo>
 												<echo>+++ Executing file copy with:</echo>
-												<echo>      copy</echo>
-												<echo>        ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
-												<echo>        ${fortify-merge-output-filepath}</echo>
+												<echo> copy</echo>
+												<echo> ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
+												<echo> ${fortify-merge-output-filepath}</echo>
 												<copy file="${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr"
 													tofile="${fortify-merge-output-filepath}" />
 											</else>
