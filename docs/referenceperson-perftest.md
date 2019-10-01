@@ -27,7 +27,7 @@ If you need to override any of the properties during execution of performance te
 
 The Maven properties are passed to JMeter via the `userProperties` option. Inside a JMeter test, you can then access the properties using the function `${__P(propertyName)`}. For example: 
 ```
-	${__P(BearerTokenCreate.threadGroup.threads,5)}
+${__P(BearerTokenCreate.threadGroup.threads,5)}
 ```
 
 This test will execute requests for the person service REST endpoints available in the reference person module.

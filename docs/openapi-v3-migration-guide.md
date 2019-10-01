@@ -42,7 +42,7 @@ Conversion can be performed manually.
 
 - Convert the JSON to YAML. There are many ways to do this. A couple examples:
 	- https://swagger.io/tools/swagger-editor/ - paste the JSON into the editor, it will automatically convert to YAML
-	- https://codebeautify.org/json-to-yaml (there are many of this type, google: json to yaml)
+	- https://www.json2yaml.com/ (there are many of this type, google: json to yaml)
 	- https://www.npmjs.com/package/json2yaml (an NPM to be installed locally)
 
 	```yaml
