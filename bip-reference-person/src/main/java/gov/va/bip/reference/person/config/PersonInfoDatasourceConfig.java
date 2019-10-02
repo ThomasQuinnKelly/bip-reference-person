@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -64,7 +65,7 @@ public class PersonInfoDatasourceConfig extends PersonDatasourceBase {
 	 * @return DataSource - the info datasource
 	 */
 	@Bean
-	@ConfigurationProperties(prefix = INFO_HIKARI_DATASOURCE_PREFIX)
+	@ConfigurationProperties(prefix = INFO_HIKARI_DATASOURCE_PREFIX, ignoreInvalidFields = true)
 	public HikariDataSource infoDataSource() {
 		return infoDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
 	}
@@ -78,6 +79,7 @@ public class PersonInfoDatasourceConfig extends PersonDatasourceBase {
 	 */
 	@Bean
 	@ConfigurationProperties(prefix = INFO_JPA_PREFIX)
+	@RefreshScope
 	public LocalContainerEntityManagerFactoryBean infoEntityManagerFactory(
 			EntityManagerFactoryBuilder builder,
 			@Qualifier("infoDataSource") DataSource dataSource) {
