@@ -19,6 +19,7 @@
 
 	<properties>
 		<bip-framework.version>2.0.5-SNAPSHOT</bip-framework.version>
+		<sonar.exclusions>**/person/data/*,**/person/client/*,**/person/config/*,**/person/model/*,**/*Constants.java,**/*Properties.java</sonar.exclusions>
 	</properties>
 
 	<dependencies>
