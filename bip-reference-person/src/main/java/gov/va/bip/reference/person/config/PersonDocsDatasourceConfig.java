@@ -6,9 +6,9 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -42,6 +42,7 @@ public class PersonDocsDatasourceConfig extends PersonDatasourceBase {
 	private static final String DOCS_PERSISTENCE_UNIT = "docs";
 
 	private static final String[] DOCS_ENTITIES_PACKAGES = { "gov.va.bip.reference.person.data.docs.entities" };
+	
 
 	/**
 	 * Properties for the datasource and to populate liquibase config.
@@ -68,9 +69,21 @@ public class PersonDocsDatasourceConfig extends PersonDatasourceBase {
 	 */
 	@Primary
 	@Bean
-	@ConfigurationProperties(prefix = DOCS_HIKARI_DATASOURCE_PREFIX, ignoreInvalidFields = true)
-	public HikariDataSource docsDataSource() {
+	@ConfigurationProperties(prefix = DOCS_HIKARI_DATASOURCE_PREFIX)
+	public DataSource docsDataSource() {
 		return docsDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
+	}
+	
+	/**
+	 * JpaProperties for person "docs" entities.
+	 *
+	 * @return the JPA properties
+	 */
+	@Primary
+	@Bean
+	@ConfigurationProperties(prefix = DOCS_JPA_PREFIX)
+	public JpaProperties docsJpaProperties() {
+	    return new JpaProperties();
 	}
 
 	/**
@@ -82,8 +95,6 @@ public class PersonDocsDatasourceConfig extends PersonDatasourceBase {
 	 */
 	@Primary
 	@Bean
-	@ConfigurationProperties(prefix = DOCS_JPA_PREFIX)
-	@RefreshScope
 	public LocalContainerEntityManagerFactoryBean docsEntityManagerFactory(
 			EntityManagerFactoryBuilder builder,
 			@Qualifier("docsDataSource") DataSource dataSource) {
@@ -91,6 +102,7 @@ public class PersonDocsDatasourceConfig extends PersonDatasourceBase {
 				.dataSource(dataSource)
 				.packages(DOCS_ENTITIES_PACKAGES)
 				.persistenceUnit(DOCS_PERSISTENCE_UNIT)
+				.properties(docsJpaProperties().getProperties())
 				.build();
 	}
 
