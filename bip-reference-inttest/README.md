@@ -1,4 +1,4 @@
-##What is this project for?
+## What is this project for?
 This document provides the details of **Reference Person Service Functional Testing**. The project is an example and demonstration for how to set up and code functioning integration tests.
 
 ## Functional tests for Reference Person Service
@@ -34,23 +34,23 @@ Various packages and their corresponding log levels are specified here. By Defau
 
 `src/inttest/resources/config/vetservices-inttest-stage.properties` – STAGE configuration properties such as URL are specified here.
 
-**Note: All the configurations are defined external to the code and is per profile/environment. The naming conversion of the file
-vetservices-inttest-<env>.properties**
+**Note: All the configurations are defined external to the code and is per profile/environment. The naming convention of the file is vetservices-inttest-&lt;env>.properties**
 
 ## Execution
 
 To execute the functional test in local bip-reference-person service needs to be up and running.
 
 # How to Build and Test reference-person service
-[quick-start-guide](/docs/quick-start-guide.md)
+[Quick Start Guide](/docs/quick-start-guide.md)
 
-**Command Line:** Use this command(s) to execute the reference person service Functional test. 
+**Command Line:** Execute the reference person service functional test using the environment specific command below. 
 ```bash
-    Default Local: mvn verify -Pinttest -Dcucumber.options="--tags @DEV"
+Default Local: mvn verify -Pinttest -Dcucumber.options="--tags @DEV" 
 ```
-    DEV: mvn verify -Pinttest -Dtest.env=dev -Ddockerfile.skip=true -Dcucumber.options="--tags @DEV"
 
+```bash
+DEV: mvn verify -Pinttest -Dtest.env=dev -Ddockerfile.skip=true -Dcucumber.options="--tags @DEV"
+```
 
 ## More Details For Functional Test
 Read the [Integration Testing Guide](/docs/referenceperson-intest.md)
-

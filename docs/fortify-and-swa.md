@@ -49,85 +49,84 @@ The `bip-framework-parentpom/pom.xml` contains a `fortify-sca` profile that exec
 <details><summary>Click to expand - Framework parentpom profile</summary>
 
 ```xml
-		<!--
-			The fortify-sca profile runs the aggregate scan for all modules.
-			If a project team believes that the fortify-sca profile requires ANY changes,
-			please consult with the BIP Framework development team.
-			Base Fortify requirements for all project modules are declared in bip-framework-parentpom.
-		-->
-		<profile>
-			<id>fortify-sca</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
-				<!-- Don't run tests from SCA - profile should be run as: "mvn install -P fortify-sca" -->
-				<skipTests>true</skipTests>
-				<skipITs>true</skipITs>
-				<skipPerfTests>true</skipPerfTests>
-				<fortify.bind.phase>initialize</fortify.bind.phase>
-			</properties>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>com.fortify.sca.plugins.maven</groupId>
-							<artifactId>sca-maven-plugin</artifactId>
-							<version>${sca-maven-plugin.version}</version>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-				<plugins>
-					<plugin>
-						<groupId>com.fortify.sca.plugins.maven</groupId>
-						<artifactId>sca-maven-plugin</artifactId>
-						<version>${sca-maven-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>fortify-sca-clean</id>
-								<phase>${fortify.bind.phase}</phase>
-								<goals>
-									<goal>clean</goal>
-								</goals>
-								<configuration>
-									<aggregate>true</aggregate>
-									<debug>true</debug>
-									<verbose>true</verbose>
-								</configuration>
-							</execution>
-							<execution>
-								<id>fortify-sca-translate</id>
-								<phase>${fortify.bind.phase}</phase>
-								<goals>
-									<goal>translate</goal>
-								</goals>
-								<configuration>
-									<!-- run scans against all reactor projects -->
-									<aggregate>true</aggregate>
-									<debug>true</debug>
-									<verbose>true</verbose>
-								</configuration>
-							</execution>
-							<execution>
-								<id>fortify-sca-scan</id>
-								<phase>${fortify.bind.phase}</phase>
-								<goals>
-									<goal>scan</goal>
-								</goals>
-								<configuration>
-									<!-- run scans against all reactor projects -->
-									<aggregate>true</aggregate>
-									<debug>true</debug>
-									<verbose>true</verbose>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+<!--
+	The fortify-sca profile runs the aggregate scan for all modules.
+	If a project team believes that the fortify-sca profile requires ANY changes,
+	please consult with the BIP Framework development team.
+	Base Fortify requirements for all project modules are declared in bip-framework-parentpom.
+-->
+<profile>
+	<id>fortify-sca</id>
+	<activation>
+		<activeByDefault>false</activeByDefault>
+	</activation>
+	<properties>
+		<!-- Don't run tests from SCA - profile should be run as: "mvn install -P fortify-sca" -->
+		<skipTests>true</skipTests>
+		<skipITs>true</skipITs>
+		<skipPerfTests>true</skipPerfTests>
+		<fortify.bind.phase>initialize</fortify.bind.phase>
+	</properties>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.fortify.sca.plugins.maven</groupId>
+					<artifactId>sca-maven-plugin</artifactId>
+					<version>${sca-maven-plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>com.fortify.sca.plugins.maven</groupId>
+				<artifactId>sca-maven-plugin</artifactId>
+				<version>${sca-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>fortify-sca-clean</id>
+						<phase>${fortify.bind.phase}</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<configuration>
+							<aggregate>true</aggregate>
+							<debug>true</debug>
+							<verbose>true</verbose>
+						</configuration>
+					</execution>
+					<execution>
+						<id>fortify-sca-translate</id>
+						<phase>${fortify.bind.phase}</phase>
+						<goals>
+							<goal>translate</goal>
+						</goals>
+						<configuration>
+							<!-- run scans against all reactor projects -->
+							<aggregate>true</aggregate>
+							<debug>true</debug>
+							<verbose>true</verbose>
+						</configuration>
+					</execution>
+					<execution>
+						<id>fortify-sca-scan</id>
+						<phase>${fortify.bind.phase}</phase>
+						<goals>
+							<goal>scan</goal>
+						</goals>
+						<configuration>
+							<!-- run scans against all reactor projects -->
+							<aggregate>true</aggregate>
+							<debug>true</debug>
+							<verbose>true</verbose>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</profile>
 ```
-
 </details>
 
 **Service: Reactor POM scan aggregation & merge**
@@ -145,145 +144,142 @@ Incidently, these profiles appear in the reactor POM in BIP Framework as well, b
 <details><summary>Click to expand - Service reactor profiles</summary>
 
 ```xml
-		<!--
-			The fortify-sca profile runs the aggregate scan for all modules.
-			If a project team believes that the fortify-sca profile requires ANY changes,
-			please consult with the BIP Framework development team.
-			Base Fortify requirements for all project modules are declared in bip-framework-parentpom.
-		-->
-		<profile>
-			<id>fortify-sca</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
-				<!-- Don't run tests from SCA - profile should be run as: "mvn install -P fortify-sca" -->
-				<skipTests>true</skipTests>
-				<skipITs>true</skipITs>
-				<skipPerfTests>true</skipPerfTests>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.fortify.sca.plugins.maven</groupId>
-						<artifactId>sca-maven-plugin</artifactId>
-						<version>${sca-maven-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>fortify-sca-clean</id>
-								<phase>${fortify.bind.phase}</phase>
-								<goals>
-									<goal>clean</goal>
-								</goals>
-								<configuration>
-									<aggregate>true</aggregate>
-								</configuration>
-							</execution>
-							<execution>
-								<id>fortify-sca-translate</id>
-								<phase>${fortify.bind.phase}</phase>
-								<goals>
-									<goal>translate</goal>
-								</goals>
-								<configuration>
-									<!-- run scans against all reactor projects -->
-									<aggregate>true</aggregate>
-									<!-- exclude inttest and perftest, as they don't go to prod -->
-									<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
-								</configuration>
-							</execution>
-							<execution>
-								<id>fortify-sca-scan</id>
-								<phase>${fortify.bind.phase}</phase>
-								<goals>
-									<goal>scan</goal>
-								</goals>
-								<configuration>
-									<!-- run scans against all reactor projects -->
-									<aggregate>true</aggregate>
-									<!-- exclude inttest and perftest, as they don't go to prod -->
-									<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>fortify-merge</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
-				<!-- Don't run tests from SCA - profile should be run as: "mvn install -P fortify-sca" -->
-				<skipTests>true</skipTests>
-				<skipITs>true</skipITs>
-				<skipPerfTests>true</skipPerfTests>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<!-- do not run on child modules, just on reactor -->
-						<inherited>false</inherited>
-						<dependencies>
-							<!-- provides ANT branch tags (if/then/else) -->
-							<dependency>
-								<groupId>ant-contrib</groupId>
-								<artifactId>ant-contrib</artifactId>
-								<version>${ant-contrib.version}</version>
-							</dependency>
-						</dependencies>
-						<executions>
-							<execution>
-								<id>fortify-merge</id>
-								<goals>
-									<goal>run</goal>
-								</goals>
-								<configuration>
-									<tasks>
-										<!-- add the ant tasks from ant-contrib -->
-										<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-											<classpath refid="maven.dependency.classpath" />
-										</taskdef>
-										<echo>+++ Executing ANT target for Fortify copy/merge</echo>
-										<echo>+++ Checking file availability of ${project.basedir}/${project.artifactId}.fpr</echo>
-										<if>
-											<available file="${project.basedir}/${project.artifactId}.fpr" />
-											<then>
-												<echo>+++ Found file: ${project.basedir}/${project.artifactId}.fpr</echo>
-												<echo>+++ Executing Fortify merge operation with:</echo>
-												<echo>      FPRUtility -merge</echo>
-												<echo>        -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
-												<echo>        -source ${project.basedir}/${project.artifactId}.fpr</echo>
-												<echo>        -f ${project.basedir}/${project.artifactId}.fpr</echo>
-												<exec executable="FPRUtility">
-													<arg
-														line="-merge -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr -source ${project.basedir}/${project.artifactId}.fpr -f ${project.basedir}/${project.artifactId}.fpr" />
-												</exec>
-											</then>
-											<else>
-												<echo>+++ Not-found file: ${project.basedir}/${project.artifactId}.fpr</echo>
-												<echo>+++ Executing file copy with:</echo>
-												<echo>      copy</echo>
-												<echo>        ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
-												<echo>        ${project.basedir}/${project.artifactId}.fpr</echo>
-												<copy file="${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr"
-													tofile="${project.basedir}/${project.artifactId}.fpr" />
-											</else>
-										</if>
-									</tasks>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+<!--
+	The fortify-sca profile runs the aggregate scan for all modules.
+	If a project team believes that the fortify-sca profile requires ANY changes,
+	please consult with the BIP Framework development team.
+	Base Fortify requirements for all project modules are declared in bip-framework-parentpom.
+-->
+<profile>
+	<id>fortify-sca</id>
+	<activation>
+		<activeByDefault>false</activeByDefault>
+	</activation>
+	<properties>
+		<!-- Don't run tests from SCA - profile should be run as: "mvn install -P fortify-sca" -->
+		<skipTests>true</skipTests>
+		<skipITs>true</skipITs>
+		<skipPerfTests>true</skipPerfTests>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.fortify.sca.plugins.maven</groupId>
+				<artifactId>sca-maven-plugin</artifactId>
+				<version>${sca-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>fortify-sca-clean</id>
+						<phase>${fortify.bind.phase}</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<configuration>
+							<aggregate>true</aggregate>
+						</configuration>
+					</execution>
+					<execution>
+						<id>fortify-sca-translate</id>
+						<phase>${fortify.bind.phase}</phase>
+						<goals>
+							<goal>translate</goal>
+						</goals>
+						<configuration>
+							<!-- run scans against all reactor projects -->
+							<aggregate>true</aggregate>
+							<!-- exclude inttest and perftest, as they don't go to prod -->
+							<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>fortify-sca-scan</id>
+						<phase>${fortify.bind.phase}</phase>
+						<goals>
+							<goal>scan</goal>
+						</goals>
+						<configuration>
+							<!-- run scans against all reactor projects -->
+							<aggregate>true</aggregate>
+							<!-- exclude inttest and perftest, as they don't go to prod -->
+							<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</profile>
+<profile>
+	<id>fortify-merge</id>
+	<activation>
+		<activeByDefault>false</activeByDefault>
+	</activation>
+	<properties>
+		<!-- Don't run tests from SCA - profile should be run as: "mvn install -P fortify-sca" -->
+		<skipTests>true</skipTests>
+		<skipITs>true</skipITs>
+		<skipPerfTests>true</skipPerfTests>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<!-- do not run on child modules, just on reactor -->
+				<inherited>false</inherited>
+				<dependencies>
+					<!-- provides ANT branch tags (if/then/else) -->
+					<dependency>
+						<groupId>ant-contrib</groupId>
+						<artifactId>ant-contrib</artifactId>
+						<version>${ant-contrib.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>fortify-merge</id>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<!-- add the ant tasks from ant-contrib -->
+								<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+									<classpath refid="maven.dependency.classpath" />
+								</taskdef>
+								<echo>+++ Executing ANT target for Fortify copy/merge</echo>
+								<echo>+++ Checking file availability of ${project.basedir}/${project.artifactId}.fpr</echo>
+								<if>
+									<available file="${project.basedir}/${project.artifactId}.fpr" />
+									<then>
+										<echo>+++ Found file: ${project.basedir}/${project.artifactId}.fpr</echo>
+										<echo>+++ Executing Fortify merge operation with:</echo>
+										<echo>      FPRUtility -merge</echo>
+										<echo>        -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
+										<echo>        -source ${project.basedir}/${project.artifactId}.fpr</echo>
+										<echo>        -f ${project.basedir}/${project.artifactId}.fpr</echo>
+										<exec executable="FPRUtility">
+											<arg
+												line="-merge -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr -source ${project.basedir}/${project.artifactId}.fpr -f ${project.basedir}/${project.artifactId}.fpr" />
+										</exec>
+									</then>
+									<else>
+										<echo>+++ Not-found file: ${project.basedir}/${project.artifactId}.fpr</echo>
+										<echo>+++ Executing file copy with:</echo>
+										<echo>      copy</echo>
+										<echo>        ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
+										<echo>        ${project.basedir}/${project.artifactId}.fpr</echo>
+										<copy file="${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr"
+											tofile="${project.basedir}/${project.artifactId}.fpr" />
+									</else>
+								</if>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</profile>
 ```
-
 </details>
-
-
