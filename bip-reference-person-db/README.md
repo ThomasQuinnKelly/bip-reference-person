@@ -12,9 +12,9 @@ The project consists of configurations working together using the liquibase-mave
 
 - Demonstrates how to use maven profiles to configure and execute various Liquibase "change" operations.
 
-- Shows examples of how to use liquibase parameters in changelogs to dynamically execute specific operations
+- Shows examples of how to use liquibase parameters in changelogs to dynamically execute specific operations.
 
-- Shows examples of how to set or override parameter values using a properties file
+- Shows examples of how to set or override parameter values using a properties file.
 
 **Note that** a common `db.changelog-master` file is not used in this project. The intent is for each maven profile to execute independently, therefore each profile configures its own paths for any needed `*.properties` file, changelogs (`input` or `output`), and `data`.  In the service project a common master changelog is required and should be configured.
 
@@ -24,7 +24,7 @@ For detailed information about database configuration in BIP projects, see [Data
 
 The database project is one of the sub-project `<modules>` in a reactor project.  Add the the database project to the reactor POM.
 ```xml
-	<module>bip-reference-person-db</module>
+<module>bip-reference-person-db</module>
 ```
 
 ## Diagrams

@@ -32,29 +32,29 @@ A feature file describes the features of the system or a particular aspect of a 
 ## Sample Feature Definition Template 
 ```
 @tag
-         Feature: Title of your feature
-         I want to use this template for my feature file
+Feature: Title of your feature
+I want to use this template for my feature file
 
-         @tag1
-         Scenario: Title of your scenario
-         Given I want to write a step with precondition
-         And some other precondition
-         When I complete action
-         And some other action
-         And yet another action
-         Then I validate the outcomes
-         And check more outcomes
+@tag1
+Scenario: Title of your scenario
+Given I want to write a step with precondition
+And some other precondition
+When I complete action
+And some other action
+And yet another action
+Then I validate the outcomes
+And check more outcomes
 
-         @tag2
-         Scenario Outline: Title of your scenario outline
-         Given I want to write a step with <name>
-         When I check for the <value> in step
-         Then I verify the <status> in step
+@tag2
+Scenario Outline: Title of your scenario outline
+Given I want to write a step with <name>
+When I check for the <value> in step
+Then I verify the <status> in step
 
-          Examples: 
-             | name  | value | status  |
-             | name1 |     5 | success |
-             | name2 |     7 | Fail    |
+Examples: 
+| name  | value | status  |
+| name1 |     5 | success |
+| name2 |     7 | Fail    |
 ```
 
 ## Scenario:
@@ -89,9 +89,9 @@ PID based Person Info from Person Partner Service for valid PID. In the below ex
 
 Examples: 
 ```
-      | Veteran           | tokenrequestfile               | ServiceURL          | RequestFile               | participantID |
-      | dev-janedoe       | dev/janedoetoken.request       | /api/v1/persons/pid | dev/janedoe.request       |       6666345 |
-      | dev-russellwatson | dev/russellwatsontoken.request | /api/v1/persons/pid | dev/russellwatson.request |      13364995 |
+| Veteran           | tokenrequestfile               | ServiceURL          | RequestFile               | participantID |
+| dev-janedoe       | dev/janedoetoken.request       | /api/v1/persons/pid | dev/janedoe.request       |       6666345 |
+| dev-russellwatson | dev/russellwatsontoken.request | /api/v1/persons/pid | dev/russellwatson.request |      13364995 |
 ```
 
 ## 	Inttest configuration
@@ -99,32 +99,32 @@ Examples:
 - Add dependency in pom.xml to include bip-framework-test-lib library
 
 ```xml
-       <dependency>
-		  <groupId>gov.va.bip.framework</groupId>
-		  <artifactId>bip-framework-test-lib</artifactId>
-		  <version><!-- add the appropriate version --></version>
-	   </dependency>
+<dependency>
+       <groupId>gov.va.bip.framework</groupId>
+       <artifactId>bip-framework-test-lib</artifactId>
+       <version><!-- add the appropriate version --></version>
+</dependency>
 ```
 
 - Add Maven Cucumber Reporting:
 
 ```xml
-       <groupId>net.masterthought</groupId>
-	   <artifactId>maven-cucumber-reporting</artifactId>
+<groupId>net.masterthought</groupId>
+<artifactId>maven-cucumber-reporting</artifactId>
 ```
 
--Add maven Failsafe Plugin:
+- Add maven Failsafe Plugin:
 
 ```xml
-       <groupId>org.apache.maven.plugins</groupId>
-	   <artifactId>maven-failsafe-plugin</artifactId>
+<groupId>org.apache.maven.plugins</groupId>
+<artifactId>maven-failsafe-plugin</artifactId>
 ```
 
--Add Spring Boot maven plugin
+- Add Spring Boot maven plugin
  
 ```xml
-       <groupId>org.springframework.boot</groupId>
-       <artifactId>spring-boot-maven-plugin</artifactId>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-maven-plugin</artifactId>
 ```
 
 ## Running Integration Tests

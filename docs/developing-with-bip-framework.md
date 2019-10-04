@@ -31,7 +31,7 @@ When something goes wrong, the response to the consumer must contain a meaningfu
 ## Logging
 The framework offers useful extensions that help exceptions natively integrate the propagation of meaningful messages to the consumer(s) of the micro-service. When instantiating a logger, it is recommended to use the `BipLoggerFactory` to create a `BipLogger`. For example:
 ```java
-	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(MyBipClass.class);
+private static final BipLogger LOGGER = BipLoggerFactory.getLogger(MyBipClass.class);
 ```
 
 `BipLoggerFactory` creates `BipLogger` instances which are fully compatible with slf4j and logback. The logger also provides `BipBanner` (an ASCII-text banner) and severity `Level`. The logger also splits and manages exceptions so they can cross the docker 16KB comm channel limitation (https://github.com/kubernetes/kubernetes/issues/52444).
@@ -54,7 +54,7 @@ Audit can manually be invoked:
 For configuration and implementation information, see [Log and Audit Management](log-audit-management.md).
 
 ## Performance Logging
-Performance logging is automatically invoked by the `RestProviderTimerAspect` and `ServiceTimerAspect`, and occurs automatically as an around advice to log the response time for the rest controller and service methods with cross cutting concerns as defined in [`BaseHttpProviderPointcuts` class](https://github.ec.va.gov/EPMO/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/rest/provider/aspect/BaseHttpProviderPointcuts.java)
+Performance logging is automatically invoked by the `RestProviderTimerAspect` and `ServiceTimerAspect`, and occurs automatically as an around advice to log the response time for the rest controller and service methods with cross cutting concerns as defined in [`BaseHttpProviderPointcuts` class](https://github.ec.va.gov/EPMO/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/rest/provider/aspect/BaseHttpProviderPointcuts.java).
 
 ## Model Transformation
 The framework encourages separation of layers (or "tiers") and their associated model objects. Layer separation is supported with a simple transformer pattern. For more information, see [Layer and Model Separation Design](design-layer-separation.md).

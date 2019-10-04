@@ -68,29 +68,29 @@
 
 ```xml
 <dependency>
-        <groupId>gov.va.bip.framework</groupId>
-        <artifactId>bip-framework-autoconfigure</artifactId>
-        <version><!-- add the appropriate version --></version>
-      </dependency>
-      <dependency>
-        <groupId>net.logstash.logback</groupId>
-        <artifactId>logstash-logback-encoder</artifactId>
-      </dependency>
-      <!-- https://mvnrepository.com/artifact/org.codehaus.janino/janino -->
-      <dependency>
-        <groupId>org.codehaus.janino</groupId>
-        <artifactId>janino</artifactId>
-      </dependency>
+    <groupId>gov.va.bip.framework</groupId>
+    <artifactId>bip-framework-autoconfigure</artifactId>
+    <version><!-- add the appropriate version --></version>
+</dependency>
+<dependency>
+    <groupId>net.logstash.logback</groupId>
+    <artifactId>logstash-logback-encoder</artifactId>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.codehaus.janino/janino -->
+<dependency>
+    <groupId>org.codehaus.janino</groupId>
+    <artifactId>janino</artifactId>
+</dependency>
 ```
 
 - Modify the application service YML file to change logging levels for the application packages, classes
 
 ```yaml
 logging:
-           level:
-             gov.va.bip.framework.client.ws: DEBUG
-             gov.va.bip.framework.rest.provider: DEBUG
-             gov.va.bip.reference.partner: DEBUG
+    level:
+        gov.va.bip.framework.client.ws: DEBUG
+        gov.va.bip.framework.rest.provider: DEBUG
+        gov.va.bip.reference.partner: DEBUG
 ```
 
 ## Viewing and Analyzing Logs

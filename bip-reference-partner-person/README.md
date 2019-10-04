@@ -37,16 +37,16 @@ Configuration to invoke the mock simulator is done through the `remote_client_si
 In the POM file for your service application project, add this to the `<dependencies>` section:
 
 ```xml
-	<dependency>
-		<groupId>gov.va.bip.reference.person</groupId>
-		<artifactId>bip-reference-partner-person</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
+<dependency>
+	<groupId>gov.va.bip.reference.person</groupId>
+	<artifactId>bip-reference-partner-person</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+</dependency>
 ```
 
 If your application is a reactor project, you will also need to declare it in the `<modules>` section of your root reactor POM:
 ```xml
-	<module>bip-reference-partner-person</module>
+<module>bip-reference-partner-person</module>
 ```
 
 ## Diagrams

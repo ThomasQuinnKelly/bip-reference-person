@@ -74,20 +74,20 @@ There are 2 application profiles that you could run locally
 
   [Grafana](http://localhost:3000) (http://localhost:3000) - Username/Password is `admin/admin` by default
 
-	[Sonar](http://localhost:9000) (http://localhost:9000)
+  [Sonar](http://localhost:9000) (http://localhost:9000) - Only available if explicitly set up
 
-  *Note there are other URLs, such as all the actuator URLs.  Listed here are the basic minimum URLs.*
+  *Note there are other URLs, such as all the [actuator URLs](/docs/actuator-management.md).  Listed here are the basic minimum URLs.*
 
 ## Running Sonar
 
 A SonarQube docker image is added to your docker environment when you run a maven build without specifying to skip the docker build.
 
-* Start the docker container for sonar with `[path]/bip-reference-person/start-all.sh`, or individually with this command:
+* Start the docker container for sonar individually with this command:
 	```bash
 	$ docker-compose -f [path]/bip-reference-person/local-dev/sonar/docker-compose.yml up --build -d
 	```
 
-* Wait for the container to spin up. It will respond on http://localhost:9000 once it is is running.
+* Wait for the container to spin up. It is accessible at http://localhost:9000 once it is is running.
 
 * Run a sonar scan on your project(s)
 	```bash
@@ -97,7 +97,7 @@ A SonarQube docker image is added to your docker environment when you run a mave
 
 * View the results at http://localhost:9000
 
-* Stop SonarQube with `[path]/bip-reference-person/stop-all.sh`, or individually with this command:
+* Stop SonarQube individually with this command:
 	```bash
 	$ docker-compose -f [path]/bip-reference-person/local-dev/sonar/docker-compose.yml down --rmi all -v
 	```

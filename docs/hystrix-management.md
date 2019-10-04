@@ -24,43 +24,44 @@
 - To configure Hystrix at the Server level add the following dependency in your project and add the bip-reference-autoconfigure dependency to the project pom, with the appropriate version to get all autoconfiguration projects:
 
 ```xml
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-		</dependency>
+<dependency>
+	<groupId>org.springframework.cloud</groupId>
+	<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+</dependency>
 ```
 
 - Update the application service yml file with the following configuration (under the default profile):
 
 ```yaml
-	   hystrix:
-		 wrappers.enabled: true
-		 command:
-		  default:
-		    metrics:
-		      rollingStats:
-		        timeInMilliseconds: 20000 
-		      healthSnapshot: 
-		        intervalInMilliseconds: 1000
-		     circuitBreaker:
-	 	      sleepWindowInMilliseconds: 5000
-		      requestVolumeThreshold: 20
-		    execution:
-		      isolation:
-		        thread:
-		          timeoutInMilliseconds: 20000
+hystrix:
+    wrappers.enabled: true
+    command:
+        default:
+            metrics:
+                rollingStats:
+                    timeInMilliseconds: 20000
+                healthSnapshot:
+                    intervalInMilliseconds: 1000
+                circuitBreaker:
+                    sleepWindowInMilliseconds: 5000
+                    requestVolumeThreshold: 20
+            execution:
+                isolation:
+                    thread:
+                        timeoutInMilliseconds: 20000
 ```
 
 - Use below configurations on the actual method and fallBack methods in the ServiceImpl class:
-   Actual method:
+
+Actual method:
 ```java
-        @HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
-			ignoreExceptions = { IllegalArgumentException.class })
+@HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack", commandKey = "GetPersonInfoByPIDCommand",
+	ignoreExceptions = { IllegalArgumentException.class })
 ```
 
-   FallBack method:
+FallBack method:
 ```java
-	@HystrixCommand(commandKey = "FindPersonByParticipantIDFallBackCommand")
+@HystrixCommand(commandKey = "FindPersonByParticipantIDFallBackCommand")
 ```
 
 ## Hystrix Client configuration
@@ -72,25 +73,24 @@ method.
 - To configure Hystrix at the Client level add the following dependency in your project and add the bip-reference-autoconfigure dependency to the project pom, with the appropriate version to get all autoconfiguration projects:
 
 ```xml
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-		</dependency>
+<dependency>
+	<groupId>org.springframework.cloud</groupId>
+	<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+</dependency>
 ```
 
 - Update the application service yml file with the following configuration (under the default profile):
 ```
-	feign.hystrix.enabled: true
+feign.hystrix.enabled: true
 ```
 
 - Use below configurations on the actual method in the Feign Client class. FallBack is implemented with a factory class
 ```java
-		@FeignClient(value = "${spring.application.name}",
-		url="${bip-reference-person.ribbon.listOfServers:}",
-		name = "${spring.application.name}",
-		fallbackFactory = FeignPersonClientFallbackFactory.class,
-		configuration = ReferenceServiceFeignConfig.class)
+@FeignClient(value = "${spring.application.name}",
+url="${bip-reference-person.ribbon.listOfServers:}",
+name = "${spring.application.name}",
+fallbackFactory = FeignPersonClientFallbackFactory.class,
+configuration = ReferenceServiceFeignConfig.class)
 ```
 
-- Hystrix client configuration needs `BipFeignAutoConfiguration` which is part of the framework libraries as configuration. The `feignBuilder` bean is implemented as part of `BipFeignAutoConfiguration` - the client side Hystrix needs a seperate configuration from the server side. Please see feignBuilder method in [BipFeignAutoConfiguration.java](https://github.ec.va.gov/EPMO/bip-framework/blob/master/bip-framework-autoconfigure/src/main/java/gov/va/bip/framework/feign/autoconfigure/BipFeignAutoConfiguration.java)
-
+- Hystrix client configuration needs `BipFeignAutoConfiguration` which is part of the framework libraries as configuration. The `feignBuilder` bean is implemented as part of `BipFeignAutoConfiguration` - the client side Hystrix needs a seperate configuration from the server side. Please see feignBuilder method in [BipFeignAutoConfiguration.java](https://github.ec.va.gov/EPMO/bip-framework/blob/master/bip-framework-autoconfigure/src/main/java/gov/va/bip/framework/feign/autoconfigure/BipFeignAutoConfiguration.java).
