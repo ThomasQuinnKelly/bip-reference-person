@@ -206,8 +206,6 @@ objects:
                       key: VAULT_KUBERNETES_ROLE
                 - name: spring.cloud.vault.ssl.trust-store
                   value: file:/secrets/va-cacerts/truststore.jks
-                - name: LOGGING_LEVEL_COM_ZAXXER_HIKARI
-                  value: debug
               volumeMounts:
                 - name: va-cacerts
                   mountPath: "/secrets/va-cacerts" 
