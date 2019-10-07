@@ -30,12 +30,12 @@ Other actuator endpoints are available, but some may need configuration:
 ## Spring Boot Actuator configuration
 - Add the following dependency in your project, to the project pom:
 
-```xml
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-```
+	```xml
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-actuator</artifactId>
+	</dependency>
+	```
 
 - Update the application service yml file with the following configuration (under the default profile) to enable/disable endpoints:
 
@@ -66,23 +66,23 @@ Other actuator endpoints are available, but some may need configuration:
 
 - Add the following dependency in your project, to the project pom, to add the dependency for micrometer-core and micrometer-prometheus-registry by adding following snippet.xml
 
-```xml
-		<!-- Spring boot actuator to expose metrics endpoint -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<!-- Micormeter core dependecy  -->
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-core</artifactId>
-		</dependency>
-		<!-- Micrometer Prometheus registry  -->
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
-		</dependency>
-```
+	```xml
+	<!-- Spring boot actuator to expose metrics endpoint -->
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-actuator</artifactId>
+	</dependency>
+	<!-- Micormeter core dependecy  -->
+	<dependency>
+		<groupId>io.micrometer</groupId>
+		<artifactId>micrometer-core</artifactId>
+	</dependency>
+	<!-- Micrometer Prometheus registry  -->
+	<dependency>
+		<groupId>io.micrometer</groupId>
+		<artifactId>micrometer-registry-prometheus</artifactId>
+	</dependency>
+	```
 
 - Update the application service yml file: unable the actuator and Prometheus endpoints to be exposed by adding below properties
 
@@ -111,50 +111,50 @@ Spring Boot’s health endpoints works by querying various indicators. Like most
 Sample code below to indicate the health of the application based on querying the Hystrix Command Key. But again this is for a particular instance only and not across instances in a cluster. If we want to look across instances in a cluster then need to use the Hystrix Dashboard using hystrix.stream or turbine.stream. Below example also illustrates on how to create a custom health indicator.
 
 ```java
-	class HystrixMetricsHealthIndicator extends AbstractHealthIndicator {
-	    @Override
-	    protected void doHealthCheck(Health.Builder builder) throws Exception {
-	        def breakers = []
-	        HystrixCommandMetrics.instances.each {
-	            def breaker = HystrixCircuitBreaker.Factory.getInstance(it.commandKey)
-	            def breakerOpen = breaker.open?:false
-	            if(breakerOpen) {
-	                breakers << it.commandGroup.name() + "::" + it.commandKey.name()
-	            }
-	        }
-	        breakers ? builder.outOfService().withDetail("openCircuitBreakers", breakers) : builder.up()
-	    }
+class HystrixMetricsHealthIndicator extends AbstractHealthIndicator {
+	@Override
+	protected void doHealthCheck(Health.Builder builder) throws Exception {
+		def breakers = []
+		HystrixCommandMetrics.instances.each {
+			def breaker = HystrixCircuitBreaker.Factory.getInstance(it.commandKey)
+			def breakerOpen = breaker.open?:false
+			if(breakerOpen) {
+				breakers << it.commandGroup.name() + "::" + it.commandKey.name()
+			}
+		}
+		breakers ? builder.outOfService().withDetail("openCircuitBreakers", breakers) : builder.up()
 	}
+}
 ```
 
 # Sample Health Endpoint Data
 
 ```json
-	{
-	  "status" : "UP",
-	  "diskSpace" : {
-	    "status" : "UP",
-	    "total" : 63251804160,
-	    "free" : 31316164608,
-	    "threshold" : 10485760
-	  },
-	  "db" : {
-	    "status" : "UP",
-	    "database" : "H2",
-	    "hello" : 1
-	  }
+{
+	"status" : "UP",
+	"diskSpace" : {
+		"status" : "UP",
+		"total" : 63251804160,
+		"free" : 31316164608,
+		"threshold" : 10485760
+	},
+	"db" : {
+		"status" : "UP",
+		"database" : "H2",
+		"hello" : 1
 	}
+}
 ```
 
 ## Spring Boot Actuator configuration
 - Add the following dependency in your project, to the project pom:
 
-```xml
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-```
+	```xml
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-actuator</artifactId>
+	</dependency>
+	```
 
 - Update the application service yml file with the following configuration (under the default profile) to enable/disable endpoints:
 
@@ -178,4 +178,3 @@ Sample code below to indicate the health of the application based on querying th
 		# Instead of enabled by default, you can change to mode
 		# where endpoints need to be explicitly enabled
 		management.endpoints.enabled-by-default=false
-

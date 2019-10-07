@@ -19,7 +19,7 @@ By default the following paths in Consul are looked at and all k/v pairs found a
 
 The application name is determined by the properties:
 ```
-	spring.application.name
+spring.application.name
 ```
 
 K/V pairs are loaded as Properties by the key name in Consul. For example if your key/value pair was `database.username=bob` then you would access that value in your application by refering to the property matching the key name `${database.username}`

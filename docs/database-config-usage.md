@@ -34,9 +34,8 @@ Recommended technology choices for relational database support:
 	```yaml
 	# in app yaml - directly print to stdout (inefficient) ...
 	spring.jpa:
-			show-sql: true
-			properties.hibernate
-				format_sql: true
+		hibernate.show-sql: true
+		properties.hibernate.format_sql: true
 	# OR, in app yaml - use more efficient logger
 	logging.level:
 		org.hibernate.SQL: DEBUG
@@ -108,7 +107,7 @@ BIP Framework provides managed dependencies and plugins for supported databases.
 	<h2.version>1.4.199</h2.version>
 	<postgresql.version>42.2.6</postgresql.version>
 	<ojdbc6.version>11.2.0.4</ojdbc6.version><!-- also 11.1.0.7 -->
-	<ojdbc7.version>12.1.0.2</ojdbc7.version><!-- also 12.1.0.2 -->
+	<ojdbc7.version>12.1.0.2</ojdbc7.version>
 	<ojdbc8.version>12.2.0.1</ojdbc8.version><!-- also 18.1.0, 19.3 -->
 	<ojdbc10.version>19.3</ojdbc10.version>
 	<!-- Liquibase -->
@@ -403,7 +402,7 @@ Projects using only one datasource can leverage Spring Boot's autoconfiguration.
 		generate-ddl: false
 		hibernate:
 			ddl-auto: none
-		# ... etc ...
+	# ... etc ...
 	```
 
 	</details>
@@ -465,7 +464,7 @@ Projects that use multiple datasources will automatically cause Spring Boot's au
 	    # default liquibase changelog operation at startup
 	    liquibase.operation: dbinit
 	---
-		### Datasource for database named "two"
+	### Datasource for database named "two"
 	spring.profiles: db-ds-two
 	db.jpa.two:
 	    database: h2
@@ -529,15 +528,15 @@ Projects that use multiple datasources will automatically cause Spring Boot's au
 		generate-ddl: false
 		hibernate:
 			ddl-auto: none
-		# ... etc ...
-		---
-		spring.profiles: db.datasource.two
-		spring.jpa:
-			generate-ddl: false
-			hibernate:
-				ddl-auto: none
-			# ... etc ...
-			---
+	# ... etc ...
+	---
+	spring.profiles: db.datasource.two
+	spring.jpa:
+		generate-ddl: false
+		hibernate:
+			ddl-auto: none
+	# ... etc ...
+	---
 	```
 
 	</details>

@@ -40,6 +40,6 @@ See [Quick Start Guide](quick-start-guide.md) to run docker containers for local
 
 - A new dashboard can be created based on the requirement using below steps:
 	- Click on "Create your first dashboard" tab. Then click on one of the options like Graph or Singlestat or Table etc  
-	<img alt="Grafana New Dashboard" src="/docs/images/Grafana-NewDashBoard.jpg" width="80%" height="80%"/>
+		<img alt="Grafana New Dashboard" src="/docs/images/Grafana-NewDashBoard.jpg" width="80%" height="80%"/>
 	
 	- Select a particular option as above to look at the required stats.

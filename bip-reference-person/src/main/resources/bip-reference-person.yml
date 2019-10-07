@@ -202,17 +202,6 @@ bip.framework:
       excludeUrls:
         - /**
   swagger:
-    title: BIP Reference Person Spring Boot Service v1 API Documentation
-    description: Reference Person API to demonstrate the microservice patterns on BIP Platform
-    contactName: va.gov
-    contactUrl: https://www.va.gov/
-    contactEmail: test@va.gov
-    termsOfServiceUrl: https://developer.va.gov/terms-of-service
-    licenseUrl: https://www.apache.org/licenses/LICENSE-2.0
-    license: Apache 2.0
-    groupName: "@project.name@-@project.version@"
-    version: ${info.build.version}
-    securePaths: /api/v?.*/persons/.*
     # enable/disable the swagger/openapi UI ...
     enabled: true
 ##################################################
@@ -331,16 +320,13 @@ spring.h2.console.enabled: true
 db.jpa.docs:
     database: h2
     generate-ddl: false
+    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
-        hibernate.format_sql: true
-    hibernate:
-      show-sql: true
-      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: none
-      connection:
-        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+        format_sql: true
+        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        ddl-auto: none
 db.datasource.docs:
     instance.name: persondocs
     type: com.zaxxer.hikari.HikariDataSource
@@ -353,7 +339,7 @@ db.datasource.docs:
     password: 
     hikari:
       connection-timeout: 4000
-      maxLifetime: 4000
+      maxLifetime: 50000
       minimum-idle: 4
       maximum-pool-size: 14
       idle-timeout: 40000
@@ -376,16 +362,13 @@ spring.profiles: db-personinfo
 db.jpa.info:
     database: h2
     generate-ddl: false
+    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
-        hibernate.format_sql: true
-    hibernate:
-      show-sql: true
-      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: none
-      connection:
-        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+        format_sql: true
+        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        ddl-auto: none
 db.datasource.info:
     instance.name: personinfo
     type: com.zaxxer.hikari.HikariDataSource
@@ -397,11 +380,9 @@ db.datasource.info:
     ### user/pass must be set up in Vault, e.g. ${bip.database.[local|ci|dev|stage|prod].persondocs.[username|password]}
     username: 
     password: 
-    hibernate:
-      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     hikari:
       connection-timeout: 5000
-      maxLifetime: 50000
+      maxLifetime: 60000
       minimum-idle: 5
       maximum-pool-size: 15
       idle-timeout: 50000
@@ -420,16 +401,13 @@ spring.h2.console.enabled: true
 spring.jpa:
     database: h2
     generate-ddl: false
+    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
-        hibernate.format_sql: true
-    hibernate:
-      show-sql: true
-      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: none
-      connection:
-        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+        format_sql: true
+        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        ddl-auto: none
 spring.datasource:
     instance.name: persondocs
     type: com.zaxxer.hikari.HikariDataSource
@@ -442,7 +420,7 @@ spring.datasource:
     password: 
     hikari:
       connection-timeout: 6000
-      maxLifetime: 6000
+      maxLifetime: 70000
       minimum-idle: 6
       maximum-pool-size: 16
       idle-timeout: 60000
@@ -460,16 +438,14 @@ spring.profiles: db-single-oracle
 spring.jpa:
     database: oracle
     generate-ddl: false
+    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.OracleDialect
         hibernate.format_sql: true
-    hibernate:
-      show-sql: true
-      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: none
-      connection:
-        provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+        format_sql: true
+        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        ddl-auto: none
 spring.datasource:
     instance.name: persondocs
     type: com.zaxxer.hikari.HikariDataSource
@@ -483,7 +459,7 @@ spring.datasource:
     password: ${bip.database.stage.persondocs.password}
     hikari:
       connection-timeout: 7000
-      maxLifetime: 7000
+      maxLifetime: 17000
       minimum-idle: 7
       maximum-pool-size: 17
       idle-timeout: 7000

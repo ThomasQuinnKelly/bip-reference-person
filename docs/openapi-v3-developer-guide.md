@@ -16,7 +16,7 @@ If you are migrating a BIP application from an earlier version of the framework,
 
 ## References
 
-In addition to the [bip-reference-person] application and documentation, these sites provide excellent background for developers and tech leads:
+In addition to the [bip-reference-person](https://github.com/department-of-veterans-affairs/bip-reference-person) application and documentation, these sites provide excellent background for developers and tech leads:
 
 - [OpenAPI Specification v 3.0.1](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md)
 - [OpenAPI Tools](https://github.com/OpenAPITools) - of particular interest:
@@ -34,7 +34,7 @@ In addition to the [bip-reference-person] application and documentation, these s
 
 ## Framework build responsibilities
 
-Framework reduces application configuration burden by providing an opinionated approach to acquiring and building the API model and interface classes, and the swagger UI documentation.
+Framework reduces application configuration burden by providing an opinionated approach to acquiring and building the API model and interface classes, and the Swagger UI documentation.
 
 Configuration is in [`bip-framework-parentpom/pom.xml`](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-parentpom/pom.xml):
 
@@ -56,7 +56,7 @@ Configuration is in [`bip-framework-parentpom/pom.xml`](https://github.com/depar
 	```
 	</details>
 
-- Provide build configuration for the Swagger UI (yes, it is still called swagger ui):
+- Provide build configuration for the Swagger UI (yes, it is still called Swagger UI):
 
 	- download and unpack the swagger-ui web jar
 
@@ -245,9 +245,9 @@ BIP service applications should leverage the framework configuration to minimize
 	<profiles>
 		<!-- OpenAPI Specification (OAS) Code generation profile. In the framework
 			parent pom see profile with id: org-openapitools-codegen-parent There are
-			multiple plugins in the parent POM for swagger UI download, generate. The
+			multiple plugins in the parent POM for Swagger UI download, generate. The
 			<exists> section below has to match the one from parent pom for the build
-			phases and goals to execute for openapi code and swagger ui generation to
+			phases and goals to execute for openapi code and Swagger UI generation to
 			work -->
 		<profile>
 			<id>org-openapitools-codegen-reference-person</id>
@@ -392,23 +392,23 @@ The API specification for a BIP service application should be wholly contained w
 	# https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md
 	openapi: 3.0.1
 	info:
-		version: [api.verion.number[-SNAPSHOT]]
-		title: BIP [Application Name] Service v1 API Documentation
-		description: An API that [brief description of the purpose for the API]
-		termsOfService: https://developer.va.gov/terms-of-service
+	    version: [api.verion.number[-SNAPSHOT]]
+	    title: BIP [Application Name] Service v1 API Documentation
+	    description: An API that [brief description of the purpose for the API]
+	    termsOfService: https://developer.va.gov/terms-of-service
 	license:
-		name: Apache 2.0
-		url: https://www.apache.org/licenses/LICENSE-2.0
+	    name: Apache 2.0
+	    url: https://www.apache.org/licenses/LICENSE-2.0
 	servers:
-		- url: http://localhost:8080
-			description: Local server
+	    - url: http://localhost:8080
+	        description: Local server
 	tags:
-		- name: [application-name]
-			description: [Application Name] Resource
-		- name: [functional-name]-rest-client-tester
-			description: [Functional Name] Rest Client Tester
-		- name: token-resource
-			description: Token Resource
+	    - name: [application-name]
+	        description: [Application Name] Resource
+	    - name: [functional-name]-rest-client-tester
+	        description: [Functional Name] Rest Client Tester
+	    - name: token-resource
+	        description: Token Resource
 	# ...
 	```
 	</details>
@@ -420,17 +420,17 @@ The API specification for a BIP service application should be wholly contained w
 
 		```yml
 		components:
-			# securitySchemes are defined by the framework.
-			# Service applications must configure as below.
-			securitySchemes:
-				Authorization:
-					type: apiKey
-					name: Authorization
-					in: header
-				bearerAuth:
-					type: http
-					bearerFormat: JWT
-					scheme: bearer
+		    # securitySchemes are defined by the framework.
+		    # Service applications must configure as below.
+		    securitySchemes:
+		        Authorization:
+		            type: apiKey
+		            name: Authorization
+		            in: header
+		        bearerAuth:
+		            type: http
+		            bearerFormat: JWT
+		            scheme: bearer
 		```
 		</details>
 
@@ -440,8 +440,8 @@ The API specification for a BIP service application should be wholly contained w
 
 		```yml
 		schemas:
-			# Define API (provider) model objects. Use type, format and example;
-			# use standard JSR303 constraints (required, min, max, etc) where it makes sense
+		    # Define API (provider) model objects. Use type, format and example;
+		    # use standard JSR303 constraints (required, min, max, etc) where it makes sense
 			[ClassName]:
 				type: object
 				title: [ClassName]
@@ -451,8 +451,8 @@ The API specification for a BIP service application should be wholly contained w
 						type: [OpenApiType]
 						example: [exampleValue]
 						description: [Brief description]
-					# ... continued field definitions ...
-			# ... continued class definitions ...
+		            # ... continued field definitions ...
+		    # ... continued class definitions ...
 		```
 
 	- Declare the schemas inherited from the framework. No changes should be made in this section.
@@ -461,12 +461,12 @@ The API specification for a BIP service application should be wholly contained w
 
 		```yml
 		schemas:
-			# ... app model schemas inserted here ...
+		    # ... app model schemas inserted here ...
 
-			# Schema objects below are from BIP Framework to be declared.
-			# These objects need to be mapped in <importMappings> section
-			# of openapi-generator-maven-plugin so that no code is generated
-			# for these classes
+		    # Schema objects below are from BIP Framework to be declared.
+		    # These objects need to be mapped in <importMappings> section
+		    # of openapi-generator-maven-plugin so that no code is generated
+		    # for these classes
 			Message:
 				type: object
 				title: Message
@@ -476,10 +476,10 @@ The API specification for a BIP service application should be wholly contained w
 				- severity
 				properties:
 					key:
-						# possible values enumerated by gov.va.bip.framework.messages.MessageKeys
+		                # possible values enumerated by gov.va.bip.framework.messages.MessageKeys
 						type: string
 					severity:
-						# derived from gov.va.bip.framework.messages.MessageSeverity
+		                # derived from gov.va.bip.framework.messages.MessageSeverity
 						type: enum
 							- INFO
 							- WARN
@@ -629,9 +629,9 @@ The API specification for a BIP service application should be wholly contained w
 
 	```yml
 	paths:
-		# ... application paths inserted here ...
+	    # ... application paths inserted here ...
 
-		# The token path should not require any changes
+	    # The token path should not require any changes
 		"/api/v1/token":
 			post:
 				tags:

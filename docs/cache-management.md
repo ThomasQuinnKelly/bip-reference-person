@@ -13,11 +13,11 @@
 add the `bip-reference-autoconfigure` dependency to the project pom, with the appropriate version:
 
 ```xml
-	<dependency>
-        <groupId>gov.va.bip.framework</groupId>
-        <artifactId>bip-framework-autoconfigure</artifactId>
-        <!-- add the appropriate version -->
-    </dependency>
+<dependency>
+	<groupId>gov.va.bip.framework</groupId>
+	<artifactId>bip-framework-autoconfigure</artifactId>
+	<!-- add the appropriate version -->
+</dependency>
 ```
 
 - Update the application service yml file with the following configuration (under the default profile). See also [gov.va.bip.framework.cache.autoconfigure](https://github.com/department-of-veterans-affairs/bip-framework/tree/CMAPI2-211_JedisPoolConfig/bip-framework-autoconfigure#govvabipframeworkcacheautoconfigure).
@@ -26,47 +26,49 @@ add the `bip-reference-autoconfigure` dependency to the project pom, with the ap
     - Jedis Connection Pooling is enabled simply by adding one or more properties under `spring:redis:jedis:pool:*`. At least one property must be declared under the pool property.
     - It is possible to configure teh environment to support Redis Cluster and Sentinel if needed, however this is not necessary for local environments, and should be driven by devops and their hosted environments.
 
-```yaml
-	spring: 
-	  cache:
-	    type: redis
-	  redis: 
-	    ssl: false
-	    host: localhost
-	    port: 6379
-		...
-	    jedis:
-	      ...
-	      pool:
-	        ...
-	        max-wait: -1
-```
+	```yaml
+	spring:
+		cache:
+			type: redis
+		redis: 
+			ssl: false
+			host: localhost
+			port: 6379
+	               ...
+			jedis:
+				...
+				pool:
+					...
+					max-wait: -1
+	```
 
 - Add the `@EnableCaching` annotation to the Spring Boot Application class (Please note there will most likely be many other annotations on this class):
 
 ```java
-	@SpringBootApplication
-	@EnableCaching
-	public class MySweetServiceApplication {
-	
-	    public static void main(String[] args) {
-	        SpringApplication.run(MySweetServiceApplication.class, args);
-	    }
+@SpringBootApplication
+@EnableCaching
+public class MySweetServiceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MySweetServiceApplication.class, args);
+	}
+
+}
 ```
 
 - Add the following properties and set the to appropriate values to configure Redis caching properties. The reference.cache.defaultExpires property is the default ttl for a cache bucket if it is unspecified. The list reference.cache.expires is a list of cacheNames and the corresponding ttls:
 
 ```yaml
-	reference:
-	  cache:
-	    defaultExpires: 86400 # (Seconds)
-	    expires:
-	#     -
-	#       name: Cache Name
-	#       ttl:  TTL (In Seconds)
-	      -
-	        name: refPersonService_@project.name@_@project.version@
-	        ttl: 1800
+reference:
+    cache:
+    defaultExpires: 86400 # (Seconds)
+    expires:
+#       -
+#           name: Cache Name
+#           ttl:  TTL (In Seconds)
+        -
+            name: refPersonService_@project.name@_@project.version@
+            ttl: 1800
 ```
 
 ## Cache Design Standards
@@ -78,4 +80,3 @@ add the `bip-reference-autoconfigure` dependency to the project pom, with the ap
 
 ## Clearing the Cache
 Developers needing to clear the cache for local testing purposes have a tool available, as outlined in [Clearing the Redis Cache](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/local-dev#clearing-the-redis-cache).
-
