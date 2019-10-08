@@ -3,6 +3,7 @@ package gov.va.bip.reference.partner.person.client.ws.remote;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.After;
@@ -135,18 +136,33 @@ public class RemoteServiceCallMockTest extends AbstractPersonTest {
 	}
 
 	@Test
-	public void TestGetFileName() {
-		String filename = PersonRemoteServiceCallMock.getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES, "");
-		assertTrue(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES.equals(filename));
+	public void testGetFileName() {
+		//Filled PID
+		String filename = PersonRemoteServiceCallMock.getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE, PARTICIPANTID_FOR_MOCK_DATA);
+		assertEquals(MOCK_FINDPERSONBYPTCPNTID_RESPONSE.substring(0, MOCK_FINDPERSONBYPTCPNTID_RESPONSE.length()-3)+PARTICIPANTID_FOR_MOCK_DATA, filename);
 
+		filename = PersonRemoteServiceCallMock.getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES, PARTICIPANTID_FOR_MOCK_DATA);
+		assertEquals(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES, filename);
+
+		//Blank PID
+		filename = PersonRemoteServiceCallMock.getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE, "");
+		assertEquals(MOCK_FINDPERSONBYPTCPNTID_RESPONSE.substring(0, MOCK_FINDPERSONBYPTCPNTID_RESPONSE.length()-3)+PARTICIPANTID_FOR_MOCK_DATA, filename);
+
+		filename = PersonRemoteServiceCallMock.getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES, "");
+		assertEquals(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES, filename);
+
+		//Person Trait value PID blank
 		PersonTraits personTraits = new PersonTraits("user", "password", AuthorityUtils.createAuthorityList("ROLE_TEST"));
-		personTraits.setPid(PARTICIPANTID_FOR_MOCK_DATA);
+		personTraits.setPid("");
 		Authentication auth =
 				new UsernamePasswordAuthenticationToken(personTraits, personTraits.getPassword(), personTraits.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 
+		filename = PersonRemoteServiceCallMock.getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE, "");
+		assertEquals(MOCK_FINDPERSONBYPTCPNTID_RESPONSE.substring(0, MOCK_FINDPERSONBYPTCPNTID_RESPONSE.length()-4), filename);
+
 		filename = PersonRemoteServiceCallMock.getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES, "");
-		assertTrue(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES.equals(filename));
+		assertEquals(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES, filename);
 
 	}
 
