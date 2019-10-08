@@ -419,7 +419,7 @@ components:
         appToken:
           type: string
           example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9
-          description: The application's custom token passed from the consumer
+          description: The application's custom token passed as any String from consumers to the API services
         assuranceLevel:
           type: integer
           format: int32
