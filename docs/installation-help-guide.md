@@ -11,10 +11,10 @@ To install the JDK package, you only have to install the binary files provided b
 
 The JDK package will have been installed in /Library/Java/JavaVirtualMachines. You may have multiple versions of JDK package. To make sure it picks 1.8 version, update `~/.bash_profile` as shown below
 ```bash
-	vi ~/.bash_profile
-	# add these two lines to the file ...
-	export JAVA_HOME="`/usr/libexec/java_home -v '1.8*'`"
-	export JAVA_OPTS="-Xmx2048m -Djava.net.preferIPv4Stack=true"
+vi ~/.bash_profile
+# add these two lines to the file ...
+export JAVA_HOME="`/usr/libexec/java_home -v '1.8*'`"
+export JAVA_OPTS="-Xmx2048m -Djava.net.preferIPv4Stack=true"
 ```
 
 #### On Windows
@@ -35,8 +35,8 @@ Homebrew simplifies the installation of software on the Mac OS X operating syste
 
 Copy & paste the following into the terminal window and hit Return.
 ```bash
-		$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-		$ brew doctor
+$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+$ brew doctor
 ```
 
 You will be offered to install the Command Line Developer Tools from Apple. Confirm by clicking Install. After the installation finished, continue installing Homebrew by hitting Return again.
@@ -45,8 +45,8 @@ You will be offered to install the Command Line Developer Tools from Apple. Conf
 
 Copy & paste the following into the terminal window and hit Return.
 ```bash
-	$ brew install git
-	$ git --version
+$ brew install git
+$ git --version
 ```
 
 #### On Windows
@@ -65,8 +65,8 @@ Of the Fortify suite of products, BIP service apps will typically use the `sca-m
 
 	* macOS: edit your bash profile, e.g. `open -a TextEdit ~/.bash_profile`, for example
 	```bash
-			# add fortify to path
-			export PATH="/Applications/Fortify/Fortify_SCA_and_Apps_19.1.0/bin:$PATH"
+	# add fortify to path
+	export PATH="/Applications/Fortify/Fortify_SCA_and_Apps_19.1.0/bin:$PATH"
 	```
 
 	* Windows: add the `\[APP-FOLDER]\Fortify_SCA_and_Apps_19.1.0\bin` folder to your "System Properties > Advanced > Environment Variables"
@@ -90,145 +90,145 @@ There are many ways to run Fortify on your projects, however the easiest is like
 <details><summary>Click to expand - Reactor POM configuration for fortify-sca profile</summary>
 
 ```xml
-	<profiles>
-		<!--
-			The fortify-sca profile runs the aggregate scan for all modules.
-			If a project team believes that the fortify-sca profile requires ANY changes,
-			please consult with the BIP Framework development team.
-			Base Fortify requirements for all project modules are declared in bip-framework-parentpom.
-		-->
-		<profile>
-			<id>fortify-sca</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
-				<!-- Don't run tests from SCA - profile should be run as: "mvn install -P fortify-sca" -->
-				<skipTests>true</skipTests>
-				<skipITs>true</skipITs>
-				<skipPerfTests>true</skipPerfTests>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.fortify.sca.plugins.maven</groupId>
-						<artifactId>sca-maven-plugin</artifactId>
-						<version>${sca-maven-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>fortify-sca-clean</id>
-								<phase>${fortify.bind.phase}</phase>
-								<goals>
-									<goal>clean</goal>
-								</goals>
-								<configuration>
-									<aggregate>true</aggregate>
-								</configuration>
-							</execution>
-							<execution>
-								<id>fortify-sca-translate</id>
-								<phase>${fortify.bind.phase}</phase>
-								<goals>
-									<goal>translate</goal>
-								</goals>
-								<configuration>
-									<!-- run scans against all reactor projects -->
-									<aggregate>true</aggregate>
-									<!-- exclude inttest and perftest, as they don't go to prod -->
-									<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
-								</configuration>
-							</execution>
-							<execution>
-								<id>fortify-sca-scan</id>
-								<phase>${fortify.bind.phase}</phase>
-								<goals>
-									<goal>scan</goal>
-								</goals>
-								<configuration>
-									<!-- run scans against all reactor projects -->
-									<aggregate>true</aggregate>
-									<!-- exclude inttest and perftest, as they don't go to prod -->
-									<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>fortify-merge</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<properties>
-				<!-- Don't run tests from SCA - profile should be run as: "mvn install -P fortify-sca" -->
-				<skipTests>true</skipTests>
-				<skipITs>true</skipITs>
-				<skipPerfTests>true</skipPerfTests>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<!-- do not run on child modules, just on reactor -->
-						<inherited>false</inherited>
-						<dependencies>
-							<!-- provides ANT branch tags (if/then/else) -->
-							<dependency>
-								<groupId>ant-contrib</groupId>
-								<artifactId>ant-contrib</artifactId>
-								<version>${ant-contrib.version}</version>
-							</dependency>
-						</dependencies>
-						<executions>
-							<execution>
-								<id>fortify-merge</id>
-								<goals>
-									<goal>run</goal>
-								</goals>
-								<configuration>
-									<tasks>
-										<!-- add the ant tasks from ant-contrib -->
-										<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-											<classpath refid="maven.dependency.classpath" />
-										</taskdef>
-										<echo>+++ Executing ANT target for Fortify copy/merge</echo>
-										<echo>+++ Checking file availability of ${project.basedir}/${project.artifactId}.fpr</echo>
-										<if>
-											<available file="${project.basedir}/${project.artifactId}.fpr" />
-											<then>
-												<echo>+++ Found file: ${project.basedir}/${project.artifactId}.fpr</echo>
-												<echo>+++ Executing Fortify merge operation with:</echo>
-												<echo>      FPRUtility -merge</echo>
-												<echo>        -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
-												<echo>        -source ${project.basedir}/${project.artifactId}.fpr</echo>
-												<echo>        -f ${project.basedir}/${project.artifactId}.fpr</echo>
-												<exec executable="FPRUtility">
-													<arg
-														line="-merge -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr -source ${project.basedir}/${project.artifactId}.fpr -f ${project.basedir}/${project.artifactId}.fpr" />
-												</exec>
-											</then>
-											<else>
-												<echo>+++ Not-found file: ${project.basedir}/${project.artifactId}.fpr</echo>
-												<echo>+++ Executing file copy with:</echo>
-												<echo>      copy</echo>
-												<echo>        ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
-												<echo>        ${project.basedir}/${project.artifactId}.fpr</echo>
-												<copy file="${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr"
-													tofile="${project.basedir}/${project.artifactId}.fpr" />
-											</else>
-										</if>
-									</tasks>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+<profiles>
+	<!--
+		The fortify-sca profile runs the aggregate scan for all modules.
+		If a project team believes that the fortify-sca profile requires ANY changes,
+		please consult with the BIP Framework development team.
+		Base Fortify requirements for all project modules are declared in bip-framework-parentpom.
+	-->
+	<profile>
+		<id>fortify-sca</id>
+		<activation>
+			<activeByDefault>false</activeByDefault>
+		</activation>
+		<properties>
+			<!-- Don't run tests from SCA - profile should be run as: "mvn install -P fortify-sca" -->
+			<skipTests>true</skipTests>
+			<skipITs>true</skipITs>
+			<skipPerfTests>true</skipPerfTests>
+		</properties>
+		<build>
+			<plugins>
+				<plugin>
+					<groupId>com.fortify.sca.plugins.maven</groupId>
+					<artifactId>sca-maven-plugin</artifactId>
+					<version>${sca-maven-plugin.version}</version>
+					<executions>
+						<execution>
+							<id>fortify-sca-clean</id>
+							<phase>${fortify.bind.phase}</phase>
+							<goals>
+								<goal>clean</goal>
+							</goals>
+							<configuration>
+								<aggregate>true</aggregate>
+							</configuration>
+						</execution>
+						<execution>
+							<id>fortify-sca-translate</id>
+							<phase>${fortify.bind.phase}</phase>
+							<goals>
+								<goal>translate</goal>
+							</goals>
+							<configuration>
+								<!-- run scans against all reactor projects -->
+								<aggregate>true</aggregate>
+								<!-- exclude inttest and perftest, as they don't go to prod -->
+								<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
+							</configuration>
+						</execution>
+						<execution>
+							<id>fortify-sca-scan</id>
+							<phase>${fortify.bind.phase}</phase>
+							<goals>
+								<goal>scan</goal>
+							</goals>
+							<configuration>
+								<!-- run scans against all reactor projects -->
+								<aggregate>true</aggregate>
+								<!-- exclude inttest and perftest, as they don't go to prod -->
+								<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</build>
+	</profile>
+	<profile>
+		<id>fortify-merge</id>
+		<activation>
+			<activeByDefault>false</activeByDefault>
+		</activation>
+		<properties>
+			<!-- Don't run tests from SCA - profile should be run as: "mvn install -P fortify-sca" -->
+			<skipTests>true</skipTests>
+			<skipITs>true</skipITs>
+			<skipPerfTests>true</skipPerfTests>
+		</properties>
+		<build>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<!-- do not run on child modules, just on reactor -->
+					<inherited>false</inherited>
+					<dependencies>
+						<!-- provides ANT branch tags (if/then/else) -->
+						<dependency>
+							<groupId>ant-contrib</groupId>
+							<artifactId>ant-contrib</artifactId>
+							<version>${ant-contrib.version}</version>
+						</dependency>
+					</dependencies>
+					<executions>
+						<execution>
+							<id>fortify-merge</id>
+							<goals>
+								<goal>run</goal>
+							</goals>
+							<configuration>
+								<tasks>
+									<!-- add the ant tasks from ant-contrib -->
+									<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+										<classpath refid="maven.dependency.classpath" />
+									</taskdef>
+									<echo>+++ Executing ANT target for Fortify copy/merge</echo>
+									<echo>+++ Checking file availability of ${project.basedir}/${project.artifactId}.fpr</echo>
+									<if>
+										<available file="${project.basedir}/${project.artifactId}.fpr" />
+										<then>
+											<echo>+++ Found file: ${project.basedir}/${project.artifactId}.fpr</echo>
+											<echo>+++ Executing Fortify merge operation with:</echo>
+											<echo>      FPRUtility -merge</echo>
+											<echo>        -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
+											<echo>        -source ${project.basedir}/${project.artifactId}.fpr</echo>
+											<echo>        -f ${project.basedir}/${project.artifactId}.fpr</echo>
+											<exec executable="FPRUtility">
+												<arg
+													line="-merge -project ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr -source ${project.basedir}/${project.artifactId}.fpr -f ${project.basedir}/${project.artifactId}.fpr" />
+											</exec>
+										</then>
+										<else>
+											<echo>+++ Not-found file: ${project.basedir}/${project.artifactId}.fpr</echo>
+											<echo>+++ Executing file copy with:</echo>
+											<echo>      copy</echo>
+											<echo>        ${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr</echo>
+											<echo>        ${project.basedir}/${project.artifactId}.fpr</echo>
+											<copy file="${project.build.directory}/fortify/${project.artifactId}-${project.version}.fpr"
+												tofile="${project.basedir}/${project.artifactId}.fpr" />
+										</else>
+									</if>
+								</tasks>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</build>
+	</profile>
+</profiles>
 ```
 
 </details>

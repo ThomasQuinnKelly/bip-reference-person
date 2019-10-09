@@ -7,8 +7,8 @@
 - Server to Server communication
 
 ## Security Pattern
-- [JSON Web Token](https://tools.ietf.org/html/rfc7519) ([JWT](https://jwt.io/)) Security using Transitive Trust Relationship to be enabled for the application
-- JWT signature algorithm to sign the token must use HS256 as defined in [JSON Web Algorithms](https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-31#section-3.1)
+- [JSON Web Token](https://tools.ietf.org/html/rfc7519) ([JWT](https://jwt.io/)) Security using Transitive Trust Relationship to be enabled for the application.
+- JWT signature algorithm to sign the token must use HS256 as defined in [JSON Web Algorithms](https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-31#section-3.1).
 - JWT needs to be signed with a signing key and must match for the trusted services that communicates.
 - JWT issuer to exists in the parsed JWT as specified in "[iss](https://tools.ietf.org/html/rfc7519#section-4.1.1)" and must match for the trusted services that communicates.
 - BIP Framework library would DeCrypt the JWT and attempt to construct a PersonTraits object from it. [PersonTraits.java](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/security/PersonTraits.java)
@@ -17,11 +17,11 @@
 - Add dependency in pom.xml to include bip-framework-autoconfigure library
 
 ```xml
-      <dependency>
-        <groupId>gov.va.bip.framework</groupId>
-        <artifactId>bip-framework-autoconfigure</artifactId>
-        <version><!-- add the appropriate version --></version>
-      </dependency>
+<dependency>
+	<groupId>gov.va.bip.framework</groupId>
+	<artifactId>bip-framework-autoconfigure</artifactId>
+	<version><!-- add the appropriate version --></version>
+</dependency>
 ```
 
  - Java source file from BIP Framework library that does AutoConfiguration for JWT. [BipSecurityAutoConfiguration.java](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-autoconfigure/src/main/java/gov/va/bip/framework/security/autoconfigure/BipSecurityAutoConfiguration.java)
@@ -46,7 +46,7 @@
 	       - /api/v2/persons/**
 	      excludeUrls:
 	       - /**
-   ```
+    ```
 - By default [TokenResource](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/security/jwt/TokenResource.java) java bean with `/token` end point is enabled for all the application profiles. To disable this end point, you can set `bip.framework.security.jwt.generate.enabled: false`. This end point generates a valid JWT token with default `900` seconds expiration time. This property can be overridden as shown `bip.framework.security.jwt.expireInSeconds: 900` 
 
 -  All the properties for JWT Security with prefix `bip.framework.security.jwt` that are configurable are listed below.
@@ -72,10 +72,10 @@ Information about the logged in individual is transmitted as part of the encrypt
 Because the values of the Person Traits are derived by other authorities in the VA, it isn't permissible to alter them directly, so the framework doesn't provide any means to do so.
 
 ```java
-	import gov.va.bip.framework.security.PersonTraits;
-	import gov.va.bip.framework.security.SecurityUtils;
+import gov.va.bip.framework.security.PersonTraits;
+import gov.va.bip.framework.security.SecurityUtils;
 
-	public class SomeClass {
-		PersonTraits personTraits = SecurityUtils.getPersonTraits();
-	}
+public class SomeClass {
+	PersonTraits personTraits = SecurityUtils.getPersonTraits();
+}
 ```

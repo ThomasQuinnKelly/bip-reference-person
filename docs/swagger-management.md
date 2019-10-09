@@ -14,43 +14,43 @@ Swagger provides more benefits than just helping create clear documentation.
   include the autoconfigure projects.
   
 ```xml
-	   <dependency>
-             <groupId>gov.va.bip.framework</groupId>
-             <artifactId>bip-framework-autoconfigure</artifactId>
-             <!-- add the appropriate version -->
-           </dependency>
+<dependency>
+	<groupId>gov.va.bip.framework</groupId>
+	<artifactId>bip-framework-autoconfigure</artifactId>
+	<!-- add the appropriate version -->
+</dependency>
 ```
 
 - To disable serving Swagger UI in any environment, use the following configuration:
 
 ```yml
-	   bip.framework:
-	     swagger:
-    		enabled: false
+bip.framework:
+    swagger:
+        enabled: false
 ```
 
 - See the @EnableWebMvc and @ConditionalOnProperty annotations on the BipSwaggerAutoConfiguration for reference 
 
 ```java
-		@Configuration
-		@EnableWebMvc
-		@ConditionalOnProperty(prefix = "bip.framework.swagger", name = "enabled", matchIfMissing = true)
-		public class BipSwaggerAutoConfiguration implements WebMvcConfigurer {}
+@Configuration
+@EnableWebMvc
+@ConditionalOnProperty(prefix = "bip.framework.swagger", name = "enabled", matchIfMissing = true)
+public class BipSwaggerAutoConfiguration implements WebMvcConfigurer {}
 ```
 
 - Add ApiOperations and ApiMethod annotations on the resource class methods to describe about the 
   method and responses
 
 ```java
-		@ApiOperation(value = "A health check of this endpoint",
-				notes = "Will perform a basic health check to see if the operation is running.")
-		@ApiResponses(value = {
-				@ApiResponse(code = 200, message = MESSAGE_200) })
+@ApiOperation(value = "A health check of this endpoint",
+		notes = "Will perform a basic health check to see if the operation is running.")
+@ApiResponses(value = {
+		@ApiResponse(code = 200, message = MESSAGE_200) })
 ```
 
 ## Swagger Page Security and Errors
 
-- Security to access the Swagger page is through the JWT token generated. Need to generate the token using Token-Resource on the swagger page and add it to the Authorize section using "Bearer" as key for the JWT token.
+- Security to access the [Swagger page](http://localhost:8080/swagger-ui.html) is through the JWT token generated. Need to generate the token using Token-Resource on the swagger page and add it to the Authorize section using "Bearer" as key for the JWT token.
 
 - Swagger page has link to access the possible key-value of the errors in the REST resource responses
 
