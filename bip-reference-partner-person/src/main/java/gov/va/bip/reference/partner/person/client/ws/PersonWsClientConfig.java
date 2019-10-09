@@ -11,7 +11,6 @@ import javax.annotation.PostConstruct;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponseInterceptor;
 import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -51,9 +50,6 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 
 	/** The XSD for this web service */
 	private static final String XSD = "xsd/PersonService/PersonWebService.xsd";
-	
-	@Autowired
-	private PersonWsClientProperties properties;
 
 	/** Decides if jaxb validation logs errors. */
 	@Value("${bip-reference-partner-person.ws.client.logValidation:true}")
@@ -103,6 +99,7 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	 * @param endpoint the endpoint
 	 * @param readTimeout the read timeout
 	 * @param connectionTimeout the connection timeout
+	 * @param properties person WebService client properties
 	 * @return the web service template
 	 * @throws IOException 
 	 * @throws InvalidKeySpecException 
@@ -114,7 +111,8 @@ public class PersonWsClientConfig extends BaseWsClientConfig {
 	WebServiceTemplate personWsClientAxiomTemplate(
 			@Value("${bip-reference-partner-person.ws.client.endpoint}") final String endpoint,
 			@Value("${bip-reference-partner-person.ws.client.readTimeout:60000}") final int readTimeout,
-			@Value("${bip-reference-partner-person.ws.client.connectionTimeout:60000}") final int connectionTimeout) 
+			@Value("${bip-reference-partner-person.ws.client.connectionTimeout:60000}") final int connectionTimeout,
+			PersonWsClientProperties properties)
 			throws KeyStoreException, NoSuchAlgorithmException, CertificateException, InvalidKeySpecException, IOException  {
 
 		Defense.hasText(endpoint, "personWsClientAxiomTemplate endpoint cannot be empty.");
