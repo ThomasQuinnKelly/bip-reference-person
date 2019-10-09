@@ -73,14 +73,6 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
-		<!-- TODO Oracle 11.1.x is on TRM Unapproved list -->
-		<!-- TODO Oracle 11.2.x is on TRM Divest schedule -->
-		<!--
- 		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-		</dependency>
-		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
