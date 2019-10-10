@@ -42,7 +42,7 @@ mavenGitflowPipeline {
     deploymentTemplates = ["template.yaml"]
 
     //Deployment parameters for review instances and dev instance
-    deploymentParameters = = [
+    deploymentParameters = [
         'APP_NAME': 'bip-reference-person',
         'IMAGE': 'bip-reference-person',
         'SPRING_PROFILES': 'dev'
