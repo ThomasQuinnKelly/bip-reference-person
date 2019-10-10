@@ -41,14 +41,19 @@ mavenGitflowPipeline {
     //Path to your applications Openshift deployment template
     deploymentTemplates = ["template.yaml"]
     
-    //Deployment parameters used to configure your Openshift deployment template
-    deploymentParameters = [
+    //Functional Testing Deployment parameters used to configure your Openshift deployment template
+    functionalTestDeploymentParameters = [
         'APP_NAME': 'bip-reference-person',
         'IMAGE': 'bip-reference-person',
         'SPRING_PROFILES': 'dev'
     ]
 
-    
+    //Performance Testing Deployment parameters used to configure your Openshift deployment template
+    performanceTestDeploymentParameters = [
+         'APP_NAME': 'bip-reference-person',
+         'IMAGE': 'bip-reference-person',
+         'SPRING_PROFILES': 'dev'
+    ]
 
     /*************************************************************************
     * Helm Deployment Configuration
@@ -68,7 +73,8 @@ mavenGitflowPipeline {
     chartCredentialId = "github"
 
     //Value YAML file used to configure the Helm deployments used for functional and performance testing.
-    chartValueFile = "testing.yaml"
+    chartValueFunctionalTestFile = "testing.yaml"
+    chartValuePerformanceTestFile = "testing.yaml"
 
     //Release name to use
     chartReleaseName = "bip-reference-person"
