@@ -137,8 +137,8 @@
 								<configuration>
 									<!-- run scans against all reactor projects -->
 									<aggregate>true</aggregate>
-									<!-- exclude inttest and perftest, as they don't go to prod -->
-									<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
+									<!-- exclude -inttest, -perftest and -db, as they don't go to prod -->
+									<excludes>${user.dir}/bip-reference-inttest,${user.dir}/bip-reference-perftest,${user.dir}/bip-reference-person-db</excludes>
 								</configuration>
 							</execution>
 							<execution>
@@ -150,8 +150,8 @@
 								<configuration>
 									<!-- run scans against all reactor projects -->
 									<aggregate>true</aggregate>
-									<!-- exclude inttest and perftest, as they don't go to prod -->
-									<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
+									<!-- exclude -inttest, -perftest and -db, as they don't go to prod -->
+									<excludes>${user.dir}/bip-reference-inttest,${user.dir}/bip-reference-perftest,${user.dir}/bip-reference-person-db</excludes>
 								</configuration>
 							</execution>
 						</executions>
