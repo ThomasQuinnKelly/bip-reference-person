@@ -40,6 +40,13 @@ mavenGitflowPipeline {
     *************************************************************************/
     //Path to your applications Openshift deployment template
     deploymentTemplates = ["template.yaml"]
+
+    //Deployment parameters for review instances and dev instance
+    deploymentParameters = = [
+        'APP_NAME': 'bip-reference-person',
+        'IMAGE': 'bip-reference-person',
+        'SPRING_PROFILES': 'dev'
+    ]
     
     //Functional Testing Deployment parameters used to configure your Openshift deployment template
     functionalTestDeploymentParameters = [
