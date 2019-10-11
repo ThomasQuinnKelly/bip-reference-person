@@ -208,7 +208,7 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 		} catch (Exception e) {
 			LOGGER.error("Upload failed due to unexpected exception", e);
 			// send provider response back to consumer
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);	//NOSONAR False Positive: first parameter of ResponseEntity(T, HttpStatus) is already @Nullable
 		}
 	}
 

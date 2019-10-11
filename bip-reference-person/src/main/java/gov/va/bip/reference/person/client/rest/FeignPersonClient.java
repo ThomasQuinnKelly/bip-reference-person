@@ -4,9 +4,8 @@ import javax.validation.Valid;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
@@ -29,8 +28,7 @@ public interface FeignPersonClient { // NOSONAR not a functional interface
 	 * @param personInfoRequest the person info request
 	 * @return the person by pid domain response
 	 */
-	@RequestMapping(value = PersonResource.URL_PREFIX + "/pid",
-			method = RequestMethod.POST,
+	@PostMapping(value = PersonResource.URL_PREFIX + "/pid",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	PersonInfoResponse personByPid(@Valid @RequestBody PersonInfoRequest personInfoRequest);
