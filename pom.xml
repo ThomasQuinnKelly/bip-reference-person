@@ -73,14 +73,6 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
-		<!-- TODO Oracle 11.1.x is on TRM Unapproved list -->
-		<!-- TODO Oracle 11.2.x is on TRM Divest schedule -->
-		<!--
- 		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-		</dependency>
-		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -137,8 +129,8 @@
 								<configuration>
 									<!-- run scans against all reactor projects -->
 									<aggregate>true</aggregate>
-									<!-- exclude inttest and perftest, as they don't go to prod -->
-									<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
+									<!-- exclude -inttest, -perftest and -db, as they don't go to prod -->
+									<excludes>${user.dir}/bip-reference-inttest,${user.dir}/bip-reference-perftest,${user.dir}/bip-reference-person-db</excludes>
 								</configuration>
 							</execution>
 							<execution>
@@ -150,8 +142,8 @@
 								<configuration>
 									<!-- run scans against all reactor projects -->
 									<aggregate>true</aggregate>
-									<!-- exclude inttest and perftest, as they don't go to prod -->
-									<excludes>**/bip-*-inttest/*,**/bip-*-perftest/*</excludes>
+									<!-- exclude -inttest, -perftest and -db, as they don't go to prod -->
+									<excludes>${user.dir}/bip-reference-inttest,${user.dir}/bip-reference-perftest,${user.dir}/bip-reference-person-db</excludes>
 								</configuration>
 							</execution>
 						</executions>
