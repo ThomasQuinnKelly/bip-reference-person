@@ -31,6 +31,14 @@ mavenGitflowPipeline {
     //Additional Mavn options to use when running functional test cases
     cucumberOpts = "--tags @DEV"
 
+    /* Postman Testing Configuration */
+   
+   //Set of Postman test collections to execute. Required for Postman Testing stage to run.
+   //Url of the service is passed to the collection as an environment variable named BASE_URL
+   postmanTestCollections = [
+     'bip-reference-inttest/src/inttest/resources/bip.postman_collection.json'
+   ]
+
     /*************************************************************************
     * OpenShift Deployment Configuration
     *
@@ -40,15 +48,27 @@ mavenGitflowPipeline {
     *************************************************************************/
     //Path to your applications Openshift deployment template
     deploymentTemplates = ["template.yaml"]
-    
-    //Deployment parameters used to configure your Openshift deployment template
+
+    //Deployment parameters for review instances and dev instance
     deploymentParameters = [
         'APP_NAME': 'bip-reference-person',
         'IMAGE': 'bip-reference-person',
         'SPRING_PROFILES': 'dev'
     ]
-
     
+    //Functional Testing Deployment parameters used to configure your Openshift deployment template
+    functionalTestDeploymentParameters = [
+        'APP_NAME': 'bip-reference-person',
+        'IMAGE': 'bip-reference-person',
+        'SPRING_PROFILES': 'dev'
+    ]
+
+    //Performance Testing Deployment parameters used to configure your Openshift deployment template
+    performanceTestDeploymentParameters = [
+         'APP_NAME': 'bip-reference-person',
+         'IMAGE': 'bip-reference-person',
+         'SPRING_PROFILES': 'dev'
+    ]
 
     /*************************************************************************
     * Helm Deployment Configuration
@@ -68,7 +88,8 @@ mavenGitflowPipeline {
     chartCredentialId = "github"
 
     //Value YAML file used to configure the Helm deployments used for functional and performance testing.
-    chartValueFile = "testing.yaml"
+    chartValueFunctionalTestFile = "testing.yaml"
+    chartValuePerformanceTestFile = "testing.yaml"
 
     //Release name to use
     chartReleaseName = "bip-reference-person"
