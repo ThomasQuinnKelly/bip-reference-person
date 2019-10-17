@@ -48,5 +48,8 @@ public class PersonDocTest {
         personDoc.setDocName("Initial Document");
         personDoc.setDocCreateDate(LocalDate.of(1980, 1, 1));
         Assert.assertEquals("ClassPojo [pid = 1000, docName = Initial Document, docCreateDate = 19800101]", personDoc.toString());
+
+        personDoc.setDocCreateDate(null);
+        Assert.assertEquals("ClassPojo [pid = 1000, docName = Initial Document, docCreateDate = null]", personDoc.toString());
     }
 }
