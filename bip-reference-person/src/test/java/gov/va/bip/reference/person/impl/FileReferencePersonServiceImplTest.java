@@ -38,8 +38,8 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"spring.cloud.bus.enabled=false", "spring.cloud.discovery.enabled=false",
-                "spring.cloud.consul.enabled=false", "spring.cloud.config.discovery.enabled=false", "spring.cloud.vault.enabled=false", "server_port=0"})
+        properties = { "spring.cloud.bus.enabled=false", "spring.cloud.discovery.enabled=false",
+                "spring.cloud.consul.enabled=false", "spring.cloud.config.discovery.enabled=false", "spring.cloud.vault.enabled=false"})
 public class FileReferencePersonServiceImplTest {
 
     @Autowired
