@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
@@ -64,9 +65,20 @@ public class PersonInfoDatasourceConfig extends PersonDatasourceBase {
 	 * @return DataSource - the info datasource
 	 */
 	@Bean
-	@ConfigurationProperties(prefix = INFO_HIKARI_DATASOURCE_PREFIX)
-	public HikariDataSource infoDataSource() {
+	@ConfigurationProperties(prefix = INFO_HIKARI_DATASOURCE_PREFIX, ignoreInvalidFields = true)
+	public DataSource infoDataSource() {
 		return infoDataSourceProperties().initializeDataSourceBuilder().type(HikariDataSource.class).build();
+	}
+	
+	/**
+	 * JpaProperties for person "info" entities.
+	 *
+	 * @return the JPA properties
+	 */
+	@Bean
+	@ConfigurationProperties(prefix = INFO_JPA_PREFIX)
+	public JpaProperties infoJpaProperties() {
+	    return new JpaProperties();
 	}
 
 	/**
@@ -77,7 +89,6 @@ public class PersonInfoDatasourceConfig extends PersonDatasourceBase {
 	 * @return LocalContainerEntityManagerFactoryBean entity manager for infoDataSource
 	 */
 	@Bean
-	@ConfigurationProperties(prefix = INFO_JPA_PREFIX)
 	public LocalContainerEntityManagerFactoryBean infoEntityManagerFactory(
 			EntityManagerFactoryBuilder builder,
 			@Qualifier("infoDataSource") DataSource dataSource) {
@@ -85,6 +96,7 @@ public class PersonInfoDatasourceConfig extends PersonDatasourceBase {
 				.dataSource(dataSource)
 				.packages(INFO_ENTITIES_PACKAGES)
 				.persistenceUnit(INFO_PERSISTENCE_UNIT)
+				.properties(infoJpaProperties().getProperties())
 				.build();
 	}
 

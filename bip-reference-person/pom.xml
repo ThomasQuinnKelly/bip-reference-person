@@ -18,7 +18,8 @@
 	<description>Reference Person Service Implementation for BIP Spring Boot Project</description>
 
 	<properties>
-		<bip-framework.version>2.0.5-SNAPSHOT</bip-framework.version>
+		<bip-framework.version>2.0.6-SNAPSHOT</bip-framework.version>
+		<sonar.exclusions></sonar.exclusions>
 	</properties>
 
 	<dependencies>
@@ -41,14 +42,6 @@
 		<!-- spring-boot dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 		</dependency>
 		<dependency>
@@ -61,16 +54,6 @@
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 		<!-- spring cloud dependencies -->
-		<!-- Spring-cloud Netflix Feign dependency for defining declarative REST clients -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-		</dependency>
-		<!-- Spring-cloud Netflix hystrix dependency for circuit breaker implementation -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
