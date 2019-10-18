@@ -26,8 +26,10 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 import gov.va.bip.framework.config.BipCommonSpringProfiles;
+import gov.va.bip.framework.exception.BipPartnerRuntimeException;
 import gov.va.bip.framework.exception.BipValidationRuntimeException;
 import gov.va.bip.framework.security.PersonTraits;
+import gov.va.bip.framework.transfer.PartnerTransferObjectMarker;
 import gov.va.bip.reference.partner.person.client.ws.AbstractPersonTest;
 import gov.va.bip.reference.partner.person.client.ws.PartnerMockFrameworkTestConfig;
 import gov.va.bip.reference.partner.person.client.ws.PersonWsClientConfig;
@@ -117,6 +119,26 @@ public class RemoteServiceCallMockTest extends AbstractPersonTest {
 		assertTrue(keyForMockResponse.startsWith("person.getPersonInfoByPtcpntId"));
 	}
 
+	@Test
+	public void testGetKeyForMockResponseException() {
+		PersonRemoteServiceCallMock mock = new PersonRemoteServiceCallMock();
+		PartnerTransferObjectMarkerImpl request = new PartnerTransferObjectMarkerImpl();
+		
+		try {
+			
+			mock.getKeyForMockResponse(request);
+			fail("An BipPartnerRuntimeException was expected here.");
+			
+		} catch (BipPartnerRuntimeException bpre) {	
+			
+			assertEquals("Could not read mock XML file PersonRemoteServiceCallMock using key "
+					+ "gov.va.bip.reference.partner.person.client.ws.remote.PartnerTransferObjectMarkerImpl. "
+					+ "Please make sure this response file exists in the main/resources directory.",
+					bpre.getMessage());
+			
+		}
+	}
+	
 	@Test
 	public void testGetKeyForMockResponse_NullRequest() {
 		PersonRemoteServiceCallMock mock = new PersonRemoteServiceCallMock();

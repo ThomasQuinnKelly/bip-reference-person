@@ -32,7 +32,6 @@ public class PersonServiceExceptionTest {
 	 */
 	@Test
 	public void testGetSeverity() {
-		System.out.println("getSeverity");
 		MessageSeverity expResult = MessageSeverity.ERROR;
 		MessageSeverity result = instance.getExceptionData().getSeverity();
 		assertEquals(expResult, result);
@@ -43,7 +42,6 @@ public class PersonServiceExceptionTest {
 	 */
 	@Test
 	public void testGetKey() {
-		System.out.println("getKey");
 		String expResult = NAME;
 		String result = instance.getExceptionData().getKey();
 		assertEquals(expResult, result);
@@ -54,7 +52,6 @@ public class PersonServiceExceptionTest {
 	 */
 	@Test
 	public void testGetMessage() {
-		System.out.println("getMessage");
 		String expResult = MESSAGE;
 		String result = instance.getMessage();
 		assertEquals(expResult, result);
@@ -66,7 +63,6 @@ public class PersonServiceExceptionTest {
 	 */
 	@Test
 	public void testGetSurpressed() {
-		System.out.println("getCause");
 		String expResult = EXP_MESSAGE;
 		Throwable result = instanceWithCause.getCause();
 		assertEquals(expResult, result.getMessage());

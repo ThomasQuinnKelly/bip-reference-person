@@ -1,9 +1,8 @@
 package gov.va.bip.reference.person.impl;
 
 import gov.va.bip.framework.security.model.Person;
-import gov.va.bip.reference.person.api.model.v1.PersonInfo;
-import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
-import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
+import gov.va.bip.reference.person.api.model.v1.*;
+import gov.va.bip.reference.person.exception.PersonServiceException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +25,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -130,5 +131,66 @@ public class ReferencePersonServiceTest {
 
     }
 
+    @Test
+    public void testPostDocumentForPID() throws IOException {
+
+        ResponseEntity<PersonDocsMetadataResponse> resourceResponseEntity = restTemplate.exchange("/api/v1/persons/"+pidLong+"/documents/metadata", HttpMethod.GET, getRequestEntity, PersonDocsMetadataResponse.class);
+
+        int statusCode = resourceResponseEntity.getStatusCodeValue();
+
+        assertEquals(200, statusCode);
+
+        PersonDocsMetadataResponse returnedPersonDocsMetadata = resourceResponseEntity.getBody();
+
+        assertNotNull(returnedPersonDocsMetadata);
+
+        PersonDocsMetadata personDocsMetadata = returnedPersonDocsMetadata.getPersonDocsMetadata();
+
+        assertNotNull(personDocsMetadata);
+
+        assertEquals("test1", personDocsMetadata.getDocName());
+    }
+
+    @Test
+    public void testPersonByPIDRestNegativeTest() {
+        ResponseEntity<PersonInfoResponse> resourceResponseEntity = restTemplate.exchange("/api/v1/persons/clientTests/callPersonByPidUsingRestTemplate", HttpMethod.POST, postRequestEntity, PersonInfoResponse.class);
+
+        int statusCode = resourceResponseEntity.getStatusCodeValue();
+
+        assertEquals(500, statusCode);
+
+        PersonInfoResponse returnedPersonInfo = resourceResponseEntity.getBody();
+
+        assertNull(returnedPersonInfo.getPersonInfo());
+
+    }
+
+    @Test
+    public void testPersonByPIDFeignNegative() {
+        ResponseEntity<PersonInfoResponse> resourceResponseEntity = restTemplate.exchange("/api/v1/persons/clientTests/callPersonByPidUsingFeignClient", HttpMethod.POST, postRequestEntity, PersonInfoResponse.class);
+
+        int statusCode = resourceResponseEntity.getStatusCodeValue();
+
+        assertEquals(500, statusCode);
+
+        PersonInfoResponse returnedPersonInfo = resourceResponseEntity.getBody();
+
+        assertNotNull(returnedPersonInfo);
+
+        assertNull(returnedPersonInfo.getPersonInfo());
+
+    }
+
+    @Test
+    public void testStoreMetadataNegative() {
+        ReferencePersonServiceImpl referencePersonServiceImpl = new ReferencePersonServiceImpl();
+
+        try {
+            referencePersonServiceImpl.storeMetadata(54321L, "docName", "NonsensicalDate");
+            fail("An PersonServiceException was expected here.");
+        } catch (PersonServiceException pse) {
+            assertEquals("Date value given in the request is not valid.", pse.getMessage());
+        }
+    }
 }
 

@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,9 @@ public class PersonRestClientTester implements PersonRestClientTesterApi, Swagge
 
 	public static final String URL_PREFIX = PersonResource.URL_PREFIX + "/clientTests";
 
+	@Autowired
+	Environment environment;
+
 	@Override
 	public ResponseEntity<PersonInfoResponse> callPersonByPidUsingFeignClientUsingPOST(
 			@Valid PersonInfoRequest personInfoRequest) {
@@ -68,8 +72,11 @@ public class PersonRestClientTester implements PersonRestClientTesterApi, Swagge
 		// invoke the service using classic REST Template from Spring, but load balanced through Consul
 		HttpEntity<PersonInfoRequest> requestEntity = new HttpEntity<>(personInfoRequest);
 		ResponseEntity<PersonInfoResponse> exchange = null;
+
+		String port = environment.getProperty("server.port");
+
 		exchange =
-				personUsageRestTemplate.executeURL("http://localhost:8080" + PersonResource.URL_PREFIX + "/pid",
+				personUsageRestTemplate.executeURL("http://localhost:" + port + PersonResource.URL_PREFIX + "/pid",
 						HttpMethod.POST, requestEntity, new ParameterizedTypeReference<PersonInfoResponse>() {
 						});
 		LOGGER.info("Invoked os-reference-person service using REST template: " + exchange);
