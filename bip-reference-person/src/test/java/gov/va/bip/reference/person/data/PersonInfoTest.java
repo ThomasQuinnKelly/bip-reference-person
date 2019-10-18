@@ -1,10 +1,11 @@
 package gov.va.bip.reference.person.data;
 
-import gov.va.bip.reference.person.data.info.entities.PersonInfo;
+import java.time.LocalDate;
+
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.time.LocalDate;
+import gov.va.bip.reference.person.data.info.entities.PersonInfo;
 
 public class PersonInfoTest {
 

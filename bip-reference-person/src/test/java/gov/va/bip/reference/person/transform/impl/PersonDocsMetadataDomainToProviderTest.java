@@ -1,19 +1,21 @@
 package gov.va.bip.reference.person.transform.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.http.HttpStatus;
+
 import gov.va.bip.framework.messages.MessageSeverity;
 import gov.va.bip.framework.rest.provider.Message;
 import gov.va.bip.reference.person.api.model.v1.PersonDocsMetadataResponse;
 import gov.va.bip.reference.person.messages.PersonMessageKeys;
 import gov.va.bip.reference.person.model.PersonDocsMetadataDomain;
 import gov.va.bip.reference.person.model.PersonDocsMetadataDomainResponse;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.http.HttpStatus;
-
-import java.util.List;
-
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class PersonDocsMetadataDomainToProviderTest {
 

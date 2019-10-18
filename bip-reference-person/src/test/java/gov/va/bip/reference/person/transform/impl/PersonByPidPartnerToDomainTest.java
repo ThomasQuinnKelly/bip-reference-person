@@ -1,13 +1,15 @@
 package gov.va.bip.reference.person.transform.impl;
 
-import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
-import gov.va.bip.reference.partner.person.ws.transfer.PersonDTO;
-import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
+import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdResponse;
+import gov.va.bip.reference.partner.person.ws.transfer.PersonDTO;
+import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
 
 public class PersonByPidPartnerToDomainTest {
 

@@ -1,21 +1,19 @@
 package gov.va.bip.reference.person.model.validators;
 
-import gov.va.bip.framework.messages.MessageKeys;
-import gov.va.bip.framework.messages.MessageSeverity;
-import gov.va.bip.framework.messages.ServiceMessage;
-import gov.va.bip.reference.person.messages.PersonMessageKeys;
-import gov.va.bip.reference.person.model.PersonByPidDomainRequest;
-import gov.va.bip.reference.person.model.PersonDocsMetadataDomainRequest;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.springframework.boot.test.rule.OutputCapture;
-import org.springframework.http.HttpStatus;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.http.HttpStatus;
+
+import gov.va.bip.framework.messages.MessageKeys;
+import gov.va.bip.framework.messages.MessageSeverity;
+import gov.va.bip.framework.messages.ServiceMessage;
+import gov.va.bip.reference.person.messages.PersonMessageKeys;
+import gov.va.bip.reference.person.model.PersonDocsMetadataDomainRequest;
 
 public class PersonDocsMetadataDomainRequestValidatorTest {
 

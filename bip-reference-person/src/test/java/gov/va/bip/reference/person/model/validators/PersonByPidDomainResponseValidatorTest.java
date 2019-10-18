@@ -1,19 +1,20 @@
 package gov.va.bip.reference.person.model.validators;
 
-import gov.va.bip.framework.messages.ServiceMessage;
-import gov.va.bip.reference.person.exception.PersonServiceException;
-import gov.va.bip.reference.person.messages.PersonMessageKeys;
-import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
-import gov.va.bip.reference.person.model.PersonInfoDomain;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import org.junit.Before;
+import org.junit.Test;
+
+import gov.va.bip.framework.messages.ServiceMessage;
+import gov.va.bip.reference.person.exception.PersonServiceException;
+import gov.va.bip.reference.person.messages.PersonMessageKeys;
+import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
+import gov.va.bip.reference.person.model.PersonInfoDomain;
 
 public class PersonByPidDomainResponseValidatorTest {
 

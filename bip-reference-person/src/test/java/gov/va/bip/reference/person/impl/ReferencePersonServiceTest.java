@@ -1,8 +1,19 @@
 package gov.va.bip.reference.person.impl;
 
-import gov.va.bip.framework.security.model.Person;
-import gov.va.bip.reference.person.api.model.v1.*;
-import gov.va.bip.reference.person.exception.PersonServiceException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,22 +22,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.io.Resource;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.StreamUtils;
 
-import javax.validation.Valid;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import gov.va.bip.framework.security.model.Person;
+import gov.va.bip.reference.person.api.model.v1.PersonDocsMetadata;
+import gov.va.bip.reference.person.api.model.v1.PersonDocsMetadataResponse;
+import gov.va.bip.reference.person.api.model.v1.PersonInfo;
+import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
+import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
+import gov.va.bip.reference.person.exception.PersonServiceException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
