@@ -91,7 +91,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	/**
 	 * Implementation of the service (domain) layer API.
 	 * <p>
-	 * If graceful degredation is possible, add
+	 * If graceful degradation is possible, add
 	 * {@code fallbackMethod = "sampleFindByParticipantIDFallBack"}
 	 * to the {@code @HystrixCommand}.
 	 * <p>
