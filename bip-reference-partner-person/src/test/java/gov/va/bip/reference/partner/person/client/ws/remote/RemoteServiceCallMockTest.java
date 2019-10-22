@@ -3,6 +3,7 @@ package gov.va.bip.reference.partner.person.client.ws.remote;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.After;
@@ -25,8 +26,10 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.ws.client.core.WebServiceTemplate;
 
 import gov.va.bip.framework.config.BipCommonSpringProfiles;
+import gov.va.bip.framework.exception.BipPartnerRuntimeException;
 import gov.va.bip.framework.exception.BipValidationRuntimeException;
 import gov.va.bip.framework.security.PersonTraits;
+import gov.va.bip.framework.transfer.PartnerTransferObjectMarker;
 import gov.va.bip.reference.partner.person.client.ws.AbstractPersonTest;
 import gov.va.bip.reference.partner.person.client.ws.PartnerMockFrameworkTestConfig;
 import gov.va.bip.reference.partner.person.client.ws.PersonWsClientConfig;
@@ -117,6 +120,26 @@ public class RemoteServiceCallMockTest extends AbstractPersonTest {
 	}
 
 	@Test
+	public void testGetKeyForMockResponseException() {
+		PersonRemoteServiceCallMock mock = new PersonRemoteServiceCallMock();
+		PartnerTransferObjectMarkerImpl request = new PartnerTransferObjectMarkerImpl();
+		
+		try {
+			
+			mock.getKeyForMockResponse(request);
+			fail("An BipPartnerRuntimeException was expected here.");
+			
+		} catch (BipPartnerRuntimeException bpre) {	
+			
+			assertEquals("Could not read mock XML file PersonRemoteServiceCallMock using key "
+					+ "gov.va.bip.reference.partner.person.client.ws.remote.PartnerTransferObjectMarkerImpl. "
+					+ "Please make sure this response file exists in the main/resources directory.",
+					bpre.getMessage());
+			
+		}
+	}
+	
+	@Test
 	public void testGetKeyForMockResponse_NullRequest() {
 		PersonRemoteServiceCallMock mock = new PersonRemoteServiceCallMock();
 		FindPersonByPtcpntId request = null;
@@ -135,18 +158,33 @@ public class RemoteServiceCallMockTest extends AbstractPersonTest {
 	}
 
 	@Test
-	public void TestGetFileName() {
-		String filename = PersonRemoteServiceCallMock.getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES, "");
-		assertTrue(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES.equals(filename));
+	public void testGetFileName() {
+		//Filled PID
+		String filename = PersonRemoteServiceCallMock.getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE, PARTICIPANTID_FOR_MOCK_DATA);
+		assertEquals(MOCK_FINDPERSONBYPTCPNTID_RESPONSE.substring(0, MOCK_FINDPERSONBYPTCPNTID_RESPONSE.length()-3)+PARTICIPANTID_FOR_MOCK_DATA, filename);
 
+		filename = PersonRemoteServiceCallMock.getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES, PARTICIPANTID_FOR_MOCK_DATA);
+		assertEquals(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES, filename);
+
+		//Blank PID
+		filename = PersonRemoteServiceCallMock.getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE, "");
+		assertEquals(MOCK_FINDPERSONBYPTCPNTID_RESPONSE.substring(0, MOCK_FINDPERSONBYPTCPNTID_RESPONSE.length()-3)+PARTICIPANTID_FOR_MOCK_DATA, filename);
+
+		filename = PersonRemoteServiceCallMock.getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES, "");
+		assertEquals(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES, filename);
+
+		//Person Trait value PID blank
 		PersonTraits personTraits = new PersonTraits("user", "password", AuthorityUtils.createAuthorityList("ROLE_TEST"));
-		personTraits.setPid(PARTICIPANTID_FOR_MOCK_DATA);
+		personTraits.setPid("");
 		Authentication auth =
 				new UsernamePasswordAuthenticationToken(personTraits, personTraits.getPassword(), personTraits.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 
+		filename = PersonRemoteServiceCallMock.getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE, "");
+		assertEquals(MOCK_FINDPERSONBYPTCPNTID_RESPONSE.substring(0, MOCK_FINDPERSONBYPTCPNTID_RESPONSE.length()-4), filename);
+
 		filename = PersonRemoteServiceCallMock.getFileName(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES, "");
-		assertTrue(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES.equals(filename));
+		assertEquals(MOCK_FINDPERSONBYPTCPNTID_RESPONSE_WITHOUT_BRACES, filename);
 
 	}
 
