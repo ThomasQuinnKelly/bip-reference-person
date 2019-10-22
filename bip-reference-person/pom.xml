@@ -19,7 +19,7 @@
 
 	<properties>
 		<bip-framework.version>2.0.6-SNAPSHOT</bip-framework.version>
-		<sonar.exclusions></sonar.exclusions>
+		<sonar.exclusions>**/PersonRestClientTester.java</sonar.exclusions>
 	</properties>
 
 	<dependencies>
