@@ -29,7 +29,6 @@ import gov.va.bip.framework.config.BipCommonSpringProfiles;
 import gov.va.bip.framework.exception.BipPartnerRuntimeException;
 import gov.va.bip.framework.exception.BipValidationRuntimeException;
 import gov.va.bip.framework.security.PersonTraits;
-import gov.va.bip.framework.transfer.PartnerTransferObjectMarker;
 import gov.va.bip.reference.partner.person.client.ws.AbstractPersonTest;
 import gov.va.bip.reference.partner.person.client.ws.PartnerMockFrameworkTestConfig;
 import gov.va.bip.reference.partner.person.client.ws.PersonWsClientConfig;

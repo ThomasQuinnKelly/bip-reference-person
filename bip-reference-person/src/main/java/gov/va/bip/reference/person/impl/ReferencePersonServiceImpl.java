@@ -108,8 +108,10 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		/* Retrieve person info for pid - NO VALUE RETURNED, just a multi-datasource example */
 
 		try {
-			PersonInfo info = personDataHelper.getInfoForIcn(54321L);
-			LOGGER.info("Retrieved: " + info.toString());
+			PersonInfo personInfo = personDataHelper.getInfoForIcn(54321L);
+			if (personInfo !=null) {
+				LOGGER.info("PersonInfo retrieved: {}", personInfo.toString());
+			}
 		} catch (Exception e1) {
 			PersonByPidDomainResponse domainResponse = new PersonByPidDomainResponse();
 			LOGGER.error("Could not retrieve person by ICN 54321L - " + e1.getClass().getSimpleName() + ": " + e1.getMessage(), e1);
