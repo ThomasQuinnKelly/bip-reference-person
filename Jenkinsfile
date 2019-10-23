@@ -31,6 +31,14 @@ mavenGitflowPipeline {
     //Additional Mavn options to use when running functional test cases
     cucumberOpts = "--tags @DEV"
 
+    /* Postman Testing Configuration */
+   
+   //Set of Postman test collections to execute. Required for Postman Testing stage to run.
+   //Url of the service is passed to the collection as an environment variable named BASE_URL
+   postmanTestCollections = [
+     'bip-reference-inttest/src/inttest/resources/bip.postman_collection.json'
+   ]
+
     /*************************************************************************
     * OpenShift Deployment Configuration
     *
