@@ -5,7 +5,7 @@
 * [Apache Maven 3.6.0](https://archive.apache.org/dist/maven/maven-3/3.6.0/binaries/)
 * [JDK 8](installation-help-guide.md#install-jdk-8)
 * [GIT 2.18.0 or higher](installation-help-guide.md#install-git)
-* IDE ([Spring Tool Suite 4:STS4](https://spring.io/tools) is recommended as it plays nicely with Spring Boot. However you are free to choose.)
+* IDE [Spring Tool Suite 4:STS4](https://spring.io/tools) or [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) is recommended.
 * Docker [for MAC](https://docs.docker.com/docker-for-mac/install/) or [Windows](https://docs.docker.com/docker-for-windows/install/) (to run BIP reference person service in the container)
 * Create a GitHub [Personal Access Token](#creating-personal-access-token-to-connect-to-github) to connect to GitHub
 * [Fortify 19.1.0](installation-help-guide.md#install-and-run-fortify) SCA and maven plugins provided in the download
@@ -38,8 +38,7 @@ There are 2 application profiles that you could run locally
 1. To run with default profile mode, clone only the `bip-reference-spring-boot` repository, then run `bip-reference-person` service from your IDE using [Deploy Only Mode](#ide-deploy-only-bip-reference-person)
 1. To run local-int profile mode, go through the steps mentioned under [Using Docker Compose](#using-docker-compose)
 
-### IDE Deploy only bip-reference-person
-* Assuming you are using Spring Tool Suite as suggested
+### Spring Tool Suite - IDE Deploy only bip-reference-person
 * Ensure you've imported the projects in the IDE
 * In the "Boot Dashboard" within Spring Tool Suite, highlight `bip-reference-person` project and click the "*(Re)start*" button *
 * Localhost URLs for testing/using this deployment approach
@@ -53,6 +52,23 @@ There are 2 application profiles that you could run locally
 			- At command line, add `-U`, for example: `$ mvn clean install -U`
 
       - Clean and build the project, select _Project > Clean..._
+	- It may be necessary to run the clean/build more than one time for necessary artifacts to get generated correctly.
+
+### IntelliJ - IDE Deploy only bip-reference-person
+* Open IntelliJ and go through the wizard to import the `bip-reference-person` project using maven with the following steps:
+    - import project > `bip-reference-person` > import project from external model > maven..next > next (keep default settings) > next > ensure project snapshot is selected…next > next > finish
+* In the project tab, highlight `bip-reference-person` project and right click and select `synchronize bip-reference-person`
+* Localhost URLs for testing/using this deployment approach
+
+  [Swagger UI](http://localhost:8080/swagger-ui.html) (http://localhost:8080/swagger-ui.html)
+
+  - After updating to BIP Framework 2.x, there may be initial build issues including the fact that Swagger UI isn't available. Mitigation for this:
+
+      - Force maven to update libraries:
+			- In IntelliJ, highlight `bip-reference-person` project, right click and select _Maven > Reimport_
+			- At command line, add `-U`, for example: `$ mvn clean install -U`
+
+      - Clean and build the project, go to the right side of the IDE, select the maven tab and select _bip-reference-person > Lifecycle > Clean > Install_
 	- It may be necessary to run the clean/build more than one time for necessary artifacts to get generated correctly.
 
 ### Using Docker Compose
