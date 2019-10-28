@@ -2,9 +2,11 @@ package gov.va.bip.reference.service.steps;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
@@ -105,7 +107,7 @@ public class PersonDocuments {
 		String baseUrl = handler.getRestConfig().getProperty("baseURL", true);
 		StringBuilder builder = new StringBuilder();
 		builder.append(baseUrl).append(serviceURL);
-		handler.invokeAPIUsingGet(builder.toString());
+		handler.invokeAPIUsingGet(builder.toString(), Resource.class);
 	}
 
 	/**
@@ -146,6 +148,15 @@ public class PersonDocuments {
 	public void validatePersonDocumentsDownloadContentType(final String type) throws Throwable {
 		String contentType = handler.getRestUtil().getResponseHttpHeaders().getContentType().toString();
 		assertThat(contentType, equalTo(type));
+
+		Object objResponse = handler.getObjResponse();
+		LOGGER.debug("Download Object Response: {}", objResponse);
+		if (objResponse instanceof Resource) {
+			LOGGER.debug("Object Response of type Resource");
+			Resource resource = (Resource) objResponse;
+			long contentLength = resource.contentLength();
+			assertTrue((contentLength > 0));
+		}
 	}
 
 	@After({})
