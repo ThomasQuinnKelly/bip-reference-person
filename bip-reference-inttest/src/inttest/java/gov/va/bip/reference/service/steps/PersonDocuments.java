@@ -4,9 +4,14 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.ResourceRegionHttpMessageConverter;
 
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
@@ -58,7 +63,9 @@ public class PersonDocuments {
 	 */
 	@Before({})
 	public void setUpREST() {
-		handler.initREST();
+		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+		messageConverters.add(new ResourceRegionHttpMessageConverter());
+		handler.initREST(messageConverters);
 	}
 
 	/**
