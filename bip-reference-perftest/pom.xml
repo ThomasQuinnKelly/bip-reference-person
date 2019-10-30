@@ -18,6 +18,7 @@
 		<domain>localhost</domain>
 		<port>8080</port>
 		<protocol>http</protocol>
+        <jMeterTestFile>*.jmx</jMeterTestFile>
 		<PersonHealth.threadGroup.threads>5</PersonHealth.threadGroup.threads>
 		<PersonHealth.threadGroup.rampUp>2</PersonHealth.threadGroup.rampUp>
 		<PersonHealth.threadGroup.loopCount>10</PersonHealth.threadGroup.loopCount>
@@ -101,6 +102,9 @@
 										<BearerTokenCreate.threadGroup.rampUp>${BearerTokenCreate.threadGroup.rampUp}</BearerTokenCreate.threadGroup.rampUp>
 										<BearerTokenCreate.threadGroup.loopCount>${BearerTokenCreate.threadGroup.loopCount}</BearerTokenCreate.threadGroup.loopCount>
 									</propertiesUser>
+                                    <testFilesIncluded>
+                                        <jMeterTestFile>${jMeterTestFile}</jMeterTestFile>
+                                    </testFilesIncluded>
 								</configuration>
 							</execution>
 						</executions>
