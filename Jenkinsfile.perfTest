@@ -1,4 +1,3 @@
 mavenPerformancePipeline {
     perfTestUrl = 'http://bip-reference-person-dev.blue-dev:8080'
-    perfOpts = '-DjMeterTestFile=asdf.jmx'
 }
