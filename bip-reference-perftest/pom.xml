@@ -60,6 +60,9 @@
 						<artifactId>jmeter-maven-plugin</artifactId>
 						<configuration>
 							<skip>${skipPerfTests}</skip>
+                            <testFilesIncluded>
+                                <jMeterTestFile>${jMeterTestFile}</jMeterTestFile>
+                            </testFilesIncluded>
 						</configuration>
 						<executions>
 							<execution>
@@ -102,9 +105,6 @@
 										<BearerTokenCreate.threadGroup.rampUp>${BearerTokenCreate.threadGroup.rampUp}</BearerTokenCreate.threadGroup.rampUp>
 										<BearerTokenCreate.threadGroup.loopCount>${BearerTokenCreate.threadGroup.loopCount}</BearerTokenCreate.threadGroup.loopCount>
 									</propertiesUser>
-                                    <testFilesIncluded>
-                                        <jMeterTestFile>${jMeterTestFile}</jMeterTestFile>
-                                    </testFilesIncluded>
 								</configuration>
 							</execution>
 						</executions>
