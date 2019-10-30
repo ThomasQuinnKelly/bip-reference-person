@@ -86,6 +86,7 @@ management:
 #Application Custom Properties          
 bip-reference-person:
   propSource: internal
+  env: default
   password: secret
   sampleProperty: >
                   sampleProperty___env/profile:${bip-reference-person.env}___propSource:

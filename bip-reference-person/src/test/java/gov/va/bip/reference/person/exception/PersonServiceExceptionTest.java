@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gov.va.bip.reference.person.exception;
 
 import static org.junit.Assert.assertEquals;
@@ -12,7 +7,6 @@ import org.junit.Test;
 
 import gov.va.bip.framework.messages.MessageKeys;
 import gov.va.bip.framework.messages.MessageSeverity;
-import gov.va.bip.reference.person.exception.PersonServiceException;
 
 /**
  *
@@ -20,13 +14,17 @@ import gov.va.bip.reference.person.exception.PersonServiceException;
  */
 public class PersonServiceExceptionTest {
 	PersonServiceException instance;
+	PersonServiceException instanceWithCause;
 
 	private static final String NAME = "NO_KEY";
 	private static final String MESSAGE = "NO_KEY";
 
+	private static final String EXP_MESSAGE = "This is a big problem.";
+
 	@Before
 	public void setUp() {
 		instance = new PersonServiceException(MessageKeys.NO_KEY, MessageSeverity.ERROR, null);
+		instanceWithCause = new PersonServiceException(MessageKeys.NO_KEY, MessageSeverity.ERROR, null, new Exception(EXP_MESSAGE));
 	}
 
 	/**
@@ -34,7 +32,6 @@ public class PersonServiceExceptionTest {
 	 */
 	@Test
 	public void testGetSeverity() {
-		System.out.println("getSeverity");
 		MessageSeverity expResult = MessageSeverity.ERROR;
 		MessageSeverity result = instance.getExceptionData().getSeverity();
 		assertEquals(expResult, result);
@@ -45,7 +42,6 @@ public class PersonServiceExceptionTest {
 	 */
 	@Test
 	public void testGetKey() {
-		System.out.println("getKey");
 		String expResult = NAME;
 		String result = instance.getExceptionData().getKey();
 		assertEquals(expResult, result);
@@ -56,10 +52,20 @@ public class PersonServiceExceptionTest {
 	 */
 	@Test
 	public void testGetMessage() {
-		System.out.println("getMessage");
 		String expResult = MESSAGE;
 		String result = instance.getMessage();
 		assertEquals(expResult, result);
+
+	}
+
+	/**
+	 * Test of PersonService Exception with a throwable
+	 */
+	@Test
+	public void testGetSurpressed() {
+		String expResult = EXP_MESSAGE;
+		Throwable result = instanceWithCause.getCause();
+		assertEquals(expResult, result.getMessage());
 
 	}
 }

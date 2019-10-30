@@ -2,13 +2,19 @@ package gov.va.bip.reference.service.steps;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.ResourceRegionHttpMessageConverter;
 
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
-import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import gov.va.bip.framework.test.rest.BaseStepDefHandler;
@@ -49,14 +55,10 @@ public class PersonDocuments {
 	 */
 	public PersonDocuments(BaseStepDefHandler handler) {
 		this.handler = handler;
-	}
-
-	/**
-	 * Sets the up REST.
-	 */
-	@Before({})
-	public void setUpREST() {
-		handler.initREST();
+		// To demonstrate adding custom HttpMessageConverter
+		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+		messageConverters.add(new ResourceRegionHttpMessageConverter());
+		this.handler.initREST(messageConverters);
 	}
 
 	/**
@@ -105,7 +107,7 @@ public class PersonDocuments {
 		String baseUrl = handler.getRestConfig().getProperty("baseURL", true);
 		StringBuilder builder = new StringBuilder();
 		builder.append(baseUrl).append(serviceURL);
-		handler.invokeAPIUsingGet(builder.toString());
+		handler.invokeAPIUsingGet(builder.toString(), Resource.class);
 	}
 
 	/**
@@ -146,6 +148,15 @@ public class PersonDocuments {
 	public void validatePersonDocumentsDownloadContentType(final String type) throws Throwable {
 		String contentType = handler.getRestUtil().getResponseHttpHeaders().getContentType().toString();
 		assertThat(contentType, equalTo(type));
+
+		Object objResponse = handler.getObjResponse();
+		LOGGER.debug("Download Object Response: {}", objResponse);
+		if (objResponse instanceof Resource) {
+			LOGGER.debug("Object Response of type Resource");
+			Resource resource = (Resource) objResponse;
+			long contentLength = resource.contentLength();
+			assertTrue((contentLength > 0));
+		}
 	}
 
 	@After({})

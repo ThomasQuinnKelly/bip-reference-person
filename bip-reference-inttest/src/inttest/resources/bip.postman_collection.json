@@ -1,0 +1,192 @@
+{
+	"info": {
+		"_postman_id": "5d30096c-3028-4e39-be96-6a5ac4d61423",
+		"name": "bip",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"_postman_id": "c83fc0e6-8989-421b-9542-9cad64d3d518",
+			"name": "POST token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1998e38f-4732-4a7b-bc84-fa323fdb073e",
+						"type": "text/javascript",
+						"exec": [
+							"//Validate the request was successful",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//Capture the JWT token as an environment variable for use in future requests",
+							"pm.environment.set(\"jwtToken\",pm.response.text())",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"firstName\": \"JANE\",\n  \"lastName\": \"DOE\",\n  \"gender\": \"FEMALE\",\n  \"appToken\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9\",\n  \"prefix\": \"Ms\",\n  \"correlationIds\": [\n    \"77779102^NI^200M^USVHA^P\",\n    \"912444689^PI^200BRLS^USVBA^A\",\n    \"6666345^PI^200CORP^USVBA^A\",\n    \"1105051936^NI^200DOD^USDOD^A\",\n    \"912444689^SS\"\n  ],\n  \"assuranceLevel\": 2,\n  \"middleName\": \"M\",\n  \"suffix\": \"S\",\n  \"birthDate\": \"2000-01-23\",\n  \"email\": \"jane.doe@va.gov\"\n}"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/token",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "782110e4-574a-4ab5-a4ce-57cde75d8109",
+			"name": "POST Pid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "92092083-0082-4dbc-8839-93073fc4cd11",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Validate ParticipantId\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.personInfo.participantId).to.eql(6666345);",
+							"});",
+							"pm.test(\"Validate FileNumber\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.personInfo.fileNumber).to.eql(\"912444689\");",
+							"});",
+							"pm.test(\"Validate Name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.personInfo.firstName).to.eql(\"JANE\");",
+							"    pm.expect(jsonData.personInfo.middleName).to.eql(\"M\");",
+							"    pm.expect(jsonData.personInfo.lastName).to.eql(\"DOE\");",
+							"});",
+							"pm.test(\"Validate SSN\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.personInfo.socSecNo).to.eql(\"912444689\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwtToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"participantID\": 6666345\n}"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/persons/pid",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"persons",
+						"pid"
+					]
+				},
+				"description": "Retreive person info using their PID"
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "c7703f81-fca7-4593-9ea4-77eade05b1f9",
+			"name": "GET document sample",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e4ee3675-6129-495e-9d0d-71a15252866f",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body(\"Sample Reference data ...\");",
+							"});",
+							"",
+							"pm.test(\"Content-Disposition is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Disposition\");",
+							"    pm.response.to.be.header(\"Content-Disposition\", \"attachment; filename=\\\"sampleReferenceDocument.txt\\\"\");",
+							"});",
+							"",
+							"pm.test(\"Validate Content-Type Header\", function() {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"    pm.response.to.be.header(\"Content-Type\", \"application/octet-stream\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwtToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/persons/documents/sample",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"persons",
+						"documents",
+						"sample"
+					]
+				},
+				"description": "Test case for document download use cases"
+			},
+			"response": []
+		}
+	]
+}

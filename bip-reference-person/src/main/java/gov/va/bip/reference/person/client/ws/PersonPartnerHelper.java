@@ -98,4 +98,11 @@ public class PersonPartnerHelper {
 
 		return domainResponse;
 	}
+
+	/**
+	 * @param personWsClient the personWsClient to set
+	 */
+	public final void setPersonWsClient(PersonWsClient personWsClient) {
+		this.personWsClient = personWsClient;
+	}
 }

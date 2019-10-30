@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
-import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 import gov.va.bip.framework.test.rest.BaseStepDefHandler;
@@ -44,14 +43,6 @@ public class PersonInfo {
 	 */
 	public PersonInfo(BaseStepDefHandler handler) {
 		this.handler = handler;
-	}
-
-	/**
-	 * Sets the up REST.
-	 */
-	@Before({})
-	public void setUpREST() {
-		handler.initREST();
 	}
 
 	/**

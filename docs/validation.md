@@ -17,6 +17,7 @@ Domain model objects entering into the service layer are subject to business val
 - Business validators are
   - implementations of the [Validator](https://github.ec.va.gov/EPMO/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/validation/Validator.java) interface.
 - Validator implementations **must** appear in a `**.validators` package under the package in which the validated object model appears. For example, see the classes in the [reference model validators package](https://github.ec.va.gov/EPMO/bip-reference-person/tree/master/bip-reference-person/src/main/java/gov/va/bip/reference/person/model/validators). The model object to be validated could be located in any package - the requirement is that the validator appear in a `validators` package under it.
+  - If a validator does not exist, a warning will be logged and validation for that object will be skipped.
 
 This approach to validation requires discipline from the developer. It is their responsibility to demonstrate good logic and coding practices to ensure the validating code is air tight.
 
