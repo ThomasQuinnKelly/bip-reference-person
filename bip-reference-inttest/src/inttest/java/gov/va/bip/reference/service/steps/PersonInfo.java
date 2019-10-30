@@ -47,14 +47,6 @@ public class PersonInfo {
 	}
 
 	/**
-	 * Sets the up REST.
-	 */
-	@Before({})
-	public void setUpREST() {
-		handler.initREST();
-	}
-
-	/**
 	 * Client request POST with jsondata.
 	 *
 	 * @param strURL

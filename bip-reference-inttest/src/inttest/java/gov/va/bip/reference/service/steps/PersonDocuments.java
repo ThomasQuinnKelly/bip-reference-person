@@ -56,16 +56,10 @@ public class PersonDocuments {
 	 */
 	public PersonDocuments(BaseStepDefHandler handler) {
 		this.handler = handler;
-	}
-
-	/**
-	 * Sets the up REST.
-	 */
-	@Before({})
-	public void setUpREST() {
+		// To demonstrate adding custom HttpMessageConverter
 		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
 		messageConverters.add(new ResourceRegionHttpMessageConverter());
-		handler.initREST(messageConverters);
+		this.handler.initREST(messageConverters);
 	}
 
 	/**
