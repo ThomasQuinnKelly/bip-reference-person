@@ -7,14 +7,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.rule.OutputCapture;
+import org.springframework.boot.test.system.OutputCaptureRule;
 
 import gov.va.bip.framework.log.logback.BipMaskingFilter;
 
 public class BipBaseMaskingFilterTest {
 
 	@Rule
-	public OutputCapture capture = new OutputCapture();
+	public OutputCaptureRule capture = new OutputCaptureRule();
 
 	class TestBipBaseMaskingFilter extends BipMaskingFilter {
 		// test class
