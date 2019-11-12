@@ -20,9 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-
 import gov.va.bip.framework.cache.BipCacheUtil;
 import gov.va.bip.framework.exception.BipException;
 import gov.va.bip.framework.exception.BipRuntimeException;
@@ -44,13 +41,14 @@ import gov.va.bip.reference.person.model.PersonDocsMetadataDomain;
 import gov.va.bip.reference.person.model.PersonDocsMetadataDomainRequest;
 import gov.va.bip.reference.person.model.PersonDocsMetadataDomainResponse;
 import gov.va.bip.reference.person.utils.CacheConstants;
-import gov.va.bip.reference.person.utils.HystrixCommandConstants;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 /**
- * Implementation class for the Reference Person Service.
- * The class demonstrates the implementation of hystrix circuit breaker
- * pattern for read operations. When there is a failure the fallback
- * method is invoked and the response is returned from the cache
+ * Implementation class for the Reference Person Service. The class demonstrates
+ * the implementation of resilience4j circuit breaker pattern for read
+ * operations. When there is a failure the fallback method is invoked and the
+ * response is returned from the cache
  *
  * @author akulkarni
  */
@@ -58,7 +56,6 @@ import gov.va.bip.reference.person.utils.HystrixCommandConstants;
 @Component
 @Qualifier("PERSON_SERVICE_IMPL")
 @RefreshScope
-@DefaultProperties(groupKey = HystrixCommandConstants.REFERENCE_PERSON_SERVICE_GROUP_KEY)
 public class ReferencePersonServiceImpl implements ReferencePersonService {
 	private static final String SAMPLE_REFERENCE_DOCUMENT = "/sample/sampleReferenceDocument.txt";
 
@@ -83,7 +80,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 */
 	@PostConstruct
 	void postConstruct() {
-		// Check for WS Client reference. Note that cacheManager is allowed to be null.
+		// Check for WS Client reference. Note that cacheManager is allowed to
+		// be null.
 		Defense.notNull(personPartnerHelper,
 				"Unable to proceed with Person Service request. The personPartnerHelper must not be null.");
 	}
@@ -92,45 +90,51 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 * Implementation of the service (domain) layer API.
 	 * <p>
 	 * If graceful degradation is possible, add
-	 * {@code fallbackMethod = "sampleFindByParticipantIDFallBack"}
-	 * to the {@code @HystrixCommand}.
+	 * {@code fallbackMethod = "findPersonByParticipantIDFallBack"} to the
+	 * {@code @CircuitBreaker}.
 	 * <p>
 	 * {@inheritDoc}
 	 *
 	 */
 	@Override
-	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE,
-			key = "#root.methodName + T(gov.va.bip.framework.cache.BipCacheUtil).createKey(#personByPidDomainRequest.participantID)",
-			unless = "T(gov.va.bip.framework.cache.BipCacheUtil).checkResultConditions(#result)")
-	@HystrixCommand(commandKey = "GetPersonInfoByPIDCommand",
-			ignoreExceptions = { IllegalArgumentException.class, BipException.class, BipRuntimeException.class })
-	public PersonByPidDomainResponse findPersonByParticipantID(final PersonByPidDomainRequest personByPidDomainRequest) {
-		/* Retrieve person info for pid - NO VALUE RETURNED, just a multi-datasource example */
+	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE, key = "#root.methodName + T(gov.va.bip.framework.cache.BipCacheUtil).createKey(#personByPidDomainRequest.participantID)", unless = "T(gov.va.bip.framework.cache.BipCacheUtil).checkResultConditions(#result)")
+	@CircuitBreaker(name = "findPersonByParticipantID", fallbackMethod = "findPersonByParticipantIDFallBack")
+	@Bulkhead(name = "findPersonByParticipantID")
+	public PersonByPidDomainResponse findPersonByParticipantID(
+			final PersonByPidDomainRequest personByPidDomainRequest) {
+		/*
+		 * Retrieve person info for pid - NO VALUE RETURNED, just a
+		 * multi-datasource example
+		 */
 
 		try {
 			PersonInfo personInfo = personDataHelper.getInfoForIcn(54321L);
-			if (personInfo !=null) {
+			if (personInfo != null) {
 				LOGGER.info("PersonInfo retrieved: {}", personInfo.toString());
 			}
 		} catch (Exception e1) {
 			PersonByPidDomainResponse domainResponse = new PersonByPidDomainResponse();
-			LOGGER.error("Could not retrieve person by ICN 54321L - " + e1.getClass().getSimpleName() + ": " + e1.getMessage(), e1);
+			LOGGER.error("Could not retrieve person by ICN 54321L - " + e1.getClass().getSimpleName() + ": "
+					+ e1.getMessage(), e1);
 			// check exception..create domain model response
 			domainResponse.addMessage(MessageSeverity.ERROR, HttpStatus.BAD_REQUEST,
 					MessageKeys.BIP_GLOBAL_GENERAL_EXCEPTION, this.getClass().getSimpleName(),
-					"Could not retrieve person by ICN 54321L - " + e1.getClass().getSimpleName() + ": " + e1.getMessage());
+					"Could not retrieve person by ICN 54321L - " + e1.getClass().getSimpleName() + ": "
+							+ e1.getMessage());
 			return domainResponse;
 		}
 
 		/* Retrieve document for pid */
 
-		String cacheKey = "findPersonByParticipantID" + BipCacheUtil.createKey(personByPidDomainRequest.getParticipantID());
+		String cacheKey = "findPersonByParticipantID"
+				+ BipCacheUtil.createKey(personByPidDomainRequest.getParticipantID());
 
 		// try from cache
 		PersonByPidDomainResponse response = null;
 		try {
 			Cache cache = null;
-			if ((cacheManager != null) && ((cache = cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE)) != null)
+			if ((cacheManager != null)
+					&& ((cache = cacheManager.getCache(CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE)) != null)
 					&& (cache.get(cacheKey) != null)) {
 				LOGGER.debug("findPersonByParticipantID returning cached data");
 				response = cache.get(cacheKey, PersonByPidDomainResponse.class);
@@ -147,8 +151,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		} catch (BipException | BipRuntimeException bipException) {
 			PersonByPidDomainResponse domainResponse = new PersonByPidDomainResponse();
 			// check exception..create domain model response
-			domainResponse.addMessage(bipException.getExceptionData().getSeverity(), bipException.getExceptionData().getStatus(),
-					bipException.getExceptionData().getMessageKey(),
+			domainResponse.addMessage(bipException.getExceptionData().getSeverity(),
+					bipException.getExceptionData().getStatus(), bipException.getExceptionData().getMessageKey(),
 					bipException.getExceptionData().getParams());
 			return domainResponse;
 		}
@@ -157,40 +161,49 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	}
 
 	/**
-	 * Support graceful degradation in a Hystrix command by adding a fallback method that Hystrix will call to obtain a
-	 * default value or values in case the main command fails for {@link #findPersonByParticipantID(PersonByPidDomainRequest)}.
+	 * Support graceful degradation in a resilience4j command by adding a
+	 * fallback method that will be called to obtain a default value or values
+	 * in case the main circuit breaker is opened for
+	 * {@link #findPersonByParticipantID(PersonByPidDomainRequest)}.
 	 * <p>
-	 * See {https://github.com/Netflix/Hystrix/wiki/How-To-Use#fallback} for Hystrix Fallback usage
+	 * See {https://github.com/Netflix/Hystrix/wiki/How-To-Use#fallback} for
+	 * Hystrix Fallback usage
 	 * <p>
-	 * Hystrix doesn't REQUIRE you to set this method. However, if it is possible to degrade gracefully
-	 * - perhaps by returning static data, or performing some other process - the degraded process should
-	 * be performed in the fallback method. In order to enable a fallback such as this, on the main method,
-	 * add to its {@code @HystrixCommand} the {@code fallbackMethod} attribute. So for
-	 * {@link #findPersonByParticipantID(PersonByPidDomainRequest)}
-	 * you would add the attribute to its {@code @HystrixCommand}:<br/>
+	 * Resilience4J doesn't REQUIRE you to set this method. However, if it is
+	 * possible to degrade gracefully - perhaps by returning static data, or
+	 * performing some other process - the degraded process should be performed
+	 * in the fallback method. In order to enable a fallback such as this, on
+	 * the main method, add to its {@code @CircuitBreaker} the
+	 * {@code fallbackMethod} attribute. So for
+	 * {@link #findPersonByParticipantID(PersonByPidDomainRequest)} you would
+	 * add the attribute to its {@code @CircuitBreaker}:<br/>
 	 *
 	 * <pre>
-	 * fallbackMethod = "sampleFindByParticipantIDFallBack"
+	 * fallbackMethod = "findPersonByParticipantIDFallBack"
 	 * </pre>
 	 *
-	 * <b>Note that exceptions should not be thrown from any fallback method.</b>
-	 * It will "confuse" Hystrix and cause it to throw an HystrixRuntimeException.
+	 * <b>Note that exceptions should not be thrown from any fallback
+	 * method.</b> It will "confuse" Resilience4J and cause it to throw an
+	 * Exception.
 	 * <p>
 	 *
-	 * @param personByPidDomainRequest The request from the Java Service.
-	 * @param throwable the throwable
+	 * @param personByPidDomainRequest
+	 *            The request from the Java Service.
+	 * @param throwable
+	 *            the throwable
 	 * @return A JAXB element for the WS request
 	 */
-	@HystrixCommand(commandKey = "FindPersonByParticipantIDFallBackCommand")
-	public PersonByPidDomainResponse findPersonByParticipantIDFallBack(final PersonByPidDomainRequest personByPidDomainRequest,
-			final Throwable throwable) {
+	public PersonByPidDomainResponse findPersonByParticipantIDFallBack(
+			final PersonByPidDomainRequest personByPidDomainRequest, final Throwable throwable) {
 		LOGGER.info("findPersonByParticipantIDFallBack has been activated");
 
 		/**
-		 * Fallback Method for Demonstration Purpose. In this use case, there is no static / mock data
-		 * that can be sent back to the consumers. Hence the method isn't configured as fallback.
+		 * Fallback Method for Demonstration Purpose. In this use case, there is
+		 * no static / mock data that can be sent back to the consumers. Hence
+		 * the method isn't configured as fallback.
 		 *
-		 * If needed to be configured, add annotation to the implementation method "findPersonByParticipantID" as below
+		 * If needed to be configured, add annotation to the implementation
+		 * method "findPersonByParticipantID" as below
 		 *
 		 * @HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack")
 		 */
@@ -202,8 +215,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 			response.addMessage(MessageSeverity.WARN, HttpStatus.OK, MessageKeys.BIP_GLOBAL_GENERAL_EXCEPTION,
 					throwable.getClass().getSimpleName(), throwable.getLocalizedMessage());
 		} else {
-			LOGGER.error(
-					"findPersonByParticipantIDFallBack No Throwable Exception. Just Raise Runtime Exception {}",
+			LOGGER.error("findPersonByParticipantIDFallBack No Throwable Exception. Just Raise Runtime Exception {}",
 					personByPidDomainRequest);
 			response.addMessage(MessageSeverity.WARN, HttpStatus.OK, MessageKeys.WARN_KEY,
 					"There was a problem processing your request.");
@@ -214,10 +226,12 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	/**
 	 * Get the meta data associated with documents accepted for a pid
 	 *
-	 * @param the pid to get the metadata for
+	 * @param the
+	 *            pid to get the metadata for
 	 * @return A PersonDocsMetadataDomainResponse with the required metadata
 	 */
 	@Override
+	@CircuitBreaker(name = "getMetadataForPid")
 	public PersonDocsMetadataDomainResponse getMetadataForPid(final PersonDocsMetadataDomainRequest domainRequest) {
 		PersonDoc data = personDataHelper.getDocForPid(domainRequest.getParticipantID());
 		if (data == null) {
@@ -225,8 +239,8 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		}
 		PersonDocsMetadataDomainResponse domainResponse = new PersonDocsMetadataDomainResponse();
 		PersonDocsMetadataDomain personDocsMetadataDomain = new PersonDocsMetadataDomain();
-		String dateString =
-				data.getDocCreateDate() == null ? "" : data.getDocCreateDate().format(DateTimeFormatter.ISO_DATE);
+		String dateString = data.getDocCreateDate() == null ? ""
+				: data.getDocCreateDate().format(DateTimeFormatter.ISO_DATE);
 		personDocsMetadataDomain.setDocCreateDate(dateString);
 		personDocsMetadataDomain.setDocName(data.getDocName());
 		domainResponse.setPersonDocsMetadataDomain(personDocsMetadataDomain);
@@ -234,25 +248,30 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	}
 
 	/**
-	 * Store the meta-data associated with the document to the same record as the pid in the database
+	 * Store the meta-data associated with the document to the same record as
+	 * the pid in the database
 	 *
-	 * @param pid the pid
-	 * @param docName the name of the document
-	 * @param docCreateDateString the date of creation of the document as a String
+	 * @param pid
+	 *            the pid
+	 * @param docName
+	 *            the name of the document
+	 * @param docCreateDateString
+	 *            the date of creation of the document as a String
 	 */
 	@Override
+	@CircuitBreaker(name = "storeMetadata")
 	public void storeMetadata(final Long pid, final String docName, final String docCreateDateString) {
 		LocalDate docCreateDate = null;
 		if (StringUtils.isBlank(docCreateDateString)) {
 			docCreateDate = LocalDate.now();
 		} else {
-			// If more validation code is added this can be moved to a separate validator class
+			// If more validation code is added this can be moved to a separate
+			// validator class
 			try {
 				docCreateDate = LocalDate.parse(docCreateDateString, DateTimeFormatter.ISO_DATE);
 			} catch (DateTimeParseException e) {
 				throw new PersonServiceException(PersonMessageKeys.BIP_PERSON_INVALID_DATE, MessageSeverity.ERROR,
-						HttpStatus.BAD_REQUEST,
-						"");
+						HttpStatus.BAD_REQUEST, "");
 			}
 		}
 		personDataHelper.storeMetadata(pid, docName, docCreateDate);
@@ -264,6 +283,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 * @return a static reference document
 	 */
 	@Override
+	@CircuitBreaker(name = "getSampleReferenceDocument")
 	public Resource getSampleReferenceDocument() {
 		return new ClassPathResource(SAMPLE_REFERENCE_DOCUMENT);
 	}

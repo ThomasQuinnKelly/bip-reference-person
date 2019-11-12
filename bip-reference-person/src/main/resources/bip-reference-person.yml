@@ -188,6 +188,54 @@ hystrix:
           # logic. Note that there is configuration for turning off timeouts per-command, if that is desired (see command.timeout.enabled).
           # Default Value: 1000
           timeoutInMilliseconds: 20000
+#################################################
+# resilience4j settings
+##################################################
+management.health.circuitbreakers.enabled: true
+management.health.ratelimiters.enabled: true
+management.metrics.tags.application: ${spring.application.name}
+management.metrics.distribution.percentiles-histogram.http.server.requests: true
+management.metrics.distribution.percentiles-histogram.resilience4j.circuitbreaker.calls: true
+resilience4j.circuitbreaker:
+  configs:
+    default:
+        registerHealthIndicator: false
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 2s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+        ignoreExceptions:
+           - feign.FeignException
+           - java.lang.IllegalArgumentException 
+           - gov.va.bip.framework.exception.BipException
+           - gov.va.bip.framework.exception.BipRuntimeException
+    shared:
+        registerHealthIndicator: true
+        slidingWindowSize: 100
+        permittedNumberOfCallsInHalfOpenState: 30
+        waitDurationInOpenState: 1s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+        ignoreExceptions:
+           - feign.FeignException
+           - java.lang.IllegalArgumentException 
+           - gov.va.bip.framework.exception.BipException
+           - gov.va.bip.framework.exception.BipRuntimeException 
+resilience4j.ratelimiter:
+  configs:
+    default:
+      registerHealthIndicator: true
+resilience4j.retry:
+  configs:
+    default:
+      maxRetryAttempts: 2
+      waitDuration: 100
+      retryExceptions:
+        - org.springframework.web.client.HttpServerErrorException
+        - java.io.IOException
 ###############################################################################
 #Property configuration to enable or disable JWT security for the service calls 
 #JWT security is enabled by default. So to disable it you have to
