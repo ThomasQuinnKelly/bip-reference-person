@@ -43,6 +43,8 @@ import gov.va.bip.reference.person.model.PersonDocsMetadataDomainResponse;
 import gov.va.bip.reference.person.utils.CacheConstants;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 
 /**
  * Implementation class for the Reference Person Service. The class demonstrates
@@ -97,9 +99,13 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	 *
 	 */
 	@Override
-	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE, key = "#root.methodName + T(gov.va.bip.framework.cache.BipCacheUtil).createKey(#personByPidDomainRequest.participantID)", unless = "T(gov.va.bip.framework.cache.BipCacheUtil).checkResultConditions(#result)")
+	@CachePut(value = CacheConstants.CACHENAME_REFERENCE_PERSON_SERVICE, 
+				key = "#root.methodName + T(gov.va.bip.framework.cache.BipCacheUtil).createKey(#personByPidDomainRequest.participantID)", 
+					unless = "T(gov.va.bip.framework.cache.BipCacheUtil).checkResultConditions(#result)")
 	@CircuitBreaker(name = "findPersonByParticipantID", fallbackMethod = "findPersonByParticipantIDFallBack")
 	@Bulkhead(name = "findPersonByParticipantID")
+	@RateLimiter(name = "findPersonByParticipantID")
+	@Retry(name = "findPersonByParticipantID")
 	public PersonByPidDomainResponse findPersonByParticipantID(
 			final PersonByPidDomainRequest personByPidDomainRequest) {
 		/*
@@ -205,7 +211,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 		 * If needed to be configured, add annotation to the implementation
 		 * method "findPersonByParticipantID" as below
 		 *
-		 * @HystrixCommand(fallbackMethod = "findPersonByParticipantIDFallBack")
+		 * @CircuitBreaker(fallbackMethod = "findPersonByParticipantIDFallBack")
 		 */
 		final PersonByPidDomainResponse response = new PersonByPidDomainResponse();
 		response.setDoNotCacheResponse(true);
