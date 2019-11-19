@@ -1,5 +1,14 @@
 # Hystrix Circuit Breaker Management
 
+## Recent Important Change for Hystrix
+
+In December 2018,  Netflix made an important change in Hystrix’ README.md, announcing that the project `is no longer in active development, and is currently in maintenance mode`.  Spring Cloud also noted it and listed few Spring Cloud Netflix Projects Entering Maintenance Mode. Refer to below links
+
+https://github.com/Netflix/Hystrix
+https://spring.io/blog/2018/12/12/spring-cloud-greenwich-rc1-available-now#spring-cloud-netflix-projects-entering-maintenance-mode
+
+In BIP framework, we will continue supporting Hystrix for few more releases, but also plan to add Resilience4J support as an alternative, which is proposed by Spring Cloud and Hystrix as well.
+
 ## Capability (Circuit Breaker Design Pattern: Hystrix)
 
 - Circuit Breaker Design Pattern is to wrap a protected function call in a circuit breaker object, which monitors for failures. Once the failures reach a certain threshold, the circuit breaker trips, and all further calls to the circuit breaker return with an error or with some alternative service or default message, without the protected call being made at all. This will make sure system is responsive and threads are not waiting for an unresponsive call.
