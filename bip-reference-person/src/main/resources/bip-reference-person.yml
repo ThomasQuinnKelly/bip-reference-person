@@ -12,6 +12,7 @@ server:
 ---
 spring.profiles: default
 spring.profiles.include: remote_client_sims, embedded-redis
+spring.cloud.consul.enabled: false
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}

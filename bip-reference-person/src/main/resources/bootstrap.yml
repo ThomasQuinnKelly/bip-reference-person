@@ -4,7 +4,6 @@ spring:
   config: 
     name: "@project.name@"
 spring.cloud.consul: 
-  enabled: false
   config:
     enabled: false
     prefix: config
