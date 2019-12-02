@@ -20,6 +20,7 @@ import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.api.provider.PersonResource;
 import gov.va.bip.reference.person.client.rest.FeignPersonClient;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 /**
  * The purpose of this class is to make REST client calls. These are REST clients to our own
@@ -46,8 +47,6 @@ public class PersonRestClientTester implements PersonRestClientTesterApi, Swagge
 	@Override
 	public ResponseEntity<PersonInfoResponse> callPersonByPidUsingFeignClientUsingPOST(
 			@Valid PersonInfoRequest personInfoRequest) {
-		// use this in case of feign hystrix to test fallback handler invocation
-		// NOSONAR ConfigurationManager.getConfigInstance().setProperty("hystrix.command.default.circuitBreaker.forceOpen", "true");
 		PersonInfoResponse personInfoResponse = null;
 
 		personInfoResponse = feignPersonClient.personByPid(personInfoRequest); // NOSONAR cannot immediately return
@@ -67,6 +66,7 @@ public class PersonRestClientTester implements PersonRestClientTesterApi, Swagge
 	}
 
 	@Override
+	@CircuitBreaker(name="callPersonByPidUsingRestTemplateUsingPOST")
 	public ResponseEntity<PersonInfoResponse> callPersonByPidUsingRestTemplateUsingPOST(
 			@Valid PersonInfoRequest personInfoRequest) {
 		// invoke the service using classic REST Template from Spring, but load balanced through Consul

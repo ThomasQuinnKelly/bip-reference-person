@@ -11,6 +11,7 @@ import gov.va.bip.reference.person.api.model.v1.PersonInfoRequest;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.api.provider.PersonResource;
 import gov.va.bip.reference.person.config.ReferenceServiceFeignConfig;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 /**
  * The Interface FeignPersonClient.
@@ -20,6 +21,7 @@ import gov.va.bip.reference.person.config.ReferenceServiceFeignConfig;
 		name = "${spring.application.name}",
 		fallbackFactory = FeignPersonClientFallbackFactory.class,
 		configuration = ReferenceServiceFeignConfig.class)
+@CircuitBreaker(name = "FeignPersonClient")
 public interface FeignPersonClient { // NOSONAR not a functional interface
 
 	/**
