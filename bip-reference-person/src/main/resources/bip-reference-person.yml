@@ -201,6 +201,10 @@ bip.framework:
         - /api/v2/persons/**
       excludeUrls:
         - /**
+      keyPairs:
+        -
+          secret: secret
+          issuer: Vets.gov
   swagger:
     # enable/disable the swagger/openapi UI ...
     enabled: true
