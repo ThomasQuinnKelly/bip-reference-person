@@ -1,3 +1,5 @@
+@Library('jenkins-library@promotionPruneTest') _
+
 mavenGitflowPipeline {
 
     //Sonar Github Credentials - Settings this value will configure the pipeline to use this credential
