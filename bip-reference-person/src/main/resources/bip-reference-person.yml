@@ -188,9 +188,13 @@ resilience4j.retry:
         - org.springframework.web.client.HttpServerErrorException
         - java.io.IOException
 ###############################################################################
-#Property configuration to enable or disable JWT security for the service calls 
-#JWT security is enabled by default. So to disable it you have to
-#set the environment system property os.reference.security.jwt.enabled=false
+# Property configuration to enable or disable JWT security for the service calls 
+# JWT security is enabled by default. So to disable it you have to
+# set the environment system property bip.framework.security.jwt.enabled=false
+# Multiple consumers is now supported via framework. Multiple secret and Issuer 
+# pairs can be configured in vault, example as below
+# bip.framework.security.jwt.keyPairs[0].secret=secret
+# bip.framework.security.jwt.keyPairs[0].issuer=Vets.gov
 ###############################################################################
 bip.framework:
   security:
@@ -201,10 +205,6 @@ bip.framework:
         - /api/v2/persons/**
       excludeUrls:
         - /**
-      keyPairs:
-        -
-          secret: secret
-          issuer: Vets.gov
   swagger:
     # enable/disable the swagger/openapi UI ...
     enabled: true
