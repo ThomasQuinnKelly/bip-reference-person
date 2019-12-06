@@ -1,7 +1,6 @@
 @Library('jenkins-library@promotionPruneTest') _
 
 mavenGitflowPipeline {
-
     //Adding skips 
     skipTests = true
     skipSonar = true
