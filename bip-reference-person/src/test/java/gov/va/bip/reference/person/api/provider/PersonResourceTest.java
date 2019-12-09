@@ -1,6 +1,7 @@
 package gov.va.bip.reference.person.api.provider;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -257,7 +258,7 @@ public class PersonResourceTest {
 
 		int statusCode = resourceResponseEntity.getStatusCodeValue();
 
-		assertEquals(500, statusCode);
+		assertNotEquals(200, statusCode);
 
 		PersonInfoResponse returnedPersonInfo = resourceResponseEntity.getBody();
 
@@ -273,7 +274,7 @@ public class PersonResourceTest {
 
 		int statusCode = resourceResponseEntity.getStatusCodeValue();
 
-		assertEquals(500, statusCode);
+		assertNotEquals(200, statusCode);
 
 		PersonInfoResponse returnedPersonInfo = resourceResponseEntity.getBody();
 
