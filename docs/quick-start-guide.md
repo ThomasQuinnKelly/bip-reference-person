@@ -124,9 +124,11 @@ For information on creating a new skeleton project external configuration, see t
 BIP framework team provides a repository that contains a reusable Jenkins Library supporting the CI/CD pipelines. To consume the library, it must first be configured in your Jenkins server. After the library is configured and given a unique name, the library can be called from your Jenkinsfile by importing the library, calling the appropriate pipeline for your project, and providing any necessary configuration settings.
 
 For information on the library, see [BIP Jenkins Library](https://github.com/department-of-veterans-affairs/bip-jenkins-lib)
+
 For information on the pipeline steps, see [Pipeline Steps README.md](https://github.com/department-of-veterans-affairs/bip-jenkins-lib/blob/master/docs/spring-boot-pipelines/README.md#pipeline-steps)
 
 Example usage for Maven Service pipeline, see the [bip-reference-person Jenkinsfile](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/Jenkinsfile)
+
 Example usage for Maven Library pipeline, see the [bip-framework Jenkinsfile](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/Jenkinsfile)
 
 ## Creating Integration tests in your application
@@ -149,7 +151,7 @@ Archetype Service project also creates a module in Skeleton Project to support A
 
 To access the links in this section, you will need a user account on MAX.gov.
 
-[Tenant Welcome Sheet](https://community.max.gov/display/VAExternal/Tenant+Welcome+Sheet)
-[Accessing BIP Kubernetes Clusters](https://community.max.gov/display/VAExternal/Accessing+BIP+Kubernetes+Clusters)
-[BIP Platform - Tenant Support Q & A](https://community.max.gov/pages/viewpage.action?pageId=1944756335)
-[BIP Platform - Project Intake Worksheet](https://community.max.gov/display/VAExternal/BIP+Platform+-+Project+Intake+Worksheet)
+- [Tenant Welcome Sheet](https://community.max.gov/display/VAExternal/Tenant+Welcome+Sheet)
+- [Accessing BIP Kubernetes Clusters](https://community.max.gov/display/VAExternal/Accessing+BIP+Kubernetes+Clusters)
+- [BIP Platform - Tenant Support Q & A](https://community.max.gov/pages/viewpage.action?pageId=1944756335)
+- [BIP Platform - Project Intake Worksheet](https://community.max.gov/display/VAExternal/BIP+Platform+-+Project+Intake+Worksheet)
