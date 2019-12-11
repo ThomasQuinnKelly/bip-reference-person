@@ -1,20 +1,25 @@
 # Quick Start Guide
 
-## Prerequisites
+## Setting up your development environment
+
+### Prerequisites
 
 * [Apache Maven 3.6.0](https://archive.apache.org/dist/maven/maven-3/3.6.0/binaries/)
 * [JDK 8](installation-help-guide.md#install-jdk-8)
 * [GIT 2.18.0 or higher](installation-help-guide.md#install-git)
 * IDE [Spring Tool Suite 4:STS4](https://spring.io/tools) or [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) is recommended.
-* Docker [for MAC](https://docs.docker.com/docker-for-mac/install/) or [Windows](https://docs.docker.com/docker-for-windows/install/) (to run BIP reference person service in the container)
-* Create a GitHub [Personal Access Token](#creating-personal-access-token-to-connect-to-github) to connect to GitHub
+
+### Nice to have
+
+* Docker [for MAC](https://docs.docker.com/docker-for-mac/install/) or [Windows](https://docs.docker.com/docker-for-windows/install/) to run BIP reference person service in the container
+* [SonarQube is installed as a docker image](installation-help-guide.md#running-sonar) when you build a BIP service project
 * [Fortify 19.1.0](installation-help-guide.md#install-and-run-fortify) SCA and maven plugins provided in the download
-* [SonarQube is installed as a docker image](#running-sonar) when you build a BIP service project
-* See [How to connect Maven with Nexus using HTTPS](installation-help-guide.md#how-to-connect-maven-with-nexus-using-https)
+* Create a GitHub [Personal Access Token](installation-help-guide.md#creating-personal-access-token-to-connect-to-github) to connect to GitHub
+* [How to connect Maven with Nexus using HTTPS](installation-help-guide.md#how-to-connect-maven-with-nexus-using-https)
 
-## Docker images
+### Docker Images
 
-## To Use
+#### To Use
 
 * From your command line:
 ```bash
@@ -25,7 +30,7 @@
 * If Docker is RUNNING, run `mvn clean install` from the reactor POM to build the project which will create the docker image for bip-reference-person.
 * If Docker is UNAVAILABLE/OFFLINE, run `mvn clean install -Ddockerfile.skip=true` from the reactor POM to build the project and *skip* creating the docker images. Don't use this option if you are planning to run `local-int` (see below) as it would require docker image(s) to run in docker container.
 
-## Build and Test
+### Build and Test
 
 #### Application Team Developers: ###
 
@@ -35,10 +40,10 @@ There are 2 application profiles that you could run locally
 * local-int (Docker Engine Integrated Environment)
 
 
-1. To run with default profile mode, clone only the `bip-reference-spring-boot` repository, then run `bip-reference-person` service from your IDE using [Deploy Only Mode](#ide-deploy-only-bip-reference-person)
+1. To run with default profile mode, clone only the `bip-reference-person` repository, then run `bip-reference-person` service from your IDE using `IDE Deploy only bip-reference-person` sections
 1. To run local-int profile mode, go through the steps mentioned under [Using Docker Compose](#using-docker-compose)
 
-### Spring Tool Suite - IDE Deploy only bip-reference-person
+##### Spring Tool Suite - IDE Deploy only bip-reference-person
 * Ensure you've imported the projects in the IDE
 * In the "Boot Dashboard" within Spring Tool Suite, highlight `bip-reference-person` project and click the "*(Re)start*" button *
 * Localhost URLs for testing/using this deployment approach
@@ -54,7 +59,7 @@ There are 2 application profiles that you could run locally
       - Clean and build the project, select _Project > Clean..._
 	- It may be necessary to run the clean/build more than one time for necessary artifacts to get generated correctly.
 
-### IntelliJ - IDE Deploy only bip-reference-person
+##### IntelliJ - IDE Deploy only bip-reference-person
 * Open IntelliJ and go through the wizard to import the `bip-reference-person` project using maven with the following steps:
     - import project > `bip-reference-person` > import project from external model > maven..next > next (keep default settings) > next > ensure project snapshot is selected…next > next > finish
 * In the project tab, highlight `bip-reference-person` project and right click and select `synchronize bip-reference-person`
@@ -71,7 +76,7 @@ There are 2 application profiles that you could run locally
       - Clean and build the project, go to the right side of the IDE, select the maven tab and select _bip-reference-person > Lifecycle > Clean > Install_
 	- It may be necessary to run the clean/build more than one time for necessary artifacts to get generated correctly.
 
-### Using Docker Compose
+#### Using Docker Compose
 
 ##### Running the services in local-int profile
 
@@ -93,53 +98,58 @@ There are 2 application profiles that you could run locally
   [Sonar](http://localhost:9000) (http://localhost:9000) - Only available if explicitly set up
 
   *Note there are other URLs, such as all the [actuator URLs](/docs/actuator-management.md).  Listed here are the basic minimum URLs.*
+  
+## Using BIP API Framework in your application
 
-## Running Sonar
+To run spring boot application and spring cloud enabled services on the BIP Platform, it must adhere to various service patterns. BIP API Framework provides a suite of java libraries, auto configurations, testing libraries and parent POM that must be included as dependencies to enable the patterns.
 
-A SonarQube docker image is added to your docker environment when you run a maven build without specifying to skip the docker build.
+For information on BIP Framework project, see the [bip-framework README.md](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/README.md)
 
-* Start the docker container for sonar individually with this command:
-	```bash
-	$ docker-compose -f [path]/bip-reference-person/local-dev/sonar/docker-compose.yml up --build -d
-	```
+For information on developing using BIP Framework see the [Developing with BIP Framework](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/docs/developing-with-bip-framework.md)
 
-* Wait for the container to spin up. It is accessible at http://localhost:9000 once it is is running.
+For information on various configuration and patterns see the [Configuration Usage Patterns](https://github.com/department-of-veterans-affairs/bip-reference-person#configuration--usage-patterns)
 
-* Run a sonar scan on your project(s)
-	```bash
-	$ mvn clean install # must build the project and run unit tests first
-	$ mvn sonar:sonar
-	```
+## Creating a new BIP REST API application
 
-* View the results at http://localhost:9000
+BIP framework team provides a service archetype repository that can be used to create the skeleton for a new BIP service project. The newly created artifact will contain a skeleton project with some rudimentary sample data objects demonstrating a simple use case.
 
-* Stop SonarQube individually with this command:
-	```bash
-	$ docker-compose -f [path]/bip-reference-person/local-dev/sonar/docker-compose.yml down --rmi all -v
-	```
+For information on creating a new skeleton project, see the [BIP Archetype Service](https://github.com/department-of-veterans-affairs/bip-archetype-service)
 
-## Creating Personal Access Token to connect to GitHub
+BIP framework team also provides a configuration archetype repository that can be used to create a new BIP service project external configuration.
 
-Creating Personal Access Token is required to perform GIT operations using HTTPS for any private repositories
+For information on creating a new skeleton project external configuration, see the [BIP Archetype Config](https://github.com/department-of-veterans-affairs/bip-archetype-config)
 
-Execute the steps below only if you haven't already performed these steps.
+## Using BIP Jenkins Library for your application pipeline
 
-* Developers using Windows, Mac and Linux:
+BIP framework team provides a repository that contains a reusable Jenkins Library supporting the CI/CD pipelines. To consume the library, it must first be configured in your Jenkins server. After the library is configured and given a unique name, the library can be called from your Jenkinsfile by importing the library, calling the appropriate pipeline for your project, and providing any necessary configuration settings.
 
-  * Creating a Personal Token
-    1. [Verify your email address](https://help.github.com/articles/verifying-your-email-address/), if it hasn't been verified yet on GitHub.
-    2. In the upper-right corner of any page, click your profile photo, then click Settings.
-    3. In the left sidebar, click Personal access tokens.
-    4. Click Generate new token.
-    5. Give your token a descriptive name.
-    6. Select the scopes, or permissions, you'd like to grant this token. To use your token to access repositories from the command line, select repository.
-    7. Click Generate token.
-    8. Copy the token to your clipboard. For security reasons, after you navigate off the page, you will not be able to see the token again.
+For information on the library, see [BIP Jenkins Library](https://github.com/department-of-veterans-affairs/bip-jenkins-lib)
+For information on the pipeline steps, see [Pipeline Steps README.md](https://github.com/department-of-veterans-affairs/bip-jenkins-lib/blob/master/docs/spring-boot-pipelines/README.md#pipeline-steps)
 
-    **Warning**: Treat your tokens like passwords and keep them secret. When working with the API, use tokens as environment variables instead of hard-coding them into your programs.
+Example usage for Maven Service pipeline, see the [bip-reference-person Jenkinsfile](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/Jenkinsfile)
+Example usage for Maven Library pipeline, see the [bip-framework Jenkinsfile](https://github.com/department-of-veterans-affairs/bip-framework/blob/master/Jenkinsfile)
 
-  * Caching your GitHub password in Git
-    1. If you're cloning GitHub repositories using HTTPS, you can use a credential helper to tell Git to remember your GitHub username and password every time it talks to GitHub.
-    2. Follow the steps mentioned [here](https://help.github.com/en/articles/caching-your-github-password-in-git)
+## Creating Integration tests in your application
 
-  * You could also refer to Instructions on GitHub to [Create Personal Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/)
+BIP framework team provides `bip-framework-test-lib` library that contains the dependencies and classes to support API Integration Testing. Cucumber tool is integrated to assist with the needs of Acceptance Test Driven Development (ATDD), BDD by capturing the Acceptance criteria and implementing the scenarios with automated tests. It can be easily integrated with Jenkins Continuous Integration (CI) Pipeline, and it displays the Cucumber Reports as well.
+
+For an example, see the [Reference Person IntTest](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/docs/referenceperson-intest.md)
+
+## Creating Performance tests in your application
+
+BIP framework team provides an example module in BIP Reference Person to demonstrate how to set up performance tests configurations using Apache JMeter. It can be easily integrated with Continuous Integration (CI) Pipeline. JMeter also generates performance reports and dashboard is displayed in the Jenkins pipeline.
+
+For an example, see the [Reference Person PerfTest](https://github.com/department-of-veterans-affairs/bip-reference-person/tree/master/bip-reference-perftest)
+
+For Capability, Features, Steps to Install Etc, see [Reference Person Performance Test Plan](https://github.com/department-of-veterans-affairs/bip-reference-person/blob/master/docs/referenceperson-perftest.md)
+
+Archetype Service project also creates a module in Skeleton Project to support Apache JMeter performance tests.
+
+## BIP Platform Intake for Tenants Reference Links
+
+To access the links in this section, you will need a user account on MAX.gov.
+
+[Tenant Welcome Sheet](https://community.max.gov/display/VAExternal/Tenant+Welcome+Sheet)
+[Accessing BIP Kubernetes Clusters](https://community.max.gov/display/VAExternal/Accessing+BIP+Kubernetes+Clusters)
+[BIP Platform - Tenant Support Q & A](https://community.max.gov/pages/viewpage.action?pageId=1944756335)
+[BIP Platform - Project Intake Worksheet](https://community.max.gov/display/VAExternal/BIP+Platform+-+Project+Intake+Worksheet)
