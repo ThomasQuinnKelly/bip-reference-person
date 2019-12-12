@@ -82,7 +82,7 @@ mvn clean verify -Pperftest -Dprotocol=<> -Ddomain=<> -Dport=<> -DBearerTokenCre
 
 #### Standalone pipeline
 
-Projects can run tests in a standalone Jenkins pipeline by utilizing the mavenPerformancePipeline [here](https://github.ec.va.gov/EPMO/bip-jenkins-lib/blob/promotion/vars/mavenPerformancePipeline.groovy). The steps to set this up are listed below, but eventually this will be generated automatically when utilizing the project archetype:
+Projects can run tests in a standalone Jenkins pipeline by utilizing the mavenPerformancePipeline [here](https://github.com/department-of-veterans-affairs/bip-jenkins-lib/blob/promotion/vars/mavenPerformancePipeline.groovy). The steps to set this up are listed below, but eventually this will be generated automatically when utilizing the project archetype:
 
 1. Update the `pom.xml` in the `<app-name>-perftest` folder to allow the jMeter test file to be customized. The default of `*.jmx` 
 below runs all jMeter tests in the `<app-name>-perftest/src/test/jmeter` directory

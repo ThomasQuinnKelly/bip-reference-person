@@ -18,7 +18,6 @@
 
 	<properties>
 		<bip-framework.version>2.1.1-SNAPSHOT</bip-framework.version>
-
 		<!--
 			Liquibase controls
 		-->
