@@ -108,6 +108,9 @@ The fastest way to get set up is to visit the [Quick Start Guide](docs/quick-sta
 * [OpenAPI Code Generation](docs/openapi-v3-api-code-generation-journey.md)
 * [Fortify and SwA Secure Code Reviews](docs/fortify-and-swa.md)
 
+#### Troubleshooting
+* [Application troubleshooting on Kubernetes](docs/k8s-troublingshooting.md)
+
 ## How to make the dependency framework libraries available
 
 To make the framework libraries available locally for the service projects to compile and build, there are 3 options.
