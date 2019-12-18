@@ -116,9 +116,10 @@ Note that this format is required for Kibana. It is recommended to use Kibana to
   ```
 
 ## Significant Audit Log Fields
+
 Field Name | Field Sample Value | Field Description
 --- | --- | ---
-logType | auditlogs | BIP Framework AuditLogger adds a static MDC entry for audit logs
+logType | auditlogs | BIP Framework AuditLogger adds a static MDC entry for audit logs |
 @timestamp | 2019-12-10T18:44:34.853Z | System generated timestamp |
 app_name | bip-reference-person | Application Name: Source spring.application.name |
 app_version | 0.0.2-SNAPSHOT | Application Version: Source info.build.version|
@@ -133,6 +134,38 @@ user | JANE DOE | Derived from AbstractPersonTraitsObject as {First Name " " Las
 audit_class | gov.va.bip.reference.person.api.provider.PersonResource | Name of the java Class under audit |
 message | {\\\"request\\\":[{\\\"participantID\\\":6666345}]}} | Message Payload |
 
+## The interface for auditing shall support capturing the items mentioned in the section
+
+- Timestamp the interface was called automatically that is not affected by input to the interface (aka: system generated timestamp) 
+   - Recorded in the field `@timestamp`, a system generated timestamp
+- Timestamp provided to the interface (aka: an argument of the interface)
+   - Currently there is NO field to support this argument
+- Subject of the audit record. The subject may be the user token, system token, or other unique identifier of the entity that performed the action and/or accessed the data.
+   - Recorded in the field `tokenId`, which is populated by framework from `jti` claim of JSON Web token. The "jti" (JWT ID) claim provides a unique identifier for the JWT. The identifier value MUST be assigned in a manner that ensures that there is a negligible probability that the same value will be accidentally assigned to a different data object.
+- Action of the audit record. The action is a developer-defined string that uniquely identifies what action was performed (such as READ, INVOKE, CALL, CREATE, UPDATE, DELETE)
+   - Recorded in the field `activity`
+- Resource of the audit record. The resource may be a specific identifier for a record, an interface name, or other descriptive value that identifies the specific target of the action.
+   - Recorded in the field `audit_class`
+- (Optional) Type of record.
+   - Recorded in the field `event`
+- (Optional) Comments, a string of provided text that add context to the audit record.
+   - Recorded in the field `message`
+
+### Requirements / Considerations
+
+- Audit records must be immutable, write only to the application.
+- Audit records must not be relational or rely upon active records for correlation.
+- Audit interface cannot be overridden.
+
+### Assumptions 
+
+- BIP Platform team will provide the storage mechanism for audit files in accordance with FISMA, NIST 800 and VA 6500.
+
+### Concept Recommendations
+
+Log4j and Logback provide interfaces for separate log appenders. A specific log appender for auditing could be developed that 
+accepts a custom log-level specified for AUDIT that could provide wrapped with a common interface that enforces the required 
+arguments, translates and formats, and stores the resulting configuration that meet the unique requirements for auditing.
 
 ## References
 
