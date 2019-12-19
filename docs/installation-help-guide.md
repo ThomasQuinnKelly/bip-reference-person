@@ -55,6 +55,30 @@ Download and install [git for windows](https://gitforwindows.org/).
 
 Take some time to get comfortable with Git BASH and the Git GUI.
 
+## Running Sonar
+
+A SonarQube docker image is added to your docker environment when you run a maven build without specifying to skip the docker build.
+
+* Start the docker container for sonar individually with this command:
+	```bash
+	$ docker-compose -f [path]/bip-reference-person/local-dev/sonar/docker-compose.yml up --build -d
+	```
+
+* Wait for the container to spin up. It is accessible at http://localhost:9000 once it is is running.
+
+* Run a sonar scan on your project(s)
+	```bash
+	$ mvn clean install # must build the project and run unit tests first
+	$ mvn sonar:sonar
+	```
+
+* View the results at http://localhost:9000
+
+* Stop SonarQube individually with this command:
+	```bash
+	$ docker-compose -f [path]/bip-reference-person/local-dev/sonar/docker-compose.yml down --rmi all -v
+	```
+
 ## Install and Run Fortify
 
 Of the Fortify suite of products, BIP service apps will typically use the `sca-maven-plugin` (which uses Fortify's Source Analyzer) to perform local scans, the `maven-ant-plugin` and Fortify's FPRUtility to merge FPR files, and Fortify's Auditors Workbench to view FPR files.
@@ -273,3 +297,29 @@ keytool -importcert -file cert.pem -alias nexus.dev.bip.va.gov -storepass change
 ```
 
 Note that $JAVA_HOME is the path to the JDK that is known by Maven
+
+## Creating Personal Access Token to connect to GitHub
+
+Creating Personal Access Token is required to perform GIT operations using HTTPS for any private repositories
+
+Execute the steps below only if you haven't already performed these steps.
+
+* Developers using Windows, Mac and Linux:
+
+  * Creating a Personal Token
+    1. [Verify your email address](https://help.github.com/articles/verifying-your-email-address/), if it hasn't been verified yet on GitHub.
+    2. In the upper-right corner of any page, click your profile photo, then click Settings.
+    3. In the left sidebar, click Personal access tokens.
+    4. Click Generate new token.
+    5. Give your token a descriptive name.
+    6. Select the scopes, or permissions, you'd like to grant this token. To use your token to access repositories from the command line, select repository.
+    7. Click Generate token.
+    8. Copy the token to your clipboard. For security reasons, after you navigate off the page, you will not be able to see the token again.
+
+    **Warning**: Treat your tokens like passwords and keep them secret. When working with the API, use tokens as environment variables instead of hard-coding them into your programs.
+
+  * Caching your GitHub password in Git
+    1. If you're cloning GitHub repositories using HTTPS, you can use a credential helper to tell Git to remember your GitHub username and password every time it talks to GitHub.
+    2. Follow the steps mentioned [here](https://help.github.com/en/articles/caching-your-github-password-in-git)
+
+  * You could also refer to Instructions on GitHub to [Create Personal Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/)
