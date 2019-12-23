@@ -204,7 +204,7 @@ bip.framework:
         - /api/v1/persons/**
         - /api/v2/persons/**
       excludeUrls:
-        - /**
+        - /api/v1/token
   swagger:
     # enable/disable the swagger/openapi UI ...
     enabled: true

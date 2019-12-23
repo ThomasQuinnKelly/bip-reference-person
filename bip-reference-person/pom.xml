@@ -129,6 +129,14 @@
 			<artifactId>jolokia-core</artifactId>
 		</dependency>
 
+        <!--PEPPOC-->
+
+        <dependency>
+            <groupId>org.openpolicyagent</groupId>
+            <artifactId>voter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
 		<!-- misc dependencies -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
