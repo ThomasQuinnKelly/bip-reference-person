@@ -1,4 +1,4 @@
-@Library('jenkins-library@promotion') _
+@Library('jenkins-library@AF-800') _
 
 mavenGitflowPipeline {
     //Adding skips 
