@@ -1,4 +1,4 @@
-@Library('jenkins-library@promotionPruneTest') _
+@Library('jenkins-library@promotion') _
 
 mavenGitflowPipeline {
     //Adding skips 
