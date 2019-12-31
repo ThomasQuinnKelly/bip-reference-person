@@ -1,15 +1,15 @@
 package gov.va.bip.reference.person.log.logback;
 
-import static org.junit.Assert.assertTrue;
-
+import gov.va.bip.framework.log.logback.BipMaskingFilter;
+import gov.va.bip.framework.log.BipLoggerFactory;
+import gov.va.bip.framework.log.BipLogger;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 import org.springframework.boot.test.rule.OutputCapture;
 
-import gov.va.bip.framework.log.logback.BipMaskingFilter;
+import static org.junit.Assert.assertTrue;
 
 public class BipBaseMaskingFilterTest {
 
@@ -32,8 +32,9 @@ public class BipBaseMaskingFilterTest {
 		capture.reset();
 
 		String msg = "Test Pattern 123-456 value";
-		Logger logger = LoggerFactory.getLogger(BipMaskingFilter.class);
-		logger.error(msg);
+		BipLogger logger = BipLoggerFactory.getLogger(BipMaskingFilter.class);
+		logger.setLevel(Level.INFO);
+		logger.info(msg);
 		String log = capture.toString();
 		assertTrue(log.contains("Test Pattern ****456 value"));
 	}
@@ -43,8 +44,9 @@ public class BipBaseMaskingFilterTest {
 		capture.reset();
 
 		String msg = "Test Date Pattern 1234-56-78 value";
-		Logger logger = LoggerFactory.getLogger(BipMaskingFilter.class);
-		logger.error(msg);
+		BipLogger logger = BipLoggerFactory.getLogger(BipMaskingFilter.class);
+		logger.setLevel(Level.INFO);
+		logger.info(msg);
 		String log = capture.toString();
 		assertTrue(log.contains("Test Date Pattern ********78 value"));
 	}

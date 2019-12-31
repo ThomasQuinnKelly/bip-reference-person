@@ -115,6 +115,58 @@ Note that this format is required for Kibana. It is recommended to use Kibana to
   {"@timestamp":"2019-03-11T15:38:31.637+00:00","app_name":"bip-reference-person","app_version":"0.0.1-SNAPSHOT","app_profile":"dev","logType":"applogs","severity":"INFO","class":"g.v.o.r.p.i.ReferencePersonServiceImpl","pid":"83960","thread_name":"http-nio-8080-exec-1","traceId":"0edb6c1db42c8075","spanId":"0edb6c1db42c8075","spanExportable":"true","X-Span-Export":"true","X-B3-SpanId":"0edb6c1db42c8075","X-B3-TraceId":"0edb6c1db42c8075","message":"exit [ReferencePersonServiceImpl.findPersonByParticipantID] in elapsed time [0.587 secs]"}
   ```
 
+## Significant Audit Log Fields
+
+Field Name | Field Sample Value | Field Description
+--- | --- | ---
+logType | auditlogs | BIP Framework AuditLogger adds a static MDC entry for audit logs |
+@timestamp | 2019-12-10T18:44:34.853Z | System generated timestamp |
+app_name | bip-reference-person | Application Name: Source spring.application.name |
+app_version | 0.0.2-SNAPSHOT | Application Version: Source info.build.version|
+severity | INFO | Severity of audit log event |
+tokenId | 4562089e-7518-403f-b318-c5045a606b55 | Equal to jti claim value from JWT token for unique id|
+X-B3-TraceId | 534a980ca2557358 | Spring Cloud Sleuth adds this ID to the logging. The trace ID contains a set of span IDs, forming a tree-like structure |
+X-B3-SpanId | 534a980ca2557358 | Spring Cloud Sleuth adds this ID to the logging. The span ID represents a basic unit of work, for example sending an HTTP request. |
+X-B3-ParentSpanId | 534a980ca2557358 | Spring Cloud Sleuth adds this ID to the logging. This is an optional ID that will only be present on child spans. That is the span without a parent id is considered the root of the trace |
+activity | personByPid | Specific String description of the event|
+event | API_REST_REQUEST | Enum values from AuditEvents provided by BIP Framework|
+user | JANE DOE | Derived from AbstractPersonTraitsObject as {First Name " " Last name"} |
+audit_class | gov.va.bip.reference.person.api.provider.PersonResource | Name of the java Class under audit |
+message | {\\\"request\\\":[{\\\"participantID\\\":6666345}]}} | Message Payload |
+
+## The interface for auditing shall support capturing the items mentioned in the section
+
+- Timestamp the interface was called automatically that is not affected by input to the interface (aka: system generated timestamp) 
+   - Recorded in the field `@timestamp`, a system generated timestamp
+- Timestamp provided to the interface (aka: an argument of the interface)
+   - Currently there is NO field to support this argument
+- Subject of the audit record. The subject may be the user token, system token, or other unique identifier of the entity that performed the action and/or accessed the data.
+   - Recorded in the field `tokenId`, which is populated by framework from `jti` claim of JSON Web token. The "jti" (JWT ID) claim provides a unique identifier for the JWT. The identifier value MUST be assigned in a manner that ensures that there is a negligible probability that the same value will be accidentally assigned to a different data object.
+- Action of the audit record. The action is a developer-defined string that uniquely identifies what action was performed (such as READ, INVOKE, CALL, CREATE, UPDATE, DELETE)
+   - Recorded in the field `activity`
+- Resource of the audit record. The resource may be a specific identifier for a record, an interface name, or other descriptive value that identifies the specific target of the action.
+   - Recorded in the field `audit_class`
+- (Optional) Type of record.
+   - Recorded in the field `event`
+- (Optional) Comments, a string of provided text that add context to the audit record.
+   - Recorded in the field `message`
+
+### Requirements / Considerations
+
+- Audit records must be immutable, write only to the application.
+- Audit records must not be relational or rely upon active records for correlation.
+- Audit interface cannot be overridden.
+
+### Assumptions 
+
+- BIP Platform team will provide the storage mechanism for audit files in accordance with FISMA, NIST 800 and VA 6500.
+
+### Concept Recommendations
+
+Log4j and Logback provide interfaces for separate log appenders. A specific log appender for auditing could be developed that 
+accepts a custom log-level specified for AUDIT that could provide wrapped with a common interface that enforces the required 
+arguments, translates and formats, and stores the resulting configuration that meet the unique requirements for auditing.
+
 ## References
 
 - For Logstash Logback Encoder Usage, refer to <https://github.com/logstash/logstash-logback-encoder#usage>
