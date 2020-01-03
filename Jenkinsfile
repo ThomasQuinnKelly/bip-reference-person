@@ -1,12 +1,5 @@
 mavenGitflowPipeline {
 
-    //Sonar Github Credentials - Settings this value will configure the pipeline to use this credential
-    //to connect to github during sonar PR scans, adding comments for any violations found
-    sonarGithubCredentials = 'dsva-github'
-
-    //Github credential ID to use for releases
-    githubCredentials = 'epmo-github'
-
     //Specify to use the fortify maven plugin, instead of the Ant task to execute the fortify scan
     useFortifyMavenPlugin = true
 
@@ -16,9 +9,9 @@ mavenGitflowPipeline {
 
     // Map of Image Names to sub-directory in the repository. If this is value is non-empty, 
     // the build pipeline will build all images specified in the map. The example below will build an image tagged as 
-    // `bip-reference-person:latest` using the Docker context of `./bip-reference-person`.
+    // `blue/bip-reference-person:latest` using the Docker context of `./bip-reference-person`.
     dockerBuilds = [
-        'bip-reference-person': 'bip-reference-person'
+        'blue/bip-reference-person': 'bip-reference-person'
     ]
 
     /*************************************************************************
