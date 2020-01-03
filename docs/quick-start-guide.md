@@ -38,7 +38,8 @@ There are 2 application profiles that you could run locally
 1. To run with default profile mode, clone only the `bip-reference-spring-boot` repository, then run `bip-reference-person` service from your IDE using [Deploy Only Mode](#ide-deploy-only-bip-reference-person)
 1. To run local-int profile mode, go through the steps mentioned under [Using Docker Compose](#using-docker-compose)
 
-### Spring Tool Suite - IDE Deploy only bip-reference-person
+### IDE Deploy Only bip-reference-person
+#### Spring Tool Suite
 * Ensure you've imported the projects in the IDE
 * In the "Boot Dashboard" within Spring Tool Suite, highlight `bip-reference-person` project and click the "*(Re)start*" button *
 * Localhost URLs for testing/using this deployment approach
@@ -54,7 +55,7 @@ There are 2 application profiles that you could run locally
       - Clean and build the project, select _Project > Clean..._
 	- It may be necessary to run the clean/build more than one time for necessary artifacts to get generated correctly.
 
-### IntelliJ - IDE Deploy only bip-reference-person
+#### IntelliJ
 * Open IntelliJ and go through the wizard to import the `bip-reference-person` project using maven with the following steps:
     - import project > `bip-reference-person` > import project from external model > maven..next > next (keep default settings) > next > ensure project snapshot is selected…next > next > finish
 * In the project tab, highlight `bip-reference-person` project and right click and select `synchronize bip-reference-person`
@@ -86,13 +87,13 @@ There are 2 application profiles that you could run locally
 
   [Vault](http://localhost:8200) (http://localhost:8200) - Root token is `vaultroot`
 
-  [Prometheus](http://localhos:9090) (http://localhos:9090)
+  [Prometheus](http://localhost:9090) (http://localhost:9090)
 
   [Grafana](http://localhost:3000) (http://localhost:3000) - Username/Password is `admin/admin` by default
 
   [Sonar](http://localhost:9000) (http://localhost:9000) - Only available if explicitly set up
 
-  *Note there are other URLs, such as all the [actuator URLs](/docs/actuator-management.md).  Listed here are the basic minimum URLs.*
+  *Note there are other URLs, such as all the [actuator URLs](actuator-management.md).  Listed here are the basic minimum URLs.*
 
 ## Running Sonar
 
