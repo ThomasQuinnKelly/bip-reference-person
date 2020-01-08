@@ -13,3 +13,4 @@ ADD ${JAR_FILE} bip-reference-person.jar
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/bip-reference-person.jar"]
 
 ADD ./scripts/wait-for-it.sh /wait-for-it.sh
+ADD ./error/mistake.yml /mistake.yml
