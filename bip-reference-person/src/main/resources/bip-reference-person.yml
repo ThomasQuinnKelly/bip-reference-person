@@ -159,7 +159,6 @@ resilience4j.circuitbreaker:
         failureRateThreshold: 50
         eventConsumerBufferSize: 10
         ignoreExceptions:
-           - feign.FeignException
            - java.lang.IllegalArgumentException 
            - gov.va.bip.framework.exception.BipException
            - gov.va.bip.framework.exception.BipRuntimeException
@@ -171,7 +170,6 @@ resilience4j.circuitbreaker:
         failureRateThreshold: 50
         eventConsumerBufferSize: 10
         ignoreExceptions:
-           - feign.FeignException
            - java.lang.IllegalArgumentException 
            - gov.va.bip.framework.exception.BipException
            - gov.va.bip.framework.exception.BipRuntimeException 
@@ -185,6 +183,7 @@ resilience4j.retry:
       maxRetryAttempts: 2
       waitDuration: 100
       retryExceptions:
+        - feign.FeignException
         - org.springframework.web.client.HttpServerErrorException
         - java.io.IOException
 ###############################################################################
