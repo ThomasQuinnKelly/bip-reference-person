@@ -91,13 +91,13 @@ There are 2 application profiles that you could run locally
 
   [Vault](http://localhost:8200) (http://localhost:8200) - Root token is `vaultroot`
 
-  [Prometheus](http://localhos:9090) (http://localhos:9090)
+  [Prometheus](http://localhost:9090) (http://localhost:9090)
 
   [Grafana](http://localhost:3000) (http://localhost:3000) - Username/Password is `admin/admin` by default
 
   [Sonar](http://localhost:9000) (http://localhost:9000) - Only available if explicitly set up
 
-  *Note there are other URLs, such as all the [actuator URLs](/docs/actuator-management.md).  Listed here are the basic minimum URLs.*
+  *Note there are other URLs, such as all the [actuator URLs](actuator-management.md).  Listed here are the basic minimum URLs.*
   
 ## Using BIP API Framework in your application
 
