@@ -1,9 +1,9 @@
 # Secure Service Communications
-All communication with our services or with external services will be secured end-to-end with MTLS. To this end, each service will need to be provided with its own public and private certificate pair. Applications will also need to be provided a trusted keystore of certificates that they should trust for secure communication.
+All communication with our services or with external services will be secured end-to-end with mTLS. To this end, each service will need to be provided with its own public and private certificate pair. Applications will also need to be provided a trusted keystore of certificates that they should trust for secure communication.
 
 # Certificate Generation
 
-# Server Certificate
+## Server Certificate
 Each service will need to present a SSL certificate to all callers. The certificates needs to match the DNS name which the client is using to address the service. For internal services this would be `<service-name>.service.consul` and for externally available services, the common name would be something like `<service-name>.dev.bip.va.gov`
 
 ### Internal Services
@@ -14,7 +14,7 @@ _TODO - Decide on internal CA solution_
 ### External Facing Services
 Certificate common name needs to match `<service-name>.dev.bip.va.gov`. These certificates need to valid for all external callers and therefore need to be signed by one of the VA certificate authorities. These will need to be manually requested.
 
-# Client Certificates
+## Client Certificates
 Each service will need a client SSL certificate signed by the Internal Service CA in order to call other internal services. Any other client certificates needed to call external services would need to be provided by that services CA.
 
 # Delivery of certificates to the application container
@@ -114,5 +114,8 @@ spec:
           path: keystore
         - key: client.truststore
           path: truststore
-       
 ```
+
+# Service Mesh Solution
+
+Currently, a Service Mesh implementation for handling mTLS encryption between services and ingress/egress points is being considered to handle BIP framework communications. When a decision is made on the future of this path forward, this document will be updated accordingly. See [Service Mesh Solutions Research](service-mesh-research.md) for more details.
