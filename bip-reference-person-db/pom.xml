@@ -17,7 +17,7 @@
 	<description>Database Database Management for Reference Person</description>
 
 	<properties>
-		<bip-framework.version>2.1.0</bip-framework.version>
+		<bip-framework.version>2.1.1</bip-framework.version>
 		<!--
 			Liquibase controls
 		-->
