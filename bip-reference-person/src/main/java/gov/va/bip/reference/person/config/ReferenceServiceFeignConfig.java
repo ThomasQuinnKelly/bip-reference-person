@@ -10,9 +10,6 @@ import gov.va.bip.framework.feign.autoconfigure.TokenFeignRequestInterceptor;
 @Configuration
 public class ReferenceServiceFeignConfig extends BipFeignAutoConfiguration {
 
-	public ReferenceServiceFeignConfig() {
-	}
-
 	/**
 	 * A bean for internal purposes, the standard (non-feign) REST request
 	 * intercepter
