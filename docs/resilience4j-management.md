@@ -113,5 +113,3 @@ You can define one global fallback method with an exception parameter only if mu
 		configuration = ReferenceServiceFeignConfig.class)
 @CircuitBreaker(name = "FeignPersonClient")
 ```
-
-- Resilience4j client configuration needs `BipFeignAutoConfiguration` which is part of the framework libraries as configuration. The `feignBuilder` bean is implemented as part of `BipFeignAutoConfiguration` - the client side Resilience4j needs a separate configuration from the server side. Please see feignBuilder method in [BipFeignAutoConfiguration.java](https://github.ec.va.gov/EPMO/bip-framework/blob/master/bip-framework-autoconfigure/src/main/java/gov/va/bip/framework/feign/autoconfigure/BipFeignAutoConfiguration.java).

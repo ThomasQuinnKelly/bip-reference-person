@@ -141,6 +141,21 @@ ribbon:
   MaxAutoRetries: 2
   MaxAutoRetriesNextServer: 2
   OkToRetryOnAllOperations: true
+##################################################
+# Disable hystrix for feign. Enable it if fallback
+# function needs to be implemented
+##################################################
+feign.hystrix.enabled: false
+feign:
+  client:
+    config:
+      "@project.name@":
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: full
+# Configuration to add requestInterceptors
+#        requestInterceptors:
+#          - gov.va.bip.framework.feign.autoconfigure.TokenFeignRequestInterceptor
 #################################################
 # resilience4j settings
 ##################################################
