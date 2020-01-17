@@ -546,7 +546,9 @@ spring.liquibase:
 localstack:
   enabled: true
   services:
-    snssetup: false
-    snsport: 4575
-    sqssetup: false
-    sqsport: 4576
+    sns:
+      enabled: true
+      port: 4575
+    sqs:
+      enabled: true
+      port: 4576
