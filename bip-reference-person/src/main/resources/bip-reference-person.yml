@@ -541,3 +541,5 @@ spring.datasource:
 spring.liquibase:
   enabled: false
   test-rollback-on-update: true
+localstack:
+  enabled: true
