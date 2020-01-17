@@ -24,6 +24,7 @@
 		<module>bip-reference-person</module>
 		<module>bip-reference-inttest</module>
 		<module>bip-reference-perftest</module>
+		<module>bip-reference-person-aws</module>
 	</modules>
 
 	<repositories>
