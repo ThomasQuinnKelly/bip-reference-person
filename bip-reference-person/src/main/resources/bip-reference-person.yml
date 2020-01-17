@@ -552,3 +552,9 @@ localstack:
     sqs:
       enabled: true
       port: 4576
+---
+aws:
+  sns:
+    topic: sub_new_topic
+  sqs:
+    queue: http://localhost:4576/queue/sub_new_queue
