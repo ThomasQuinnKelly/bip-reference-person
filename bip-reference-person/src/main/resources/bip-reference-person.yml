@@ -553,6 +553,7 @@ localstack:
       enabled: true
       port: 4576
 ---
+### AWS Service settings
 aws:
   sns:
     topic: sub_new_topic
