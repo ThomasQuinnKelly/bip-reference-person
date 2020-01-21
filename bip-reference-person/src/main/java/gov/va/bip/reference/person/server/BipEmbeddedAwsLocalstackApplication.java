@@ -23,7 +23,6 @@ public class BipEmbeddedAwsLocalstackApplication extends LocalstackAutoConfigura
 	@Autowired
 	private SnsProperties snsProperties;
 
-	@Override
 	public void configureAwsLocalStack() {
 		snsCreateTopicSubscribedToQueue();
 	}
