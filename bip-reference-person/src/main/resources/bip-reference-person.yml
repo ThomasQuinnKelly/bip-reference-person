@@ -543,7 +543,7 @@ spring.liquibase:
   test-rollback-on-update: true
 ---
 ### Localstack
-localstack:
+bip.framework.localstack:
   enabled: true
   services:
     sns:

@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * This class will configure AWS localstack services.
  */
 @Configuration
-@ConditionalOnProperty(name = "localstack.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "bip.framework.localstack.enabled", havingValue = "true")
 public class BipEmbeddedAwsLocalstackApplication extends LocalstackAutoConfiguration {
 
 	@Autowired
