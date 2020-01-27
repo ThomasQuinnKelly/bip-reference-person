@@ -8,13 +8,17 @@
 
     * `ansible-playbook -i environments/<project-name>-<environment> git2consul.yml --ask-vault-pass`
 
-3) In order for the git2consul changes to be applied, you will need to restart the git2consul deployment. That can be done by running this command (replace <namespace> and <git2consul deployment> with your desired values):
+    * Example using Blue-Dev: `ansible-playbook -i environments/blue-dev git2consul.yml --ask-vault-pass`
+
+3) In order for the git2consul changes to be applied, you will need to restart the git2consul deployment. That can be done by running this command (replace `<namespace>` and `<git2consul deployment>` with your desired values):
     * `kubectl rollout restart --namespace=<namespace> deployment/<git2consul deployment>`
+
+    * Example using Blue-Dev: `kubectl rollout restart --namespace=blue-dev deployment/dev8-blue-git2consul`
 
 4) Login to consul and confirm updated values.
    * Dev: https://consul.dev8.bip.va.gov/
    * Stage: https://consul.stage8.bip.va.gov/
-   * Click on Key/Value at the top. Go into the config directory. There should be a git2consul config file and a directory (named according to your environment) containing the files polled from your consul_branch.
+   * Click on Key/Value at the top. Go into the config directory. There should be a git2consul config file and a directory (named according to the value of `git2consul_mount_root`) containing the files pulled from the defined `consul_branch`.
         * The git2consul config file should reflect the updates made.
         * If the `consul_branch` was updated, check the directory for your environment. If you changed the branch to development for example, you should now see a `development.ref` file and a new set of `.yml` files pulled from the development branch.
             * Note: The `.ref` and `.yml` files from the previous branch will still remain, but will no longer be updated since that branch is no longer being polled. These files can be deleted in Consul if no longer necessary.
