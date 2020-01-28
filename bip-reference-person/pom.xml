@@ -156,6 +156,11 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-aws-messaging</artifactId>
 		</dependency>
+		<!-- Spring Framework JMS -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jms</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

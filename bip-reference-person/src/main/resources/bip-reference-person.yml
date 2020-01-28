@@ -554,8 +554,37 @@ bip.framework.localstack:
       port: 4576
 ---
 ### AWS Service settings
-aws:
-  sns:
-    topic: sub_new_topic
-  sqs:
-    queue: http://localhost:4576/queue/sub_new_queue
+#aws:
+#  sns:
+#    topic: sub_new_topic
+#  sqs:
+#    queue: http://localhost:4576/queue/sub_new_queue
+
+
+## S3 and SQS Configurations for Ascent
+bip.framework:
+  aws:
+    sqs:
+      enabled: true
+      region: ${AWS_SQS_REGION:us-east-1}
+      endpoint: ${AWS_SQS_ENDPOINT:http://localhost:4576/queue/sub_new_queue}
+      dlqEndpoint: ${AWS_SQS_DLQ_ENDPOINT:http://localhost:4576/queue/sub_new_queue_dead}
+      dlqRetriesCount: 2
+      numberOfMessagesToPrefetch: ${AMAZON_SQS_NUMBER_OF_MESSAGES_TO_PREFETCH:5}
+      retries: 2
+      prefetch: 2
+      queueType: false
+      contentBasedDuplication: false
+      delay: 2
+      maxMessageSize: "40"
+      messageRetentionPeriod: "40"
+      waitTime: 2
+      visibilityTimeout: 2
+
+# key and id needs to be changed for dev env
+#      access_key_id: ${AWS_ACCESS_KEY}
+#      secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+
+# Required or else an error occurs (Spring requirement)
+cloud.aws.stack.auto: false
+cloud.aws.region.static: ${AWS_REGION:us-east-1}

@@ -235,6 +235,51 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+## SQS Message Example
+  "/api/v1/sqs/sendMessage":
+    post:
+      tags:
+        - reference-person-aws
+      summary: Send a message to the Queue
+      description: Will add a message to the queue
+      operationId: sendMessage
+      requestBody:
+        description: String message
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                  description: The message contents
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: integer
+                required:
+                  - id
+                properties:
+                  id:
+                    type: integer
+                    description: The JMS Id
+        '400':
+          '$ref': '#/components/responses/400'
+        '401':
+          '$ref': '#/components/responses/401'
+        '403':
+          '$ref': '#/components/responses/403'
+        '500':
+          '$ref': '#/components/responses/500'
+      security:
+        - bearerAuth: []
+      deprecated: false
   # The token path should not require any changes
   "/api/v1/token":
     post:
