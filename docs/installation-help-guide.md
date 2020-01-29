@@ -287,13 +287,13 @@ Maven can be set up to use Nexus repository. When the repository runs on https m
 To resolve this, download the server’s certificate and add it to the default Java keystore. The easiest way to download the certificate is with the Java provided keytool. The following command is an example to download the certificate to a `.pem` file
 
 ```bash
-keytool -J-Djava.net.useSystemProxies=true -printcert -rfc --sslserver \nexus.dev.bip.va.gov\:443 > cert.pem
+keytool -J-Djava.net.useSystemProxies=true -printcert -rfc --sslserver \nexus.dev8.bip.va.gov\:443 > cert.pem
 ```
 
 The proxy-part is optional. Now you downloaded the certificate, you can add it to the keystore with the following command
 
 ```bash
-keytool -importcert -file cert.pem -alias nexus.dev.bip.va.gov -storepass changeit -keystore $JAVA_HOME/jre/lib/security/cacerts`
+keytool -importcert -file cert.pem -alias nexus.dev8.bip.va.gov -storepass changeit -keystore $JAVA_HOME/jre/lib/security/cacerts`
 ```
 
 Note that $JAVA_HOME is the path to the JDK that is known by Maven
