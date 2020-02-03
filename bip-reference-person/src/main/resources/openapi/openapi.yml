@@ -474,7 +474,7 @@ components:
       properties:
         messageId:
           type: String
-          example: 'example'
+          example: 'example message'
           description: message id
     # Schema objects below are from BIP Framework to be declared.
     # These objects need to be mapped in <importMappings> section

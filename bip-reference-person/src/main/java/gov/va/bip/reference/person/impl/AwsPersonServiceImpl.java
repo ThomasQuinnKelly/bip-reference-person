@@ -79,7 +79,7 @@ public class AwsPersonServiceImpl implements AwsPersonService {
 
 		PublishResult result = new PublishResult();
 
-		result.getMessageId();
+		result.setMessageId("My example Text");
 
 		return result;
 	}
