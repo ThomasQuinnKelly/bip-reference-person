@@ -15,4 +15,6 @@ public interface AwsPersonService {
 	 */
 	JmsResponse sendMessage(String message);
 
+	JmsResponse publishMessage(String message);
+
 }
