@@ -1,6 +1,7 @@
 package gov.va.bip.reference.person;
 
 import gov.va.bip.reference.person.api.model.v1.JmsResponse;
+import gov.va.bip.reference.person.api.model.v1.PublishResult;
 
 /**
  * The contract interface for the AWS Person domain (service) layer.
@@ -15,6 +16,6 @@ public interface AwsPersonService {
 	 */
 	JmsResponse sendMessage(String message);
 
-	JmsResponse publishMessage(String message);
+	PublishResult publishMessage(String message);
 
 }

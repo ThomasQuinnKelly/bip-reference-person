@@ -301,7 +301,7 @@ paths:
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/JmsResponse'
+                '$ref': '#/components/schemas/PublishResult'
         '400':
           '$ref': '#/components/responses/400'
         '401':
@@ -467,6 +467,15 @@ components:
           type: integer
           example: 5
           description : jms id
+    PublishResult:
+      type: object
+      title: PublishResult
+      description: Model for publishing sns messages
+      properties:
+        messageId:
+          type: String
+          example: 'example'
+          description: message id
     # Schema objects below are from BIP Framework to be declared.
     # These objects need to be mapped in <importMappings> section
     # of openapi-generator-maven-plugin so that no code is generated 

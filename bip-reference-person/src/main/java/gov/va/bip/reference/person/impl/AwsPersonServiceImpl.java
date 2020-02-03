@@ -1,9 +1,11 @@
 package gov.va.bip.reference.person.impl;
 
+
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.reference.person.AwsPersonService;
 import gov.va.bip.reference.person.api.model.v1.JmsResponse;
+import gov.va.bip.reference.person.api.model.v1.PublishResult;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -66,7 +68,7 @@ public class AwsPersonServiceImpl implements AwsPersonService {
 
 	@Override
 	@CircuitBreaker(name = "publishMessage")
-	public JmsResponse publishMessage(final String message) {
+	public PublishResult publishMessage(final String message) {
 
 		LOGGER.info("Info: " + message);
 		LOGGER.debug("Debug: " + message);
@@ -75,9 +77,9 @@ public class AwsPersonServiceImpl implements AwsPersonService {
 
 		System.out.println(message);
 
-		JmsResponse result = new JmsResponse();
+		PublishResult result = new PublishResult();
 
-		result.setJmsId(Integer.valueOf(5));//s.getMessageId()
+		result.getMessageId();
 
 		return result;
 	}
