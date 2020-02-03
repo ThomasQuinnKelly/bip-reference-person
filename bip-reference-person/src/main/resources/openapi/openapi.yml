@@ -260,15 +260,9 @@ paths:
         '200':
           description: OK
           content:
-            text/plain:
+            application/json:
               schema:
-                type: integer
-                required:
-                  - id
-                properties:
-                  id:
-                    type: integer
-                    description: The JMS Id
+                '$ref': '#/components/schemas/JmsResponse'
         '400':
           '$ref': '#/components/responses/400'
         '401':
@@ -425,6 +419,15 @@ components:
       allOf:
        - '$ref': '#/components/schemas/ProviderResponse'
        - type: object
+    JmsResponse:
+      type: object
+      title: JmsResponse
+      description: Model for jms Response
+      properties:
+        jmsId:
+          type: integer
+          example: 5
+          description : jms id
     # Schema objects below are from BIP Framework to be declared.
     # These objects need to be mapped in <importMappings> section
     # of openapi-generator-maven-plugin so that no code is generated 
