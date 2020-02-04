@@ -17,7 +17,7 @@
 	<description>BIP Reference Person Service Integration Test Suite</description>
 	
 	<properties>
-    	<bip-framework.version>2.1.2-SNAPSHOT</bip-framework.version>
+    	<bip-framework.version>2.1.3-SNAPSHOT</bip-framework.version>
     </properties>
 
 	<dependencies>
