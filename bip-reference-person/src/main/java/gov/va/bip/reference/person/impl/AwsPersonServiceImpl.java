@@ -1,15 +1,17 @@
 package gov.va.bip.reference.person.impl;
 
 
+import gov.va.bip.framework.aws.autoconfigure.BipSnsAutoConfiguration;
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
+import gov.va.bip.framework.sns.services.SnsService;
 import gov.va.bip.reference.person.AwsPersonService;
 import gov.va.bip.reference.person.api.model.v1.JmsResponse;
 import gov.va.bip.reference.person.api.model.v1.PublishResult;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,9 +23,8 @@ import org.springframework.stereotype.Service;
  * @author akulkarni
  */
 @Service(value = AwsPersonServiceImpl.BEAN_NAME)
-@Component
+//@Component
 @Qualifier("AWS_PERSON_SERVICE_IMPL")
-//@Import({SqsServiceImpl.class})//, SQSConnectionFactory.class})//, JmsTemplate.class, SQSConnectionFactory.class})
 @RefreshScope
 public class AwsPersonServiceImpl implements AwsPersonService {
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(AwsPersonServiceImpl.class);
@@ -31,11 +32,12 @@ public class AwsPersonServiceImpl implements AwsPersonService {
 	/** Bean name constant */
 	public static final String BEAN_NAME = "awsPersonServiceImpl";
 
-//	@Autowired
-//	SQSConnectionFactory connectionFactory;
-//
-//	@Autowired
-//	SqsService sqsService;
+	@Autowired
+	BipSnsAutoConfiguration bipSnsAutoConfiguration;
+
+	@Autowired
+	SnsService snsService;
+
 
 	/**
 	 * Send a message to the queue
@@ -79,7 +81,7 @@ public class AwsPersonServiceImpl implements AwsPersonService {
 
 		PublishResult result = new PublishResult();
 
-		result.setMessageId("My example Text");
+		result.setMessage("My example Text");
 
 		return result;
 	}

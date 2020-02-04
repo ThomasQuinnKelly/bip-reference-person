@@ -126,4 +126,4 @@ Here are some of the commands to use when verifying topics, queues, subscription
 
 **List Published Message:**
 
-`aws --endpoint-url=http://localhost:4576 --queue-url=http://localhost:4576/queue/my_queue sqs receive-message`
+`aws --endpoint-url=http://localhost:4576 --queue-url=http://localhost:4576/queue/sub_new_queue sqs receive-message`
