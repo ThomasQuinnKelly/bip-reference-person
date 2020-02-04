@@ -1,23 +1,21 @@
 package gov.va.bip.reference.person.impl;
 
-import com.amazon.sqs.javamessaging.SQSConnectionFactory;
+import com.amazon.sqs.javamessaging.message.SQSTextMessage;
+import gov.va.bip.framework.aws.autoconfigure.BipSqsAutoConfiguration;
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.sqs.dto.SendMessageResponse;
 import gov.va.bip.framework.sqs.services.SqsService;
-import gov.va.bip.framework.sqs.services.impl.SqsServiceImpl;
 import gov.va.bip.reference.person.AwsPersonService;
 import gov.va.bip.reference.person.api.model.v1.JmsResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.context.annotation.Import;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.jms.ConnectionFactory;
+import javax.jms.Message;
 import javax.jms.TextMessage;
 
 /**
@@ -25,8 +23,6 @@ import javax.jms.TextMessage;
  * the implementation of resilience4j circuit breaker pattern for read
  * operations. When there is a failure the fallback method is invoked and the
  * response is returned from the cache
- *
- * @author akulkarni
  */
 @Service(value = AwsPersonServiceImpl.BEAN_NAME)
 @Component
@@ -36,14 +32,14 @@ import javax.jms.TextMessage;
 public class AwsPersonServiceImpl implements AwsPersonService {
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(AwsPersonServiceImpl.class);
 
+	@Autowired
+	BipSqsAutoConfiguration bipSqsAutoConfiguration;
+
 	/** Bean name constant */
 	public static final String BEAN_NAME = "awsPersonServiceImpl";
 
-//	@Autowired
-//	SQSConnectionFactory connectionFactory;
-//
-//	@Autowired
-//	SqsService sqsService;
+	@Autowired
+	SqsService sqsService;
 
 	/**
 	 * Send a message to the queue
@@ -63,13 +59,13 @@ public class AwsPersonServiceImpl implements AwsPersonService {
 
 		System.out.println(message);
 
-//		TextMessage textMessage = sqsService.createTextMessage(message);
+		SQSTextMessage textMessage = sqsService.createTextMessage(message);
 
-//		SendMessageResponse s = sqsService.sendMessage(textMessage);
+		SendMessageResponse s = sqsService.sendMessage(textMessage);
 
 		JmsResponse result = new JmsResponse();
 
-		result.setJmsId(Integer.valueOf(5));//s.getMessageId()
+		result.setJmsId(s.getMessageId());
 
 		return result;
 	}

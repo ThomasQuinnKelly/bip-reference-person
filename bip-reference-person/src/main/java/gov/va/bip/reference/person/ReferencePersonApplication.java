@@ -1,5 +1,6 @@
 package gov.va.bip.reference.person;
 
+import gov.va.bip.framework.aws.autoconfigure.BipSqsAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -29,7 +30,8 @@ import gov.va.bip.reference.person.config.ReferencePersonConfig;
 @EnableCaching
 @EnableAsync
 @Import({ ReferencePersonConfig.class,
-		PersonWsClientConfig.class })
+		PersonWsClientConfig.class,
+		BipSqsAutoConfiguration.class})
 public class ReferencePersonApplication {
 
 	/**
