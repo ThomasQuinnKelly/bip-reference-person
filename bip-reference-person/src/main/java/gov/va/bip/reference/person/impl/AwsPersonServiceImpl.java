@@ -6,8 +6,11 @@ import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.sqs.dto.SendMessageResponse;
 import gov.va.bip.framework.sqs.services.SqsService;
+import gov.va.bip.framework.log.BipLogger;
+import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.reference.person.AwsPersonService;
 import gov.va.bip.reference.person.api.model.v1.JmsResponse;
+import gov.va.bip.reference.person.api.model.v1.PublishResult;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -66,6 +69,24 @@ public class AwsPersonServiceImpl implements AwsPersonService {
 		JmsResponse result = new JmsResponse();
 
 		result.setJmsId(s.getMessageId());
+
+		return result;
+	}
+
+	@Override
+	@CircuitBreaker(name = "publishMessage")
+	public PublishResult publishMessage(final String message) {
+
+		LOGGER.info("Info: " + message);
+		LOGGER.debug("Debug: " + message);
+		LOGGER.warn("Warn: " + message);
+		LOGGER.error("Error: " + message);
+
+		System.out.println(message);
+
+		PublishResult result = new PublishResult();
+
+		result.setMessageId("My example Text");
 
 		return result;
 	}

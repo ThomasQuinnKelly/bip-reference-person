@@ -580,6 +580,13 @@ bip.framework:
       messageRetentionPeriod: "40"
       waitTime: 2
       visibilityTimeout: 2
+    sns:
+      enabled: true
+      region: ${AWS_SNS_REGION:us-east-1}
+      endpoint: ${AWS_SNS_ENDPOINT:http://localhost:4575/topic/test_my_topic}
+      name: test_my_topic
+      message: "SNS Test Message"
+      type: String
 
 # key and id needs to be changed for dev env
 #      access_key_id: ${AWS_ACCESS_KEY}

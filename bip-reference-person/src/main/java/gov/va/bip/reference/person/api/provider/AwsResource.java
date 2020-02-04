@@ -4,8 +4,8 @@ import gov.va.bip.framework.swagger.SwaggerResponseMessages;
 import gov.va.bip.reference.person.AwsPersonService;
 import gov.va.bip.reference.person.api.ReferencePersonAwsApi;
 import gov.va.bip.reference.person.api.model.v1.JmsResponse;
+import gov.va.bip.reference.person.api.model.v1.PublishResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +27,14 @@ public class AwsResource implements ReferencePersonAwsApi, SwaggerResponseMessag
         ResponseEntity<JmsResponse> jmsId = new ResponseEntity<JmsResponse>(refAwsPersonService.sendMessage(body), HttpStatus.OK);
 
         return jmsId;
+    }
+
+    @Override
+    public ResponseEntity<PublishResult> publishMessage(@Valid String body) {
+
+        ResponseEntity<PublishResult> messageId = new ResponseEntity<PublishResult>(refAwsPersonService.publishMessage(body), HttpStatus.OK);
+
+        return messageId;
     }
 
 }
