@@ -11,7 +11,7 @@
   ingress:
     enabled: true
   vault:
-    enabled: true
+    enabled: false
     consulBackendEnabled: true
   consul:
       enabled: true
