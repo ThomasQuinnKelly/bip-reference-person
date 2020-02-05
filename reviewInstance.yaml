@@ -9,7 +9,7 @@
     tag: latest
     pullPolicy: Always
   ingress:
-    enabled: true
+    enabled: false
   vault:
     enabled: false
     consulBackendEnabled: true
