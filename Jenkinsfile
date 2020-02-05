@@ -5,6 +5,13 @@ mavenGitflowPipeline {
     //Specify to use the fortify maven plugin, instead of the Ant task to execute the fortify scan
     useFortifyMavenPlugin = true
 
+    //TODO_CMF: Remove skips when done testing
+    skipSonar = true
+    skipFortify = true
+    skipMavenDeploy = false
+    skipFunctionalTests = true
+    skipPerformanceTests = true
+
     /*************************************************************************
     * Docker Build Configuration
     *************************************************************************/
