@@ -584,6 +584,7 @@ bip.framework:
       enabled: true
       region: ${AWS_SNS_REGION:us-east-1}
       endpoint: ${AWS_SNS_ENDPOINT:http://localhost:4575/topic/test_my_topic}
+      topicarn: arn:aws:sns:us-east-1:000000000000:test_my_topic
       name: test_my_topic
       message: "SNS Test Message"
       type: String

@@ -472,10 +472,10 @@ components:
       title: PublishResult
       description: Model for publishing sns messages
       properties:
-        message:
+        messageId:
           type: String
-          example: 'example message'
-          description: message contents
+          example: This is the openapi file message
+          description: message id
     # Schema objects below are from BIP Framework to be declared.
     # These objects need to be mapped in <importMappings> section
     # of openapi-generator-maven-plugin so that no code is generated 
