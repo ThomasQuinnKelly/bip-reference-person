@@ -1,10 +1,13 @@
 package gov.va.bip.reference.person.impl;
 
-
-import gov.va.bip.framework.aws.autoconfigure.BipSnsAutoConfiguration;
+import com.amazon.sqs.javamessaging.message.SQSTextMessage;
+import gov.va.bip.framework.aws.autoconfigure.BipSqsAutoConfiguration;
 import gov.va.bip.framework.log.BipLogger;
 import gov.va.bip.framework.log.BipLoggerFactory;
-import gov.va.bip.framework.sns.services.SnsService;
+import gov.va.bip.framework.sqs.dto.SendMessageResponse;
+import gov.va.bip.framework.sqs.services.SqsService;
+import gov.va.bip.framework.log.BipLogger;
+import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.reference.person.AwsPersonService;
 import gov.va.bip.reference.person.api.model.v1.JmsResponse;
 import gov.va.bip.reference.person.api.model.v1.PublishResult;
@@ -12,32 +15,34 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import javax.jms.Message;
+import javax.jms.TextMessage;
 
 /**
  * Implementation class for the Reference Person Service. The class demonstrates
  * the implementation of resilience4j circuit breaker pattern for read
  * operations. When there is a failure the fallback method is invoked and the
  * response is returned from the cache
- *
- * @author akulkarni
  */
 @Service(value = AwsPersonServiceImpl.BEAN_NAME)
-//@Component
+@Component
 @Qualifier("AWS_PERSON_SERVICE_IMPL")
+//@Import({SqsServiceImpl.class})//, SQSConnectionFactory.class})//, JmsTemplate.class, SQSConnectionFactory.class})
 @RefreshScope
 public class AwsPersonServiceImpl implements AwsPersonService {
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(AwsPersonServiceImpl.class);
+
+	@Autowired
+	BipSqsAutoConfiguration bipSqsAutoConfiguration;
 
 	/** Bean name constant */
 	public static final String BEAN_NAME = "awsPersonServiceImpl";
 
 	@Autowired
-	BipSnsAutoConfiguration bipSnsAutoConfiguration;
-
-	@Autowired
-	SnsService snsService;
-
+	SqsService sqsService;
 
 	/**
 	 * Send a message to the queue
@@ -57,13 +62,13 @@ public class AwsPersonServiceImpl implements AwsPersonService {
 
 		System.out.println(message);
 
-//		TextMessage textMessage = sqsService.createTextMessage(message);
+		SQSTextMessage textMessage = sqsService.createTextMessage(message);
 
-//		SendMessageResponse s = sqsService.sendMessage(textMessage);
+		SendMessageResponse s = sqsService.sendMessage(textMessage);
 
 		JmsResponse result = new JmsResponse();
 
-		result.setJmsId(Integer.valueOf(5));//s.getMessageId()
+		result.setJmsId(s.getMessageId());
 
 		return result;
 	}
@@ -81,7 +86,7 @@ public class AwsPersonServiceImpl implements AwsPersonService {
 
 		PublishResult result = new PublishResult();
 
-		result.setMessage("My example Text");
+		result.setMessageId("My example Text");
 
 		return result;
 	}

@@ -464,8 +464,8 @@ components:
       description: Model for jms Response
       properties:
         jmsId:
-          type: integer
-          example: 5
+          type: string
+          example: 5bd06d77-7706-4675-a6d8-39e01c2fba61
           description : jms id
     PublishResult:
       type: object

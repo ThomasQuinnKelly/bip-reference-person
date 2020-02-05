@@ -40,6 +40,11 @@
 			<version>${bip-framework.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>javax.jms</groupId>
+			<artifactId>javax.jms-api</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+		<dependency>
 			<groupId>gov.va.bip.reference.person</groupId>
 			<artifactId>bip-reference-partner-person</artifactId>
 			<version>${project.version}</version>
@@ -150,16 +155,6 @@
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<!-- Spring Cloud AWS -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-aws-messaging</artifactId>
-		</dependency>
-		<!-- Spring Framework JMS -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jms</artifactId>
 		</dependency>
 	</dependencies>
 
