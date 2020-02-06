@@ -12,7 +12,6 @@
     enabled: false
   vault:
     enabled: true
-    host: dev8-vault.vault.svc.dev8
     kubernetes:
       role: blue-read
     kv:
@@ -24,12 +23,9 @@
       enabled: true
       config:
         enabled: true
-        prefix: config/blue/development
       discovery:
         enabled: true
         register: true
-      secret: consul-acl-token
-      host: dev8-consul.vault.svc.dev8
       scheme: http
   spring:
     profiles: "dev"
