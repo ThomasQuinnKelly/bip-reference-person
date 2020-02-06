@@ -8,7 +8,7 @@ mavenGitflowPipeline {
     //TODO_CMF: Remove skips when done testing
     skipSonar = true
     skipFortify = true
-    skipMavenDeploy = false
+    skipMavenDeploy = true
     skipFunctionalTests = true
     skipPerformanceTests = true
 
