@@ -11,7 +11,7 @@ server:
   max-http-header-size: 65536
 ---
 spring.profiles: default
-spring.profiles.include: remote_client_sims, embedded-redis
+spring.profiles.include: remote_client_sims, embedded-redis, embedded-aws
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
