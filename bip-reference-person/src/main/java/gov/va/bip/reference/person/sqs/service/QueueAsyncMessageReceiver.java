@@ -65,9 +65,6 @@ public class QueueAsyncMessageReceiver {
      */
     private void startJmsConnection() {
         try {
-            //SQSConnectionFactory sqsConnectionFactory = (SQSConnectionFactory) connectionFactory;
-            //connection = (SQSConnection) sqsConnectionFactory.createConnection();
-
             connection = connectionFactory.createConnection();
 
             // Create the session
@@ -92,9 +89,7 @@ public class QueueAsyncMessageReceiver {
     }
 
     /**
-     *
-     * @author rajuthota
-     *         Listener for the Main Queue
+     * Listener for the Main Queue
      */
     private class QReceiverCallback implements MessageListener {
         @Override
@@ -107,6 +102,9 @@ public class QueueAsyncMessageReceiver {
                     final MessageAttributes messageAttributes = getMessageAttributesFromJson(messageText.getText());
                     findJMSElapsedTime(messageAttributes.getCreateTimestamp());
                     final String messageAttributesText = messageAttributes.getMessage();
+
+                    mockProcessingTime();
+
                     if (messageAttributesText.contains("donotprocess")) {
                         logger.error("Message is not processed. JMS Message " + message.getJMSMessageID());
                         return;
@@ -138,8 +136,6 @@ public class QueueAsyncMessageReceiver {
     }
 
     /**
-     *
-     * @author rajuthota
      *         Listener for the Dead Letter Queue. The message is psuhed back into main queue.
      *         After three attempts, the message is deleted.
      */
@@ -156,6 +152,9 @@ public class QueueAsyncMessageReceiver {
                     if (messageAttributes == null) {
                         return;
                     }
+
+                    mockProcessingTime();
+
                     // If the number of current tries in the message attributes is greater than or equal to the retries detailed in the sqsProperties
                     if (messageAttributes.getNumberOfRetries() >= sqsProperties.getRetries()) {
                         // would delete/archive the message here in some way
@@ -173,6 +172,16 @@ public class QueueAsyncMessageReceiver {
                 logger.error("Error occurred while processing message. Error: {}", e);
             }
         }
+    }
+
+    private void mockProcessingTime() {
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+
+        }
+
     }
 
     public MessageAttributes getMessageAttributesFromJson(String message) {
@@ -199,8 +208,7 @@ public class QueueAsyncMessageReceiver {
         return null;
     }
 
-    // sonar complains about the try/catch if moved inside DLQReceiverCallback()
-    private SQSTextMessage moveMessageToQueue(final MessageAttributes messageAttributes) { // NOSONAR
+    private SQSTextMessage moveMessageToQueue(final MessageAttributes messageAttributes) {
         // move the message to normal queue for processing
         messageAttributes.setNumberOfRetries(messageAttributes.getNumberOfRetries() + 1);
         SQSTextMessage txtMessage = null;
@@ -212,12 +220,4 @@ public class QueueAsyncMessageReceiver {
         return txtMessage;
     }
 
-    // sonar complains about the try/catch if moved inside DLQReceiverCallback()
-//    private void moveMessageToDlq(final MessageAttributes messageAttributes) { // NOSONAR
-//        // move the message to s3 dlq bucket
-//        MoveMessageRequest moveMessageRequest = new MoveMessageRequest();
-//        moveMessageRequest.setDlqBucketName(dlqBucketName);
-//        moveMessageRequest.setKey(messageAttributes.getDocumentID());
-//        s3Services.moveMessageToS3(moveMessageRequest);
-//    }
 }

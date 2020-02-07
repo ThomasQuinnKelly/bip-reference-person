@@ -30,7 +30,6 @@ import org.springframework.stereotype.Service;
 @Service(value = AwsPersonServiceImpl.BEAN_NAME)
 @Component
 @Qualifier("AWS_PERSON_SERVICE_IMPL")
-//@Import({SqsServiceImpl.class})//, SQSConnectionFactory.class})//, JmsTemplate.class, SQSConnectionFactory.class})
 @RefreshScope
 public class AwsPersonServiceImpl implements AwsPersonService {
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(AwsPersonServiceImpl.class);

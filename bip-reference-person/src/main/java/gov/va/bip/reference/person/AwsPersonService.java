@@ -8,6 +8,7 @@ import gov.va.bip.reference.person.api.model.v1.PublishResult;
  *
  */
 public interface AwsPersonService {
+
 	/**
 	 * Send a message to a Queue
 	 *
