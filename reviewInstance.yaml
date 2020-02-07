@@ -15,7 +15,7 @@
     enabled: true
 #    authentication: KUBERNETES
     kubernetes:
-      role: blue-readwrite
+#      role: blue-readwrite
 #      tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     kv:
       applicationName: blue/bip-reference-person
