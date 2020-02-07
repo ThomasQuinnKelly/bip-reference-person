@@ -14,7 +14,7 @@
     host: "dev8-vault.vault.svc.dev8"
     enabled: true
     kubernetes:
-      role: blue-read
+      role: blue-dev
     kv:
       applicationName: blue/bip-reference-person
     port: 8200
