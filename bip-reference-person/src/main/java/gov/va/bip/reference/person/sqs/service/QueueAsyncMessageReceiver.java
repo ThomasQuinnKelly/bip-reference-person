@@ -1,19 +1,11 @@
 package gov.va.bip.reference.person.sqs.service;
 
-import java.io.IOException;
-import java.text.Normalizer;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.jms.*;
-
 import com.amazon.sqs.javamessaging.SQSSession;
 import com.amazon.sqs.javamessaging.message.SQSTextMessage;
-import com.amazonaws.services.sns.model.PublishRequest;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.va.bip.framework.sns.dto.SNSMessage;
 import gov.va.bip.framework.sqs.config.SqsProperties;
 import gov.va.bip.framework.sqs.services.SqsService;
@@ -22,8 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.jms.*;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class QueueAsyncMessageReceiver {

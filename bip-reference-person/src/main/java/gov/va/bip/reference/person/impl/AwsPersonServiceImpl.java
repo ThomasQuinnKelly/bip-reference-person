@@ -1,6 +1,5 @@
 package gov.va.bip.reference.person.impl;
 
-//import com.amazon.sqs.javamessaging.message.SQSTextMessage;
 import com.amazon.sqs.javamessaging.message.SQSTextMessage;
 import com.amazonaws.services.sns.model.PublishRequest;
 import gov.va.bip.framework.aws.autoconfigure.BipSnsAutoConfiguration;
@@ -21,8 +20,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import javax.jms.TextMessage;
 
 /**
  * Implementation class for the Reference Person Service. The class demonstrates
