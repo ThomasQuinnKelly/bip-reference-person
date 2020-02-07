@@ -11,6 +11,7 @@
   ingress:
     enabled: false
   vault:
+    host: "dev8-vault.vault.svc.dev8"
     enabled: true
     kubernetes:
       role: blue-read
