@@ -13,8 +13,10 @@
   vault:
     host: "dev8-vault.vault.svc.dev8"
     enabled: true
+    authentication: KUBERNETES
     kubernetes:
       role: blue-read
+      tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     kv:
       applicationName: blue/bip-reference-person
     port: 8200
