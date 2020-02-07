@@ -23,7 +23,8 @@
     scheme: http
 #    consulBackendEnabled: true
   consul:
-      enabled: true
+#      enabled: true
+      host: dev8-consul.vault.svc.dev8
       config:
         enabled: true
       discovery:
