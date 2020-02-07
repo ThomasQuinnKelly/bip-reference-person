@@ -105,11 +105,13 @@ public class QueueAsyncMessageReceiver {
 
                     mockProcessingTime();
 
+                    // a mock of a lack of ability to process for any number of reasons
                     if (messageAttributesText.contains("donotprocess")) {
                         logger.error("Message is not processed. JMS Message " + message.getJMSMessageID());
                         return;
                     }
 
+                    // acknowledge deletes this instance of the message (The message has been processed)
                     message.acknowledge();
                 }
                 logger.info("Acknowledged message. JMS Message " + message.getJMSMessageID());
@@ -157,13 +159,15 @@ public class QueueAsyncMessageReceiver {
 
                     // If the number of current tries in the message attributes is greater than or equal to the retries detailed in the sqsProperties
                     if (messageAttributes.getNumberOfRetries() >= sqsProperties.getRetries()) {
-                        // would delete/archive the message here in some way
+                        // archive the message here in some way
                         logger.info("Deleting the message from DLQ after {} attempts. JMS Message {}",
                                 sqsProperties.getRetries(), message.getJMSMessageID());
                     } else {
                         final SQSTextMessage txtMessage = moveMessageToQueue(messageAttributes);
                         sqsServices.sendMessage(txtMessage);
                     }
+
+                    // acknowledge deletes this instance of the message (The message has had an attempted processing)
                     message.acknowledge();
                 }
                 logger.info("Acknowledged message from DLQ. JMS Message " + message.getJMSMessageID());
