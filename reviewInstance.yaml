@@ -20,7 +20,7 @@
     port: 8200
     scheme: http
   consul:
-      enabled: true
+      enabled: false
       host: dev8-consul.vault.svc.dev8
       config:
         enabled: true
