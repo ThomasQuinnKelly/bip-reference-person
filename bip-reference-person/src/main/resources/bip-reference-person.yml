@@ -11,7 +11,7 @@ server:
   max-http-header-size: 65536
 ---
 spring.profiles: default
-spring.profiles.include: remote_client_sims, embedded-redis
+spring.profiles.include: remote_client_sims, embedded-redis, embedded-aws
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
@@ -596,3 +596,6 @@ bip.framework:
 # Required or else an error occurs (Spring requirement)
 cloud.aws.stack.auto: false
 cloud.aws.region.static: ${AWS_REGION:us-east-1}
+
+# Required for localstack SQS integration
+spring.sleuth.messaging.enabled: false

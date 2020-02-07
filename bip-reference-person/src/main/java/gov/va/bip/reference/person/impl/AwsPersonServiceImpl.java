@@ -1,5 +1,6 @@
 package gov.va.bip.reference.person.impl;
 
+//import com.amazon.sqs.javamessaging.message.SQSTextMessage;
 import com.amazon.sqs.javamessaging.message.SQSTextMessage;
 import com.amazonaws.services.sns.model.PublishRequest;
 import gov.va.bip.framework.aws.autoconfigure.BipSnsAutoConfiguration;
@@ -13,12 +14,15 @@ import gov.va.bip.framework.sqs.services.SqsService;
 import gov.va.bip.reference.person.AwsPersonService;
 import gov.va.bip.reference.person.api.model.v1.JmsResponse;
 import gov.va.bip.reference.person.api.model.v1.PublishResult;
+import gov.va.bip.reference.person.sqs.service.MessageAttributes;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import javax.jms.TextMessage;
 
 /**
  * Implementation class for the Reference Person Service. The class demonstrates
@@ -63,14 +67,7 @@ public class AwsPersonServiceImpl implements AwsPersonService {
 	@CircuitBreaker(name = "sendMessage")
 	public JmsResponse sendMessage(final String message) {
 
-		LOGGER.info("Info: " + message);
-		LOGGER.debug("Debug: " + message);
-		LOGGER.warn("Warn: " + message);
-		LOGGER.error("Error: " + message);
-
-		System.out.println(message);
-
-		SQSTextMessage textMessage = sqsService.createTextMessage(message);
+		SQSTextMessage textMessage = sqsService.createTextMessage(new MessageAttributes(message).toJson());
 
 		SendMessageResponse s = sqsService.sendMessage(textMessage);
 
@@ -85,17 +82,9 @@ public class AwsPersonServiceImpl implements AwsPersonService {
 	@CircuitBreaker(name = "publishMessage")
 	public PublishResult publishMessage(final String message) {
 
-		LOGGER.info("Info: " + message);
-		LOGGER.debug("Debug: " + message);
-		LOGGER.warn("Warn: " + message);
-		LOGGER.error("Error: " + message);
-
-		System.out.println(message);
-
 		PublishRequest publishRequest = new PublishRequest();
-		publishRequest.setMessage(message);
+		publishRequest.setMessage(new MessageAttributes(message).toJson());
 		publishRequest.setTopicArn(snsProperties.getTopicArn());
-
 
 		com.amazonaws.services.sns.model.PublishResult result2 = snsService.publish(publishRequest);
 
