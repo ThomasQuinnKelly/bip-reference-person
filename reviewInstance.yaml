@@ -12,8 +12,7 @@
     enabled: false
   vault:
     host: "dev8-vault.vault.svc.dev8"
-    #TODO_CMF: Making config change for testing
-    enabled: false
+    enabled: true
     kubernetes:
       role: blue-dev
     kv:
