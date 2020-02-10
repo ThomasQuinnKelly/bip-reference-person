@@ -12,8 +12,7 @@
     enabled: false
   vault:
     host: "dev8-vault.vault.svc.dev8"
-    #TODO_CMF: Making temporary config change for testing
-    enabled: false
+    enabled: true
     kubernetes:
       role: blue-dev
     kv:
@@ -21,7 +20,7 @@
     port: 8200
     scheme: http
   consul:
-      enabled: true
+      enabled: false
       host: dev8-consul.vault.svc.dev8
       config:
         enabled: true
