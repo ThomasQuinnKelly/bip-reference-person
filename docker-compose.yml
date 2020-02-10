@@ -39,7 +39,10 @@ services:
       - "./local-dev/localstack/awscli-bundle.zip:awscli-bundle.zip"
     command: >
       sh -c "unzip awscli-bundle.zip &&
-        ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws"
+        ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws &&
+        aws --endpoint-url=http://localhost:4576 sqs create-queue --queue-name sub_new_queue && 
+        aws --endpoint-url=http://localhost:4576 sqs create-queue --queue-name sub_new_queue_dead
+        "
     restart: on-failure
     ports:
       - "4567-4599:4567-4599"
