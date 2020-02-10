@@ -23,7 +23,8 @@
       enabled: false
       host: dev8-consul.vault.svc.dev8
       config:
-        enabled: true
+        #TODO_CMF: Temporary change for testing
+        enabled: false
       discovery:
         enabled: true
         register: true
