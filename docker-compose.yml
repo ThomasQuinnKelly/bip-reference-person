@@ -34,13 +34,9 @@ services:
       - localstack
 
   localstack:
-    image: localstack/localstack
-    volumes: 
-      - "./local-dev/localstack/awscli-bundle.zip:awscli-bundle.zip"
+    image: localstack/localstack:0.10.7
     command: >
-      sh -c "unzip awscli-bundle.zip &&
-        ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws &&
-        aws --endpoint-url=http://localhost:4576 sqs create-queue --queue-name sub_new_queue && 
+      sh -c "aws --endpoint-url=http://localhost:4576 sqs create-queue --queue-name sub_new_queue && 
         aws --endpoint-url=http://localhost:4576 sqs create-queue --queue-name sub_new_queue_dead
         "
     restart: on-failure
@@ -52,9 +48,6 @@ services:
     environment:
       - LOCALSTACK_SERVICES=sns,sqs
       - LOCALSTACK_PORT_WEB_UI=8888
-      - LOCALSTACK_DOCKER_HOST=unix:///var/run/docker.sock
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
 
   consul:
     image: bipdev/consul:1.4.3
