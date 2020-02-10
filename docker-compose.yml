@@ -31,6 +31,27 @@ services:
       - redis
       - vault
       - vault-config
+      - localstack
+
+  localstack:
+    image: localstack/localstack
+    volumes: 
+      - "./local-dev/localstack/awscli-bundle.zip:awscli-bundle.zip"
+    command: >
+      sh -c "unzip awscli-bundle.zip &&
+        ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws"
+    restart: on-failure
+    ports:
+      - "4567-4599:4567-4599"
+      - "8888:8888"
+    networks:
+      - bip
+    environment:
+      - LOCALSTACK_SERVICES=sns,sqs
+      - LOCALSTACK_PORT_WEB_UI=8888
+      - LOCALSTACK_DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
 
   consul:
     image: bipdev/consul:1.4.3
