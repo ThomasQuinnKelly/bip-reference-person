@@ -20,7 +20,8 @@
     port: 8200
     scheme: http
   consul:
-      enabled: false
+      #TODO_CMF: Set to false when done testing
+      enabled: true
       host: dev8-consul.vault.svc.dev8
       config:
         enabled: true
