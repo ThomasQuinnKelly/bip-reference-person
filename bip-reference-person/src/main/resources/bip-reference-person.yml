@@ -128,6 +128,7 @@ logging:
     org.springframework.security: WARN
     org.springframework.security.web: WARN
     org.springframework.web.client: WARN
+    org.springframework.web.client.RestTemplate: WARN
     org.springframework.ws: WARN
     sun.net.www.protocol: WARN
 ##################################################
@@ -219,6 +220,21 @@ bip.framework:
         - /api/v2/persons/**
       excludeUrls:
         - /api/v1/token
+################################################################################
+# Property configuration to enable or disable Open Policy Agent (OPA)
+# OPA security is disabled by default. So to enable it you have to set the 
+# environment system property "bip.framework.opa.enabled: true"
+# BIP Framework supports multiple policy rule URLs to vote for the decision that 
+# grants access if any of the "gov.va.bip.framework.security.opa.voter.OPAVoter" 
+# returns an affirmative response
+# bip.framework.security.opa.url[0]=http://localhost:8181/v1/data/http/authz/admin
+# bip.framework.security.opa.url[1]=http://localhost:8181/v1/data/http/authz/allow
+##################################################################################
+#    opa:
+#     enabled: true
+#     url: 
+#       - http://localhost:8181/v1/data/http/authz/admin
+#       - http://localhost:8181/v1/data/http/authz/allow
   swagger:
     # enable/disable the swagger/openapi UI ...
     enabled: true
