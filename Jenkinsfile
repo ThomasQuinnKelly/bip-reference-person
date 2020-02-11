@@ -1,6 +1,7 @@
 mavenGitflowPipeline {
 
-	skipUndeploy = true
+    //TODO_CMF: Testing skipUndeploy set to false
+	skipUndeploy = false
 
     //Specify to use the fortify maven plugin, instead of the Ant task to execute the fortify scan
     useFortifyMavenPlugin = true
