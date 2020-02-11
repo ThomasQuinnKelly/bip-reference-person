@@ -554,48 +554,57 @@ bip.framework.localstack:
       port: 4576
 ---
 ### AWS Service settings
-#aws:
-#  sns:
-#    topic: sub_new_topic
-#  sqs:
-#    queue: http://localhost:4576/queue/sub_new_queue
-
-
-## S3 and SQS Configurations for Ascent
+### SQS and SNS Configurations for Bip Reference Person
 bip.framework:
   aws:
     sqs:
       enabled: true
-      region: ${AWS_SQS_REGION:us-east-1}
-      endpoint: ${AWS_SQS_ENDPOINT:http://localhost:4576/queue/sub_new_queue}
-      dlqEndpoint: ${AWS_SQS_DLQ_ENDPOINT:http://localhost:4576/queue/sub_new_queue_dead}
-      dlqRetriesCount: 2
-      numberOfMessagesToPrefetch: ${AMAZON_SQS_NUMBER_OF_MESSAGES_TO_PREFETCH:5}
-      retries: 2
-      prefetch: 2
-      queueType: false
-      contentBasedDuplication: false
-      delay: 2
-      maxMessageSize: "40"
-      messageRetentionPeriod: "40"
-      waitTime: 2
-      visibilityTimeout: 2
+      #region: us-east-1
+
+      #true = Exactly-Once Processing (FIFO queue), false = At-Least-Once
+      #queueType: false
+
+      endpoint: http://localhost:4576/queue/sub_new_queue
+      #delay: 0
+      #maxMessageSize: "262144"
+      #messageRetentionPeriod: "345600"
+      #waitTime: 0
+      #visibilityTimeout: 30
+      #contentBasedDuplication: false
+
+      dlqEnabled: true
+      dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
+      #maxReceiveCount: 1
+      #dlqdelay: 0
+      #dlqmaxMessageSize: "262144"
+      #dlqmessageRetentionPeriod: "345600"
+      #dlqwaitTime: 0
+      #dlqvisibilityTimeout: 30
+      #dlqcontentBasedDuplication: false
+
+      #numberOfMessagesToPrefetch: 0
+
+      retries: 1
+
+      #SQS key and id needs to be changed for upper environments
+      #access_key_id: ${AWS_ACCESS_KEY}
+      #secret_access_key: ${AWS_SECRET_ACCESS_KEY}
     sns:
       enabled: true
-      region: ${AWS_SNS_REGION:us-east-1}
-      endpoint: ${AWS_SNS_ENDPOINT:http://localhost:4575/topic/test_my_topic}
+      region: us-east-1
+      endpoint: http://localhost:4575/topic/test_my_topic
       topicarn: arn:aws:sns:us-east-1:000000000000:test_my_topic
       name: test_my_topic
       message: "SNS Test Message"
       type: String
 
-# key and id needs to be changed for dev env
-#      access_key_id: ${AWS_ACCESS_KEY}
-#      secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+      #SNS key and id needs to be changed for upper environments
+      #access_key_id: ${AWS_ACCESS_KEY}
+      #secret_access_key: ${AWS_SECRET_ACCESS_KEY}
 
 # Required or else an error occurs (Spring requirement)
 cloud.aws.stack.auto: false
-cloud.aws.region.static: ${AWS_REGION:us-east-1}
+cloud.aws.region.static: us-east-1
 
 # Required for localstack SQS integration
 spring.sleuth.messaging.enabled: false

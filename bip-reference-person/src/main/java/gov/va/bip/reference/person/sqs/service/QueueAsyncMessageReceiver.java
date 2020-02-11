@@ -103,8 +103,6 @@ public class QueueAsyncMessageReceiver {
                     findJMSElapsedTime(messageAttributes.getCreateTimestamp());
                     final String messageAttributesText = messageAttributes.getMessage();
 
-                    mockProcessingTime();
-
                     // a mock of a lack of ability to process for any number of reasons
                     if (messageAttributesText.contains("donotprocess")) {
                         logger.error("Message is not processed. JMS Message " + message.getJMSMessageID());
@@ -155,8 +153,6 @@ public class QueueAsyncMessageReceiver {
                         return;
                     }
 
-                    mockProcessingTime();
-
                     // If the number of current tries in the message attributes is greater than or equal to the retries detailed in the sqsProperties
                     if (messageAttributes.getNumberOfRetries() >= sqsProperties.getRetries()) {
                         // archive the message here in some way
@@ -176,16 +172,6 @@ public class QueueAsyncMessageReceiver {
                 logger.error("Error occurred while processing message. Error: {}", e);
             }
         }
-    }
-
-    private void mockProcessingTime() {
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-
-        }
-
     }
 
     public MessageAttributes getMessageAttributesFromJson(String message) {
