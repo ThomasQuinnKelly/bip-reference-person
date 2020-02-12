@@ -561,29 +561,27 @@ bip.framework:
       enabled: true
       #region: us-east-1
 
-      #true = Exactly-Once Processing (FIFO queue), false = At-Least-Once
-      #queueType: false
-
       endpoint: http://localhost:4576/queue/sub_new_queue
       #delay: 0
       #maxMessageSize: "262144"
       #messageRetentionPeriod: "345600"
       #waitTime: 0
       #visibilityTimeout: 30
-      #contentBasedDuplication: false
 
       dlqEnabled: true
-      dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
+      dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead.fifo
       #maxReceiveCount: 1
       #dlqdelay: 0
       #dlqmaxMessageSize: "262144"
       #dlqmessageRetentionPeriod: "345600"
       #dlqwaitTime: 0
       #dlqvisibilityTimeout: 30
-      #dlqcontentBasedDuplication: false
 
+      #For SQS Configuration - Messaging Provider Configuration
       #numberOfMessagesToPrefetch: 0
 
+      #For Message Listener Setup in QueueAsyncMessageReceiver
+      #Defines the maximum number of times the message can enter the DLQ
       retries: 1
 
       #SQS key and id needs to be changed for upper environments
