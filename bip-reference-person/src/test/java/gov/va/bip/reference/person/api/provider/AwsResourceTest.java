@@ -10,17 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -68,8 +62,7 @@ public class AwsResourceTest {
         JmsResponse returnedJmsResponse = jmsResponseEntity.getBody();
 
         assertNotNull(returnedJmsResponse);
-        assertEquals("ID:",
-                returnedJmsResponse.getJmsId().substring(0,3));
+        assertEquals("ID:", returnedJmsResponse.getJmsId().substring(0,3));
 
     }
 
@@ -79,6 +72,15 @@ public class AwsResourceTest {
     public void testPublishMessage() throws IOException {
         ResponseEntity<PublishResult> publishResultResponseEntity = restTemplate.exchange("/api/v1/sns/publishMessage",
                 HttpMethod.POST, postRequestEntity, PublishResult.class);
+
+        int statusCode = publishResultResponseEntity.getStatusCodeValue();
+
+        assertEquals(200, statusCode);
+
+        PublishResult returnedPublishResult = publishResultResponseEntity.getBody();
+
+        assertNotNull(returnedPublishResult);
+        assertNotNull(returnedPublishResult.getMessageId());
 
     }
 
