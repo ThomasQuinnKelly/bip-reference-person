@@ -47,7 +47,7 @@ public class QueueAsyncMessageReceiver {
     }
 
     @PostConstruct
-    public void init() {
+    public void init() throws JMSException {
         startJmsConnection();
         logger.info("init() called. Started JMS Connection");
     }
@@ -63,29 +63,97 @@ public class QueueAsyncMessageReceiver {
     /**
      * Creates a SQS Connection and listeners to the main and dead letter queues.
      */
-    private void startJmsConnection() {
-        try {
-            connection = connectionFactory.createConnection();
+    private void startJmsConnection() throws JMSException {
 
+        connection = connectionFactory.createConnection();
+
+        // try with resources
+        try (
             // Create the session
-            final Session session = connection.createSession(false, SQSSession.UNORDERED_ACKNOWLEDGE);
+            Session session = connection.createSession(false, SQSSession.UNORDERED_ACKNOWLEDGE);
 
             // Create the Main Queue
-            final MessageConsumer consumer = session.createConsumer(session.createQueue(sqsProperties.getQueueName()));
-            final QReceiverCallback callback = new QReceiverCallback();
-            consumer.setMessageListener(callback);
+            MessageConsumer consumer = session.createConsumer(session.createQueue(sqsProperties.getQueueName()));
 
             // Create the Dead Letter Queue
-            final MessageConsumer dlqconsumer = session.createConsumer(session.createQueue(sqsProperties.getDLQQueueName()));
-            final DLQReceiverCallback dlqcallback = new DLQReceiverCallback();
+            MessageConsumer dlqconsumer = session.createConsumer(session.createQueue(sqsProperties.getDLQQueueName()));)
+        {
+
+
+            //set consumer listener
+            QReceiverCallback callback = new QReceiverCallback();
+            consumer.setMessageListener(callback);
+
+            //set dlq consumer listener
+            DLQReceiverCallback dlqcallback = new DLQReceiverCallback();
             dlqconsumer.setMessageListener(dlqcallback);
-
-            // No messages are processed until this is called
-            connection.start();
-
         } catch (final JMSException e) {
             logger.error("Error occurred while starting JMS connection and listeners. Error: {}", e);
         }
+
+//
+//
+//        //https://dzone.com/articles/carefully-specify-multiple-resources-in-single-try
+//        try {
+//            connection = connectionFactory.createConnection();
+//
+//            // Create the session
+//            session = connection.createSession(false, SQSSession.UNORDERED_ACKNOWLEDGE);
+//        } catch (final JMSException e) {
+//            logger.error("Error occurred while starting JMS connection and session. Error: {}", e);
+//        } finally {
+//
+//            if (session != null) {
+//                session.close();
+//            }
+//
+//        }
+//
+//        try {
+//            // Create the Main Queue
+//            consumer = session.createConsumer(session.createQueue(sqsProperties.getQueueName()));
+//            QReceiverCallback callback = new QReceiverCallback();
+//            consumer.setMessageListener(callback);
+//        } catch (final JMSException e) {
+//            logger.error("Error occurred while starting JMS connection and listeners. Error: {}", e);
+//        } finally {
+//
+//            if (consumer != null) {
+//                consumer.close();
+//            }
+//
+//            if (session != null) {
+//                session.close();
+//            }
+//        }
+//
+//        try {
+//            // Create the Dead Letter Queue
+//            dlqconsumer = session.createConsumer(session.createQueue(sqsProperties.getDLQQueueName()));
+//            DLQReceiverCallback dlqcallback = new DLQReceiverCallback();
+//            dlqconsumer.setMessageListener(dlqcallback);
+//
+//
+//        } catch (final JMSException e) {
+//            logger.error("Error occurred while starting JMS connection and listeners. Error: {}", e);
+//        } finally {
+//
+//            if (dlqconsumer != null) {
+//                dlqconsumer.close();
+//            }
+//
+//            if (consumer != null) {
+//                consumer.close();
+//            }
+//
+//            if (session != null) {
+//                session.close();
+//            }
+//
+//        }
+
+        // No messages are processed until this is called
+        connection.start();
     }
 
     /**

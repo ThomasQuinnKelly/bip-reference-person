@@ -26,9 +26,6 @@ import static org.junit.Assert.assertNotNull;
 public class AwsResourceTest {
 
     @Autowired
-    RestTemplateBuilder restTemplateBuilder;
-
-    @Autowired
     private TestRestTemplate restTemplate;
 
     String token;

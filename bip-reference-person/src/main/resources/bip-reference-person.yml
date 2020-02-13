@@ -569,7 +569,7 @@ bip.framework:
       #visibilityTimeout: 30
 
       dlqEnabled: true
-      dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead.fifo
+      dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
       #maxReceiveCount: 1
       #dlqdelay: 0
       #dlqmaxMessageSize: "262144"
