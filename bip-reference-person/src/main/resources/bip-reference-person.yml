@@ -229,12 +229,17 @@ bip.framework:
 # returns an affirmative response
 # bip.framework.security.opa.url[0]=http://localhost:8181/v1/data/http/authz/admin
 # bip.framework.security.opa.url[1]=http://localhost:8181/v1/data/http/authz/allow
+# Boolean that indicates if all or any voters are required to abstain or grant 
+# access, default value is false. Value as false sets AccessDecisionManager with 
+# UnanimousBased implementation and true with AffirmativeBased implementation.
+# bip.framework.security.opa.allVotersAbstainGrantAccess=false
 ##################################################################################
 #    opa:
 #     enabled: true
-#     url: 
-#       - http://localhost:8181/v1/data/http/authz/admin
-#       - http://localhost:8181/v1/data/http/authz/allow
+#     urls: 
+#       - http://localhost:8181/v1/data/bip/reference/person/http/authz/admin
+#       - http://localhost:8181/v1/data/bip/reference/person/http/authz/allow
+#     allVotersAbstainGrantAccess: false
   swagger:
     # enable/disable the swagger/openapi UI ...
     enabled: true

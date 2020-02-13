@@ -23,7 +23,7 @@ services:
       - spring.cloud.vault.consul.enabled=true
       - bip.framework.security.jwt.enabled=true
       - bip.framework.security.opa.enabled=true
-      - bip.framework.security.opa.url=http://opa:8181/v1/data/http/authz/admin,http://opa:8181/v1/data/http/authz/allow
+      - bip.framework.security.opa.url=http://opa:8181/v1/data/bip/reference/person/http/authz/admin,http://opa:8181/v1/data/bip/reference/person/http/authz/allow
       - spring.cloud.vault.kv.application-name=blue/bip-reference-person,blue/bip-reference-person/example-service
     ports:
       - "8080:8080"
