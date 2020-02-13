@@ -29,9 +29,11 @@ BIP security configuration will be updated to set the AccessDecisionManager that
 
 BIP framework will provide properties to support OPA configurations. Recommended properties are listed below.
 
-  **bip.framework.security.opa.enabled** Boolean flag to enable or disable OPA, default set to false
-  **bip.framework.security.opa.urls** Multiple Open Policy Agent URLs to get the policy decision result, default empty array
-  **bip.framework.security.opa.allVotersAbstainGrantAccess** Boolean that indicates if all or any voters are required to abstain or grant access, default value is false. Value as false sets AccessDecisionManager with UnanimousBased implementation and true with AffirmativeBased impl. 
+  **bip.framework.security.opa.enabled**: Boolean flag to enable or disable OPA, default set to false
+  
+  **bip.framework.security.opa.urls**: Multiple Open Policy Agent URLs to get the policy decision result, default empty array
+  
+  **bip.framework.security.opa.allVotersAbstainGrantAccess**: Boolean that indicates if all or any voters are required to abstain or grant access, default value is false. Value as false sets AccessDecisionManager with UnanimousBased implementation and true with AffirmativeBased impl. 
 
 ### Running OPA
 
