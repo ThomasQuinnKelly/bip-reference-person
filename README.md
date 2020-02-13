@@ -128,7 +128,7 @@ Add the repository definition to the `pom.xml` file in your reactor (root) proje
 	<repository>
 		<id>nexus3</id>
 		<name>BIP Nexus Repository</name>
-		<url>https://nexus.dev.bip.va.gov/repository/maven-public</url>
+		<url>https://nexus.dev8.bip.va.gov/repository/maven-public</url>
 	</repository>
 </repositories>
 ```

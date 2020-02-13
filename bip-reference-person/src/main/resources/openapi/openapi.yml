@@ -512,6 +512,10 @@ components:
       title: Person
       description: Model that identifies a single individual used in the security context
       properties:
+        applicationID:
+          type: string
+          example: ShareUI
+          description: The application taking the last action on the record
         appToken:
           type: string
           example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9
@@ -562,10 +566,18 @@ components:
           type: string
           example: Ms
           description: The prefix for the person's full name
+        stationID:
+          type: string
+          example: 310
+          description: The number representing the Regional Office of the person taking the last action on the record
         suffix:
           type: string
           example: S
           description: The suffix for the person's full name
+        userID:
+          type: string
+          example: vhaislXXXXX
+          description: The name associated with the person taking the last action on the record
     ProviderResponse: 
       type: object
       properties:
