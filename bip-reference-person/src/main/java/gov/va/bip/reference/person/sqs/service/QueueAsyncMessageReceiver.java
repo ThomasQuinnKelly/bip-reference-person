@@ -28,7 +28,7 @@ public class QueueAsyncMessageReceiver {
     @Autowired
     ObjectMapper mapper;
 
-    private static final String MESSAGE_TIME_ELAPSED = "Message time elapsed: ";
+    private static final String MESSAGE_TIME_ELAPSED = "Message time elapsed: %1$s";
 
     private Connection connection;
 
@@ -97,11 +97,11 @@ public class QueueAsyncMessageReceiver {
     /**
      * Listener for the Main Queue
      */
-    private class QReceiverCallback implements MessageListener {
+    public class QReceiverCallback implements MessageListener {
         @Override
         public void onMessage(final Message message) {
             try {
-                logger.info("Consumer message processing started for Normal Queue. JMS Message " + message.getJMSMessageID());
+                if(logger.isInfoEnabled()) logger.info(String.format("Consumer message processing started for Normal Queue. JMS Message %1$s", message.getJMSMessageID()));
                 if (message instanceof TextMessage) {
                     final TextMessage messageText = (TextMessage) message;
 
@@ -111,14 +111,14 @@ public class QueueAsyncMessageReceiver {
 
                     // a mock of a lack of ability to process for any number of reasons
                     if (messageAttributesText.contains("donotprocess")) {
-                        logger.error("Message is not processed. JMS Message " + message.getJMSMessageID());
+                        if(logger.isErrorEnabled()) logger.error(String.format("Message is not processed. JMS Message %1$s", message.getJMSMessageID()));
                         return;
                     }
 
                     // acknowledge deletes this instance of the message (The message has been processed)
                     message.acknowledge();
                 }
-                logger.info("Acknowledged message. JMS Message " + message.getJMSMessageID());
+                if(logger.isInfoEnabled()) logger.info(String.format("Acknowledged message. JMS Message %1$s", message.getJMSMessageID()));
             } catch (final JMSException e) {
                 logger.error("Error occurred while processing message. Error: {}", e);
             } catch (final Exception e) {
@@ -130,15 +130,28 @@ public class QueueAsyncMessageReceiver {
         /**
          * @param createTimeStamp
          */
-        private long findJMSElapsedTime(final long createTimeStamp) {
+        public long findJMSElapsedTime(final long createTimeStamp) {
             final long currentTime = System.currentTimeMillis();
-            final long differenceTime = currentTime - createTimeStamp;
-            logger.info(MESSAGE_TIME_ELAPSED + differenceTime + " ms");
-            logger.info(MESSAGE_TIME_ELAPSED + TimeUnit.MILLISECONDS.toSeconds(differenceTime) + " secs");
-            logger.info(MESSAGE_TIME_ELAPSED + TimeUnit.MILLISECONDS.toMinutes(differenceTime) + " mins");
-            logger.info(MESSAGE_TIME_ELAPSED + TimeUnit.MILLISECONDS.toHours(differenceTime) + " hrs");
-            return differenceTime;
+            long differenceTime = currentTime - createTimeStamp;
+
+            long resultDifferenceTime = differenceTime;
+
+            String timeMessageElapsed = TimeUnit.MILLISECONDS.toHours(differenceTime) + " hrs, ";
+            differenceTime = differenceTime - TimeUnit.MILLISECONDS.toHours(differenceTime) * 3600000;
+
+            timeMessageElapsed += TimeUnit.MILLISECONDS.toMinutes(differenceTime) + " mins, ";
+            differenceTime = differenceTime - TimeUnit.MILLISECONDS.toMinutes(differenceTime) * 60000;
+
+            timeMessageElapsed += TimeUnit.MILLISECONDS.toSeconds(differenceTime) + " secs, and ";
+            differenceTime = differenceTime - TimeUnit.MILLISECONDS.toSeconds(differenceTime) * 1000;
+
+            timeMessageElapsed += differenceTime + " ms.";
+
+            if(logger.isInfoEnabled()) logger.info(String.format(MESSAGE_TIME_ELAPSED, timeMessageElapsed));
+
+            return resultDifferenceTime;
         }
+
     }
 
     /**
@@ -149,8 +162,9 @@ public class QueueAsyncMessageReceiver {
         @Override
         public void onMessage(final Message message) {
             try {
-                logger.info(
-                        "Consumer message processing started for DLQ. JMS Message " + message.getJMSMessageID());
+                if(logger.isInfoEnabled()) logger.info(String.format(
+                        "Consumer message processing started for DLQ. JMS Message %1$s", message.getJMSMessageID()));
+
                 if (message instanceof SQSTextMessage) {
                     final SQSTextMessage messageText = (SQSTextMessage) message;
                     final MessageAttributes messageAttributes = getMessageAttributesFromJson(messageText.getText());
@@ -162,7 +176,7 @@ public class QueueAsyncMessageReceiver {
                     // If the number of current tries in the message attributes is greater than or equal to the retries detailed in the sqsProperties
                     if (messageAttributes.getNumberOfRetries() >= sqsProperties.getRetries()) {
                         // archive the message here in some way
-                        logger.info("Deleting the message from DLQ after {} attempts. JMS Message {}",
+                        if(logger.isInfoEnabled()) logger.info("Deleting the message from DLQ after {} attempts. JMS Message {}",
                                 sqsProperties.getRetries(), message.getJMSMessageID());
                     } else {
                         final SQSTextMessage txtMessage = moveMessageToQueue(messageAttributes);
@@ -172,7 +186,7 @@ public class QueueAsyncMessageReceiver {
                     // acknowledge deletes this instance of the message (The message has had an attempted processing)
                     message.acknowledge();
                 }
-                logger.info("Acknowledged message from DLQ. JMS Message " + message.getJMSMessageID());
+                if(logger.isInfoEnabled()) logger.info(String.format("Acknowledged message from DLQ. JMS Message %1$s", message.getJMSMessageID()));
 
             } catch (final JMSException e) {
                 logger.error("Error occurred while processing message. Error: {}", e);

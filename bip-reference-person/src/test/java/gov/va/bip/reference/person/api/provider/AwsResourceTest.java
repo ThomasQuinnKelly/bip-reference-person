@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -27,8 +26,6 @@ public class AwsResourceTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
-
-    String token;
 
     HttpHeaders httpPostMultiPartHeaders;
 
@@ -63,9 +60,7 @@ public class AwsResourceTest {
 
     }
 
-
     @Test
-    @Ignore
     public void testPublishMessage() throws IOException {
         ResponseEntity<PublishResult> publishResultResponseEntity = restTemplate.exchange("/api/v1/sns/publishMessage",
                 HttpMethod.POST, postRequestEntity, PublishResult.class);

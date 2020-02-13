@@ -32,7 +32,6 @@ import org.springframework.stereotype.Service;
 @Qualifier("AWS_PERSON_SERVICE_IMPL")
 @RefreshScope
 public class AwsPersonServiceImpl implements AwsPersonService {
-	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(AwsPersonServiceImpl.class);
 
 	@Autowired
 	BipSqsAutoConfiguration bipSqsAutoConfiguration;
