@@ -78,8 +78,6 @@ public class QueueAsyncMessageReceiver {
             // Create the Dead Letter Queue
             MessageConsumer dlqconsumer = session.createConsumer(session.createQueue(sqsProperties.getDLQQueueName()));)
         {
-
-
             //set consumer listener
             QReceiverCallback callback = new QReceiverCallback();
             consumer.setMessageListener(callback);
@@ -87,70 +85,10 @@ public class QueueAsyncMessageReceiver {
             //set dlq consumer listener
             DLQReceiverCallback dlqcallback = new DLQReceiverCallback();
             dlqconsumer.setMessageListener(dlqcallback);
+
         } catch (final JMSException e) {
             logger.error("Error occurred while starting JMS connection and listeners. Error: {}", e);
         }
-
-//
-//
-//        //https://dzone.com/articles/carefully-specify-multiple-resources-in-single-try
-//        try {
-//            connection = connectionFactory.createConnection();
-//
-//            // Create the session
-//            session = connection.createSession(false, SQSSession.UNORDERED_ACKNOWLEDGE);
-//        } catch (final JMSException e) {
-//            logger.error("Error occurred while starting JMS connection and session. Error: {}", e);
-//        } finally {
-//
-//            if (session != null) {
-//                session.close();
-//            }
-//
-//        }
-//
-//        try {
-//            // Create the Main Queue
-//            consumer = session.createConsumer(session.createQueue(sqsProperties.getQueueName()));
-//            QReceiverCallback callback = new QReceiverCallback();
-//            consumer.setMessageListener(callback);
-//        } catch (final JMSException e) {
-//            logger.error("Error occurred while starting JMS connection and listeners. Error: {}", e);
-//        } finally {
-//
-//            if (consumer != null) {
-//                consumer.close();
-//            }
-//
-//            if (session != null) {
-//                session.close();
-//            }
-//        }
-//
-//        try {
-//            // Create the Dead Letter Queue
-//            dlqconsumer = session.createConsumer(session.createQueue(sqsProperties.getDLQQueueName()));
-//            DLQReceiverCallback dlqcallback = new DLQReceiverCallback();
-//            dlqconsumer.setMessageListener(dlqcallback);
-//
-//
-//        } catch (final JMSException e) {
-//            logger.error("Error occurred while starting JMS connection and listeners. Error: {}", e);
-//        } finally {
-//
-//            if (dlqconsumer != null) {
-//                dlqconsumer.close();
-//            }
-//
-//            if (consumer != null) {
-//                consumer.close();
-//            }
-//
-//            if (session != null) {
-//                session.close();
-//            }
-//
-//        }
 
         // No messages are processed until this is called
         connection.start();
