@@ -1,17 +1,15 @@
 mavenGitflowPipeline {
 
-    //TODO_CMF: Testing skipUndeploy set to false
 	skipUndeploy = false
 
     //Specify to use the fortify maven plugin, instead of the Ant task to execute the fortify scan
     useFortifyMavenPlugin = true
 
-    //TODO_CMF: Remove skips when done testing
-    skipSonar = true
-    skipFortify = true
-    skipMavenDeploy = true
-    skipFunctionalTests = true
-    skipPerformanceTests = true
+    skipSonar = false
+    skipFortify = false
+    skipMavenDeploy = false
+    skipFunctionalTests = false
+    skipPerformanceTests = false
 
     /*************************************************************************
     * Docker Build Configuration
