@@ -11,7 +11,8 @@ server:
   max-http-header-size: 65536
 ---
 spring.profiles: default
-spring.profiles.include: remote_client_sims, embedded-redis, embedded-aws
+spring.profiles.include: remote_client_sims, embedded-redis
+#embedded-aws
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
@@ -544,13 +545,13 @@ spring.liquibase:
 ---
 ### Localstack
 bip.framework.localstack:
-  enabled: true
+  enabled: false
   services:
     sns:
-      enabled: true
+      enabled: false
       port: 4575
     sqs:
-      enabled: true
+      enabled: false
       port: 4576
 ---
 ### AWS Service settings
@@ -558,7 +559,7 @@ bip.framework.localstack:
 bip.framework:
   aws:
     sqs:
-      enabled: true
+      enabled: false
       #region: us-east-1
 
       endpoint: http://localhost:4576/queue/sub_new_queue
@@ -588,7 +589,7 @@ bip.framework:
       #access_key_id: ${AWS_ACCESS_KEY}
       #secret_access_key: ${AWS_SECRET_ACCESS_KEY}
     sns:
-      enabled: true
+      enabled: false
       region: us-east-1
       endpoint: http://localhost:4575/topic/test_my_topic
       topicarn: arn:aws:sns:us-east-1:000000000000:test_my_topic
