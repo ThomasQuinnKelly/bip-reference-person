@@ -24,17 +24,15 @@ public class AwsResource implements ReferencePersonAwsApi, SwaggerResponseMessag
     @Override
     public ResponseEntity<JmsResponse> sendMessage(@Valid String body) {
 
-        ResponseEntity<JmsResponse> jmsId = new ResponseEntity<>(refAwsPersonService.sendMessage(body), HttpStatus.OK);
+        return new ResponseEntity<>(refAwsPersonService.sendMessage(body), HttpStatus.OK);
 
-        return jmsId;
     }
 
     @Override
     public ResponseEntity<PublishResult> publishMessage(@Valid String body) {
 
-        ResponseEntity<PublishResult> messageId = new ResponseEntity<>(refAwsPersonService.publishMessage(body), HttpStatus.OK);
+        return new ResponseEntity<>(refAwsPersonService.publishMessage(body), HttpStatus.OK);
 
-        return messageId;
     }
 
 }

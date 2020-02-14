@@ -31,6 +31,9 @@ public class QueueAsyncMessageReceiver {
     private static final String MESSAGE_TIME_ELAPSED = "Message time elapsed: %1$s";
 
     private Connection connection;
+    private Session session;
+    private MessageConsumer consumer;
+    private MessageConsumer dlqconsumer;
 
     @Autowired
     ConnectionFactory connectionFactory;
@@ -39,7 +42,6 @@ public class QueueAsyncMessageReceiver {
     SqsService sqsServices;
 
     private SqsProperties sqsProperties;
-
 
     @Autowired
     public void setApp(final SqsProperties sqsProperties) {
@@ -54,6 +56,24 @@ public class QueueAsyncMessageReceiver {
 
     @PreDestroy
     public void cleanUp() throws JMSException {
+
+        if (consumer != null) {
+            consumer.close();
+            logger.info("Queue consumer closed");
+        }
+
+
+        if (dlqconsumer != null) {
+            dlqconsumer.close();
+            logger.info("DLQ Queue consumer closed");
+        }
+
+
+        if (session != null) {
+            session.close();
+            logger.info("Session closed");
+        }
+
         if (connection != null) {
             connection.close();
             logger.info("JMS connection closed");
@@ -67,17 +87,17 @@ public class QueueAsyncMessageReceiver {
 
         connection = connectionFactory.createConnection();
 
-        // try with resources
-        try (
+        try
+        {
             // Create the session
-            Session session = connection.createSession(false, SQSSession.UNORDERED_ACKNOWLEDGE);
+            session = connection.createSession(false, SQSSession.UNORDERED_ACKNOWLEDGE);
 
             // Create the Main Queue
-            MessageConsumer consumer = session.createConsumer(session.createQueue(sqsProperties.getQueueName()));
+            consumer = session.createConsumer(session.createQueue(sqsProperties.getQueueName()));
 
             // Create the Dead Letter Queue
-            MessageConsumer dlqconsumer = session.createConsumer(session.createQueue(sqsProperties.getDLQQueueName()));)
-        {
+            dlqconsumer = session.createConsumer(session.createQueue(sqsProperties.getDLQQueueName()));
+
             //set consumer listener
             QReceiverCallback callback = new QReceiverCallback();
             consumer.setMessageListener(callback);
@@ -123,7 +143,6 @@ public class QueueAsyncMessageReceiver {
                 logger.error("Error occurred while processing message. Error: {}", e);
             } catch (final Exception e) {
                 logger.error("Error occurred while copying the object. Error: {}", e);
-                return;
             }
         }
 
@@ -192,6 +211,18 @@ public class QueueAsyncMessageReceiver {
                 logger.error("Error occurred while processing message. Error: {}", e);
             }
         }
+
+        private SQSTextMessage moveMessageToQueue(final MessageAttributes messageAttributes) {
+            // move the message to normal queue for processing
+            messageAttributes.setNumberOfRetries(messageAttributes.getNumberOfRetries() + 1);
+            SQSTextMessage txtMessage = null;
+            try {
+                txtMessage = sqsServices.createTextMessage(mapper.writeValueAsString(messageAttributes));
+            } catch (final JsonProcessingException e) {
+                logger.error("Error occurred while creating text message. Error: {}", e);
+            }
+            return txtMessage;
+        }
     }
 
     public MessageAttributes getMessageAttributesFromJson(String message) {
@@ -218,16 +249,6 @@ public class QueueAsyncMessageReceiver {
         return null;
     }
 
-    private SQSTextMessage moveMessageToQueue(final MessageAttributes messageAttributes) {
-        // move the message to normal queue for processing
-        messageAttributes.setNumberOfRetries(messageAttributes.getNumberOfRetries() + 1);
-        SQSTextMessage txtMessage = null;
-        try {
-            txtMessage = sqsServices.createTextMessage(mapper.writeValueAsString(messageAttributes));
-        } catch (final JsonProcessingException e) {
-            logger.error("Error occurred while creating text message. Error: {}", e);
-        }
-        return txtMessage;
-    }
+
 
 }

@@ -4,8 +4,6 @@ import com.amazon.sqs.javamessaging.message.SQSTextMessage;
 import com.amazonaws.services.sns.model.PublishRequest;
 import gov.va.bip.framework.aws.autoconfigure.BipSnsAutoConfiguration;
 import gov.va.bip.framework.aws.autoconfigure.BipSqsAutoConfiguration;
-import gov.va.bip.framework.log.BipLogger;
-import gov.va.bip.framework.log.BipLoggerFactory;
 import gov.va.bip.framework.sns.config.SnsProperties;
 import gov.va.bip.framework.sns.services.SnsService;
 import gov.va.bip.framework.sqs.dto.SendMessageResponse;
