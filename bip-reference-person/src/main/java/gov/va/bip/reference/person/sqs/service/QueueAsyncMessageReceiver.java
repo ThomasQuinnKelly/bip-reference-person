@@ -122,7 +122,7 @@ public class QueueAsyncMessageReceiver {
         @Override
         public void onMessage(final Message message) {
             try {
-                if(logger.isInfoEnabled()) logger.info("Consumer message processing started in Queue. JMS Message {}", message.getJMSMessageID());
+                if(logger.isInfoEnabled()) logger.info("Consumer message processing started in Queue.");
                 if (message instanceof TextMessage) {
                     final TextMessage messageText = (TextMessage) message;
 
@@ -132,14 +132,14 @@ public class QueueAsyncMessageReceiver {
 
                     // a mock of a lack of ability to process for any number of reasons
                     if (messageAttributesText.contains("donotprocess")) {
-                        if(logger.isErrorEnabled()) logger.error("Message is not processed in Queue. JMS Message {}", message.getJMSMessageID());
+                        if(logger.isErrorEnabled()) logger.error("Message is not processed in Queue.");
                         return;
                     }
 
                     // acknowledge deletes this instance of the message (The message has been processed)
                     message.acknowledge();
                 }
-                if(logger.isInfoEnabled()) logger.info("Acknowledged message in Queue. JMS Message {}", message.getJMSMessageID());
+                if(logger.isInfoEnabled()) logger.info("Acknowledged message in Queue.");
             } catch (final JMSException e) {
                 logger.error("Error occurred while processing message. Error: {}", e);
             } catch (final Exception e) {
@@ -183,7 +183,7 @@ public class QueueAsyncMessageReceiver {
         public void onMessage(final Message message) {
             try {
                 if(logger.isInfoEnabled()) logger.info(
-                        "Consumer message processing started in DLQ. JMS Message {}", message.getJMSMessageID());
+                        "Consumer message processing started in DLQ.");
 
                 if (message instanceof SQSTextMessage) {
                     final SQSTextMessage messageText = (SQSTextMessage) message;
@@ -206,7 +206,7 @@ public class QueueAsyncMessageReceiver {
                     // acknowledge deletes this instance of the message (The message has had an attempted processing)
                     message.acknowledge();
                 }
-                if(logger.isInfoEnabled()) logger.info("Acknowledged message in DLQ. JMS Message {}", message.getJMSMessageID());
+                if(logger.isInfoEnabled()) logger.info("Acknowledged message in DLQ.");
 
             } catch (final JMSException e) {
                 logger.error("Error occurred while processing message. Error: {}", e);
