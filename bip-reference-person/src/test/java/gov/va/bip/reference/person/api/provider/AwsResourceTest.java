@@ -1,5 +1,6 @@
 package gov.va.bip.reference.person.api.provider;
 
+import gov.va.bip.framework.config.BipCommonSpringProfiles;
 import gov.va.bip.reference.person.api.model.v1.JmsResponse;
 import gov.va.bip.reference.person.api.model.v1.PublishResult;
 import org.junit.Before;
@@ -9,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.env.Environment;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -23,6 +25,9 @@ import static org.junit.Assert.assertNotNull;
         "spring.cloud.bus.enabled=false", "spring.cloud.discovery.enabled=false", "spring.cloud.consul.enabled=false",
         "spring.cloud.config.discovery.enabled=false", "spring.cloud.vault.enabled=false" })
 public class AwsResourceTest {
+
+    @Autowired
+    Environment environment;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -51,12 +56,16 @@ public class AwsResourceTest {
 
         int statusCode = jmsResponseEntity.getStatusCodeValue();
 
-        assertEquals(200, statusCode);
+        if (profileCheck()) {
+            assertEquals(200, statusCode);
 
-        JmsResponse returnedJmsResponse = jmsResponseEntity.getBody();
+            JmsResponse returnedJmsResponse = jmsResponseEntity.getBody();
 
-        assertNotNull(returnedJmsResponse);
-        assertEquals("ID:", returnedJmsResponse.getJmsId().substring(0,3));
+            assertNotNull(returnedJmsResponse);
+            assertEquals("ID:", returnedJmsResponse.getJmsId().substring(0,3));
+        } else {
+            assertEquals(500, statusCode);
+        }
 
     }
 
@@ -67,12 +76,28 @@ public class AwsResourceTest {
 
         int statusCode = publishResultResponseEntity.getStatusCodeValue();
 
-        assertEquals(200, statusCode);
+        if (profileCheck()) {
+            assertEquals(200, statusCode);
 
-        PublishResult returnedPublishResult = publishResultResponseEntity.getBody();
+            PublishResult returnedPublishResult = publishResultResponseEntity.getBody();
 
-        assertNotNull(returnedPublishResult);
-        assertNotNull(returnedPublishResult.getMessageId());
+            assertNotNull(returnedPublishResult);
+            assertNotNull(returnedPublishResult.getMessageId());
+        } else {
+            assertEquals(500, statusCode);
+        }
+
+    }
+
+    public boolean profileCheck() {
+        boolean isEmbeddedAws = false;
+
+        for (final String profileName : environment.getActiveProfiles()) {
+            if (profileName.equals(BipCommonSpringProfiles.PROFILE_EMBEDDED_AWS)) {
+                isEmbeddedAws = true;
+            }
+        }
+        return isEmbeddedAws;
 
     }
 
