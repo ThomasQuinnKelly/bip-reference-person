@@ -36,6 +36,20 @@ services:
       - vault-config
       - localstack
 
+  localstack:
+    image: localstack/localstack:0.10.7
+    ports:
+      - "4567-4599:4567-4599"
+      - "8888:8888"
+    environment:
+      - SERVICES=sqs,sns
+      - DEFAULT_REGION=us-east-1
+      - PORT_WEB_UI=8888
+      - DEBUG=${DEBUG:-1}
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    networks:
+      - bip
+
   consul:
     image: bipdev/consul:1.4.3
     build:
