@@ -47,6 +47,11 @@ services:
       - PORT_WEB_UI=8888
       - DEBUG=${DEBUG:-1}
       - DOCKER_HOST=unix:///var/run/docker.sock
+      - AWS_CBOR_DISABLE=true
+      - USE_SSL=false
+      - AWS_ACCESS_KEY_ID=test-key
+      - AWS_SECRET_ACCESS_KEY=test-secret
+      - DATA_DIR=/tmp/localstack/data
     networks:
       - bip
 

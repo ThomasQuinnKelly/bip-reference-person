@@ -11,8 +11,7 @@ server:
   max-http-header-size: 65536
 ---
 spring.profiles: default
-spring.profiles.include: remote_client_sims, embedded-redis
-#embedded-aws
+spring.profiles.include: remote_client_sims, embedded-redis, embedded-aws
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
@@ -559,10 +558,10 @@ bip.framework.localstack:
 bip.framework:
   aws:
     sqs:
-      enabled: false
+      enabled: true
       #region: us-east-1
 
-      endpoint: http://localhost:4576/queue/sub_new_queue
+      endpoint: http://localstack:4576/queue/sub_new_queue
       #delay: 0
       #maxMessageSize: "262144"
       #messageRetentionPeriod: "345600"
@@ -570,7 +569,7 @@ bip.framework:
       #visibilityTimeout: 30
 
       dlqEnabled: true
-      dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
+      dlqEndpoint: http://localstack:4576/queue/sub_new_queue_dead
       #maxReceiveCount: 1
       #dlqdelay: 0
       #dlqmaxMessageSize: "262144"
@@ -589,9 +588,9 @@ bip.framework:
       #access_key_id: ${AWS_ACCESS_KEY}
       #secret_access_key: ${AWS_SECRET_ACCESS_KEY}
     sns:
-      enabled: false
+      enabled: true
       region: us-east-1
-      endpoint: http://localhost:4575/topic/test_my_topic
+      endpoint: http://localstack:4575/topic/test_my_topic
       topicarn: arn:aws:sns:us-east-1:000000000000:test_my_topic
       name: test_my_topic
       message: "SNS Test Message"

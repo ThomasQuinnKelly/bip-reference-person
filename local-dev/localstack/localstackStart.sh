@@ -38,4 +38,3 @@ while [ $(date +%s) -lt $endTime ]; do  # Loop until interval has elapsed.
   sleep 2
   echo "Starting Localstack has taken $(($(date +'%s') - $start)) seconds so far"
 done
- No newline at end of file
