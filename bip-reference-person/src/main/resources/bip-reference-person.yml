@@ -221,14 +221,14 @@ bip.framework:
       excludeUrls:
         - /api/v1/token
 ################################################################################
-# Property configuration to enable or disable Open Policy Agent (OPA)
-# - OPA security is disabled by default. So to enable it you have to set the 
+# Property configuration to ENABLE or DISABLE Open Policy Agent (OPA)
+# a) OPA security is disabled by default. To enable it, you have to set the 
 # environment system property "bip.framework.opa.enabled: true"
-# - BIP framework supports multiple policy rule URLs to vote for the decision that 
+# b) BIP framework supports multiple policy rule URLs to vote for the decision that 
 # grants or denies access
 #   bip.framework.security.opa.url[0]=http://localhost:8181/v1/data/http/authz/admin
 #   bip.framework.security.opa.url[1]=http://localhost:8181/v1/data/http/authz/allow
-# - Boolean that indicates if all or any voters are required to abstain or grant 
+# c) Boolean that indicates if all or any voters are required to deny or grant 
 # access, default value is false. Value as false sets AccessDecisionManager with 
 # AffirmativeBased implementation and true as UnanimousBased implementation.
 #   bip.framework.security.opa.allVotersAbstainGrantAccess=false

@@ -2,12 +2,29 @@ package bip.reference.person.http.authz
 
 import input
 
+########################################################
+# BIP Framework sets fields/keys under "input" field 
+# passed for the OPA request body (req_body)
+# 1) input.auth 
+#	 - Represents the token for an authentication 
+#		request or for an authenticated principal
+# 2) input.method
+#	 - Represents the name of the HTTP method
+# 3) input.path
+#	 - Represents the path of the HTTP Request URI
+# 4) input.headers
+#	 - Represents the request header name value pairs
+# 5) input.parameters
+#	 - Represents the request parameter name value pairs
+#########################################################
+
 # disallow access to all by default
 default allow = false
 
 # decode JWT token to read the payload
 token = {"payload": payload} {
-  [header, payload, signature] := io.jwt.decode(input.headers.jwtToken)
+  [_, encoded] := split(input.headers.authorization, " ")
+  [header, payload, signature] := io.jwt.decode(encoded)
 }
 
 # Allow authenticated users to invoke methods.
