@@ -220,6 +220,8 @@ bip.framework:
       excludeUrls:
         - /api/v1/token
         - /*
+      generate.enabled: true
+      expireInSeconds: 900
 ################################################################################
 # Property configuration to ENABLE or DISABLE Open Policy Agent (OPA)
 # a) OPA security is disabled by default. To enable it, you have to set the 
