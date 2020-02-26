@@ -3,7 +3,7 @@
 ## What is Open Policy Agent?
 Open Policy Agent (OPA) is a policy engine that can be used to implement fine-grained access control for your application. For example, you can use OPA to implement authorization across microservices. However, there is much more that can be accomplished with OPA. There are several open-source projects that integrate with OPA to implement fine-grained access control like [Docker](https://github.com/open-policy-agent/opa-docker-authz), [Istio](https://github.com/open-policy-agent/opa-istio-plugin) and [others](https://github.com/open-policy-agent/contrib). Furthermore, OPA as a general-purpose policy engine, can be leveraged in use cases beyond access control, for instance to make advanced pod placement decisions in [Kubernetes](https://github.com/open-policy-agent/opa-kube-scheduler).
 
-OPA can be deployed as a standalone service along with your microservices. In order to protect your application, each request coming to a microservice must be authorized before it can be processed. To check the authorization, the microservice makes an API call to OPA to decide whether the request is authorized or not. Note that while you can offload authorization decisions from your application to OPA, your application still has to implement the enforcement of those decisions. For example, the application can ask OPA the question “Is user with with stationID 310 allowed to invoke GET /api/v1/persons/pid” and if OPA answers “No”, your application has to send HTTP 403 Forbidden back to the user.
+OPA can be deployed as a standalone service along with your microservices. In order to protect your application, each request coming to a microservice must be authorized before it can be processed. To check the authorization, the microservice makes an API call to OPA to decide whether the request is authorized or not. Note that while you can offload authorization decisions from your application to OPA, your application still has to implement the enforcement of those decisions. For example, the application can ask OPA the question **"Is user with with stationID 310 allowed to invoke GET /api/v1/persons/pid"** and if OPA answers “No”, your application has to send HTTP 403 Forbidden back to the user.
 
 OPA is written in the Go language and its source code is available on GitHub under the Apache License 2.0. 
 
@@ -25,32 +25,54 @@ To enable the voter inside your application, you must configure it. Spring Secur
 
 ### BIP Framework Web Security Configuration
 
-BIP security configuration will be updated to set the AccessDecisionManager that adds an org.springframework.security.access.AccessDecisionVoter implementation class named BipOpaVoter. This voter class in BIP framework will override a method to vote on authorization decisions, indicates whether or not access is granted. The decision must be affirmative {@code ACCESS_GRANTED}, negative {@code ACCESS_DENIED} or  abstain ({@code ACCESS_ABSTAIN}) from voting. 
+BIP security configuration sets the AccessDecisionManager that adds an `org.springframework.security.access.AccessDecisionVoter` implementation class named `BipOpaVoter`. This voter class in BIP framework will override a method to vote on authorization decisions, indicates whether or not access is granted. The decision must be affirmative {@code ACCESS_GRANTED}, negative {@code ACCESS_DENIED} or  abstain ({@code ACCESS_ABSTAIN}) from voting. 
 
-BIP framework will provide properties to support OPA configurations. Recommended properties are listed below.
+BIP framework supports properties for the OPA configurations. Properties are listed below.
 
   **bip.framework.security.opa.enabled**: Boolean flag to enable or disable OPA, default set to false
   
   **bip.framework.security.opa.urls**: Multiple Open Policy Agent URLs to get the policy decision result, default empty array
   
-  **bip.framework.security.opa.allVotersAbstainGrantAccess**: Boolean that indicates if all or any voters are required to abstain or grant access, default value is false. Value as false sets AccessDecisionManager with UnanimousBased implementation and true with AffirmativeBased impl. 
+  **bip.framework.security.opa.allVotersAbstainGrantAccess**: Boolean that indicates if all or any voters are required to abstain or grant access, default value is false that sets AccessDecisionManager with AffirmativeBased and true value with UnanimousBased implementation. 
+     
+     - AffirmativeBased grants access if any <code>AccessDecisionVoter</code> returns an affirmative response.
+     - UnanimousBased requires all voters to abstain or grant access.
 
-### Running OPA
+### Running OPA Locally
 
-BIP provides in reference person example service `local-dev` docker compose file to run the OPA locally. If you are running your service in IDE (default app profile), then you can execute command by navigating to the directory `local-dev/openpolicyagent`. command to execute: `docker-compose -f docker-compose.yml up --build` 
+BIP provides in reference person example service `local-dev` docker compose file to run the OPA locally. If you are running your service in IDE (default app profile), then you can navigate to the directory `local-dev/openpolicyagent`and execute the command: `docker-compose -f docker-compose.yml up --build`
 
-If you are running in `local-int` profile, then run `./start-all.sh` from the root folder of BIP Reference Person Repository. 
+If you are running in `local-int` profile, then run `./start-all.sh` from the root folder of BIP Reference Person Example Repository. 
+
+Application YAML configurations required to enable JWT and OPA are shown below. Snippet from `bip-reference-person.yml`. 
+
+
+**IMPORTANT NOTE**: The value `/*` for the property `bip.framework.security.jwt.excludeUrls` MUST be configured when JWT is disabled, i.e `bip.framework.security.jwt.enabled: false`. `/*` will ensure that the swagger resources are served via exclusion.
+
+     bip.framework:
+       security:
+         jwt:
+           enabled: true
+           filterProcessUrls: 
+             - /api/v1/persons/**
+           excludeUrls:
+             - /api/v1/token
+             - /*
+         opa:
+           enabled: true
+           urls: 
+             - http://localhost:8181/v1/data/bip/reference/person/http/authz/admin
+             - http://localhost:8181/v1/data/bip/reference/person/http/authz/allow
+           allVotersAbstainGrantAccess: false
 
 For now, POC is available under the following repos:
 
 https://github.ec.va.gov/EPMO/bip-framework/tree/opaPOC
 https://github.ec.va.gov/EPMO/bip-reference-person/tree/opaPOC
 
-Folders/Files to refer:
+Directories and Files to refer:
   - https://github.ec.va.gov/EPMO/bip-reference-person/tree/opaPOC/local-dev/openpolicyagent
   - https://github.ec.va.gov/EPMO/bip-reference-person/blob/opaPOC/bip-reference-person/src/main/resources/bip-reference-person.yml#L223
   - https://github.ec.va.gov/EPMO/bip-reference-person/blob/opaPOC/docker-compose.yml#L26
   - https://github.ec.va.gov/EPMO/bip-reference-person/blob/opaPOC/docker-compose.yml#L100
 
-  
- 
