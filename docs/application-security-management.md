@@ -45,7 +45,10 @@
 	       - /api/v1/persons/**
 	       - /api/v2/persons/**
 	      excludeUrls:
-	       - /*
+           - /api/v1/token
+           - /*
+          generate.enabled: true
+          expireInSeconds: 900
     ```
 - By default [TokenResource](https://github.ec.va.gov/EPMO/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/security/jwt/TokenResource.java) java bean with `/token` end point is enabled for all the application profiles. To disable this end point, you can set `bip.framework.security.jwt.generate.enabled: false`. This end point generates a valid JWT token with default `900` seconds expiration time. This property can be overridden as shown `bip.framework.security.jwt.expireInSeconds: 900` 
 
