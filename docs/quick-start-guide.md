@@ -95,7 +95,7 @@ There are 2 application profiles that you could run locally
 
   [Grafana](http://localhost:3000) (http://localhost:3000) - Username/Password is `admin/admin` by default
 
-  [Sonar](http://localhost:9000) (http://localhost:9000) - Only available if explicitly set up
+  [Sonar](http://localhost:9000) (http://localhost:9000) - Only available if explicitly set up ([see running sonar](installation-help-guide.md#running-sonar) section of the installation help guide)
 
   *Note there are other URLs, such as all the [actuator URLs](actuator-management.md).  Listed here are the basic minimum URLs.*
   
