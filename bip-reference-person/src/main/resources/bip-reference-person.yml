@@ -219,7 +219,7 @@ bip.framework:
         - /api/v1/persons/**
       excludeUrls:
         - /api/v1/token
-        - /*
+        - /**
       generate.enabled: true
       expireInSeconds: 900
 ################################################################################
