@@ -63,6 +63,7 @@ There are 2 application profiles that you could run locally
 * Open IntelliJ and go through the wizard to import the `bip-reference-person` project using maven with the following steps:
     - import project > `bip-reference-person` > import project from external model > maven..next > next (keep default settings) > next > ensure project snapshot is selected…next > next > finish
 * In the project tab, highlight `bip-reference-person` project and right click and select `synchronize bip-reference-person`
+* Under the root package, right click on the <ProjectName>Application.java file and select Run.
 * Localhost URLs for testing/using this deployment approach
 
   [Swagger UI](http://localhost:8080/swagger-ui.html) (http://localhost:8080/swagger-ui.html)
