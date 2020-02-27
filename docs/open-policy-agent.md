@@ -23,7 +23,7 @@ In order to make a policy decision, all three inputs (data, query input, and the
 
 To enable the voter inside your application, you must configure it. Spring Security has sophisticated support for XML and Java-based configuration.
 
-### BIP Framework Web Security Configuration
+### BIP Framework Web Security Configuration for OPA
 
 BIP security configuration sets the AccessDecisionManager that adds an `org.springframework.security.access.AccessDecisionVoter` implementation class named `BipOpaVoter`. This voter class in BIP framework will override a method to vote on authorization decisions, indicates whether or not access is granted. The decision must be affirmative {@code ACCESS_GRANTED}, negative {@code ACCESS_DENIED} or  abstain ({@code ACCESS_ABSTAIN}) from voting. 
 
@@ -35,8 +35,8 @@ BIP framework supports properties for the OPA configurations. Properties are lis
   
   **bip.framework.security.opa.allVotersAbstainGrantAccess**: Boolean that indicates if all or any voters are required to abstain or grant access, default value is false that sets AccessDecisionManager with AffirmativeBased and true value with UnanimousBased implementation. 
      
-     - AffirmativeBased grants access if any <code>AccessDecisionVoter</code> returns an affirmative response.
-     - UnanimousBased requires all voters to abstain or grant access.
+    - AffirmativeBased grants access if any <code>AccessDecisionVoter</code> returns an affirmative response.
+    - UnanimousBased requires all voters to abstain or grant access.
 
 ### Running OPA Locally
 
@@ -46,8 +46,7 @@ If you are running in `local-int` profile, then run `./start-all.sh` from the ro
 
 Application YAML configurations required to enable JWT and OPA are shown below. Snippet from `bip-reference-person.yml`. 
 
-
-**IMPORTANT NOTE**: The value `/*` for the property `bip.framework.security.jwt.excludeUrls` MUST be configured when JWT is disabled, i.e `bip.framework.security.jwt.enabled: false`. `/*` will ensure that the swagger resources are served via exclusion.
+**IMPORTANT NOTE**: The value `/*` for the property `bip.framework.security.jwt.excludeUrls` MUST be configured when OPA is enabled, i.e `bip.framework.security.opa.enabled: true`. Value of `/*` will ensure that the swagger resources are served. **If the app configures `/**` for the exclusion, then OPA calls will be skipped, even if the OPA is enabled.**
 
      bip.framework:
        security:
@@ -65,14 +64,36 @@ Application YAML configurations required to enable JWT and OPA are shown below. 
              - http://localhost:8181/v1/data/bip/reference/person/http/authz/allow
            allVotersAbstainGrantAccess: false
 
-For now, POC is available under the following repos:
+For now, Proof of Concept is available under the following repositories:
+    
+    https://github.ec.va.gov/EPMO/bip-framework/tree/opaPOC
+    https://github.ec.va.gov/EPMO/bip-reference-person/tree/opaPOC
 
-https://github.ec.va.gov/EPMO/bip-framework/tree/opaPOC
-https://github.ec.va.gov/EPMO/bip-reference-person/tree/opaPOC
+Pull Requests created:
+   
+    https://github.ec.va.gov/EPMO/bip-framework/pull/18
+    https://github.ec.va.gov/EPMO/bip-reference-person/pull/95
+    
+Folders and Files to refer:
 
-Directories and Files to refer:
-  - https://github.ec.va.gov/EPMO/bip-reference-person/tree/opaPOC/local-dev/openpolicyagent
-  - https://github.ec.va.gov/EPMO/bip-reference-person/blob/opaPOC/bip-reference-person/src/main/resources/bip-reference-person.yml#L223
-  - https://github.ec.va.gov/EPMO/bip-reference-person/blob/opaPOC/docker-compose.yml#L26
-  - https://github.ec.va.gov/EPMO/bip-reference-person/blob/opaPOC/docker-compose.yml#L100
+    - https://github.ec.va.gov/EPMO/bip-reference-person/tree/opaPOC/local-dev/openpolicyagent
+    - https://github.ec.va.gov/EPMO/bip-reference-person/blob/opaPOC/bip-reference-person/src/main/resources/bip-reference-person.yml#L223
+    - https://github.ec.va.gov/EPMO/bip-reference-person/blob/opaPOC/docker-compose.yml#L26
+    - https://github.ec.va.gov/EPMO/bip-reference-person/blob/opaPOC/docker-compose.yml#L100
+  
+#### Reference Person Example Sample Query Input for Open Policy Agent (OPA)
+
+   - <details><summary>Click to expand query input data</summary>
+
+         {
+         "client_addr": "172.23.0.1:57874",
+         "level": "info",
+         "msg": "Received request.",
+         "req_body": "{\"input\":{\"path\":[\"api\",\"v1\",\"persons\",\"pid\"],\"headers\":{\"sec-fetch-mode\":\"cors\",\"content-length\":\"25\",\"referer\":\"http://localhost:8080/swagger-ui.html\",\"sec-fetch-site\":\"same-origin\",\"accept-language\":\"en-US,en;q=0.9\",\"cookie\":\"_ga=GA1.1.1949281902.1538404227; _vagovRollup=GA1.1.1701694839.1538404227; local_adminer_session=532151; adminer_sid=8ea7a76178a34085cb808f39d95d6036; JSESSIONID=949C9894E1BDC3578DBC34899C3B9968\",\"origin\":\"http://localhost:8080\",\"accept\":\"application/json\",\"authorization\":\"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJWZXRzLmdvdiIsImlhdCI6MTU4MjgxMjEyNCwianRpIjoiNGM4NDI2YmItZWQ5MS00YjFkLTlmYTYtYzVlYzYxODM0NzA2IiwiZXhwIjoxNTgyODEzMDI0LCJmaXJzdE5hbWUiOiJKQU5FIiwibWlkZGxlTmFtZSI6Ik0iLCJsYXN0TmFtZSI6IkRPRSIsInByZWZpeCI6Ik1zIiwic3VmZml4IjoiUyIsImJpcnRoRGF0ZSI6IjIwMDAtMDEtMjMiLCJnZW5kZXIiOiJGRU1BTEUiLCJhc3N1cmFuY2VMZXZlbCI6MiwiZW1haWwiOiJqYW5lLmRvZUB2YS5nb3YiLCJjb3JyZWxhdGlvbklkcyI6WyI3Nzc3OTEwMl5OSV4yMDBNXlVTVkhBXlAiLCI5MTI0NDQ2ODleUEleMjAwQlJMU15VU1ZCQV5BIiwiNjY2NjM0NV5QSV4yMDBDT1JQXlVTVkJBXkEiLCIxMTA1MDUxOTM2Xk5JXjIwMERPRF5VU0RPRF5BIiwiOTEyNDQ0Njg5XlNTIl0sImFwcFRva2VuIjoiZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKSVV6STFOaUo5IiwiYXBwbGljYXRpb25JRCI6IlNoYXJlVUkiLCJzdGF0aW9uSUQiOiIzMTAiLCJ1c2VySUQiOiJ2aGFpc2xYWFhYWCJ9.X2YBA7qzfrSpveQCEofaGrD_HJ1pLzyROvLMqZsvfAE\",\"host\":\"localhost:8080\",\"connection\":\"keep-alive\",\"content-type\":\"application/json\",\"accept-encoding\":\"gzip, deflate, br\",\"user-agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36\"},\"method\":\"POST\",\"auth\":{\"authorities\":[],\"details\":null,\"authenticated\":true,\"principal\":{\"birthDate\":\"2000-01-23\",\"firstName\":\"JANE\",\"lastName\":\"DOE\",\"middleName\":\"M\",\"prefix\":\"Ms\",\"suffix\":\"S\",\"gender\":\"FEMALE\",\"assuranceLevel\":2,\"email\":\"jane.doe@va.gov\",\"correlationIds\":null,\"appToken\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9\",\"applicationID\":\"ShareUI\",\"stationID\":\"310\",\"userID\":\"vhaislXXXXX\",\"dodedipnid\":\"1105051936\",\"pnidType\":\"SS\",\"pnid\":\"912444689\",\"pid\":\"6666345\",\"icn\":\"77779102\",\"fileNumber\":\"912444689\",\"tokenId\":\"4c8426bb-ed91-4b1d-9fa6-c5ec61834706\",\"user\":\"JANE DOE\"},\"credentials\":null,\"name\":\"NA\"},\"parameters\":{}}}",
+         "req_id": 2,
+         "req_method": "POST",
+         "req_params": {},
+         "req_path": "/v1/data/bip/reference/person/http/authz/allow",
+         "time": "2020-02-27T14:02:16Z"
+       }
 
