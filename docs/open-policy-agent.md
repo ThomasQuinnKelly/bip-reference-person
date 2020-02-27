@@ -23,7 +23,7 @@ In order to make a policy decision, all three inputs (data, query input, and the
 
 To enable the voter inside your application, you must configure it. Spring Security has sophisticated support for XML and Java-based configuration.
 
-### BIP Framework Web Security Configuration
+### BIP Framework Web Security Configuration for OPA
 
 BIP security configuration sets the AccessDecisionManager that adds an `org.springframework.security.access.AccessDecisionVoter` implementation class named `BipOpaVoter`. This voter class in BIP framework will override a method to vote on authorization decisions, indicates whether or not access is granted. The decision must be affirmative {@code ACCESS_GRANTED}, negative {@code ACCESS_DENIED} or  abstain ({@code ACCESS_ABSTAIN}) from voting. 
 
@@ -35,8 +35,8 @@ BIP framework supports properties for the OPA configurations. Properties are lis
   
   **bip.framework.security.opa.allVotersAbstainGrantAccess**: Boolean that indicates if all or any voters are required to abstain or grant access, default value is false that sets AccessDecisionManager with AffirmativeBased and true value with UnanimousBased implementation. 
      
-     - AffirmativeBased grants access if any <code>AccessDecisionVoter</code> returns an affirmative response.
-     - UnanimousBased requires all voters to abstain or grant access.
+    - AffirmativeBased grants access if any <code>AccessDecisionVoter</code> returns an affirmative response.
+    - UnanimousBased requires all voters to abstain or grant access.
 
 ### Running OPA Locally
 
@@ -46,8 +46,7 @@ If you are running in `local-int` profile, then run `./start-all.sh` from the ro
 
 Application YAML configurations required to enable JWT and OPA are shown below. Snippet from `bip-reference-person.yml`. 
 
-
-**IMPORTANT NOTE**: The value `/*` for the property `bip.framework.security.jwt.excludeUrls` MUST be configured when JWT is disabled, i.e `bip.framework.security.jwt.enabled: false`. `/*` will ensure that the swagger resources are served via exclusion.
+**IMPORTANT NOTE**: The value `/*` for the property `bip.framework.security.jwt.excludeUrls` MUST be configured when OPA is enabled, i.e `bip.framework.security.opa.enabled: true`. Value of `/*` will ensure that the swagger resources are served. **If the app configures `/**` for the exclusion, then OPA calls will be skipped, even if the OPA is enabled.**
 
      bip.framework:
        security:
