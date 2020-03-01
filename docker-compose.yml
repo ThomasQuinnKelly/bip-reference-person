@@ -22,6 +22,9 @@ services:
       - spring.cloud.vault.enabled=true
       - spring.cloud.vault.consul.enabled=true
       - bip.framework.security.jwt.enabled=true
+      - bip.framework.security.jwt.excludeUrls=/api/v1/token,/*
+      - bip.framework.security.opa.enabled=true
+      - bip.framework.security.opa.urls=http://opa:8181/v1/data/bip/reference/person/http/authz/admin,http://opa:8181/v1/data/bip/reference/person/http/authz/allow
       - spring.cloud.vault.kv.application-name=blue/bip-reference-person,blue/bip-reference-person/example-service
     ports:
       - "8080:8080"
@@ -94,6 +97,28 @@ services:
       - bip
     depends_on:
       - prometheus
+      
+  opa:
+    image: bipdev/openpolicyagent
+    build:
+      context: ./local-dev/openpolicyagent
+    ports:
+      - "8181:8181"
+    # WARNING: OPA is NOT running with an authorization policy configured. This
+    # means that clients can read and write policies in OPA. If you are
+    # deploying OPA in an insecure environment, be sure to configure
+    # authentication and authorization on the daemon. See the Security page for
+    # details: https://www.openpolicyagent.org/docs/security.html.
+    command:
+      - "run"
+      - "--server"
+      - "--log-level=debug"
+      - "--log-format=json"
+      - "api_authz_jwt_token.rego"
+    volumes:
+      - "./local-dev/openpolicyagent/policy/api_authz_jwt_token.rego:/api_authz_jwt_token.rego"
+    networks:
+      - bip
 
 networks:
   bip:

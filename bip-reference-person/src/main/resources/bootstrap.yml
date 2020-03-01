@@ -1,4 +1,8 @@
-spring: 
+security:
+  filter-order: 11
+spring:
+  security:
+    filter-order: 11
   application: 
     name: "@project.name@"
   config: 

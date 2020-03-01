@@ -128,6 +128,7 @@ logging:
     org.springframework.security: WARN
     org.springframework.security.web: WARN
     org.springframework.web.client: WARN
+    org.springframework.web.client.RestTemplate: WARN
     org.springframework.ws: WARN
     sun.net.www.protocol: WARN
 ##################################################
@@ -216,9 +217,30 @@ bip.framework:
       enabled: true
       filterProcessUrls: 
         - /api/v1/persons/**
-        - /api/v2/persons/**
       excludeUrls:
+        - /api/v1/token
         - /**
+      generate.enabled: true
+      expireInSeconds: 900
+################################################################################
+# Property configuration to ENABLE or DISABLE Open Policy Agent (OPA)
+# a) OPA security is disabled by default. To enable it, you have to set the 
+# environment system property "bip.framework.opa.enabled: true"
+# b) BIP framework supports multiple policy rule URLs to vote for the decision that 
+# grants or denies access
+#   bip.framework.security.opa.url[0]=http://localhost:8181/v1/data/http/authz/admin
+#   bip.framework.security.opa.url[1]=http://localhost:8181/v1/data/http/authz/allow
+# c) Boolean that indicates if all or any voters are required to deny or grant 
+# access, default value is false. Value as false sets AccessDecisionManager with 
+# AffirmativeBased implementation and true as UnanimousBased implementation.
+#   bip.framework.security.opa.allVotersAbstainGrantAccess=false
+##################################################################################
+#    opa:
+#     enabled: true
+#     urls: 
+#       - http://localhost:8181/v1/data/bip/reference/person/http/authz/admin
+#       - http://localhost:8181/v1/data/bip/reference/person/http/authz/allow
+#     allVotersAbstainGrantAccess: false
   swagger:
     # enable/disable the swagger/openapi UI ...
     enabled: true
