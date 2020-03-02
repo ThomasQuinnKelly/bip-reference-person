@@ -195,7 +195,7 @@ public class QueueAsyncMessageReceiver {
 
                     // If the number of current tries in the message attributes is greater than or equal to the retries detailed in the sqsProperties
                     if (messageAttributes.getNumberOfRetries() >= sqsProperties.getRetries()) {
-                        // archive the message here in some way
+                        // ideally archive the message here in some way
                         if(logger.isInfoEnabled()) logger.info("Deleting the message from DLQ after {} attempts. JMS Message {}",
                                 sqsProperties.getRetries(), message.getJMSMessageID());
                     } else {
@@ -203,7 +203,7 @@ public class QueueAsyncMessageReceiver {
                         sqsServices.sendMessage(txtMessage);
                     }
 
-                    // acknowledge deletes this instance of the message (The message has had an attempted processing)
+                    // acknowledge this instance of the message (The message has had an attempted processing)
                     message.acknowledge();
                 }
                 if(logger.isInfoEnabled()) logger.info("Acknowledged message in DLQ.");

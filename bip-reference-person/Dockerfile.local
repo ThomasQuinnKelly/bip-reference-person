@@ -9,10 +9,6 @@ ARG JAR_FILE=target/bip-reference-person.jar
 # Add the application's jar to the container
 ADD ${JAR_FILE} bip-reference-person.jar
 
-ADD ./tmp/awscli-bundle.zip awscli-bundle.zip
-RUN unzip awscli-bundle.zip
-RUN ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
-
 # Run the jar file 
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/bip-reference-person.jar"]
 

@@ -23,8 +23,10 @@ services:
       - spring.cloud.vault.consul.enabled=true
       - bip.framework.security.jwt.enabled=true
       - spring.cloud.vault.kv.application-name=blue/bip-reference-person,blue/bip-reference-person/example-service
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n #Remote Debugging
     ports:
       - "8080:8080"
+      - "8000:8000" #Remote Debugging
     networks:
       - bip
     links:
@@ -38,20 +40,16 @@ services:
 
   localstack:
     image: localstack/localstack:0.10.7
+    container_name: localstack
     ports:
-      - "4567-4599:4567-4599"
+      - "4567-4584:4567-4584"
       - "8888:8888"
     environment:
-      - SERVICES=sqs,sns
-      - DEFAULT_REGION=us-east-1
+      - HOSTNAME_EXTERNAL=localstack
+      - DEBUG=1
+      - USE_SSL=0
+      - SERVICES=sns:4575,sqs:4576
       - PORT_WEB_UI=8888
-      - DEBUG=${DEBUG:-1}
-      - DOCKER_HOST=unix:///var/run/docker.sock
-      - AWS_CBOR_DISABLE=true
-      - USE_SSL=false
-      - AWS_ACCESS_KEY_ID=test-key
-      - AWS_SECRET_ACCESS_KEY=test-secret
-      - DATA_DIR=/tmp/localstack/data
     networks:
       - bip
 
