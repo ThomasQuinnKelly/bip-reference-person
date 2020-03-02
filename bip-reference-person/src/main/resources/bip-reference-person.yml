@@ -544,13 +544,13 @@ spring.liquibase:
 ---
 ### Localstack
 bip.framework.localstack:
-  enabled: true
+  enabled: false
   services:
     sns:
-      enabled: true
+      enabled: false
       port: 4575
     sqs:
-      enabled: true
+      enabled: false
       port: 4576
 ---
 ### AWS Service settings
@@ -559,50 +559,41 @@ bip.framework:
   aws:
     sqs:
       enabled: true
-      #region: us-east-1
-
-      endpoint: http://localhost:4576/queue/sub_new_queue
-      #delay: 0
-      #maxMessageSize: "262144"
-      #messageRetentionPeriod: "345600"
-      #waitTime: 0
-      #visibilityTimeout: 30
-
       dlqEnabled: true
-      dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
-      #maxReceiveCount: 1
-      #dlqdelay: 0
-      #dlqmaxMessageSize: "262144"
-      #dlqmessageRetentionPeriod: "345600"
-      #dlqwaitTime: 0
-      #dlqvisibilityTimeout: 30
+      region: us-gov-west-1
 
-      #For SQS Configuration - Messaging Provider Configuration
-      #numberOfMessagesToPrefetch: 0
+      #localstack vars
+      #endpoint: http://localhost:4576/queue/sub_new_queue
+      #dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
+      #access_key_id: ${AWS_ACCESS_KEY}
+      #secret_access_key: ${AWS_SECRET_ACCESS_KEY}
 
-      #For Message Listener Setup in QueueAsyncMessageReceiver
+      #Aws Dev8 vars
+      endpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-1
+      dlqEndpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-2
+
       #Defines the maximum number of times the message can enter the DLQ
       retries: 1
 
-      #SQS key and id needs to be changed for upper environments
-      #accessKey: ${AWS_ACCESS_KEY}
-      #secretKey: ${AWS_SECRET_ACCESS_KEY}
     sns:
       enabled: true
-      region: us-east-1
-      endpoint: http://localhost:4575/topic/test_my_topic
-      topicarn: arn:aws:sns:us-east-1:000000000000:test_my_topic
-      name: test_my_topic
+      region: us-gov-west-1
+
+      #localstack vars
+      #endpoint: http://localhost:4575/topic/test_my_topic
+      #topicarn: arn:aws:sns:us-east-1:000000000000:test_my_topic
+      #name: test_my_topic
+
+      #Aws Dev8 vars
+      endpoint: https://sns.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-topic
+      topicarn: arn:aws-us-gov:iam::261727212250:/role/project/project-bip-blue-dev
+      name: project-bip-blue-dev
       message: "SNS Test Message"
       type: String
 
       #SNS key and id needs to be changed for upper environments
-      #accessKey: ${AWS_ACCESS_KEY}
-      #secretKey: ${AWS_SECRET_ACCESS_KEY}
-
-# Required or else an error occurs (Spring requirement)
-cloud.aws.stack.auto: false
-cloud.aws.region.static: us-east-1
+      #access_key_id: ${AWS_ACCESS_KEY}
+      #secret_access_key: ${AWS_SECRET_ACCESS_KEY}
 
 # Required for localstack SQS integration
 spring.sleuth.messaging.enabled: false
