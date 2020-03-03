@@ -8,6 +8,11 @@ import gov.va.bip.reference.partner.person.ws.transfer.FindPersonByPtcpntIdRespo
  *
  */
 @FunctionalInterface
+/**
+ * Note: This interface is tagged as a @FunctionalInterface to allow for Java lambda integration. This also forces
+ * the WsClient to have exactly one method. BLUE Framework does not enforce this pattern on your WsClient interfaces,
+ * so if your implementation will have more than one method, you can remove this tag.
+ */
 public interface PersonWsClient {
 
 	/**

@@ -63,6 +63,7 @@ There are 2 application profiles that you could run locally
 * Open IntelliJ and go through the wizard to import the `bip-reference-person` project using maven with the following steps:
     - import project > `bip-reference-person` > import project from external model > maven..next > next (keep default settings) > next > ensure project snapshot is selected…next > next > finish
 * In the project tab, highlight `bip-reference-person` project and right click and select `synchronize bip-reference-person`
+* Under the root package, right click on the <ProjectName>Application.java file and select Run.
 * Localhost URLs for testing/using this deployment approach
 
   [Swagger UI](http://localhost:8080/swagger-ui.html) (http://localhost:8080/swagger-ui.html)
@@ -91,13 +92,13 @@ There are 2 application profiles that you could run locally
 
   [Vault](http://localhost:8200) (http://localhost:8200) - Root token is `vaultroot`
 
-  [Prometheus](http://localhos:9090) (http://localhos:9090)
+  [Prometheus](http://localhost:9090) (http://localhost:9090)
 
   [Grafana](http://localhost:3000) (http://localhost:3000) - Username/Password is `admin/admin` by default
 
   [Sonar](http://localhost:9000) (http://localhost:9000) - Only available if explicitly set up
 
-  *Note there are other URLs, such as all the [actuator URLs](/docs/actuator-management.md).  Listed here are the basic minimum URLs.*
+  *Note there are other URLs, such as all the [actuator URLs](actuator-management.md).  Listed here are the basic minimum URLs.*
   
 ## Using BIP API Framework in your application
 

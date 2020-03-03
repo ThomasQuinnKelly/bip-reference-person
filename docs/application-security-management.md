@@ -45,25 +45,55 @@
 	       - /api/v1/persons/**
 	       - /api/v2/persons/**
 	      excludeUrls:
-	       - /**
+           - /api/v1/token
+           - /*
+          generate.enabled: true
+          expireInSeconds: 900
     ```
 - By default [TokenResource](https://github.ec.va.gov/EPMO/bip-framework/blob/master/bip-framework-libraries/src/main/java/gov/va/bip/framework/security/jwt/TokenResource.java) java bean with `/token` end point is enabled for all the application profiles. To disable this end point, you can set `bip.framework.security.jwt.generate.enabled: false`. This end point generates a valid JWT token with default `900` seconds expiration time. This property can be overridden as shown `bip.framework.security.jwt.expireInSeconds: 900` 
 
 -  All the properties for JWT Security with prefix `bip.framework.security.jwt` that are configurable are listed below.
 
-     **bip.framework.security.jwt.enabled**: Boolean property to enable or disable JWT security on the service end points. Defaults to "**true**"
+     **bip.framework.security.jwt.enabled**: Boolean property to enable or disable JWT security on the service end points. Defaults to `**true**`
 
-     **bip.framework.security.jwt.filterProcessUrls**: List of strings to specify the URLs that are allowed for any authenticated user. Defaults to "**/api/****"
+     **bip.framework.security.jwt.filterProcessUrls**: List of strings to specify the URLs that are allowed for any authenticated user. Defaults to `**/api/****`
 
-     **bip.framework.security.jwt.excludeUrls**: List of strings that allows adding RequestMatcher instances which Spring Security should ignore. Defaults to "**/****"
 
-     **bip.framework.security.jwt.issuer**: Ensures that the specified "iss" exists in the parsed JWT. If missing or if the parsed value does not equal the specified value, an exception will be thrown indicating that the JWT is 								 invalid and may not be used. Defaults to "**Vets.gov**"
+     **bip.framework.security.jwt.excludeUrls**: List of strings that allows adding RequestMatcher instances which Spring Security should ignore. Defaults to `{ "/api/v1/token", "/*" }`
 
-     **bip.framework.security.jwt.secret**: JWT needs to be signed with a signing key and must match for the trusted services that communicates. Defaults to "**secret**"
+     **bip.framework.security.jwt.keyPairs**: Property of type List that configures consumer JWT token secret and issuer pair, to support multiple consumers. 
+
+		bip.framework:
+		  security:
+		    jwt:
+		      enabled: true
+		      keyPairs:
+			-
+			  secret: examplesecret1
+			  issuer: Va1.gov
+			-
+			  secret: examplesecret2
+			  issuer: Va2.gov
+
+		 --------- OR -----
+
+		bip.framework.security.jwt.keyPairs[0].secret=examplesecret1
+		bip.framework.security.jwt.keyPairs[0].issuer=Va1.gov
+		bip.framework.security.jwt.keyPairs[1].secret=examplesecret2
+		bip.framework.security.jwt.keyPairs[1].issuer=Va2.gov
+
+     **bip.framework.security.jwt.issuer**: (For Backward Compatibility, can be configured for single consumer JWT) Ensures that the specified "iss" exists in the parsed JWT. If missing or if the parsed value does not equal the specified value, an exception will be thrown indicating that the JWT is 								 invalid and may not be used. Defaults to "**Vets.gov**"
+
+     **bip.framework.security.jwt.secret**: (For Backward Compatibility, can be configured for single consumer JWT) JWT needs to be signed with a signing key and must match for the trusted services that communicates. Defaults to "**secret**"
 
      **bip.framework.security.jwt.header**: Request header name to read JWT token value from. Defaults to "**Authorization**"
 
      **bip.framework.security.jwt.validation.required-parameters**: Specifies which fields in the `PersonTraits` object must contain a value. Fields are specified by setting this property value to a comma-separated list of field names. If the JWT person object does not have a value in the specified field(s), the request will be rejected.
+
+     **bip.framework.security.jwt.generate.enabled**: By default TokenResource java bean with **/token** end point mapping is enabled for all the application profiles. To disable this end point, you can set this property to false 
+     
+     **bip.framework.security.jwt.expireInSeconds**: This end point generates a valid JWT token with default 900 seconds expiration time. This property can be overridden to any valid seconds value.
+
 
 ## Retrieving Person Traits from Security Context
 
