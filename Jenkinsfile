@@ -92,9 +92,6 @@ mavenGitflowPipeline {
     chartValueFunctionalTestFile = "testing.yaml"
     chartValuePerformanceTestFile = "testing.yaml"
 
-    //Value YAML file used to configure the Helm deployments used for the Deploy Review Instance stage
-    chartValueReviewInstanceFile = "reviewInstance.yaml"
-
     //Release name to use
     chartReleaseName = "bip-reference-person"
 }
