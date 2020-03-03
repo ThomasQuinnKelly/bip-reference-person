@@ -1,7 +1,5 @@
 mavenGitflowPipeline {
 
-	skipUndeploy = true
-
     //Skip Options
     skipTests = true
     skipFunctionalTests = true
