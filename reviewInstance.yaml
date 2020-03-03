@@ -1,0 +1,32 @@
+  ########################################################################
+  # Values section defines the parameters to the chart
+  # These are specific to the chart being installed
+  ########################################################################
+
+  imagePullSecret: regcred
+  image:
+    repository: container-registry.dev8.bip.va.gov/blue/bip-reference-person
+    tag: latest
+    pullPolicy: Always
+  ingress:
+    enabled: false
+  vault:
+    host: "dev8-vault.vault.svc.dev8"
+    enabled: true
+    kubernetes:
+      role: blue-dev
+    kv:
+      applicationName: blue/bip-reference-person
+    port: 8200
+    scheme: http
+  consul:
+      enabled: false
+      host: dev8-consul.vault.svc.dev8
+      config:
+        enabled: true
+      discovery:
+        enabled: true
+        register: true
+      scheme: http
+  spring:
+    profiles: "dev"
