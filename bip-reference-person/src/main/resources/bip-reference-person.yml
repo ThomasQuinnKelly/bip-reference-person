@@ -560,24 +560,14 @@ bip.framework:
   aws:
     sqs:
       enabled: true
-      #region: us-east-1
+      dlqEnabled: true
       region: us-gov-west-1
 
+      #localstack vars
       #endpoint: http://localhost:4576/queue/sub_new_queue
-      #delay: 0
-      #maxMessageSize: "262144"
-      #messageRetentionPeriod: "345600"
-      #waitTime: 0
-      #visibilityTimeout: 30
-
-      dlqEnabled: true
       #dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
-      #maxReceiveCount: 1
-      #dlqdelay: 0
-      #dlqmaxMessageSize: "262144"
-      #dlqmessageRetentionPeriod: "345600"
-      #dlqwaitTime: 0
-      #dlqvisibilityTimeout: 30
+      #access_key_id: ${AWS_ACCESS_KEY}
+      #secret_access_key: ${AWS_SECRET_ACCESS_KEY}
 
       #Aws Dev8 vars
       endpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-1
@@ -592,12 +582,17 @@ bip.framework:
       #secretKey: ${AWS_SECRET_ACCESS_KEY}
     sns:
       enabled: true
-      #region: us-east-1
       region: us-gov-west-1
+
+      #localstack vars
       #endpoint: http://localhost:4575/topic/test_my_topic
+      #topicarn: arn:aws:sns:us-east-1:000000000000:test_my_topic
+      #name: test_my_topic
+
+      #Aws Dev8 vars
       endpoint: https://sns.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-topic
-      topicarn: arn:aws:sns:us-east-1:000000000000:test_my_topic
-      name: test_my_topic
+      topicarn: arn:aws-us-gov:iam::261727212250:/role/project/project-bip-blue-dev
+      name: project-bip-blue-dev
       message: "SNS Test Message"
       type: String
 
@@ -606,8 +601,8 @@ bip.framework:
       #secretKey: ${AWS_SECRET_ACCESS_KEY}
 
 # Required or else an error occurs (Spring requirement)
-cloud.aws.stack.auto: false
-cloud.aws.region.static: us-west-1
+cloud.aws.stack.auto: true
+cloud.aws.region.static: us-gov-west-1
 
 # Required for localstack SQS integration
 spring.sleuth.messaging.enabled: false
