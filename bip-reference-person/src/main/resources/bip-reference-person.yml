@@ -623,7 +623,7 @@ bip.framework:
       #secretKey: ${AWS_SECRET_ACCESS_KEY}
 
 # Required or else an error occurs (Spring requirement)
-cloud.aws.stack.auto: true
+cloud.aws.stack.auto: false
 cloud.aws.region.static: us-gov-west-1
 
 # Required for localstack SQS integration
