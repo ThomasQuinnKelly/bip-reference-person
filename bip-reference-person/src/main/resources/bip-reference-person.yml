@@ -592,8 +592,8 @@ bip.framework:
       #secret_access_key: ${AWS_SECRET_ACCESS_KEY}
 
       #Aws Dev8 vars
-      #endpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-1
-      #dlqEndpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-2
+      endpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-1
+      dlqEndpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-2
 
       #For Message Listener Setup in QueueAsyncMessageReceiver
       #Defines the maximum number of times the message can enter the DLQ
