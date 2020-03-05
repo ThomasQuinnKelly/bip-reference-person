@@ -613,8 +613,8 @@ bip.framework:
 
       #Aws Dev8 vars
       endpoint: https://sns.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-topic
-      topicarn: arn:aws-us-gov:iam::261727212250:/role/project/project-bip-blue-dev
-      name: project-bip-blue-dev
+      topicarn: arn:aws-us-gov:sns:us-gov-west-1:261727212250:project-blue-dev-blue-dev-topic
+      name: project-blue-dev-blue-dev-topic
       message: "SNS Test Message"
       type: String
 
