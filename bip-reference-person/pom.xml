@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>gov.va.bip.reference.person</groupId>
 		<artifactId>bip-reference-reactor</artifactId>
-		<version>0.0.2-release-test-SNAPSHOT</version>
+		<version>0.0.107</version>
 		<relativePath>..</relativePath>
 	</parent>
 
