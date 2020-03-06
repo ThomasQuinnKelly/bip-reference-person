@@ -586,12 +586,8 @@ bip.framework:
       region: us-gov-west-1
 
       #localstack vars
-      #endpoint: http://localhost:4576/queue/sub_new_queue
-      #dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
-
-      #Aws Dev8 vars
-      endpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-1
-      dlqEndpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-2
+      endpoint: http://localhost:4576/queue/sub_new_queue
+      dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
 
       #For Message Listener Setup in QueueAsyncMessageReceiver
       #Defines the maximum number of times the message can enter the DLQ
@@ -601,14 +597,9 @@ bip.framework:
       region: us-gov-west-1
 
       #localstack vars
-      #endpoint: http://localhost:4575/topic/test_my_topic
-      #topicarn: arn:aws:sns:us-east-1:000000000000:test_my_topic
-      #name: test_my_topic
-
-      #Aws Dev8 vars
-      endpoint: https://sns.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-topic
-      topicarn: arn:aws-us-gov:sns:us-gov-west-1:261727212250:project-blue-dev-blue-dev-topic
-      name: project-blue-dev-blue-dev-topic
+      endpoint: http://localhost:4575/topic/test_my_topic
+      topicarn: arn:aws:sns:us-east-1:000000000000:test_my_topic
+      name: test_my_topic
       message: "SNS Test Message"
       type: String
 
