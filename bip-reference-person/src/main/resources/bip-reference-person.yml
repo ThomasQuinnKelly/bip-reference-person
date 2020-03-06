@@ -588,8 +588,6 @@ bip.framework:
       #localstack vars
       #endpoint: http://localhost:4576/queue/sub_new_queue
       #dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
-      #access_key_id: ${AWS_ACCESS_KEY}
-      #secret_access_key: ${AWS_SECRET_ACCESS_KEY}
 
       #Aws Dev8 vars
       endpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-1
@@ -598,10 +596,6 @@ bip.framework:
       #For Message Listener Setup in QueueAsyncMessageReceiver
       #Defines the maximum number of times the message can enter the DLQ
       retries: 1
-
-      #SQS key and id needs to be changed for upper environments
-      #accessKey: ${AWS_ACCESS_KEY}
-      #secretKey: ${AWS_SECRET_ACCESS_KEY}
     sns:
       enabled: true
       region: us-gov-west-1
@@ -618,9 +612,6 @@ bip.framework:
       message: "SNS Test Message"
       type: String
 
-      #SNS key and id needs to be changed for upper environments
-      #accessKey: ${AWS_ACCESS_KEY}
-      #secretKey: ${AWS_SECRET_ACCESS_KEY}
 
 # Required or else an error occurs (Spring requirement)
 cloud.aws.stack.auto: false
