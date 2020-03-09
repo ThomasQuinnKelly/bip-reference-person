@@ -1,21 +1,19 @@
 @Library('jenkins-library@AF-800') _
 
 mavenGitflowPipeline {
-    //Adding skips 
-    skipTests = true
-    skipSonar = true
-    skipFortify = true
-
-	  skipUndeploy = false
+    
+	skipUndeploy = false
 
     //Specify to use the fortify maven plugin, instead of the Ant task to execute the fortify scan
     useFortifyMavenPlugin = true
 
-    skipSonar = false
-    skipFortify = false
-    skipMavenDeploy = false
-    skipFunctionalTests = false
-    skipPerformanceTests = false
+    //Adding skips 
+    skipTests = true
+    skipSonar = true
+    skipFortify = true
+    skipFunctionalTests = true
+    skipPerformanceTests = true
+
 
     /*************************************************************************
     * Docker Build Configuration
