@@ -1,0 +1,1 @@
+FROM openpolicyagent/opa:0.16.0
