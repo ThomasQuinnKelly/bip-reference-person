@@ -4,8 +4,16 @@ FROM grafana/grafana:${GRAFANA_VERSION}
 
 USER grafana
 
-COPY ./resources/vonage-status-panel.tar.gz vonage-status-panel.tar.gz
-RUN tar -xvf vonage-status-panel.tar.gz -C /var/lib/grafana/plugins
+ARG GF_INSTALL_PLUGINS="vonage-status-panel"
+
+RUN if [ ! -z "${GF_INSTALL_PLUGINS}" ]; then \
+    OLDIFS=$IFS; \
+        IFS=','; \
+    for plugin in ${GF_INSTALL_PLUGINS}; do \
+        IFS=$OLDIFS; \
+        grafana-cli --pluginsDir "$GF_PATHS_PLUGINS" plugins install ${plugin}; \
+    done; \
+fi
 
 RUN mkdir -p /var/lib/grafana/dashboards
 COPY dashboards /var/lib/grafana/dashboards
