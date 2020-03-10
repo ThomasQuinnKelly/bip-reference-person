@@ -6,7 +6,7 @@ AWS Services with Bip Framework on Local Environment
 
 -- SQS
 
-_Future Possible Services Include: Local-Dev, Dev, FIFO Queues, Multiple Queues, Multiple Topics_
+_Future Possible Services Include: FIFO Queues, Multiple Queues, Multiple Topics_
 
 ### What is Amazon SNS?
 
