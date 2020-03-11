@@ -582,7 +582,6 @@ bip.framework:
     sqs:
       enabled: true
       dlqEnabled: true
-      region: us-gov-west-1
 
       #localstack vars
       endpoint: http://localhost:4576/queue/sub_new_queue
@@ -593,7 +592,6 @@ bip.framework:
       retries: 1
     sns:
       enabled: true
-      region: us-gov-west-1
 
       #localstack vars
       endpoint: http://localhost:4575/topic/test_my_topic
@@ -605,7 +603,7 @@ bip.framework:
 
 # Required or else an error occurs (Spring requirement)
 cloud.aws.stack.auto: false
-cloud.aws.region.static: us-gov-west-1
+cloud.aws.region.static: us-east-1
 
 # Required for localstack SQS integration
 spring.sleuth.messaging.enabled: false
