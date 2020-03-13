@@ -19,7 +19,10 @@
 
 	<properties>
 		<bip-framework.version>2.1.4-SNAPSHOT</bip-framework.version>
-		<sonar.exclusions>**/PersonRestClientTester.java</sonar.exclusions>
+		<sonar.exclusions>
+			**/PersonRestClientTester.java,
+			**/QueueAsyncMessageReceiver.java
+		</sonar.exclusions>
 	</properties>
 
 	<dependencies>

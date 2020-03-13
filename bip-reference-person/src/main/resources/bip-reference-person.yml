@@ -11,7 +11,9 @@ server:
   max-http-header-size: 65536
 ---
 spring.profiles: default
-spring.profiles.include: remote_client_sims, embedded-redis, embedded-aws
+spring.profiles.include: remote_client_sims, embedded-redis
+#for PRs at this time comment out this profile
+#, embedded-aws
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
@@ -564,16 +566,17 @@ spring.liquibase:
   enabled: false
   test-rollback-on-update: true
 ---
-### Localstack
-bip.framework.localstack:
-  enabled: true
-  services:
-    sns:
-      enabled: true
-      port: 4575
-    sqs:
-      enabled: true
-      port: 4576
+#for PRs at this time comment out this Localstack setting
+#### Localstack
+#bip.framework.localstack:
+#  enabled: true
+#  services:
+#    sns:
+#      enabled: true
+#      port: 4575
+#    sqs:
+#      enabled: true
+#      port: 4576
 ---
 ### AWS Service settings
 ### SQS and SNS Configurations for Bip Reference Person
