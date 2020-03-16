@@ -37,3 +37,6 @@ nbdist/
 
 ### Ignore int test log file ###
 **/rest*.log
+
+### Ignore Localstack log file ###
+localstack.log

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./bin/run.sh &
+#./bin/run.sh &
 
 # Wait for sonar to be up
 ./provision/wait_for_sonar.sh

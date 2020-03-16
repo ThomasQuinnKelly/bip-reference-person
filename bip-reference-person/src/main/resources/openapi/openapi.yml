@@ -235,6 +235,84 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+## SQS Message Example
+  "/api/v1/sqs/sendMessage":
+    post:
+      tags:
+        - reference-person-aws
+      summary: Send a message to the Queue
+      description: Will add a message to the queue
+      operationId: sendMessage
+      requestBody:
+        description: String message
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                  description: The message contents
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/JmsResponse'
+        '400':
+          '$ref': '#/components/responses/400'
+        '401':
+          '$ref': '#/components/responses/401'
+        '403':
+          '$ref': '#/components/responses/403'
+        '500':
+          '$ref': '#/components/responses/500'
+      security:
+        - bearerAuth: []
+      deprecated: false
+  ## SQS Message Example
+  "/api/v1/sns/publishMessage":
+    post:
+      tags:
+        - reference-person-aws
+      summary: publish a sns message
+      description: Will publish a message to the subscribed queue
+      operationId: publishMessage
+      requestBody:
+        description: String message
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                  description: The message contents
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/PublishResult'
+        '400':
+          '$ref': '#/components/responses/400'
+        '401':
+          '$ref': '#/components/responses/401'
+        '403':
+          '$ref': '#/components/responses/403'
+        '500':
+          '$ref': '#/components/responses/500'
+      security:
+        - bearerAuth: []
+      deprecated: false
   # The token path should not require any changes
   "/api/v1/token":
     post:
@@ -380,6 +458,24 @@ components:
       allOf:
        - '$ref': '#/components/schemas/ProviderResponse'
        - type: object
+    JmsResponse:
+      type: object
+      title: JmsResponse
+      description: Model for jms Response
+      properties:
+        jmsId:
+          type: string
+          example: 5bd06d77-7706-4675-a6d8-39e01c2fba61
+          description : jms id
+    PublishResult:
+      type: object
+      title: PublishResult
+      description: Model for publishing sns messages
+      properties:
+        messageId:
+          type: String
+          example: This is the openapi file message
+          description: message id
     # Schema objects below are from BIP Framework to be declared.
     # These objects need to be mapped in <importMappings> section
     # of openapi-generator-maven-plugin so that no code is generated 

@@ -12,6 +12,8 @@ server:
 ---
 spring.profiles: default
 spring.profiles.include: remote_client_sims, embedded-redis
+#for PRs at this time comment out this profile
+#, embedded-aws
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
@@ -563,3 +565,59 @@ spring.datasource:
 spring.liquibase:
   enabled: false
   test-rollback-on-update: true
+---
+#for PRs at this time comment out this Localstack setting
+#### Localstack
+bip.framework.localstack:
+  enabled: false
+  services:
+    sns:
+      enabled: true
+      port: 4575
+    sqs:
+      enabled: true
+      port: 4576
+---
+### AWS Service settings
+### SQS and SNS Configurations for Bip Reference Person
+bip.framework:
+  aws:
+    sqs:
+      enabled: true
+      dlqEnabled: true
+
+      #Aws Dev8 vars
+      region: us-gov-west-1
+      endpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-1
+      dlqEndpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-2
+
+      #localstack vars
+      #endpoint: http://localhost:4576/queue/sub_new_queue
+      #dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
+
+      #For Message Listener Setup in QueueAsyncMessageReceiver
+      #Defines the maximum number of times the message can enter the DLQ
+      retries: 1
+    sns:
+      enabled: true
+
+      #Aws Dev8 vars
+      region: us-gov-west-1
+      endpoint: https://sns.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-topic
+      topicarn: arn:aws:sns:us-gov-west-1:261727212250:project-blue-dev-blue-dev-topic
+      name: project-blue-dev-blue-dev-topic
+
+      #localstack vars
+      #endpoint: http://localhost:4575/topic/test_my_topic
+      #topicarn: arn:aws:sns:us-east-1:000000000000:test_my_topic
+      #name: test_my_topic
+
+      #message: "SNS Test Message"
+      #type: String
+
+# Required or else an error occurs (Spring requirement)
+cloud.aws.stack.auto: false
+cloud.aws.region.static: us-gov-west-1
+
+# Required for localstack SQS integration
+spring.sleuth.messaging.enabled: false
