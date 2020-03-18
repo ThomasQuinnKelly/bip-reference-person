@@ -1,6 +1,7 @@
 package gov.va.bip.reference.person.transform.impl;
 
 import gov.va.bip.framework.transfer.transform.AbstractDomainToProvider;
+import gov.va.bip.framework.transfer.transform.TransformerUtils;
 import gov.va.bip.reference.person.api.model.v1.PersonInfo;
 import gov.va.bip.reference.person.api.model.v1.PersonInfoResponse;
 import gov.va.bip.reference.person.model.PersonByPidDomainResponse;
@@ -36,10 +37,7 @@ public class PersonByPidDomainToProvider extends AbstractDomainToProvider<Person
 		providerObject.setPersonInfo(providerData);
 		// add messages
 		if (domainObject != null && domainObject.getMessages() != null && !domainObject.getMessages().isEmpty()) {
-			for (gov.va.bip.framework.messages.ServiceMessage domainMsg : domainObject.getMessages()) {
-				providerObject.addMessage(domainMsg.getSeverity(), domainMsg.getKey(), domainMsg.getText(),
-						domainMsg.getHttpStatus());
-			}
+			TransformerUtils.transferMessages(providerObject, domainObject);
 		}
 
 		return providerObject;
