@@ -4,7 +4,6 @@ function isUp {
 }
 
 # Wait for server to be up
-BASE_URL='http://localhost:9000'
 PING=`isUp`
 while [ -z "$PING" ]
 do
