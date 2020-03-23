@@ -37,7 +37,7 @@ public class PersonByPidDomainToProvider extends AbstractDomainToProvider<Person
 		providerObject.setPersonInfo(providerData);
 		// add messages
 		if (domainObject != null && domainObject.getMessages() != null && !domainObject.getMessages().isEmpty()) {
-			TransformerUtils.transferMessages(providerObject, domainObject);
+			TransformerUtils.transferMessages(domainObject, providerObject);
 		}
 
 		return providerObject;

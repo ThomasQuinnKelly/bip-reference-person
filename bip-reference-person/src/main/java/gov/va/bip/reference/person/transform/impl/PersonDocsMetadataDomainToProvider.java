@@ -27,7 +27,7 @@ extends AbstractDomainToProvider<PersonDocsMetadataDomainResponse, PersonDocsMet
 
 		// add messages
 		if ((domainObject != null) && (domainObject.getMessages() != null) && !domainObject.getMessages().isEmpty()) {
-			TransformerUtils.transferMessages(providerObject, domainObject);
+			TransformerUtils.transferMessages(domainObject, providerObject);
 		}
 
 		return providerObject;
