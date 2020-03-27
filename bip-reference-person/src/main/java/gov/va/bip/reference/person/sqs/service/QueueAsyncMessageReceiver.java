@@ -7,7 +7,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.json.JsonSanitizer;
-import gov.va.bip.framework.sns.dto.SNSMessage;
 import gov.va.bip.framework.sqs.config.SqsProperties;
 import gov.va.bip.framework.sqs.services.SqsService;
 import org.slf4j.Logger;
@@ -232,11 +231,11 @@ public class QueueAsyncMessageReceiver {
 
             // resolve SNS topic message sent to SQS
             if (messageAttribute.getMessage() == null) {
-
-                SNSMessage snsMessageAttempt = mapper.readValue(JsonSanitizer.sanitize(message), SNSMessage.class);
-
-                messageAttribute = mapper.readValue(snsMessageAttempt.getMessage(), MessageAttributes.class);
-
+//
+//                SNSMessage snsMessageAttempt = mapper.readValue(JsonSanitizer.sanitize(message), SNSMessage.class);
+//
+//                messageAttribute = mapper.readValue(snsMessageAttempt.getMessage(), MessageAttributes.class);
+//
             }
 
             return messageAttribute;

@@ -16,6 +16,7 @@ tags:
   - name: token-resource
     description: Token Resource
 paths:
+
   "/api/v1/persons/pid":
     post:
       tags:
@@ -48,6 +49,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+
   "/api/v1/persons/{pid}/documents":
     post:
       parameters:
@@ -108,6 +110,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+
   "/api/v1/persons/{pid}/documents/metadata":
     get:
       parameters:
@@ -145,6 +148,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+
   "/api/v1/persons/documents/sample":
     get:
       tags:
@@ -171,6 +175,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+
   "/api/v1/persons/clientTests/callPersonByPidUsingFeignClient":
     post:
       tags:
@@ -203,6 +208,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+
   "/api/v1/persons/clientTests/callPersonByPidUsingRestTemplate":
     post:
       tags:
@@ -235,55 +241,17 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
-## SQS Message Example
-  "/api/v1/sqs/sendMessage":
-    post:
-      tags:
-        - reference-person-aws
-      summary: Send a message to the Queue
-      description: Will add a message to the queue
-      operationId: sendMessage
-      requestBody:
-        description: String message
-        required: true
-        content:
-          text/plain:
-            schema:
-              type: string
-              required:
-                - message
-              properties:
-                message:
-                  type: string
-                  description: The message contents
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/JmsResponse'
-        '400':
-          '$ref': '#/components/responses/400'
-        '401':
-          '$ref': '#/components/responses/401'
-        '403':
-          '$ref': '#/components/responses/403'
-        '500':
-          '$ref': '#/components/responses/500'
-      security:
-        - bearerAuth: []
-      deprecated: false
-  ## SQS Message Example
+
+  ## SNS Message Example
   "/api/v1/sns/publishMessage":
     post:
       tags:
         - reference-person-aws
-      summary: publish a sns message
-      description: Will publish a message to the subscribed queue
+      summary: Publish a SNS message
+      description: Will publish a message to an SNS topic
       operationId: publishMessage
       requestBody:
-        description: String message
+        description: A message
         required: true
         content:
           text/plain:
@@ -294,14 +262,14 @@ paths:
               properties:
                 message:
                   type: string
-                  description: The message contents
+                  description: The message playload
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/PublishResult'
+                '$ref': '#/components/schemas/BipPublishResult'
         '400':
           '$ref': '#/components/responses/400'
         '401':
@@ -313,6 +281,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+
   # The token path should not require any changes
   "/api/v1/token":
     post:
@@ -353,6 +322,7 @@ paths:
         '500':
            '$ref': '#/components/responses/500'
       deprecated: false
+
 components:
   # securitySchemes are defined by the framework.
   # Service applications must configure as below.
@@ -467,15 +437,15 @@ components:
           type: string
           example: 5bd06d77-7706-4675-a6d8-39e01c2fba61
           description : jms id
-    PublishResult:
+    BipPublishResult:
       type: object
-      title: PublishResult
-      description: Model for publishing sns messages
+      title: BipPublishResult
+      description: Result model for publishing SNS messages
       properties:
         messageId:
-          type: String
-          example: This is the openapi file message
-          description: message id
+          type: string
+          example: This is the OpenAPI file message ID
+          description: The returned Message ID
     # Schema objects below are from BIP Framework to be declared.
     # These objects need to be mapped in <importMappings> section
     # of openapi-generator-maven-plugin so that no code is generated 

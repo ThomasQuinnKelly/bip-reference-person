@@ -1,5 +1,6 @@
 package gov.va.bip.reference.person;
 
+import gov.va.bip.framework.aws.autoconfigure.BipS3AutoConfiguration;
 import gov.va.bip.framework.aws.autoconfigure.BipSnsAutoConfiguration;
 import gov.va.bip.framework.aws.autoconfigure.BipSqsAutoConfiguration;
 import org.springframework.boot.SpringApplication;
@@ -33,7 +34,8 @@ import gov.va.bip.reference.person.config.ReferencePersonConfig;
 @Import({ ReferencePersonConfig.class,
 		PersonWsClientConfig.class,
 		BipSqsAutoConfiguration.class,
-		BipSnsAutoConfiguration.class})
+		BipSnsAutoConfiguration.class,
+		BipS3AutoConfiguration.class})
 public class ReferencePersonApplication {
 
 	/**
