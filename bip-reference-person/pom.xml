@@ -18,8 +18,11 @@
 	<description>Reference Person Service Implementation for BIP Spring Boot Project</description>
 
 	<properties>
-		<bip-framework.version>2.1.4-SNAPSHOT</bip-framework.version>
-		<sonar.exclusions>**/PersonRestClientTester.java</sonar.exclusions>
+		<bip-framework.version>2.1.5-SNAPSHOT</bip-framework.version>
+		<sonar.exclusions>
+			**/PersonRestClientTester.java,
+			**/QueueAsyncMessageReceiver.java
+		</sonar.exclusions>
 	</properties>
 
 	<dependencies>
@@ -32,6 +35,11 @@
 		<dependency>
 			<groupId>gov.va.bip.framework</groupId>
 			<artifactId>bip-framework-autoconfigure</artifactId>
+			<version>${bip-framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>gov.va.bip.framework</groupId>
+			<artifactId>bip-framework-autoconfigure-aws</artifactId>
 			<version>${bip-framework.version}</version>
 		</dependency>
 		<dependency>

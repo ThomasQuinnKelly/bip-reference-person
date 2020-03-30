@@ -232,7 +232,7 @@ public class ReferencePersonServiceImpl implements ReferencePersonService {
 	/**
 	 * Get the meta data associated with documents accepted for a pid
 	 *
-	 * @param the
+	 * @param domainRequest
 	 *            pid to get the metadata for
 	 * @return A PersonDocsMetadataDomainResponse with the required metadata
 	 */
