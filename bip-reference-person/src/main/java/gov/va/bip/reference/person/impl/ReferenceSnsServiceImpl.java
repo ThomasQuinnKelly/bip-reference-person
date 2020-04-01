@@ -3,9 +3,13 @@ package gov.va.bip.reference.person.impl;
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
+import com.amazonaws.services.sns.model.SubscribeRequest;
+import com.amazonaws.services.sns.model.SubscribeResult;
 import gov.va.bip.framework.sns.config.SnsProperties;
 import gov.va.bip.reference.person.ReferenceSnsService;
 import gov.va.bip.reference.person.api.model.v1.BipPublishResult;
+import gov.va.bip.reference.person.api.model.v1.BipSubscribeRequest;
+import gov.va.bip.reference.person.api.model.v1.BipSubscribeResult;
 import gov.va.bip.reference.person.sqs.service.MessageAttributes;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +32,7 @@ public class ReferenceSnsServiceImpl implements ReferenceSnsService {
 
 	@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 	@Autowired
-	@Qualifier("firstSnsId")
+	@Qualifier("first-topic-id")
 	AmazonSNS myTopic;
 
 	@Autowired
@@ -46,6 +50,23 @@ public class ReferenceSnsServiceImpl implements ReferenceSnsService {
 
 		BipPublishResult bipResult = new BipPublishResult();
 		bipResult.setMessageId(awsResult.getMessageId());
+
+		return bipResult;
+	}
+
+	@Override
+	@CircuitBreaker(name = "subscribe")
+	public BipSubscribeResult subscribe(final BipSubscribeRequest bipSubscribeRequest) {
+
+		SubscribeRequest subscribeRequest = new SubscribeRequest();
+		subscribeRequest.setTopicArn(snsProperties.getTopics().get(0).getTopicArn());
+		subscribeRequest.setProtocol(bipSubscribeRequest.getProtocol());
+		subscribeRequest.setEndpoint(bipSubscribeRequest.getEndpoint());
+
+		SubscribeResult awsResult = myTopic.subscribe(subscribeRequest);
+
+		BipSubscribeResult bipResult = new BipSubscribeResult();
+		bipResult.setSubscriptionArn(awsResult.getSubscriptionArn());
 
 		return bipResult;
 	}

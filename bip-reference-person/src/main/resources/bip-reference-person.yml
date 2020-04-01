@@ -11,9 +11,7 @@ server:
   max-http-header-size: 65536
 ---
 spring.profiles: default
-spring.profiles.include: remote_client_sims, embedded-redis
-#for PRs at this time comment out this profile
-#, embedded-aws
+spring.profiles.include: remote_client_sims, embedded-redis, embedded-aws
 bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
@@ -571,14 +569,14 @@ spring.liquibase:
 
 #### Localstack
 bip.framework.localstack:
-  enabled: false
+  enabled: true
   services:
-    sns:
-      enabled: true
-      port: 4575
     s3:
       enabled: true
       port: 4572
+    sns:
+      enabled: true
+      port: 4575
     sqs:
       enabled: true
       port: 4576
@@ -593,28 +591,30 @@ bip.framework:
     sns:
       enabled: true
       topics:
-        - id: firstSnsId
-          name: firstSnsName
-          endpoint: https://sns.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-topic
-          topicarn: arn:aws:sns:us-gov-west-1:261727212250:project-blue-dev-blue-dev-topic
-          region: us-gov-west-1
-        - id: secondSnsId
-          name: secondSnsName
-          endpoint: https://sns.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-topic
-          topicarn: arn:aws:sns:us-gov-west-1:261727212250:project-blue-dev-blue-dev-topic
-          region: us-gov-west-1
+        - id: first-topic-id
+          name: first-topic-name
+#          endpoint: https://sns.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-topic
+#          topicarn: arn:aws:sns:us-gov-west-1:261727212250:project-blue-dev-blue-dev-topic
+          endpoint: https://localhost:4575/topic/first-topic-name
+          region: us-east-1
+        - id: second-topic-id
+          name: second-topic-name
+#          endpoint: https://sns.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-topic
+#          topicarn: arn:aws:sns:us-gov-west-1:261727212250:project-blue-dev-blue-dev-topic
+          endpoint: https://localhost:4575/topic/second-topic-name
+          region: us-east-1
 
     s3:
       enabled: true
       buckets:
-        - id: firstBucketId
-          name: firstBucketName
-          endpoint: INSERT_BUCKET_ENDPOINT
-          region: us-gov-west-1
-        - id: secondBucketId
-          name: secondBucketName
-          endpoint: INSERT_BUCKET_ENDPOINT
-          region: us-gov-west-1
+        - id: first-bucket-id
+          name: first-bucket-name
+          endpoint: https://localhost:4572/first-bucket-name
+          region: us-east-1
+        - id: second-bucket-id
+          name: second-bucket-name
+          endpoint: https://localhost:4572/second-bucket-name
+          region: us-east-1
 
     sqs:
       enabled: true
@@ -622,8 +622,10 @@ bip.framework:
 
       #Aws Dev8 vars
       region: us-gov-west-1
-      endpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-1
-      dlqEndpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-2
+#      endpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-1
+#      dlqEndpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-2
+      endpoint: http://localhost:4576/queue/sub_new_queue
+      dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
 
       #For Message Listener Setup in QueueAsyncMessageReceiver
       #Defines the maximum number of times the message can enter the DLQ

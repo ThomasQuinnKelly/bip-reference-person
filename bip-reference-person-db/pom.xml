@@ -17,7 +17,7 @@
 	<description>Database Database Management for Reference Person</description>
 
 	<properties>
-		<bip-framework.version>2.1.5-SNAPSHOT</bip-framework.version>
+		<bip-framework.version>2.1.6-SNAPSHOT</bip-framework.version>
 		<!--
 			Liquibase controls
 		-->

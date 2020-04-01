@@ -1,8 +1,7 @@
 package gov.va.bip.reference.person;
 
-import com.amazonaws.services.s3.model.PutObjectResult;
-
-import java.io.File;
+import gov.va.bip.reference.person.api.model.v1.BipListObjectsResult;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * The contract interface for the Reference S3 domain (service) layer.
@@ -10,6 +9,8 @@ import java.io.File;
  */
 public interface ReferenceS3Service {
 
-	PutObjectResult putObject(String bucketName, String key, File file);
+	Void putObject(String bucketName, String key, MultipartFile file);
+
+	BipListObjectsResult listObjects(String bucketName);
 
 }

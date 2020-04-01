@@ -51,7 +51,7 @@ services:
       - HOSTNAME_EXTERNAL=localstack
       - DEBUG=1
       - USE_SSL=0
-      - SERVICES=sns:4575,sqs:4576
+      - SERVICES=s3:4572,sns:4575,sqs:4576
       - PORT_WEB_UI=8888
     networks:
       - bip
