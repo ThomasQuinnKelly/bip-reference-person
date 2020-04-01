@@ -11,6 +11,8 @@ mavenGitflowPipeline {
     // Temporary flag to test the pipeline, MUST be removed once performance tests issues are resolved
     skipPerformanceTests = true
 
+    skipUndeploy = true
+
     /*************************************************************************
     * Docker Build Configuration
     *************************************************************************/
