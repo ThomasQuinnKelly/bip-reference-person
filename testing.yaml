@@ -22,4 +22,3 @@
         register: false
   opa:
     enabled: false
-  sleepContainer: true
