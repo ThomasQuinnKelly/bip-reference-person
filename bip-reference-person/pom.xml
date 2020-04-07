@@ -18,7 +18,7 @@
 	<description>Reference Person Service Implementation for BIP Spring Boot Project</description>
 
 	<properties>
-		<bip-framework.version>2.1.6-SNAPSHOT</bip-framework.version>
+		<bip-framework.version>2.2.0-SNAPSHOT</bip-framework.version>
 		<sonar.exclusions>
 			**/PersonRestClientTester.java,
 			**/QueueAsyncMessageReceiver.java
