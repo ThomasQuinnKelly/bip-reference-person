@@ -16,6 +16,9 @@ bip-reference-person:
   ribbon:
     listOfServers: localhost:${server.port}
 ---
+spring.profiles: default, local-int
+spring.profiles.include: embedded-aws
+---
 spring.profiles: local-int, ci, dev, stage, prod
 spring.profiles.include: remote_client_sims
 ---
@@ -564,10 +567,8 @@ spring.liquibase:
   enabled: false
   test-rollback-on-update: true
 ---
-
-
-
-#### Localstack
+### Localstack
+spring.profiles: default, local-int
 bip.framework.localstack:
   enabled: true
   services:
@@ -581,11 +582,9 @@ bip.framework.localstack:
       enabled: true
       port: 4576
 ---
-
-
-
 ### Default AWS Service Configurations for Bip Reference Person
 ### See the related configuration repository (bip-external-config) for environment-specific settings
+spring.profiles: default, local-int
 bip.framework:
   aws:
     sns:
@@ -618,19 +617,32 @@ bip.framework:
 
     sqs:
       enabled: true
-      dlqEnabled: true
+      queues:
+        - id: first-queue-id
+          name: first-queue-name
+          endpoint: http://localhost:4576/queue/first-queue-name
+          region: us-east-1
+        - id: dead-letter-queue-id
+          name: dead-letter-queue-name
+          endpoint: http://localhost:4576/queue/dead-letter-queue-name
+          region: us-east-1
 
-      #Aws Dev8 vars
-      region: us-gov-west-1
-#      endpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-1
-#      dlqEndpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-2
-      endpoint: http://localhost:4576/queue/sub_new_queue
-      dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
 
-      #For Message Listener Setup in QueueAsyncMessageReceiver
-      #Defines the maximum number of times the message can enter the DLQ
-      retries: 1
-
+#      #Aws Dev8 vars
+#      region: us-gov-west-1
+##      endpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-1
+##      dlqEndpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-2
+#      endpoint: http://localhost:4576/queue/sub_new_queue
+#      dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
+#
+#      #For Message Listener Setup in QueueAsyncMessageReceiver
+#      #Defines the maximum number of times the message can enter the DLQ
+#      retries: 1
+---
+spring.profiles: local-int
+bip.framework.localstack:
+  network: bip-reference-person_bip
+  externalHostName: localstack
 ---
 cloud.aws.stack.auto: false
 cloud.aws.region.static: us-gov-west-1

@@ -10,7 +10,6 @@ import gov.va.bip.reference.person.ReferenceSnsService;
 import gov.va.bip.reference.person.api.model.v1.BipPublishResult;
 import gov.va.bip.reference.person.api.model.v1.BipSubscribeRequest;
 import gov.va.bip.reference.person.api.model.v1.BipSubscribeResult;
-import gov.va.bip.reference.person.sqs.service.MessageAttributes;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -43,7 +42,7 @@ public class ReferenceSnsServiceImpl implements ReferenceSnsService {
 	public BipPublishResult publishMessage(final String message) {
 
 		PublishRequest publishRequest = new PublishRequest();
-		publishRequest.setMessage(new MessageAttributes(message).toJson());
+		publishRequest.setMessage(message);
 		publishRequest.setTopicArn(snsProperties.getTopics().get(0).getTopicArn());
 
 		PublishResult awsResult = myTopic.publish(publishRequest);
