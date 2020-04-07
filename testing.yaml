@@ -1,22 +1,26 @@
-  ########################################################################
-  # Values section defines the parameters to the chart
-  # These are specific to the chart being installed
-  ########################################################################
+########################################################################
+# Values section defines the parameters to the chart
+# These are specific to the chart being installed
+########################################################################
 
-  imagePullSecret: regcred
-  image:
-    repository: container-registry.dev8.bip.va.gov/blue/bip-reference-person
-    tag: latest
-    pullPolicy: Always
-  ingress:
+imagePullSecret: regcred
+image:
+  repository: container-registry.dev8.bip.va.gov/blue/bip-reference-person
+  tag: latest
+  pullPolicy: Always
+ingress:
+  enabled: false
+vault:
+  enabled: false
+  consulBackendEnabled: false
+consul:
     enabled: false
-  vault:
-    enabled: false
-    consulBackendEnabled: false
-  consul:
+    config:
       enabled: false
-      config:
-        enabled: false
-      discovery:
-        enabled: false
-        register: false
+    discovery:
+      enabled: false
+      register: false
+bip:
+  framework:
+    localstack:
+      enabled: false

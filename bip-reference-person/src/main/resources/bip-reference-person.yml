@@ -569,80 +569,85 @@ spring.liquibase:
 ---
 ### Localstack
 spring.profiles: default, local-int
-bip.framework.localstack:
-  enabled: true
-  services:
-    s3:
+bip:
+  framework:
+    localstack:
       enabled: true
-      port: 4572
-    sns:
-      enabled: true
-      port: 4575
-    sqs:
-      enabled: true
-      port: 4576
+      services:
+        s3:
+          enabled: true
+          port: 4572
+        sns:
+          enabled: true
+          port: 4575
+        sqs:
+          enabled: true
+          port: 4576
+---
+spring.profiles: local-int
+bip:
+  framework:
+    localstack:
+      network: bip-reference-person_bip
+      externalHostName: localstack
 ---
 ### Default AWS Service Configurations for Bip Reference Person
 ### See the related configuration repository (bip-external-config) for environment-specific settings
 spring.profiles: default, local-int
-bip.framework:
-  aws:
-    sns:
-      enabled: true
-      topics:
-        - id: first-topic-id
-          name: first-topic-name
-#          endpoint: https://sns.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-topic
-#          topicarn: arn:aws:sns:us-gov-west-1:261727212250:project-blue-dev-blue-dev-topic
-          endpoint: https://localhost:4575/topic/first-topic-name
-          region: us-east-1
-        - id: second-topic-id
-          name: second-topic-name
-#          endpoint: https://sns.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-topic
-#          topicarn: arn:aws:sns:us-gov-west-1:261727212250:project-blue-dev-blue-dev-topic
-          endpoint: https://localhost:4575/topic/second-topic-name
-          region: us-east-1
+bip:
+  framework:
+    aws:
+      sns:
+        enabled: true
+        topics:
+          - id: first-topic-id
+            name: first-topic-name
+    #          endpoint: https://sns.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-topic
+    #          topicarn: arn:aws:sns:us-gov-west-1:261727212250:project-blue-dev-blue-dev-topic
+            endpoint: https://localhost:4575/topic/first-topic-name
+            region: us-east-1
+          - id: second-topic-id
+            name: second-topic-name
+    #          endpoint: https://sns.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-topic
+    #          topicarn: arn:aws:sns:us-gov-west-1:261727212250:project-blue-dev-blue-dev-topic
+            endpoint: https://localhost:4575/topic/second-topic-name
+            region: us-east-1
 
-    s3:
-      enabled: true
-      buckets:
-        - id: first-bucket-id
-          name: first-bucket-name
-          endpoint: https://localhost:4572/first-bucket-name
-          region: us-east-1
-        - id: second-bucket-id
-          name: second-bucket-name
-          endpoint: https://localhost:4572/second-bucket-name
-          region: us-east-1
+      s3:
+        enabled: true
+        buckets:
+          - id: first-bucket-id
+            name: first-bucket-name
+            endpoint: https://localhost:4572/first-bucket-name
+            region: us-east-1
+          - id: second-bucket-id
+            name: second-bucket-name
+            endpoint: https://localhost:4572/second-bucket-name
+            region: us-east-1
 
-    sqs:
-      enabled: true
-      queues:
-        - id: first-queue-id
-          name: first-queue-name
-          endpoint: http://localhost:4576/queue/first-queue-name
-          region: us-east-1
-        - id: dead-letter-queue-id
-          name: dead-letter-queue-name
-          endpoint: http://localhost:4576/queue/dead-letter-queue-name
-          region: us-east-1
+      sqs:
+        enabled: true
+        queues:
+          - id: first-queue-id
+            name: first-queue-name
+            endpoint: http://localhost:4576/queue/first-queue-name
+            region: us-east-1
+          - id: dead-letter-queue-id
+            name: dead-letter-queue-name
+            endpoint: http://localhost:4576/queue/dead-letter-queue-name
+            region: us-east-1
 
 
-#      #Aws Dev8 vars
-#      region: us-gov-west-1
-##      endpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-1
-##      dlqEndpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-2
-#      endpoint: http://localhost:4576/queue/sub_new_queue
-#      dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
-#
-#      #For Message Listener Setup in QueueAsyncMessageReceiver
-#      #Defines the maximum number of times the message can enter the DLQ
-#      retries: 1
----
-spring.profiles: local-int
-bip.framework.localstack:
-  network: bip-reference-person_bip
-  externalHostName: localstack
+    #      #Aws Dev8 vars
+    #      region: us-gov-west-1
+    ##      endpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-1
+    ##      dlqEndpoint: https://sqs.us-gov-west-1.amazonaws.com/261727212250/project-blue-dev-blue-dev-queue-2
+    #      endpoint: http://localhost:4576/queue/sub_new_queue
+    #      dlqEndpoint: http://localhost:4576/queue/sub_new_queue_dead
+    #
+    #      #For Message Listener Setup in QueueAsyncMessageReceiver
+    #      #Defines the maximum number of times the message can enter the DLQ
+    #      retries: 1
 ---
 cloud.aws.stack.auto: false
 cloud.aws.region.static: us-gov-west-1
