@@ -7,7 +7,7 @@ mavenGitflowPipeline {
     // Temporary flag to skip sonar scans
     skipSonar = true
     // Temporary flag to test the pipeline, MUST be removed once functional tests issues are resolved
-    skipFunctionalTests = false
+    skipFunctionalTests = true
     // Temporary flag to test the pipeline, MUST be removed once performance tests issues are resolved
     skipPerformanceTests = true
 
