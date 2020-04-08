@@ -46,12 +46,15 @@ public class ReferenceS3ServiceImpl implements ReferenceS3Service {
 	@Override
 	@CircuitBreaker(name = "putObject")
 	public Void putObject(final String bucketName, final String key, final MultipartFile file) {
+
+		InputStream fileInputStream = null;
+
 		try {
 			ObjectMetadata metadata = new ObjectMetadata();
 			metadata.setContentType(file.getContentType());
 			metadata.setContentLength(file.getSize());
 
-			InputStream fileInputStream = file.getInputStream();
+			fileInputStream = file.getInputStream();
 
 			PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, fileInputStream, metadata);
 
@@ -59,6 +62,14 @@ public class ReferenceS3ServiceImpl implements ReferenceS3Service {
 
 		} catch (IOException e) {
 			LOGGER.error("IO issue when attempting to upload a file to S3!", e);
+		} finally {
+			if(fileInputStream != null) {
+				try {
+					fileInputStream.close();
+				} catch (IOException e) {
+					// Do nothing.
+				}
+			}
 		}
 
 		return null;
