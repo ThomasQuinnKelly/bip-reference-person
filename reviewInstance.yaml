@@ -32,3 +32,4 @@
     profiles: "dev"
   opa:
     enabled: true
+  cacheType: simple
