@@ -1,0 +1,6 @@
+spring:
+  cache:
+    type: simple
+opa:
+  enabled: true
+  allVotersAbstainGrantAccess: false

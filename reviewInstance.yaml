@@ -29,7 +29,7 @@
         register: true
       scheme: http
   spring:
-    profiles: "dev"
+    profiles: "dev,review"
   opa:
     enabled: true
   cacheType: simple
