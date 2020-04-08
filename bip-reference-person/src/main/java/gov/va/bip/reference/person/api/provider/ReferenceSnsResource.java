@@ -27,14 +27,14 @@ public class ReferenceSnsResource implements ReferencePersonAwsSnsApi, SwaggerRe
     @Override
     public ResponseEntity<BipPublishResult> publishMessage(@Valid String message) {
 
-        return new ResponseEntity<BipPublishResult>(refAwsPersonService.publishMessage(message), HttpStatus.OK);
+        return new ResponseEntity<>(refAwsPersonService.publishMessage(message), HttpStatus.OK);
 
     }
 
     @Override
     public ResponseEntity<BipSubscribeResult> subscribe(@Valid BipSubscribeRequest bipSubscribeRequest) {
 
-        return new ResponseEntity<BipSubscribeResult>(refAwsPersonService.subscribe(bipSubscribeRequest), HttpStatus.OK);
+        return new ResponseEntity<>(refAwsPersonService.subscribe(bipSubscribeRequest), HttpStatus.OK);
 
     }
 

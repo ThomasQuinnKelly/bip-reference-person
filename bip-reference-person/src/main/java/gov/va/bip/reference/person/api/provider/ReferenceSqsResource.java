@@ -27,28 +27,28 @@ public class ReferenceSqsResource implements ReferencePersonAwsSqsApi, SwaggerRe
     @Override
     public ResponseEntity<BipListQueuesResult> listQueues() {
 
-        return new ResponseEntity<BipListQueuesResult>(refAwsPersonService.listQueues(null), HttpStatus.OK);
+        return new ResponseEntity<>(refAwsPersonService.listQueues(null), HttpStatus.OK);
 
     }
 
     @Override
     public ResponseEntity<BipListQueuesResult> listQueuesByPrefix(@Valid String body) {
 
-        return new ResponseEntity<BipListQueuesResult>(refAwsPersonService.listQueues(body), HttpStatus.OK);
+        return new ResponseEntity<>(refAwsPersonService.listQueues(body), HttpStatus.OK);
 
     }
 
     @Override
     public ResponseEntity<BipSendMessageResult> sendMessage(String queueName, String messageBody) {
 
-        return new ResponseEntity<BipSendMessageResult>(refAwsPersonService.sendMessage(queueName, messageBody), HttpStatus.OK);
+        return new ResponseEntity<>(refAwsPersonService.sendMessage(queueName, messageBody), HttpStatus.OK);
 
     }
 
     @Override
     public ResponseEntity<BipReceiveMessagesResult> receiveMessages(@Valid String body) {
 
-        return new ResponseEntity<BipReceiveMessagesResult>(refAwsPersonService.receiveMessages(body), HttpStatus.OK);
+        return new ResponseEntity<>(refAwsPersonService.receiveMessages(body), HttpStatus.OK);
 
     }
 

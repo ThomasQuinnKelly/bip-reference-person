@@ -26,14 +26,14 @@ public class ReferenceS3Resource implements ReferencePersonAwsS3Api, SwaggerResp
     @Override
     public ResponseEntity<BipListObjectsResult> listObjects(@Valid String body) {
 
-        return new ResponseEntity<BipListObjectsResult>(refAwsPersonService.listObjects(body), HttpStatus.OK);
+        return new ResponseEntity<>(refAwsPersonService.listObjects(body), HttpStatus.OK);
 
     }
 
     @Override
     public ResponseEntity<Void> putObject(String bucketName, String key, MultipartFile file) {
 
-        return new ResponseEntity<Void>(refAwsPersonService.putObject(bucketName, key, file), HttpStatus.OK);
+        return new ResponseEntity<>(refAwsPersonService.putObject(bucketName, key, file), HttpStatus.OK);
 
     }
 

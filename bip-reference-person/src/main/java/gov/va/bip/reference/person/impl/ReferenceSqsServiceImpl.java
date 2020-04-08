@@ -44,9 +44,9 @@ public class ReferenceSqsServiceImpl implements ReferenceSqsService {
 
 	private static final BipLogger LOGGER = BipLoggerFactory.getLogger(ReferenceSqsServiceImpl.class);
 
-	private Connection jmsConnection;
-	private Session session;
-	private MessageConsumer consumer;
+	Connection jmsConnection;
+	Session session;
+	MessageConsumer consumer;
 
 	@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 	@Autowired
