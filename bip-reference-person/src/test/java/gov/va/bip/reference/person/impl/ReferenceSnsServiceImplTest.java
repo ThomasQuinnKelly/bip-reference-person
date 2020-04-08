@@ -10,6 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,10 +36,15 @@ public class ReferenceSnsServiceImplTest {
 	@Test
 	public void testPublishMessage() {
 
+		List<SnsProperties.SnsTopic> testList = new ArrayList<>();
+		SnsProperties.SnsTopic testTopic = new SnsProperties.SnsTopic();
+		testTopic.setTopicArn("arn:aws:sns:us-east-1:000000000000:test_my_topic");
+		testList.add(testTopic);
+
 		PublishResult publishResult = new PublishResult();
 		publishResult.setMessageId(EXPECTED_MESSAGE_ID);
 
-		when(snsProperties.getTopics().get(0).getTopicArn()).thenReturn("arn:aws:sns:us-east-1:000000000000:test_my_topic");
+		when(snsProperties.getTopics()).thenReturn(testList);
 		when(snsService.publish(any())).thenReturn(publishResult);
 
 		BipPublishResult result = instance.publishMessage(EXPECTED_MESSAGE);
