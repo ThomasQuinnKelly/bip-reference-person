@@ -9,7 +9,7 @@
     tag: latest
     pullPolicy: Always
   ingress:
-    enabled: false
+    enabled: true
   vault:
     host: "dev8-vault.vault.svc.dev8"
     enabled: true
