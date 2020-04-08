@@ -8,6 +8,7 @@ import gov.va.bip.reference.person.api.model.v1.BipReceiveMessagesResult;
 import gov.va.bip.reference.person.api.model.v1.BipSendMessageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
+@ConditionalOnProperty(name = "bip.framework.aws.sqs.enabled", havingValue = "true")
 public class ReferenceSqsResource implements ReferencePersonAwsSqsApi, SwaggerResponseMessages {
 
     /** The service layer API contract for processing SNS requests */

@@ -16,6 +16,7 @@ import gov.va.bip.reference.person.api.model.v1.BipSendMessageResult;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ import java.util.List;
 @Service(value = ReferenceSqsServiceImpl.BEAN_NAME)
 @Component
 @Qualifier("REFERENCE_SQS_SERVICE_IMPL")
+@ConditionalOnProperty(name = "bip.framework.aws.sqs.enabled", havingValue = "true")
 @RefreshScope
 public class ReferenceSqsServiceImpl implements ReferenceSqsService {
 

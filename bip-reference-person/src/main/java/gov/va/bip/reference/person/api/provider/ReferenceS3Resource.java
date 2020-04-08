@@ -6,6 +6,7 @@ import gov.va.bip.reference.person.api.ReferencePersonAwsS3Api;
 import gov.va.bip.reference.person.api.model.v1.BipListObjectsResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 
 @RestController
+@ConditionalOnProperty(name = "bip.framework.aws.s3.enabled", havingValue = "true")
 public class ReferenceS3Resource implements ReferencePersonAwsS3Api, SwaggerResponseMessages {
 
     /** The service layer API contract for processing SNS requests */
