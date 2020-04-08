@@ -1,6 +1,6 @@
 spring:
   cache:
     type: simple
-opa:
+bip.framework.security.opa:
   enabled: true
   allVotersAbstainGrantAccess: false
