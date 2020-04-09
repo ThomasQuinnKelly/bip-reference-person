@@ -33,4 +33,3 @@
   opa:
     enabled: true
     rego: api_authz_jwt_token.rego
-  cacheType: simple
