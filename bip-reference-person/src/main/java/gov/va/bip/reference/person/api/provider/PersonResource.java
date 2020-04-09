@@ -63,8 +63,6 @@ public class PersonResource implements ReferencePersonApi, SwaggerResponseMessag
 		LOGGER.info(buildProperties.getVersion());
 		LOGGER.info(buildProperties.getArtifact());
 		LOGGER.info(buildProperties.getGroup());
-        LOGGER.info("greatone");
-        LOGGER.debug("dudemeister");
 	}
 
 	/**
