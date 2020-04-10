@@ -15,7 +15,14 @@ tags:
     description: Person Rest Client Tester
   - name: token-resource
     description: Token Resource
+  - name: reference-person-aws-sns
+    description: AWS SNS Reference Person Resource
+  - name: reference-person-aws-s3
+    description: AWS S3 Reference Person Resource
+  - name: reference-person-aws-sqs
+    description: AWS SQS Reference Person Resource
 paths:
+
   "/api/v1/persons/pid":
     post:
       tags:
@@ -48,6 +55,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+
   "/api/v1/persons/{pid}/documents":
     post:
       parameters:
@@ -108,6 +116,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+
   "/api/v1/persons/{pid}/documents/metadata":
     get:
       parameters:
@@ -145,6 +154,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+
   "/api/v1/persons/documents/sample":
     get:
       tags:
@@ -171,6 +181,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+
   "/api/v1/persons/clientTests/callPersonByPidUsingFeignClient":
     post:
       tags:
@@ -203,6 +214,7 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+
   "/api/v1/persons/clientTests/callPersonByPidUsingRestTemplate":
     post:
       tags:
@@ -235,55 +247,17 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
-## SQS Message Example
-  "/api/v1/sqs/sendMessage":
-    post:
-      tags:
-        - reference-person-aws
-      summary: Send a message to the Queue
-      description: Will add a message to the queue
-      operationId: sendMessage
-      requestBody:
-        description: String message
-        required: true
-        content:
-          text/plain:
-            schema:
-              type: string
-              required:
-                - message
-              properties:
-                message:
-                  type: string
-                  description: The message contents
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                '$ref': '#/components/schemas/JmsResponse'
-        '400':
-          '$ref': '#/components/responses/400'
-        '401':
-          '$ref': '#/components/responses/401'
-        '403':
-          '$ref': '#/components/responses/403'
-        '500':
-          '$ref': '#/components/responses/500'
-      security:
-        - bearerAuth: []
-      deprecated: false
-  ## SQS Message Example
+
+  ## SNS Examples
   "/api/v1/sns/publishMessage":
     post:
       tags:
-        - reference-person-aws
-      summary: publish a sns message
-      description: Will publish a message to the subscribed queue
+        - reference-person-aws-sns
+      summary: Publish a SNS message
+      description: Will publish a message to an SNS topic
       operationId: publishMessage
       requestBody:
-        description: String message
+        description: A message
         required: true
         content:
           text/plain:
@@ -294,14 +268,14 @@ paths:
               properties:
                 message:
                   type: string
-                  description: The message contents
+                  description: The message playload
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                '$ref': '#/components/schemas/PublishResult'
+                '$ref': '#/components/schemas/BipPublishResult'
         '400':
           '$ref': '#/components/responses/400'
         '401':
@@ -313,6 +287,272 @@ paths:
       security:
         - bearerAuth: []
       deprecated: false
+
+  "/api/v1/sns/subscribe":
+    post:
+      tags:
+        - reference-person-aws-sns
+      summary: Subscribe to the SNS Topic
+      description: Will subscribe to an SNS topic
+      operationId: subscribe
+      requestBody:
+        description: Subscription Information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BipSubscribeRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/BipSubscribeResult'
+        '400':
+          '$ref': '#/components/responses/400'
+        '401':
+          '$ref': '#/components/responses/401'
+        '403':
+          '$ref': '#/components/responses/403'
+        '500':
+          '$ref': '#/components/responses/500'
+      security:
+        - bearerAuth: []
+      deprecated: false
+
+  ## S3 Examples
+  "/api/v1/s3/putObject":
+    post:
+      tags:
+        - reference-person-aws-s3
+      summary: Upload document using Multipart form data and store it in the listed S3 Bucket.
+      description: Will upload the given document.
+      operationId: putObject
+      requestBody:
+        description: Request model for putting an object into an S3 bucket
+        required: true
+        content:
+          multipart/form-data: # Media type
+            schema:            # Request payload
+              type: object
+              required:
+                - bucketName
+                - key
+                - file
+              properties:
+                bucketName:
+                  type: string
+                  description: The bucket to place the object into
+                key:
+                  type: string
+                  description: The key for the object
+                file:
+                  type: string
+                  description: The document to be uploaded
+                  format: binary
+      responses:
+        '200':
+          '$ref': '#/components/responses/200'
+        '400':
+          '$ref': '#/components/responses/400'
+        '401':
+          '$ref': '#/components/responses/401'
+        '403':
+          '$ref': '#/components/responses/403'
+        '500':
+          '$ref': '#/components/responses/500'
+      security:
+        - bearerAuth: []
+      deprecated: false
+
+  "/api/v1/s3/listObjects":
+    post:
+      tags:
+        - reference-person-aws-s3
+      summary: List objects in an S3 bucket
+      description: Will list the object keys in an S3 bucket
+      operationId: listObjects
+      requestBody:
+        description: The S3 bucket name
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              required:
+                - bucketName
+              properties:
+                bucketName:
+                  type: string
+                  description: The S3 bucket name
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/BipListObjectsResult'
+        '400':
+          '$ref': '#/components/responses/400'
+        '401':
+          '$ref': '#/components/responses/401'
+        '403':
+          '$ref': '#/components/responses/403'
+        '500':
+          '$ref': '#/components/responses/500'
+      security:
+        - bearerAuth: []
+      deprecated: false
+
+  ## SQS Examples
+  "/api/v1/sqs/listQueues":
+    get:
+      tags:
+        - reference-person-aws-sqs
+      summary: List queues in SQS
+      description: Will list the queue URLs in the SQS service
+      operationId: listQueues
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/BipListQueuesResult'
+        '400':
+          '$ref': '#/components/responses/400'
+        '401':
+          '$ref': '#/components/responses/401'
+        '403':
+          '$ref': '#/components/responses/403'
+        '500':
+          '$ref': '#/components/responses/500'
+      security:
+        - bearerAuth: []
+      deprecated: false
+
+  "/api/v1/sqs/listQueuesByPrefix":
+    post:
+      tags:
+        - reference-person-aws-sqs
+      summary: List queues in SQS
+      description: Will list the queue URLs in the SQS service with the given prefix
+      operationId: listQueuesByPrefix
+      requestBody:
+        description: The SQS queue name prefix
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              required:
+                - queueNamePrefix
+              properties:
+                queueNamePrefix:
+                  type: string
+                  description: The SQS queue name prefix
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/BipListQueuesResult'
+        '400':
+          '$ref': '#/components/responses/400'
+        '401':
+          '$ref': '#/components/responses/401'
+        '403':
+          '$ref': '#/components/responses/403'
+        '500':
+          '$ref': '#/components/responses/500'
+      security:
+        - bearerAuth: []
+      deprecated: false
+
+  "/api/v1/sqs/sendMessage":
+    post:
+      tags:
+        - reference-person-aws-sqs
+      summary: Send a message to an SQS queue
+      description: Will send a message to an SQS queue
+      operationId: sendMessage
+      requestBody:
+        description: Request model for sending a message to an SQS queue
+        required: true
+        content:
+          multipart/form-data: # Media type
+            schema:            # Request payload
+              type: object
+              required:
+                - queueName
+                - messageBody
+              properties:
+                queueName:
+                  type: string
+                  description: The queue to place the message into
+                messageBody:
+                  type: string
+                  description: The message for the queue
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/BipSendMessageResult'
+        '400':
+          '$ref': '#/components/responses/400'
+        '401':
+          '$ref': '#/components/responses/401'
+        '403':
+          '$ref': '#/components/responses/403'
+        '500':
+          '$ref': '#/components/responses/500'
+      security:
+        - bearerAuth: []
+      deprecated: false
+
+  "/api/v1/sqs/receiveMessages":
+    post:
+      tags:
+        - reference-person-aws-sqs
+      summary: Receive messages from the SQS queue
+      description: Will receive messages from the SQS queue
+      operationId: receiveMessages
+      requestBody:
+        description: The SQS queue name
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              required:
+                - queueName
+              properties:
+                queueName:
+                  type: string
+                  description: The SQS queue name
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/BipReceiveMessagesResult'
+        '400':
+          '$ref': '#/components/responses/400'
+        '401':
+          '$ref': '#/components/responses/401'
+        '403':
+          '$ref': '#/components/responses/403'
+        '500':
+          '$ref': '#/components/responses/500'
+      security:
+        - bearerAuth: []
+      deprecated: false
+
   # The token path should not require any changes
   "/api/v1/token":
     post:
@@ -353,6 +593,7 @@ paths:
         '500':
            '$ref': '#/components/responses/500'
       deprecated: false
+
 components:
   # securitySchemes are defined by the framework.
   # Service applications must configure as below.
@@ -467,15 +708,80 @@ components:
           type: string
           example: 5bd06d77-7706-4675-a6d8-39e01c2fba61
           description : jms id
-    PublishResult:
+    BipPublishResult:
       type: object
-      title: PublishResult
-      description: Model for publishing sns messages
+      title: BipPublishResult
+      description: Result model for publishing SNS messages
       properties:
         messageId:
-          type: String
-          example: This is the openapi file message
-          description: message id
+          type: string
+          example: This is the OpenAPI file message ID
+          description: The returned Message ID
+    BipSubscribeRequest:
+      type: object
+      title: BipSubscribeRequest
+      description: Request model for subscribing to an SNS topic
+      required:
+        - protocol
+        - endpoint
+      properties:
+        protocol:
+          type: string
+          description: The subscription protocol
+        endpoint:
+          type: string
+          description: The endpoint to subscribe
+    BipSubscribeResult:
+      type: object
+      title: BipSubscribeResult
+      description: Result model for subscribing to an SNS topic
+      properties:
+        subscriptionArn:
+          type: string
+          example: This is the resulting subscription ARN
+          description: The resulting subscription ARN
+    BipListObjectsResult:
+      type: object
+      title: BipListObjectsResult
+      description: Result model for listing objects from an S3 bucket
+      properties:
+        objectKeys:
+          type: array
+          items:
+            type: string
+          example: This is the resulting array of object keys
+          description: The resulting array of object keys
+    BipListQueuesResult:
+      type: object
+      title: BipListQueuesResult
+      description: Result model for listing quques from an SQS service
+      properties:
+        queueUrls:
+          type: array
+          items:
+            type: string
+          example: This is the resulting array of queue URLs
+          description: The resulting array of queue URLs
+    BipSendMessageResult:
+      type: object
+      title: BipSendMessageResult
+      description: Result model for sending messages to an SQS queue
+      properties:
+        messageId:
+          type: string
+          example: This is the resulting message ID
+          description: The resulting message ID
+    BipReceiveMessagesResult:
+      type: object
+      title: BipReceiveMessagesResult
+      description: Result model for receiving messages from an SQS queue
+      properties:
+        messagePayloads:
+          type: array
+          items:
+            type: string
+          example: This is the resulting array of message payloads
+          description: The resulting array of message payloads
     # Schema objects below are from BIP Framework to be declared.
     # These objects need to be mapped in <importMappings> section
     # of openapi-generator-maven-plugin so that no code is generated 

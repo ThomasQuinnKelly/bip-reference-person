@@ -1,7 +1,11 @@
 package gov.va.bip.reference.person;
 
+import brave.sampler.Sampler;
+import gov.va.bip.framework.aws.autoconfigure.BipS3AutoConfiguration;
 import gov.va.bip.framework.aws.autoconfigure.BipSnsAutoConfiguration;
 import gov.va.bip.framework.aws.autoconfigure.BipSqsAutoConfiguration;
+import gov.va.bip.reference.partner.person.client.ws.PersonWsClientConfig;
+import gov.va.bip.reference.person.config.ReferencePersonConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -12,10 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
-
-import brave.sampler.Sampler;
-import gov.va.bip.reference.partner.person.client.ws.PersonWsClientConfig;
-import gov.va.bip.reference.person.config.ReferencePersonConfig;
 
 /**
  * An <tt>Reference Person Service Application</tt> enabled for Spring Boot Application,
@@ -30,10 +30,11 @@ import gov.va.bip.reference.person.config.ReferencePersonConfig;
 @EnableHystrix
 @EnableCaching
 @EnableAsync
-@Import({ ReferencePersonConfig.class,
+@Import({ReferencePersonConfig.class,
 		PersonWsClientConfig.class,
 		BipSqsAutoConfiguration.class,
-		BipSnsAutoConfiguration.class})
+		BipSnsAutoConfiguration.class,
+		BipS3AutoConfiguration.class})
 public class ReferencePersonApplication {
 
 	/**
