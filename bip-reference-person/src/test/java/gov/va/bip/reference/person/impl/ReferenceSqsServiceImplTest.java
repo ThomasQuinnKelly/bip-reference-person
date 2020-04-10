@@ -1,5 +1,6 @@
 package gov.va.bip.reference.person.impl;
 
+import com.amazon.sqs.javamessaging.message.SQSTextMessage;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.model.*;
 import gov.va.bip.framework.sqs.config.SqsProperties;
@@ -63,10 +64,13 @@ public class ReferenceSqsServiceImplTest {
 	@Mock
 	MessageConsumer mockConsumer;
 
+	@Mock
+	SQSTextMessage mockSQSTextMessage;
+
 	List<SqsProperties.SqsQueue> queueList;
 
 	@Before
-	public void before() {
+	public void before() throws JMSException {
 		queueList = new ArrayList<>();
 		SqsProperties.SqsQueue testQueue1 = new SqsProperties.SqsQueue();
 		testQueue1.setId(QUEUE_ID_1);
@@ -85,6 +89,9 @@ public class ReferenceSqsServiceImplTest {
 		when(sqsService.getQueueUrl(QUEUE_NAME_1)).thenReturn(mockQueueUrlResult1);
 		when(sqsService.getQueueUrl(any(GetQueueUrlRequest.class))).thenReturn(mockQueueUrlResult1);
 		when(mockQueueUrlResult1.getQueueUrl()).thenReturn(QUEUE_URL_1);
+
+		when(mockSQSTextMessage.getText()).thenReturn(GENERIC_STRING);
+		doNothing().when(mockSQSTextMessage).acknowledge();
 	}
 
 	@Test
@@ -167,5 +174,14 @@ public class ReferenceSqsServiceImplTest {
 		assertNotNull(result.getMessagePayloads());
 		assertEquals(1, result.getMessagePayloads().size());
 		assertEquals(GENERIC_STRING, result.getMessagePayloads().get(0));
+	}
+
+	@Test
+	public void testFirstQueueListener_OnMessage() throws JMSException {
+		ReferenceSqsServiceImpl.FirstQueueListener listenerInstance = new ReferenceSqsServiceImpl.FirstQueueListener();
+
+		listenerInstance.onMessage(mockSQSTextMessage);
+
+		verify(mockSQSTextMessage, times(1)).acknowledge();
 	}
 }

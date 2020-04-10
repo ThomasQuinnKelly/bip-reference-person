@@ -177,7 +177,7 @@ public class ReferenceSqsServiceImpl implements ReferenceSqsService {
 	/**
      * Message Listener for the Main Queue
      */
-    public class FirstQueueListener implements MessageListener {
+    public static class FirstQueueListener implements MessageListener {
 
         @Override
         public void onMessage(final Message message) {
