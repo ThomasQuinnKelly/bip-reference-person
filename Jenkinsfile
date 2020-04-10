@@ -77,9 +77,6 @@ mavenGitflowPipeline {
     //Path to your chart directory within the above repository
     chartPath = "charts/bip-reference-person"
 
-    //TODO Remove before delivery
-    chartBranch = "dev-opa-helm"
-
     //Jenkins credential ID to use when connecting to repository. This defaults to `github` if not specified
     chartCredentialId = "github"
 
