@@ -20,6 +20,8 @@ consul:
     discovery:
       enabled: false
       register: false
+opa:
+  enabled: false
 bip:
   framework:
     localstack:

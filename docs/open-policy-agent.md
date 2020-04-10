@@ -63,23 +63,6 @@ Application YAML configurations required to enable JWT and OPA are shown below. 
              - http://localhost:8181/v1/data/bip/reference/person/http/authz/admin
              - http://localhost:8181/v1/data/bip/reference/person/http/authz/allow
            allVotersAbstainGrantAccess: false
-
-For now, Proof of Concept is available under the following repositories:
-    
-    https://github.ec.va.gov/EPMO/bip-framework/tree/opaPOC
-    https://github.ec.va.gov/EPMO/bip-reference-person/tree/opaPOC
-
-Pull Requests created:
-   
-    https://github.ec.va.gov/EPMO/bip-framework/pull/18
-    https://github.ec.va.gov/EPMO/bip-reference-person/pull/95
-    
-Folders and Files to refer:
-
-    - https://github.ec.va.gov/EPMO/bip-reference-person/tree/opaPOC/local-dev/openpolicyagent
-    - https://github.ec.va.gov/EPMO/bip-reference-person/blob/opaPOC/bip-reference-person/src/main/resources/bip-reference-person.yml#L223
-    - https://github.ec.va.gov/EPMO/bip-reference-person/blob/opaPOC/docker-compose.yml#L26
-    - https://github.ec.va.gov/EPMO/bip-reference-person/blob/opaPOC/docker-compose.yml#L100
   
 #### Reference Person Example Sample Query Input for Open Policy Agent (OPA)
 
