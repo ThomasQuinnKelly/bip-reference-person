@@ -1,0 +1,6 @@
+spring:
+  cache:
+    type: simple
+bip.framework.security.opa:
+  enabled: true
+  allVotersAbstainGrantAccess: false

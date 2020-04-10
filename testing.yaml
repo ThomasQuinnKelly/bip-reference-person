@@ -20,3 +20,5 @@
       discovery:
         enabled: false
         register: false
+  opa:
+    enabled: false
