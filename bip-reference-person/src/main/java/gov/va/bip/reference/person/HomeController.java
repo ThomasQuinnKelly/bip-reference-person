@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
- * Controller for the root URL - redirects to the Swagger UI
+ * Controller for the root URL - redirects to the Swagger UI.
  */
 @Controller
 public class HomeController {
