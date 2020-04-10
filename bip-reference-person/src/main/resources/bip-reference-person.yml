@@ -602,8 +602,8 @@ spring.liquibase:
 #      network: bip-reference-person_bip
 #      externalHostName: localstack
 #---
-
-
+#
+#
 ####################
 ### Default AWS Service Configurations for Bip Reference Person for local configurations
 ###
@@ -648,9 +648,9 @@ spring.liquibase:
 #            name: first-queue-name
 #            endpoint: http://localhost:4576/queue/first-queue-name
 #            region: us-east-1
-#          - id: dead-letter-queue-id
-#            name: dead-letter-queue-name
-#            endpoint: http://localhost:4576/queue/dead-letter-queue-name
+#          - id: second-queue-id
+#            name: second-queue-name
+#            endpoint: http://localhost:4576/queue/second-queue-name
 #            region: us-east-1
 #---
 
