@@ -8,7 +8,7 @@ mavenGitflowPipeline {
     *************************************************************************/
 
     // Map of Image Names to sub-directory in the repository. If this is value is non-empty, 
-    // the build pipeline will build all images specified in the map. The example below will build an image tagged as 
+    // the build pipeline will build all images specified in the map. The example below will build an image tagged as
     // `blue/bip-reference-person:latest` using the Docker context of `./bip-reference-person`.
     dockerBuilds = [
         'blue/bip-reference-person': 'bip-reference-person'
@@ -76,6 +76,8 @@ mavenGitflowPipeline {
 
     //Path to your chart directory within the above repository
     chartPath = "charts/bip-reference-person"
+
+    chartBranch = "development"
 
     //Jenkins credential ID to use when connecting to repository. This defaults to `github` if not specified
     chartCredentialId = "github"
