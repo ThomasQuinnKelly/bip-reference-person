@@ -75,3 +75,21 @@ Feature: PID Based Person Information from Person Partner Service.
     Examples: 
       | Veteran    | tokenrequestfile        | ServiceURL          | RequestFile              | Severity | Text                                                                                                                                                                                                             |
       | va-janedoe | va/janedoetoken.request | /api/v1/persons/pid | va/norecordfound.request | WARN     | Could not read mock XML file test/mocks/person.getPersonInfoByPtcpntId.6666355.xml using key person.getPersonInfoByPtcpntId.6666355. Please make sure this response file exists in the main/resources directory. |
+
+  @securitypolicy
+  Scenario Outline: PID based Person Info from Person Partner Service with assurance level of zero
+    Given the claimant is a "<Veteran>"
+    And invoke token API by passing header from "<tokenrequestfile>" and sets the authorization in the header
+    When client request person info "<ServiceURL>" with PID data "<RequestFile>"
+    Then the service returns status code = 403
+
+  @DEV
+    Examples:
+      | Veteran           | tokenrequestfile               | ServiceURL          | RequestFile               |
+      | dev-janedoe       | dev/zeroassuranceleveltoken.request       | /api/v1/persons/pid | dev/janedoe.request       |
+
+  @VA
+    Examples:
+      | Veteran          | tokenrequestfile              | ServiceURL          | RequestFile              |
+      | va-janedoe       | va/zeroassuranceleveltoken.request       | /api/v1/persons/pid | va/janedoe.request       |
+

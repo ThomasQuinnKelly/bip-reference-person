@@ -20,8 +20,10 @@ consul:
     discovery:
       enabled: false
       register: false
+spring:
+  profiles: "dev,ci"
 opa:
-  enabled: false
+  enabled: true
 bip:
   framework:
     localstack:
