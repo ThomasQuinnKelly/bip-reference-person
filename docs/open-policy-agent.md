@@ -38,6 +38,33 @@ BIP framework supports properties for the OPA configurations. Properties are lis
     - AffirmativeBased grants access if any <code>AccessDecisionVoter</code> returns an affirmative response.
     - UnanimousBased requires all voters to abstain or grant access.
 
+### Adding OPA to a new application
+The [bip-archetype-service](https://github.ec.va.gov/EPMO/bip-archetype-service.git) and [bip-archetype-config](https://github.ec.va.gov/EPMO/bip-archetype-config.git) 
+repositories serve as starting points to generate service and configuration repositories for new projects. The repositories
+both accept an option to enable OPA for new projects. Just add `enableOPA=true` in the `gen.properties`.
+
+### Adding OPA to an existing application
+Existing applications could be regenerated from the archetypes and merged over. These changes could also be done
+by hand by inspecting all of the occurrences of the marker `OPAEnablement` in the source code of the
+[bip-archetype-service](https://github.ec.va.gov/EPMO/bip-archetype-service.git) and [bip-archetype-config](https://github.ec.va.gov/EPMO/bip-archetype-config.git) repositories.
+
+To help understand what is necessary, the changes are summarized as follows:
+
+#### Config repository changes
+
+- Update the parent consul property files (e.g. `config/dev/bip-origin.yml`, `config/stage/bip-origin.yml`, 
+`config/prod/bip-origin.yml`) for each cluster so that `bip.framework.security.opa.enabled` is set to `true`. This allows
+the Spring application code to know to talk to OPA.
+- Update the helm values file (e.g. `charts/bip-origin/values.yaml`) to set `opa.enabled` to true. This allows the helm 
+chart to include the OPA deployment in the namespace for the Spring application to talk to.
+
+#### Service repository changes
+
+- Update the local-int and ci profile properties (e.g. `src/main/resources/bip-origin.yml`) so that `bip.framework.security.opa.enabled` is set to `true`. This allows
+the Spring application code to know to talk to OPA.
+- Update the helm values file for the review instance and functional/performance test (e.g. `reviewInstance.yaml` and `testing.yaml`) to set `opa.enabled` to true. This allows the helm 
+chart to include the OPA deployment in the namespace for the Spring application to talk to.
+
 ### Running OPA Locally
 
 BIP provides in reference person example service `local-dev` docker compose file to run the OPA locally. If you are running your service in IDE (default app profile), then you can navigate to the directory `local-dev/openpolicyagent`and execute the command: `docker-compose -f docker-compose.yml up --build`
