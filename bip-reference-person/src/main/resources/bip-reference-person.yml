@@ -305,7 +305,7 @@ bip-reference-partner-person:
       username: ${bgs.username}
       password: ${bgs.password}
       vaApplicationName: ${bgs.vaApplicationName}
-      stationId: ${bgs.stationId}
+      vaStationId: ${bgs.stationId}
       logValidation: false
       ### replace below values for endpoint-sepecific TTLs
       methodWarningThreshhold: ${bgs.default.readTimeout}
