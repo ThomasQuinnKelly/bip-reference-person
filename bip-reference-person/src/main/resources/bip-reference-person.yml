@@ -9,17 +9,7 @@ info:
 server: 
   port: 8080
   max-http-header-size: 65536
----
-spring.profiles: default
-spring.profiles.include: remote_client_sims, embedded-redis
-bip-reference-person:
-  ribbon:
-    listOfServers: localhost:${server.port}
----
-spring.profiles: local-int, ci, dev, stage, prod
-spring.profiles.include: remote_client_sims
----
-spring: 
+spring:
   cache:
     type: redis
   # Properties for org.springframework.boot.autoconfigure.data.redis.RedisProperties
@@ -39,15 +29,15 @@ spring:
         # min-idle: 0   # Min number of idle connections to maintain
         # max-active: 8 # Max number of allocated connections (-1 for unlimited)
         max-wait: -1    # Max wait millis when pool is exhausted (-1 for unlimited)
-    # cluster:
+      # cluster:
       # max-redirects: # Maximum number of redirects to follow when executing commands across the cluster
       # nodes:         # Comma-separated list of "host:port" pairs to bootstrap from
-    # sentinel:
+      # sentinel:
       # master:  # Name of the Redis server
       # nodes:   # Comma-separated list of "host:port" pairs
   sleuth:
     stream:
-      enabled: false 
+      enabled: false
   cloud:
     bus:
       enabled: false
@@ -62,7 +52,7 @@ spring:
     date-format: yyyy-MM-dd'T'HH:mm:ss
     serialization-inclusion: NON_EMPTY
     default-property-inclusion: NON_EMPTY
-    serialization: 
+    serialization:
       indent_output: true
       write-dates-as-timestamps: false
     deserialization:
@@ -74,7 +64,7 @@ spring:
 #management.endpoints.enabled-by-default: true
 # expose all endpoints:
 management.endpoints.web.exposure.include: "*"
-# disable beans endpoint  
+# disable beans endpoint
 management.endpoint.beans.enabled: false
 management.endpoint.health.show-details: "ALWAYS"
 management.metrics.tags.application: ${spring.application.name}
@@ -82,18 +72,18 @@ management.metrics.distribution.percentiles-histogram.http.server.requests: true
 management.health.rabbit.enabled: false
 management.health.redis.enabled: false
 
-#Application Custom Properties          
+#Application Custom Properties
 bip-reference-person:
   propSource: internal
   env: default
   password: secret
   sampleProperty: >
-                  sampleProperty___env/profile:${bip-reference-person.env}___propSource:
-                  ${bip-reference-person.propSource}__password:${bip-reference-person.password}
-#-##################################################
+    sampleProperty___env/profile:${bip-reference-person.env}___propSource:
+    ${bip-reference-person.propSource}__password:${bip-reference-person.password}
+  #-##################################################
 # Logging Level for packages
 #-##################################################
-logging: 
+logging:
   level:
     com.ecwid.consul: WARN
     feign: WARN
@@ -121,7 +111,7 @@ logging:
     org.springframework.client.discovery: WARN
     org.springframework.cloud.consul: WARN
     org.springframework.cloud.openfeign: WARN
-    org.springframework.cloud.sleuth: WARN 
+    org.springframework.cloud.sleuth: WARN
     org.springframework.core.convert: WARN
     org.springframework.format: WARN
     org.springframework.retry: WARN
@@ -166,29 +156,29 @@ management.metrics.distribution.percentiles-histogram.resilience4j.circuitbreake
 resilience4j.circuitbreaker:
   configs:
     default:
-        registerHealthIndicator: false
-        slidingWindowSize: 10
-        minimumNumberOfCalls: 5
-        permittedNumberOfCallsInHalfOpenState: 3
-        automaticTransitionFromOpenToHalfOpenEnabled: true
-        waitDurationInOpenState: 2s
-        failureRateThreshold: 50
-        eventConsumerBufferSize: 10
-        ignoreExceptions:
-           - java.lang.IllegalArgumentException 
-           - gov.va.bip.framework.exception.BipException
-           - gov.va.bip.framework.exception.BipRuntimeException
+      registerHealthIndicator: false
+      slidingWindowSize: 10
+      minimumNumberOfCalls: 5
+      permittedNumberOfCallsInHalfOpenState: 3
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+      waitDurationInOpenState: 2s
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
+      ignoreExceptions:
+      - java.lang.IllegalArgumentException
+      - gov.va.bip.framework.exception.BipException
+      - gov.va.bip.framework.exception.BipRuntimeException
     shared:
-        registerHealthIndicator: true
-        slidingWindowSize: 100
-        permittedNumberOfCallsInHalfOpenState: 30
-        waitDurationInOpenState: 1s
-        failureRateThreshold: 50
-        eventConsumerBufferSize: 10
-        ignoreExceptions:
-           - java.lang.IllegalArgumentException 
-           - gov.va.bip.framework.exception.BipException
-           - gov.va.bip.framework.exception.BipRuntimeException 
+      registerHealthIndicator: true
+      slidingWindowSize: 100
+      permittedNumberOfCallsInHalfOpenState: 30
+      waitDurationInOpenState: 1s
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
+      ignoreExceptions:
+      - java.lang.IllegalArgumentException
+      - gov.va.bip.framework.exception.BipException
+      - gov.va.bip.framework.exception.BipRuntimeException
 resilience4j.ratelimiter:
   configs:
     default:
@@ -199,14 +189,14 @@ resilience4j.retry:
       maxRetryAttempts: 2
       waitDuration: 100
       retryExceptions:
-        - feign.FeignException
-        - org.springframework.web.client.HttpServerErrorException
-        - java.io.IOException
+      - feign.FeignException
+      - org.springframework.web.client.HttpServerErrorException
+      - java.io.IOException
 ###############################################################################
-# Property configuration to enable or disable JWT security for the service calls 
+# Property configuration to enable or disable JWT security for the service calls
 # JWT security is enabled by default. So to disable it you have to
 # set the environment system property bip.framework.security.jwt.enabled=false
-# Multiple consumers is now supported via framework. Multiple secret and Issuer 
+# Multiple consumers is now supported via framework. Multiple secret and Issuer
 # pairs can be configured in vault, example as below
 # bip.framework.security.jwt.keyPairs[0].secret=secret
 # bip.framework.security.jwt.keyPairs[0].issuer=Vets.gov
@@ -215,39 +205,39 @@ bip.framework:
   security:
     jwt:
       enabled: true
-      filterProcessUrls: 
-        - /api/v1/persons/**
+      filterProcessUrls:
+      - /api/v1/persons/**
       excludeUrls:
-        - /api/v1/token
-        - /*
+      - /api/v1/token
+      - /*
       generate.enabled: true
       expireInSeconds: 900
-################################################################################
-# Property configuration to ENABLE or DISABLE Open Policy Agent (OPA)
-# a) OPA security is disabled by default. To enable it, you have to set the 
-# environment system property "bip.framework.opa.enabled: true"
-# b) BIP framework supports multiple policy rule URLs to vote for the decision that 
-# grants or denies access
-#   bip.framework.security.opa.url[0]=http://localhost:8181/v1/data/http/authz/admin
-#   bip.framework.security.opa.url[1]=http://localhost:8181/v1/data/http/authz/allow
-# c) Boolean that indicates if all or any voters are required to deny or grant 
-# access, default value is false. Value as false sets AccessDecisionManager with 
-# AffirmativeBased implementation and true as UnanimousBased implementation.
-#   bip.framework.security.opa.allVotersAbstainGrantAccess=false
-##################################################################################
-#    opa:
-#     enabled: true
-#     urls: 
-#       - http://localhost:8181/v1/data/bip/reference/person/http/authz/admin
-#       - http://localhost:8181/v1/data/bip/reference/person/http/authz/allow
-#     allVotersAbstainGrantAccess: false
+  ################################################################################
+  # Property configuration to ENABLE or DISABLE Open Policy Agent (OPA)
+  # a) OPA security is disabled by default. To enable it, you have to set the
+  # environment system property "bip.framework.opa.enabled: true"
+  # b) BIP framework supports multiple policy rule URLs to vote for the decision that
+  # grants or denies access
+  #   bip.framework.security.opa.url[0]=http://localhost:8181/v1/data/http/authz/admin
+  #   bip.framework.security.opa.url[1]=http://localhost:8181/v1/data/http/authz/allow
+  # c) Boolean that indicates if all or any voters are required to deny or grant
+  # access, default value is false. Value as false sets AccessDecisionManager with
+  # AffirmativeBased implementation and true as UnanimousBased implementation.
+  #   bip.framework.security.opa.allVotersAbstainGrantAccess=false
+  ##################################################################################
+  #    opa:
+  #     enabled: true
+  #     urls:
+  #       - http://localhost:8181/v1/data/bip/reference/person/http/authz/admin
+  #       - http://localhost:8181/v1/data/bip/reference/person/http/authz/allow
+  #     allVotersAbstainGrantAccess: false
   swagger:
     # enable/disable the swagger/openapi UI ...
     enabled: true
-##################################################
-# Feign or REST client connection timeout
-# when making inter-service or external REST calls
-##################################################
+  ##################################################
+  # Feign or REST client connection timeout
+  # when making inter-service or external REST calls
+  ##################################################
   rest:
     client:
       connectionTimeout: 30000
@@ -256,20 +246,20 @@ bip.framework:
       defaultMaxPerRoutePool: 10
       validateAfterInactivityPool: 10000
       connectionBufferSize: 4128
-##################################################
-# Cache
-##################################################
+  ##################################################
+  # Cache
+  ##################################################
   cache:
     defaultExpires: 86400 # (Seconds)
     expires:
-#     -
-#       name: Cache Name
-#       ttl:  TTL (In Seconds)
-      -
-        name: refPersonService_@project.name@_@project.version@
-        ttl: 1800
+    #     -
+    #       name: Cache Name
+    #       ttl:  TTL (In Seconds)
+    -
+      name: refPersonService_@project.name@_@project.version@
+      ttl: 1800
 ##################################################
-# Sleuth configuration     
+# Sleuth configuration
 # To skip specific patterns being exported, added few more customs on top of default skip pattern
 # see org.springframework.cloud.sleuth.instrument.web.TraceFilter.DEFAULT_SKIP_PATTERN
 ##################################################
@@ -282,7 +272,7 @@ spring.sleuth.rxjava.schedulers.ignoredthreads: HystixMetricPoller,^RxComputatio
 #
 # These URLs use external service name entries
 # in Consul to resolve to the appropriate partner endpoint for each env.
-# 
+#
 # BGS-Specific SERVICE CLIENT PROPERTIES
 #########################################################################
 bgs:
@@ -298,9 +288,9 @@ bgs:
     readTimeout: 60000
     connectionTimeout: 60000
 
-bip-reference-partner-person: 
+bip-reference-partner-person:
   ws:
-    client: 
+    client:
       endpoint: ${bgs.url}/PersonWebService/PersonWebService?WSDL
       username: ${bgs.username}
       password: ${bgs.password}
@@ -319,6 +309,23 @@ bip-reference-partner-person:
         truststorePass: ${javax.net.ssl.trustStorePassword:password}
 
 
+###################
+## Default settings to allow the AWS dependencies to function correctly in a non-cloud environment. Necessary for
+## local deployments with AWS features.
+###################
+cloud.aws.stack.auto: false
+cloud.aws.region.static: us-gov-west-1
+spring.sleuth.messaging.enabled: false
+---
+spring.profiles: default
+spring.profiles.include: remote_client_sims, embedded-redis
+bip-reference-person:
+  ribbon:
+    listOfServers: localhost:${server.port}
+---
+spring.profiles: local-int, ci, dev, stage, prod
+spring.profiles.include: remote_client_sims
+---
 #########################################################################
 #########################################################################
 ####
@@ -653,12 +660,3 @@ spring.liquibase:
 #            endpoint: http://localhost:4576/queue/second-queue-name
 #            region: us-east-1
 #---
-
-###################
-## Default settings to allow the AWS dependencies to function correctly in a non-cloud environment. Necessary for
-## local deployments with AWS features.
-###################
-cloud.aws.stack.auto: false
-cloud.aws.region.static: us-gov-west-1
-spring.sleuth.messaging.enabled: false
----
