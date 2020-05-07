@@ -80,6 +80,8 @@ bip-reference-person:
   sampleProperty: >
     sampleProperty___env/profile:${bip-reference-person.env}___propSource:
     ${bip-reference-person.propSource}__password:${bip-reference-person.password}
+  ribbon:
+    listOfServers: localhost:${server.port}
   #-##################################################
 # Logging Level for packages
 #-##################################################
@@ -308,7 +310,6 @@ bip-reference-partner-person:
         truststore: ${javax.net.ssl.trustStore:classpath:test/ssl/dev/vaebnTruststore.jks}
         truststorePass: ${javax.net.ssl.trustStorePassword:password}
 
-
 ###################
 ## Default settings to allow the AWS dependencies to function correctly in a non-cloud environment. Necessary for
 ## local deployments with AWS features.
@@ -319,9 +320,6 @@ spring.sleuth.messaging.enabled: false
 ---
 spring.profiles: default
 spring.profiles.include: remote_client_sims, embedded-redis
-bip-reference-person:
-  ribbon:
-    listOfServers: localhost:${server.port}
 ---
 spring.profiles: local-int, ci, dev, stage, prod
 spring.profiles.include: remote_client_sims
@@ -528,9 +526,6 @@ spring.liquibase.docs:
 ### Add the "db-persondocs" and "db-personinfo" datasource profiles to the "default" environment
 spring.profiles: default
 spring.profiles.include: db-persondocs, db-personinfo
-bip-reference-person:
-  ribbon:
-    listOfServers: localhost:${server.port}
 spring.liquibase:
   enabled: false
   test-rollback-on-update: false
