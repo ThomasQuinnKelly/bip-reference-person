@@ -321,7 +321,7 @@ spring.sleuth.messaging.enabled: false
 spring.profiles: default
 spring.profiles.include: remote_client_sims, embedded-redis
 ---
-spring.profiles: local-int, ci, dev, stage, prod
+spring.profiles: local-int, ci, sbx, dev, stage, prod
 spring.profiles.include: remote_client_sims
 ---
 #########################################################################
@@ -535,6 +535,17 @@ spring.liquibase:
 spring.profiles: local-int, ci
 spring.profiles.include: db-persondocs, db-personinfo
 ### Local-Int & CI values for Liquibase
+### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
+### Person*DatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
+spring.liquibase:
+  enabled: false
+  test-rollback-on-update: false
+---
+### EXAMPLE of a possible sbx db run
+### Add the "db-persondocs" and "db-personinfo" datasource profiles to the "sbx" environment
+spring.profiles: sbx
+spring.profiles.include: db-persondocs, db-personinfo
+### Dev values for Liquibase
 ### https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/common-application-properties.html
 ### Person*DatasourceConfig automatically passes the datasource, so no need to specify url, user, or pass
 spring.liquibase:
