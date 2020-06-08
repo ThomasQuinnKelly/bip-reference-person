@@ -15,6 +15,15 @@ The service application project is one of the sub-project `<modules>` in a react
 <module>bip-reference-person</module>
 ```
 
+## Config Values
+The bootstrap.yml file contains modifiable config values for the application.
+- `spring.cloud.consul.config.watch.enabled` can be set to true or false. When set to false it will no longer watch the consul config values and then refresh the application and corresponding value in the application to the new updated value in consul. When set to true, it will refresh and restart the application upon any K/V changes made in consul. When updated, it will display the following logs to identify the updated fields. 
+```
+    INFO o.s.boot.SpringApplication               : The following profiles are active: <active profiles>
+    INFO o.s.boot.SpringApplication               : Started application in 0.237 seconds (JVM running for 181.985)
+    INFO o.s.c.e.event.RefreshEventListener       : Refresh keys changed: [<application name>.<name of key>] 
+``` 
+
 ## Diagrams
 
 #### Class Diagram
