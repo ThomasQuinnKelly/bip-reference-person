@@ -13,7 +13,7 @@ spring.cloud.consul:
     format: FILES
     failFast: false #Set value as 'true' to throw exceptions during consul config lookup
     watch:
-      enabled: false
+      enabled: false #Set to true if you wish for for consul to watch for config changes
       wait-time: 30 #defaults to 55 seconds
   host: localhost
   port: 8500
