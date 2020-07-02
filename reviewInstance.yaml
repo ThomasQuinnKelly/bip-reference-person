@@ -11,17 +11,17 @@
   ingress:
     enabled: true
   vault:
-    host: "dev8-vault.vault.svc.dev8"
+    host: "sbx8-vault.vault.svc.sbx8"
     enabled: true
     kubernetes:
-      role: blue-dev
+      role: blue-sbx
     kv:
       applicationName: blue/bip-reference-person
     port: 8200
     scheme: http
   consul:
       enabled: false
-      host: dev8-consul.vault.svc.dev8
+      host: sbx8-consul.vault.svc.sbx8
       config:
         enabled: true
       discovery:
@@ -29,7 +29,7 @@
         register: true
       scheme: http
   spring:
-    profiles: "dev,ci"
+    profiles: "sbx,dev,ci"
   opa:
     enabled: true
     rego: api_authz_jwt_token.rego

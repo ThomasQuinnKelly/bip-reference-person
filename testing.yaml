@@ -21,7 +21,7 @@ consul:
       enabled: false
       register: false
 spring:
-  profiles: "dev,ci"
+  profiles: "sbx,dev,ci"
 opa:
   enabled: true
   rego: api_authz_jwt_token.rego

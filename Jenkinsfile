@@ -2,6 +2,14 @@
 
 mavenGitflowPipeline {
 
+    skipTests = true
+    //skipSonar = true
+    skipFortify = true
+    skipFunctionalTests = true
+    skipPerformanceTests = true
+
+    skipUndeploy = true
+
     //Specify to use the fortify maven plugin, instead of the Ant task to execute the fortify scan
     useFortifyMavenPlugin = true
 
