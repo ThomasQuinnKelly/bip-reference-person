@@ -30,7 +30,7 @@
 		<repository>
 			<id>nexus3</id>
 			<name>BIP Nexus Repository</name>
-			<url>https://nexus.dev8.bip.va.gov/repository/maven-public</url>
+			<url>https://nexus.sbx8.bip.va.gov/repository/maven-public</url>
 		</repository>
 	</repositories>
 

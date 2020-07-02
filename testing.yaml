@@ -5,7 +5,7 @@
 
 imagePullSecret: regcred
 image:
-  repository: container-registry.dev8.bip.va.gov/blue/bip-reference-person
+  repository: container-registry.sbx8.bip.va.gov/blue/bip-reference-person
   tag: latest
   pullPolicy: Always
 ingress:
